@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import MealCard from '../Components/MealCard'
-
+import { PlanerService } from '../Endpoints/PlanerService'
+import { FoodplanerItem } from '../Datatypes/Meal'
 
 enum Weekday {
     Monday = 1,
@@ -16,21 +17,21 @@ export type Meal = {
     title: string
 }
 
-export type FoodplanerItem = {
+export type FoodplanerItemTest = {
     date: Date,
     food: Meal[]
 }
 
 function ReceipePlanerView() {
 
-    const [foodPlaner, setFoodPlaner] = useState<FoodplanerItem[]>()
+    const [foodPlaner, setFoodPlaner] = useState<FoodplanerItemTest[]>()
     function addDaysToDate(originalDate: Date, daysToAdd: number) {
         const newDate = new Date(originalDate);
         newDate.setDate(originalDate.getDate() + daysToAdd);
         return newDate;
     }
     useEffect(() => {
-        const planer: FoodplanerItem[] = [
+        const planer: FoodplanerItemTest[] = [
             {
                 date: addDaysToDate(new Date(), 0),
                 food: [{ title: 'Lasagne' }, { title: 'Spaghetti' }]
@@ -60,6 +61,16 @@ function ReceipePlanerView() {
                 food: [{ title: 'Sushi' }, { title: 'Miso Soup' }]
             }
         ];
+
+        async function fetchData() {
+            try {
+                const data: FoodplanerItem[] = await PlanerService.getAllPlanerItems();
+                console.log(data)
+            } catch (error) {
+                console.error('Error fetching gas stations:', error);
+            }
+        }
+        fetchData()
         setFoodPlaner(planer);
     }, [])
     return (
