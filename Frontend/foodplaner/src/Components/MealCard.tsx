@@ -7,7 +7,7 @@ type Props = {
 
 function MealCard({ meal }: Props) {
     return (
-        <div className='m-2 px-4 py-1 flex flex-row justify-center items-center rounded-sm bg-slate-300'>
+        <div className='m-2 px-4 py-1 flex flex-row justify-center items-center rounded-md truncate bg-slate-300'>
             {meal.title}
         </div>
     )

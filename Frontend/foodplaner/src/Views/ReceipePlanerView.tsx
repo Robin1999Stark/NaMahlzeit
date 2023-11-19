@@ -64,7 +64,7 @@ function ReceipePlanerView() {
     }, [])
     return (
         <div className='flex flex-col items-center'>
-            <h1 className='mb-4 text-lg font-semibold'>Foodplaner</h1>
+            <h1 className='mb-4 text-2xl font-semibold text-[#181818]'>Foodplaner</h1>
             <ul className='flex flex-row w-full justify-between p-3'>
                 {foodPlaner?.map((plan, index) => (
                     <li className='p-4 flex flex-col justify-start items-center min-w-[8rem]'>
