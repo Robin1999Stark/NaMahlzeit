@@ -13,7 +13,6 @@ export namespace MealService {
     export async function getAllMealsJSON(): Promise<any> {
         try {
             const response = await instance.get('/meals/');
-            console.log("respoinse:", response)
             return response.data;
         } catch (error) {
             throw new Error('Error fetching Meals: ' + error);

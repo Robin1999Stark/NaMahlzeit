@@ -3,6 +3,7 @@ import { FoodplanerItem, Meal } from '../Datatypes/Meal';
 import { PlanerService } from '../Endpoints/PlanerService';
 import { MealService } from '../Endpoints/MealService';
 import MealCard from './MealCard';
+import { DragDropContext } from 'react-beautiful-dnd';
 
 function MealList() {
 
