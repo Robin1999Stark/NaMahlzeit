@@ -57,7 +57,6 @@ function ReceipePlanerView() {
                 const stuffedDate: FoodplanerItem[] = fillWithEmptyDays(data, new Date(Date.now()), end);
                 const splitData: FoodplanerItem[][] = splitFoodPlaner(stuffedDate, 7);
                 setFoodPlaner(splitData)
-                console.log(splitData)
             } catch (error) {
                 console.error('Error fetching planer:', error);
             }
@@ -65,10 +64,10 @@ function ReceipePlanerView() {
         fetchData()
     }, [])
     return (
-        <div className='flex flex-col items-center max-w-[20rem]'>
+        <div className='flex col-span-3 w-full flex-col items-start max-w-[20rem] flex-wrap'>
             <h1 className='mb-4 text-2xl font-semibold text-[#181818]'>Foodplaner</h1>
 
-            <table className='table-fixed p-3 m-8'>
+            <table className='table-auto p-3 m-8'>
                 {foodPlaner ? foodPlaner?.map((planerBatch, idx) => (
                     <>
                         <thead>

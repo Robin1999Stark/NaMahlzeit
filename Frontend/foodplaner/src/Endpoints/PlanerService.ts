@@ -11,7 +11,6 @@ export namespace PlanerService {
     export async function getAllPlanerItemJSON(): Promise<any> {
         try {
             const response = await instance.get('/planer/');
-            console.log("respoinse:", response)
             return response.data;
         } catch (error) {
             throw new Error('Error fetching Planer: ' + error);
