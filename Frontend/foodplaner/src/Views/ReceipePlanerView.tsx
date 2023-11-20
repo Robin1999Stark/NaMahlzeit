@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import MealCard from '../Components/MealCard'
 import { PlanerService } from '../Endpoints/PlanerService'
 import { FoodplanerItem } from '../Datatypes/Meal'
+import AddMealButton from '../Components/AddMealButton'
 
 enum Weekday {
     Monday = 1,
@@ -18,34 +19,7 @@ function ReceipePlanerView() {
     const [foodPlaner, setFoodPlaner] = useState<FoodplanerItem[][]>()
     const [currentIndex, setCurrentIndex] = useState<number>(0)
 
-
     useEffect(() => {
-        /*function fillWithEmptyDays(planer: FoodplanerItem[], from: Date, to: Date): FoodplanerItem[] {
-            console.log("planer", planer)
-            const dict = new Map<Date, FoodplanerItem>();
-            const currentDate = new Date(from.getTime());
-
-            while (currentDate <= to) {
-                dict.set(new Date(currentDate.getTime()), new FoodplanerItem(-1, new Date(currentDate.getTime()), []));
-                currentDate.setDate(currentDate.getDate() + 1);
-            }
-            console.log(dict)
-            planer.forEach(planerItem => {
-                const existingItem = dict.get(new Date(planerItem.date));
-
-                if (existingItem) {
-                    // If there's already an item, update its properties
-                    existingItem.id = planerItem.id;
-                    existingItem.food = existingItem.food.concat(planerItem.food);
-                } else {
-                    dict.set(new Date(planerItem.date), planerItem);
-                }
-            });
-
-            const array = Array.from(dict.values());
-            console.log(array);
-            return array;
-        }*/
         function fillWithEmptyDays(planer: FoodplanerItem[], from: Date, to: Date): FoodplanerItem[] {
             const dates: Date[] = [];
             const currentDate = new Date(from.getTime());
@@ -78,13 +52,9 @@ function ReceipePlanerView() {
         async function fetchData() {
             try {
                 const data: FoodplanerItem[] = await PlanerService.getAllPlanerItems();
-
                 const end = new Date();
                 end.setDate(end.getDate() + 13);
-
                 const stuffedDate: FoodplanerItem[] = fillWithEmptyDays(data, new Date(Date.now()), end);
-
-
                 const splitData: FoodplanerItem[][] = splitFoodPlaner(stuffedDate, 7);
                 setFoodPlaner(splitData)
                 console.log(splitData)
@@ -104,7 +74,7 @@ function ReceipePlanerView() {
                         <thead>
                             <tr>
                                 {planerBatch ? planerBatch?.map((plan, index) => (
-                                    <th className='p-4justify-start items-center min-w-[8rem]'>
+                                    <th className='p-4 justify-start items-center min-w-[8rem]'>
                                         <h2 className='text text-base font-semibold '>
                                             {plan.date instanceof Date ? Weekday[plan.date.getDay()] : Weekday[new Date(plan.date).getDay()]}
                                         </h2>
@@ -122,6 +92,9 @@ function ReceipePlanerView() {
                                                     <MealCard mealID={meal + ""} />
                                                 </li>
                                             ))}
+                                            <li>
+                                                <AddMealButton title='Add Meal' />
+                                            </li>
 
                                         </ul>
                                     </td>
