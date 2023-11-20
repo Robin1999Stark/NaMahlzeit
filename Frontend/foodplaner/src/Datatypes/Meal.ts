@@ -1,12 +1,33 @@
 
-export class Meal {
+export class Ingredient {
+    id: number;
     title: string;
-    constructor(title: string) {
-        this.title = title
+    description: string;
+    constructor(id: number, title: string, description: string) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+    }
+    static fromJSON(json: any): Ingredient {
+        return new Ingredient(json.id, json.title, json.description);
+    }
+}
+
+export class Meal {
+    id: number;
+    title: string;
+    description: string;
+    ingredientIDs: number[];
+
+    constructor(id: number, title: string, description: string, ingredientIDs: number[]) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.ingredientIDs = ingredientIDs;
     }
 
     static fromJSON(json: any): Meal {
-        return new Meal(json.title)
+        return new Meal(json.id, json.title, json.description, json.ingredients);
     }
 
 }
