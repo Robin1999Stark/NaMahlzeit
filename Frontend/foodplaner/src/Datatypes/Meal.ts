@@ -46,3 +46,7 @@ export class FoodplanerItem {
         return new FoodplanerItem(json.id, json.date, json.meals)
     }
 }
+
+export type FoodPlaner = {
+    [key: string]: FoodplanerItem
+}

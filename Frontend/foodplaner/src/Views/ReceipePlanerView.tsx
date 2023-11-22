@@ -3,16 +3,8 @@ import MealCard from '../Components/MealCard'
 import { PlanerService } from '../Endpoints/PlanerService'
 import { FoodplanerItem } from '../Datatypes/Meal'
 import AddMealButton from '../Components/AddMealButton'
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 
-enum Weekday {
-    Monday = 1,
-    Tuesday = 2,
-    Wednesday = 3,
-    Thursday = 4,
-    Friday = 5,
-    Saturday = 6,
-    Sunday = 0,
-}
 
 function ReceipePlanerView() {
 
@@ -64,53 +56,85 @@ function ReceipePlanerView() {
         fetchData()
     }, [])
     return (
-        <div className='flex col-span-3 w-full flex-col items-start max-w-[20rem] flex-wrap'>
-            <h1 className='mb-4 text-2xl font-semibold text-[#181818]'>Foodplaner</h1>
+        <></>
 
-            <table className='table-auto p-3 m-8'>
-                {foodPlaner ? foodPlaner?.map((planerBatch, idx) => (
-                    <>
-                        <thead>
-                            <tr>
-                                {planerBatch ? planerBatch?.map((plan, index) => (
-                                    <th className='p-4 justify-start items-center min-w-[8rem]'>
-                                        <h2 className='text text-base font-semibold '>
-                                            {plan.date instanceof Date ? Weekday[plan.date.getDay()] : Weekday[new Date(plan.date).getDay()]}
-                                        </h2>
-                                    </th>
-                                )) : <></>}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                {planerBatch ? planerBatch?.map((plan, index) => (
-                                    <td className='align-top'>
-                                        <ul className='flex flex-col justify-start'>
-                                            {plan.food?.map((meal, index) => (
-                                                <li key={index}>
-                                                    <MealCard mealID={meal + ""} />
-                                                </li>
-                                            ))}
-                                            <li>
-                                                <AddMealButton title='Add Meal' />
-                                            </li>
-
-                                        </ul>
-                                    </td>
-
-                                )) : <></>}
-                            </tr>
-
-                        </tbody>
-
-
-                    </>
-                )) : <></>}
-
-            </table>
-
-        </div>
     )
 }
+
+{/*<DragDropContext
+            onDragEnd={(result, provided) => {
+                // TODO: implement onDragEnd
+            }}>
+            <div className='flex col-span-3 w-full flex-col items-start max-w-[20rem] flex-wrap'>
+                <h1 className='mb-4 text-2xl font-semibold text-[#181818]'>Foodplaner</h1>
+
+                <table className='table-auto p-3 m-8'>
+                    {foodPlaner ? foodPlaner?.map((planerBatch, idx) => (
+                        <>
+                            <thead>
+                                <tr>
+                                    {planerBatch ? planerBatch?.map((plan, index) => (
+                                        <th className='p-4 justify-start items-center min-w-[8rem]'>
+                                            <h2 className='text text-base font-semibold '>
+                                                {plan.date instanceof Date ? Weekday[plan.date.getDay()] : Weekday[new Date(plan.date).getDay()]}
+                                            </h2>
+                                        </th>
+                                    )) : <></>}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+
+                                    {planerBatch ? planerBatch?.map((plan, index) => (
+                                        <td className='align-top'>
+                                            <Droppable droppableId={idx + "-" + index}>
+
+                                                {(provided) => (
+                                                    <ul
+                                                        ref={provided.innerRef as any}
+                                                        {...provided.droppableProps}
+                                                        key={'list' + idx + "-" + index}
+                                                        className='flex flex-col justify-start'
+                                                    >
+                                                        {plan.food?.map((meal, index) => (
+                                                            <Draggable draggableId={meal + Math.random() + ""} index={index}>
+                                                                {(provided) => (
+                                                                    <li key={index}>
+                                                                        <div
+                                                                            {...provided.draggableProps}
+                                                                            {...provided.dragHandleProps}
+                                                                            ref={provided.innerRef}
+                                                                            className='m-2 px-4 py-1 flex flex-row justify-center items-center rounded-md truncate bg-slate-300'>
+
+                                                                            <MealCard mealID={meal + ""} index={index} />
+                                                                        </div>
+                                                                    </li>)}
+                                                            </Draggable>
+                                                        ))}
+                                                        {<li>
+                                                            <AddMealButton title='Add Meal' />
+                                                        </li>}
+                                                        {provided.placeholder}
+                                                    </ul>
+                                                )}
+                                            </Droppable>
+                                        </td>
+                                    )) : <></>}
+                                </tr>
+
+                            </tbody>
+
+
+                        </>
+                    )) : <></>}
+
+                </table>
+
+            </div>
+                                                    </DragDropContext >*/
+
+}
+
+
 
 export default ReceipePlanerView

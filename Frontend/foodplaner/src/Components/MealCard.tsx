@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { MealService } from '../Endpoints/MealService';
 import { Meal } from '../Datatypes/Meal';
+import { Draggable } from 'react-beautiful-dnd';
 
 type Props = {
     mealID: string
+    index: number
 }
 
-function MealCard({ mealID }: Props) {
+function MealCard({ mealID, index }: Props) {
     const [meal, setMeal] = useState<Meal>();
     const [error, setError] = useState<boolean>(false);
     useEffect(() => {
@@ -22,9 +24,14 @@ function MealCard({ mealID }: Props) {
     }, [])
 
     return (
-        <div className='m-2 px-4 py-1 flex flex-row justify-center items-center rounded-md truncate bg-slate-300'>
+
+        <div
+
+            className='m-2 px-4 py-1 flex flex-row justify-center items-center rounded-md truncate bg-slate-300'>
             {meal?.title}
         </div>
+
+
     )
 }
 
