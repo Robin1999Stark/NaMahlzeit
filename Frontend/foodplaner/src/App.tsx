@@ -7,9 +7,11 @@ import PlanerList from "./Components/PlanerList";
 import { MealService } from "./Endpoints/MealService";
 import MealList from "./Components/MealList";
 
+
+export const mealListID = "meal-list";
+
 function App() {
 
-  const mealListID = "meal-list";
   const [planer, setPlaner] = useState<FoodPlaner>({})
 
   useEffect(() => {

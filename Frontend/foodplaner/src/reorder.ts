@@ -1,6 +1,7 @@
 import { DraggableLocation } from "react-beautiful-dnd";
 import { FoodPlaner, FoodplanerItem } from "./Datatypes/Meal";
 import { PlanerService } from "./Endpoints/PlanerService";
+import { mealListID } from "./App";
 
 export const reorder = (
     list: any[],
@@ -32,8 +33,9 @@ export const reorderPlan = (
     console.log("current", currentFoodplanerItem)
     console.log("next", nextFoodplanerItem)
     console.log("target", nextFoodplanerItem)
-
-
+    if (source.droppableId === mealListID && destination.droppableId === mealListID) {
+        return plan;
+    }
     // moving to same list
     if (source.droppableId === destination.droppableId) {
         const reordered = reorder(currentFood, source.index, destination.index);
@@ -49,7 +51,24 @@ export const reorderPlan = (
 
     // moving to different list
     // moving from meal list to planer list
-
+    if (source.droppableId === mealListID) {
+        // insert into nextFood
+        nextFood.splice(destination.index, 0, target);
+        const updatedDestinationItem: FoodplanerItem = {
+            ...nextFoodplanerItem,
+            meals: removeDoubles(nextFood)
+        }
+        if (destination.droppableId !== mealListID) {
+            PlanerService.updatePlanerItem(updatedDestinationItem.id, updatedDestinationItem);
+        }
+        return {
+            ...plan,
+            [destination.droppableId]: updatedDestinationItem
+        };
+    }
+    if (destination.droppableId === mealListID) {
+        console.log("dest", mealListID)
+    }
 
     // moving from planer list to planer list
     // remove from original
@@ -68,13 +87,14 @@ export const reorderPlan = (
     }
 
     // update Planer
-    console.log(updatedSourceItem.id)
-    console.log(updatedDestinationItem.id)
-    PlanerService.updatePlanerItem(updatedSourceItem.id, updatedSourceItem);
-    PlanerService.updatePlanerItem(updatedDestinationItem.id, updatedDestinationItem);
-    console.log("plan:", plan)
-    console.log("source", updatedSourceItem)
-    console.log("dest", updatedDestinationItem)
+    if (source.droppableId !== mealListID) {
+        PlanerService.updatePlanerItem(updatedSourceItem.id, updatedSourceItem);
+
+    }
+    if (destination.droppableId !== mealListID) {
+        PlanerService.updatePlanerItem(updatedDestinationItem.id, updatedDestinationItem);
+    }
+
     return {
         ...plan,
         [source.droppableId]: updatedSourceItem,
