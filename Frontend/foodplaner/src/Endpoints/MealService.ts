@@ -54,4 +54,42 @@ export namespace MealService {
     }
 
 
+    interface CreateMealInterface {
+        title: string;
+        description: string;
+        ingredients: number[];
+    }
+    export async function createMeal({ title, description, ingredients }: CreateMealInterface): Promise<Meal | null> {
+        const requestBody = {
+            title: title,
+            description: description,
+            ingredients: ingredients,
+        }
+        try {
+            let response = await instance.post('/meals/', JSON.stringify(requestBody), {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            return Meal.fromJSON(response.data);
+        } catch (error) {
+            console.error('Error creating Meal:', error);
+            return null;
+        }
+    }
+
+    export async function updateMeal(id: number, meal: Meal) {
+        let json = JSON.stringify(meal)
+        try {
+            let response = await instance.put(`/meals/${id}/`, json, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+        } catch (error) {
+            console.error('Error updating Meals:', error);
+        }
+    }
+
+
 }
