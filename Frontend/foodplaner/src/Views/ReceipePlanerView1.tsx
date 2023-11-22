@@ -21,19 +21,14 @@ const ReceipePlanerView1: React.FC = () => {
 
     const addImageToBoard = (id: number, boardIndex: number) => {
         const mL = mealList.find((meal) => id === meal.id);
-        console.log(mL)
         if (mL) {
-            console.log(id, boardIndex)
             const mealIncluded = boards[boardIndex].find((meal) => id === meal.id)
-            console.log(boards)
             if ((mealIncluded === undefined)) {
-
                 setBoards((prevBoards) => {
                     const newBoards = [...prevBoards];
                     newBoards[boardIndex] = [...newBoards[boardIndex], mL];
                     return newBoards;
                 });
-                console.log(boards)
             }
         }
     };

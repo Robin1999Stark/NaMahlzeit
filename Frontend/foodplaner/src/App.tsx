@@ -79,9 +79,7 @@ function App() {
     <DragDropContext onDragEnd={({ destination, source }) => {
       if (!destination)
         return;
-
       setPlaner(reorderPlan(planer, source, destination));
-      console.log(planer)
     }}>
       <div className='flex flex-row justify-between'>
         <div className='my-6 mx-4 w-[85%] grid grid-flow-row grid-cols-7 gap-3 justify-between'>

@@ -35,13 +35,10 @@ export namespace PlanerService {
     }
     export async function createPlanerItem({ date, meals }: CreatePlanerInterface): Promise<FoodplanerItem | null> {
         const dateString: string = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
-        console.log(dateString)
-
         const requestBody = {
             date: dateString,
             meals: meals,
         }
-
         try {
             let response = await instance.post('/planer/', JSON.stringify(requestBody), {
                 headers: {
@@ -57,15 +54,12 @@ export namespace PlanerService {
 
     export async function updatePlanerItem(id: number, planer: FoodplanerItem) {
         let json = JSON.stringify(planer)
-        console.log(json)
         try {
-            console.log("test")
             let response = await instance.put(`/planer/${id}/`, json, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
-            console.log("Response:", response)
         } catch (error) {
             console.error('Error fetching planers:', error);
         }

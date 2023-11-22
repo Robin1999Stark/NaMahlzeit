@@ -29,10 +29,6 @@ export const reorderPlan = (
     const nextFoodplanerItem: FoodplanerItem = plan[destination.droppableId]
     const nextFood = [...plan[destination.droppableId].meals];
     const target = currentFood[source.index];
-    console.log("plan:", plan)
-    console.log("current", currentFoodplanerItem)
-    console.log("next", nextFoodplanerItem)
-    console.log("target", nextFoodplanerItem)
     if (source.droppableId === mealListID && destination.droppableId === mealListID) {
         return plan;
     }
@@ -67,7 +63,7 @@ export const reorderPlan = (
         };
     }
     if (destination.droppableId === mealListID) {
-        console.log("dest", mealListID)
+        // TODO if something is dropped into meallist
     }
 
     // moving from planer list to planer list

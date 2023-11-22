@@ -14,7 +14,6 @@ function MealCard({ mealID, index }: Props) {
     useEffect(() => {
         async function fetchMeal() {
             try {
-                console.log(mealID)
                 const response = await MealService.getMeal(mealID)
                 response ? setMeal(response) : setError(true)
             } catch (e) {
