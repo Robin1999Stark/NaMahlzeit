@@ -4,9 +4,12 @@ import { FoodPlaner, FoodplanerItem } from "./Datatypes/Meal";
 import { PlanerService } from "./Endpoints/PlanerService";
 import { reorderPlan } from "./reorder";
 import PlanerList from "./Components/PlanerList";
+import { MealService } from "./Endpoints/MealService";
+import MealList from "./Components/MealList";
 
 function App() {
 
+  const mealListID = "meal-list";
   const [planer, setPlaner] = useState<FoodPlaner>({})
 
   useEffect(() => {
@@ -40,13 +43,20 @@ function App() {
       })
       return foodPlaner;
     }
+
+    async function addMealList(planer: FoodPlaner) {
+      const foodList: number[] = (await MealService.getAllMeals()).map(meal => meal.id);
+      const mealList: FoodplanerItem = new FoodplanerItem(-1, new Date(Date.now()), foodList);
+      planer[mealListID] = mealList;
+    }
     async function fetchData() {
       try {
         const data: FoodplanerItem[] = await PlanerService.getAllPlanerItems();
         const end = new Date();
         end.setDate(end.getDate() + 13);
         const filledData: FoodplanerItem[] = fillWithEmptyDays(data, new Date(Date.now()), end);
-        const foodPlaner = createFoodPlaner(data);
+        const foodPlaner = createFoodPlaner(filledData);
+        await addMealList(foodPlaner)
         setPlaner(foodPlaner);
 
       } catch (error) {
@@ -58,25 +68,31 @@ function App() {
   return (
 
     <DragDropContext onDragEnd={({ destination, source }) => {
-      console.log(destination, source)
       if (!destination)
         return;
 
       setPlaner(reorderPlan(planer, source, destination));
+      console.log(planer)
     }}>
       <div className='flex flex-row justify-between'>
-        <div className='my-6 mx-4 w-[90%] grid grid-flow-row grid-cols-7 gap-3 justify-between'>
-          {Object.entries(planer).map(([key, value]) => (
+        <div className='my-6 mx-4 w-[85%] grid grid-flow-row grid-cols-7 gap-3 justify-between'>
+          {Object.entries(planer).slice(0, -1).map(([key, value]) => (
             <PlanerList
               internalScroll
               key={key}
               listId={key}
-              listType='CARD'
+              listType='LIST'
               planerItem={value}
             />
           ))}
         </div>
-        <div className='w-[10%] h-full bg-black'>
+        <div className='w-[15%] h-full'>
+          <MealList
+            internalScroll
+            key={mealListID}
+            listId={mealListID}
+            listType='LIST'
+          />
 
         </div>
       </div>
@@ -89,4 +105,12 @@ function App() {
 export default App;
 
 
-//<DndProvider backend={HTML5Backend}>
+/*<PlanerList
+
+internalScroll
+key={"meal-list"}
+listId={"meal-list"}
+listType='CARD'
+isMealList
+planerItem={planer["meal-list"]}
+/>*/

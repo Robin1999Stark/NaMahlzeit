@@ -21,9 +21,13 @@ export const reorderPlan = (
 ): FoodPlaner => {
     const currentFoodplanerItem: FoodplanerItem = plan[source.droppableId]
     const currentFood = [...plan[source.droppableId].food];
-    const nextFoodplanerItem: FoodplanerItem = plan[source.droppableId]
+    const nextFoodplanerItem: FoodplanerItem = plan[destination.droppableId]
     const nextFood = [...plan[destination.droppableId].food];
     const target = currentFood[source.index];
+    console.log("plan:", plan)
+    console.log("current", currentFoodplanerItem)
+    console.log("next", nextFoodplanerItem)
+    console.log("target", nextFoodplanerItem)
 
 
     // moving to same list
@@ -40,7 +44,10 @@ export const reorderPlan = (
     }
 
     // moving to different list
+    // moving from meal list to planer list
 
+
+    // moving from planer list to planer list
     // remove from original
     currentFood.splice(source.index, 1);
     // insert into nextFood
@@ -55,7 +62,9 @@ export const reorderPlan = (
         ...nextFoodplanerItem,
         food: nextFood
     }
-
+    console.log("plan:", plan)
+    console.log("source", updatedSourceItem)
+    console.log("dest", updatedDestinationItem)
     return {
         ...plan,
         [source.droppableId]: updatedSourceItem,

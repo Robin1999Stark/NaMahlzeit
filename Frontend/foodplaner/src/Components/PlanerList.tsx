@@ -11,15 +11,25 @@ interface Props {
     listType?: string,
     internalScroll?: boolean,
     isCombinedEnabled?: boolean,
+    isMealList?: boolean,
 };
 
-function PlanerList({ listId, listType, planerItem }: Props) {
-
-    return (
-        <div className='flex w-full flex-col items-center justify-start'>
+function PlanerList({ listId, listType, planerItem, isMealList = false }: Props) {
+    const displayTitle = () => {
+        if (isMealList) {
+            return (<h2>Meallist</h2>)
+        }
+        return (
             <h2>
                 {planerItem.date instanceof Date ? Weekday[planerItem.date.getDay()] : Weekday[new Date(planerItem.date).getDay()]}
             </h2>
+        )
+    }
+    return (
+        <div className='flex w-full flex-col items-center justify-start'>
+
+            {displayTitle()}
+
             <Droppable
                 droppableId={listId}
                 type={listType}
@@ -52,7 +62,8 @@ function PlanerList({ listId, listType, planerItem }: Props) {
                                     }
                                 </Draggable>
                             ))}
-                            <AddMealButton title='Add Meal' />
+                            {isMealList ? <AddMealButton title='Remove' /> : <AddMealButton title='Add Meal' />}
+
                             {dropProvided.placeholder}
                         </div>
                     )
