@@ -14,7 +14,7 @@ function App() {
 
   useEffect(() => {
 
-    function fillWithEmptyDays(planer: FoodplanerItem[], from: Date, to: Date): FoodplanerItem[] {
+    async function fillWithEmptyDays(planer: FoodplanerItem[], from: Date, to: Date): Promise<FoodplanerItem[]> {
       const dates: Date[] = [];
       const currentDate = new Date(from.getTime());
       const newPlaner: FoodplanerItem[] = []
@@ -24,15 +24,22 @@ function App() {
         dates.push(new Date(currentDate.getTime()));
         currentDate.setDate(currentDate.getDate() + 1);
       }
-      dates.forEach((date, index) => {
-        const item = planer.find((item) => new Date(item.date).getUTCDate() === new Date(date).getUTCDate())
-        if (item === undefined) {
-          newPlaner.push(new FoodplanerItem(-index, date, []))
-        } else {
-          newPlaner.push(item)
-        }
-      }
-      )
+
+      // Use Promise.all to wait for all asynchronous calls
+      await Promise.all(
+        dates.map(async (date, index) => {
+          const item = planer.find((item) => new Date(item.date).getUTCDate() === new Date(date).getUTCDate());
+
+          if (item === undefined) {
+            // if a day is missing, create a new Planer for the day in the DB
+            const newItem = await PlanerService.createPlanerItem({ date, meals: [] });
+            newPlaner.push(newItem!);
+          } else {
+            newPlaner.push(item);
+          }
+        })
+      );
+
       return newPlaner
     }
 
@@ -54,7 +61,7 @@ function App() {
         const data: FoodplanerItem[] = await PlanerService.getAllPlanerItems();
         const end = new Date();
         end.setDate(end.getDate() + 13);
-        const filledData: FoodplanerItem[] = fillWithEmptyDays(data, new Date(Date.now()), end);
+        const filledData: FoodplanerItem[] = await fillWithEmptyDays(data, new Date(Date.now()), end);
         const foodPlaner = createFoodPlaner(filledData);
         await addMealList(foodPlaner)
         setPlaner(foodPlaner);

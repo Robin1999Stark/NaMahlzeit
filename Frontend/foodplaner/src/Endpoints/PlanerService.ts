@@ -29,20 +29,29 @@ export namespace PlanerService {
         return planer;
     }
 
-    export async function createPlanerItem(planer: FoodplanerItem) {
-        console.log(planer)
-        let json = JSON.stringify(planer)
-        console.log(json)
+    interface CreatePlanerInterface {
+        date: Date;
+        meals: number[];
+    }
+    export async function createPlanerItem({ date, meals }: CreatePlanerInterface): Promise<FoodplanerItem | null> {
+        const dateString: string = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
+        console.log(dateString)
+
+        const requestBody = {
+            date: dateString,
+            meals: meals,
+        }
+
         try {
-            console.log("test")
-            let response = await instance.post('/planer/', json, {
+            let response = await instance.post('/planer/', JSON.stringify(requestBody), {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
-            console.log("Response:", response)
+            return FoodplanerItem.fromJSON(response.data);
         } catch (error) {
             console.error('Error fetching planers:', error);
+            return null;
         }
     }
 
