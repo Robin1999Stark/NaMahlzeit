@@ -35,11 +35,11 @@ export class Meal {
 export class FoodplanerItem {
     id: number;
     date: Date;
-    food: number[];
+    meals: number[];
     constructor(id: number, date: Date, food: number[]) {
         this.id = id;
         this.date = date;
-        this.food = food;
+        this.meals = food;
     }
 
     static fromJSON(json: any): FoodplanerItem {

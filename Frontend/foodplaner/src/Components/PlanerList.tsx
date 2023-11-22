@@ -42,7 +42,7 @@ function PlanerList({ listId, listType, planerItem, isMealList = false }: Props)
                             className='w-full'
                             ref={dropProvided.innerRef}
                             {...dropProvided.droppableProps}>
-                            {planerItem.food.map((food, index) => (
+                            {planerItem.meals.map((food, index) => (
                                 <Draggable
                                     key={listId + "-" + food + "-" + index}
                                     draggableId={listId + "-" + food + "-" + index}

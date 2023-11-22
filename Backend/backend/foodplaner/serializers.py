@@ -5,16 +5,28 @@ from .models import Meal, FoodPlanerItem, Ingredient
 class MealSerializer(serializers.ModelSerializer):
     class Meta:
         model = Meal
-        fields = '__all__'
+        fields = [
+            'id',
+            'title',
+            'description',
+            'ingredients'
+        ]
 
 
 class FoodPlanerItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = FoodPlanerItem
-        fields = '__all__'
+        fields = [
+            'id',
+            'date',
+            'meals'
+        ]
 
 
 class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
-        fields = '__all__'
+        fields = [
+            'title',
+            'description'
+        ]

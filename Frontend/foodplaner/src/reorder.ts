@@ -1,5 +1,6 @@
 import { DraggableLocation } from "react-beautiful-dnd";
 import { FoodPlaner, FoodplanerItem } from "./Datatypes/Meal";
+import { PlanerService } from "./Endpoints/PlanerService";
 
 export const reorder = (
     list: any[],
@@ -13,6 +14,9 @@ export const reorder = (
     return result;
 };
 
+function removeDoubles(list: number[]): number[] {
+    return Array.from(new Set(list));
+}
 
 export const reorderPlan = (
     plan: FoodPlaner,
@@ -20,9 +24,9 @@ export const reorderPlan = (
     destination: DraggableLocation
 ): FoodPlaner => {
     const currentFoodplanerItem: FoodplanerItem = plan[source.droppableId]
-    const currentFood = [...plan[source.droppableId].food];
+    const currentFood = [...plan[source.droppableId].meals];
     const nextFoodplanerItem: FoodplanerItem = plan[destination.droppableId]
-    const nextFood = [...plan[destination.droppableId].food];
+    const nextFood = [...plan[destination.droppableId].meals];
     const target = currentFood[source.index];
     console.log("plan:", plan)
     console.log("current", currentFoodplanerItem)
@@ -35,7 +39,7 @@ export const reorderPlan = (
         const reordered = reorder(currentFood, source.index, destination.index);
         const reorderedFoodplanerItem: FoodplanerItem = {
             ...nextFoodplanerItem,
-            food: reordered
+            meals: reordered
         }
         return {
             ...plan,
@@ -55,13 +59,19 @@ export const reorderPlan = (
 
     const updatedSourceItem: FoodplanerItem = {
         ...currentFoodplanerItem,
-        food: currentFood
+        meals: currentFood
     }
 
     const updatedDestinationItem: FoodplanerItem = {
         ...nextFoodplanerItem,
-        food: nextFood
+        meals: removeDoubles(nextFood)
     }
+
+    // update Planer
+    console.log(updatedSourceItem.id)
+    console.log(updatedDestinationItem.id)
+    PlanerService.updatePlanerItem(updatedSourceItem.id, updatedSourceItem);
+    PlanerService.updatePlanerItem(updatedDestinationItem.id, updatedDestinationItem);
     console.log("plan:", plan)
     console.log("source", updatedSourceItem)
     console.log("dest", updatedDestinationItem)

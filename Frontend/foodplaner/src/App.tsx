@@ -86,7 +86,7 @@ function App() {
             />
           ))}
         </div>
-        <div className='w-[15%] h-full'>
+        <div className='w-[15%] my-6 h-full'>
           <MealList
             internalScroll
             key={mealListID}

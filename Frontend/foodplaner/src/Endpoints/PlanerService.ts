@@ -29,4 +29,37 @@ export namespace PlanerService {
         return planer;
     }
 
+    export async function createPlanerItem(planer: FoodplanerItem) {
+        console.log(planer)
+        let json = JSON.stringify(planer)
+        console.log(json)
+        try {
+            console.log("test")
+            let response = await instance.post('/planer/', json, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            console.log("Response:", response)
+        } catch (error) {
+            console.error('Error fetching planers:', error);
+        }
+    }
+
+    export async function updatePlanerItem(id: number, planer: FoodplanerItem) {
+        let json = JSON.stringify(planer)
+        console.log(json)
+        try {
+            console.log("test")
+            let response = await instance.put(`/planer/${id}/`, json, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            console.log("Response:", response)
+        } catch (error) {
+            console.error('Error fetching planers:', error);
+        }
+    }
+
 }
