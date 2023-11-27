@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useFieldArray, useForm } from 'react-hook-form';
-import { Ingredient, Meal } from '../Datatypes/Meal';
-import { MealService } from '../Endpoints/MealService';
-import { IngredientService } from '../Endpoints/IngredientService';
+import { useForm, useFieldArray } from 'react-hook-form'
+import { Ingredient, Meal } from '../Datatypes/Meal'
+import { IngredientService } from '../Endpoints/IngredientService'
+import { MealService } from '../Endpoints/MealService'
 
-function CreateMeal() {
+function CreateIngredient() {
 
     const [ingredients, setIngredients] = useState<Ingredient[]>()
     useEffect(() => {
@@ -39,7 +39,7 @@ function CreateMeal() {
 
     const onSubmit = (data: Meal) => {
         try {
-            const ingredients = data.ingredients.map((title) => title);
+            const ingredients = data.ingredients.map((id) => id);
             console.log(data)
             MealService.createMeal({ title: data.title, description: data.description, ingredients: ingredients })
         } catch (error) {
@@ -100,6 +100,7 @@ function CreateMeal() {
                                             key={"select-" + field.id}
                                             {...register(`ingredients.${index}` as const, {
                                                 required: true,
+                                                valueAsNumber: true
                                             })}
                                             defaultValue={ingredients ? ingredients?.at(0)?.title : 0} // Ensure a valid initial value
                                             className="border-slate-200 text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500"
@@ -141,4 +142,4 @@ function CreateMeal() {
     )
 }
 
-export default CreateMeal
+export default CreateIngredient

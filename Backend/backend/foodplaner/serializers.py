@@ -27,7 +27,6 @@ class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
         fields = [
-            'id',
             'title',
             'description'
         ]

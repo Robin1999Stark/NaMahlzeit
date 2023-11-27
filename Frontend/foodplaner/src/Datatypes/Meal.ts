@@ -1,15 +1,13 @@
 
 export class Ingredient {
-    id: number;
     title: string;
     description: string;
-    constructor(id: number, title: string, description: string) {
-        this.id = id;
+    constructor(title: string, description: string) {
         this.title = title;
         this.description = description;
     }
     static fromJSON(json: any): Ingredient {
-        return new Ingredient(json.id, json.title, json.description);
+        return new Ingredient(json.title, json.description);
     }
 }
 
@@ -17,13 +15,13 @@ export class Meal {
     id: number;
     title: string;
     description: string;
-    ingredientIDs: number[];
+    ingredients: string[];
 
-    constructor(id: number, title: string, description: string, ingredientIDs: number[]) {
+    constructor(id: number, title: string, description: string, ingredients: string[]) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.ingredientIDs = ingredientIDs;
+        this.ingredients = ingredients;
     }
 
     static fromJSON(json: any): Meal {
