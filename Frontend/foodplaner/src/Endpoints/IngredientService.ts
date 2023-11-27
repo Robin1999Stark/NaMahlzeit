@@ -30,4 +30,49 @@ export namespace IngredientService {
         return ingredients;
     }
 
+
+    export async function getIngredientJSON(id: string): Promise<any> {
+        try {
+            const response = await instance.get('/ingredients/' + id + '/');
+            return response.data;
+        } catch (error) {
+            throw new Error('Error fetching Ingredient: ' + error);
+        }
+    }
+
+    export async function getIngredient(id: string): Promise<Ingredient | null> {
+        let meal: Ingredient | null = null;
+        try {
+            const response = await getIngredientJSON(id);
+            meal = Ingredient.fromJSON(response);
+        } catch (error) {
+            console.error('Error fetching Ingredient:', error);
+        }
+        return meal;
+
+    }
+
+
+    interface CreateIngredientInterface {
+        title: string;
+        description: string;
+    }
+    export async function createIngredient({ title, description }: CreateIngredientInterface): Promise<Ingredient | null> {
+        const requestBody = {
+            title: title,
+            description: description,
+        }
+        try {
+            let response = await instance.post('/ingredients/', JSON.stringify(requestBody), {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            return Ingredient.fromJSON(response.data);
+        } catch (error) {
+            console.error('Error creating Ingredient:', error);
+            return null;
+        }
+    }
+
 }

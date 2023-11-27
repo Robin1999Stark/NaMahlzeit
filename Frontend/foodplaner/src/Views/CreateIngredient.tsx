@@ -2,46 +2,27 @@ import React, { useEffect, useState } from 'react'
 import { useForm, useFieldArray } from 'react-hook-form'
 import { Ingredient, Meal } from '../Datatypes/Meal'
 import { IngredientService } from '../Endpoints/IngredientService'
-import { MealService } from '../Endpoints/MealService'
 
 function CreateIngredient() {
 
-    const [ingredients, setIngredients] = useState<Ingredient[]>()
     useEffect(() => {
-        async function fetchData() {
-            try {
-                const data = await IngredientService.getAllIngredients()
-                setIngredients(data)
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        fetchData();
-        console.log(ingredients)
 
     }, [])
     const {
         register,
         control,
         handleSubmit,
-        formState: { errors } } = useForm<Meal>({
+        formState: { errors } } = useForm<Ingredient>({
             defaultValues: {
                 title: "",
                 description: "",
-                ingredients: [],
             },
             mode: 'all'
         });
-    const { fields, append, remove } = useFieldArray<any>({
-        control,
-        name: "ingredients"
-    });
 
-    const onSubmit = (data: Meal) => {
+    const onSubmit = (data: Ingredient) => {
         try {
-            const ingredients = data.ingredients.map((id) => id);
-            console.log(data)
-            MealService.createMeal({ title: data.title, description: data.description, ingredients: ingredients })
+            IngredientService.createIngredient({ title: data.title, description: data.description })
         } catch (error) {
             console.log(error)
         }
@@ -50,7 +31,7 @@ function CreateIngredient() {
     return (
         <>
             <h1 className='truncate mx-5 my-5 text-2xl font-semibold'>
-                Create Meal
+                Create Ingredient
             </h1>
             <form onSubmit={handleSubmit(onSubmit)}>
 
@@ -86,49 +67,6 @@ function CreateIngredient() {
                                 defaultValue={"Lorem Ipsum"}
                                 className="border-slate-200 truncate text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
                         </li>
-
-
-                        <li key={"ingredients-key"} className="flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3">
-                            <label htmlFor="ingredients" className="text-xs truncate text-left align-middle mb-3">
-                                Ingredient Titles:
-                            </label>
-                            <div>
-                                {fields.map((field, index) => (
-                                    <div key={field.id} className="flex">
-                                        {/* Use a dropdown/select for ingredient titles */}
-                                        <select
-                                            key={"select-" + field.id}
-                                            {...register(`ingredients.${index}` as const, {
-                                                required: true,
-                                                valueAsNumber: true
-                                            })}
-                                            defaultValue={ingredients ? ingredients?.at(0)?.title : 0} // Ensure a valid initial value
-                                            className="border-slate-200 text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500"
-                                        >
-                                            <option key={"select-ingredient"} value="">Select Ingredient</option>
-                                            {ingredients ? ingredients.map((ingredient) => (
-                                                <option
-                                                    key={ingredient.title}
-                                                    value={ingredient.title}>
-                                                    {ingredient.title}
-                                                </option>
-                                            )) : <></>}
-                                        </select>
-                                        <button type="button" onClick={() => remove(index)}>
-                                            Remove
-                                        </button>
-                                    </div>
-                                ))}
-                                <button type="button" onClick={() => append(0)}>
-                                    Add Ingredient
-                                </button>
-                            </div>
-                            {errors.ingredients && (
-                                <p className="text-red-500">Please enter ingredient IDs for all fields.</p>
-                            )}
-                        </li>
-
-
                     </ul>
                 </div>
                 <div className='w-100 my-4 flex flex-1 justify-center align-middle'>
