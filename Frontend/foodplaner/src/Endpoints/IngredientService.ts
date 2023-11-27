@@ -11,6 +11,7 @@ export namespace IngredientService {
     export async function getAllIngredientsJSON(): Promise<any> {
         try {
             const response = await instance.get('/ingredients/');
+            console.log(response)
             return response.data;
         } catch (error) {
             throw new Error('Error fetching Ingredients: ' + error);

@@ -1,26 +1,47 @@
-import React, { useState } from 'react'
-import { useForm } from 'react-hook-form';
-import { Meal } from '../Datatypes/Meal';
+import React, { useEffect, useState } from 'react'
+import { useFieldArray, useForm } from 'react-hook-form';
+import { Ingredient, Meal } from '../Datatypes/Meal';
 import { MealService } from '../Endpoints/MealService';
+import { IngredientService } from '../Endpoints/IngredientService';
 
 function CreateMeal() {
 
-    const [meal, setMeal] = useState<Meal>();
+    const [ingredients, setIngredients] = useState<Ingredient[]>()
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const data = await IngredientService.getAllIngredients()
+                setIngredients(data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        fetchData();
+        console.log(ingredients)
 
-    const form = useForm<Meal>({
-        defaultValues: {
-            title: "",
-            description: "",
-            ingredientIDs: [],
-        },
-        mode: 'all'
+    }, [])
+    const {
+        register,
+        control,
+        handleSubmit,
+        formState: { errors } } = useForm<Meal>({
+            defaultValues: {
+                title: "",
+                description: "",
+                ingredientIDs: [],
+            },
+            mode: 'all'
+        });
+    const { fields, append, remove } = useFieldArray<any>({
+        control,
+        name: "ingredientIDs"
     });
-    const { register, control, handleSubmit } = form
-
 
     const onSubmit = (data: Meal) => {
         try {
-            MealService.createMeal({ title: data.title, description: data.description, ingredients: data.ingredientIDs })
+            const ingredientIds = data.ingredientIDs.map((id) => id);
+            console.log(data)
+            MealService.createMeal({ title: data.title, description: data.description, ingredients: ingredientIds })
         } catch (error) {
             console.log(error)
         }
@@ -35,7 +56,7 @@ function CreateMeal() {
 
                 <div className='h-100 px-3'>
                     <ul className='flex flex-col justify-center my-3 mx-1'>
-                        <li className='flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3'>
+                        <li key={"li-title"} className='flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3'>
                             <label
                                 htmlFor='title'
                                 className={`text-xs truncate text-left align-middle mb-3`} >
@@ -50,7 +71,7 @@ function CreateMeal() {
                                 defaultValue={"Expert Model"}
                                 className="border-slate-200 truncate text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
                         </li>
-                        <li className='flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3'>
+                        <li key={"li-description"} className='flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3'>
                             <label
                                 htmlFor='description'
                                 className={`text-xs truncate text-left align-middle mb-3`} >
@@ -65,6 +86,48 @@ function CreateMeal() {
                                 defaultValue={"Lorem Ipsum"}
                                 className="border-slate-200 truncate text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
                         </li>
+
+
+                        <li key={"ingredients-key"} className="flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3">
+                            <label htmlFor="ingredientIDs" className="text-xs truncate text-left align-middle mb-3">
+                                Ingredient Titles:
+                            </label>
+                            <div>
+                                {fields.map((field, index) => (
+                                    <div key={field.id} className="flex">
+                                        {/* Use a dropdown/select for ingredient titles */}
+                                        <select
+                                            key={"select-" + field.id}
+                                            {...register(`ingredientIDs.${index}` as const, {
+                                                required: true,
+                                                valueAsNumber: true
+                                            })}
+                                            defaultValue={ingredients ? ingredients?.at(0)?.id : 0} // Ensure a valid initial value
+                                            className="border-slate-200 text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500"
+                                        >
+                                            <option key={"select-ingredient"} value="">Select Ingredient</option>
+                                            {ingredients ? ingredients.map((ingredient) => (
+                                                <option
+                                                    key={ingredient.id}
+                                                    value={ingredient.id}>
+                                                    {ingredient.title}
+                                                </option>
+                                            )) : <></>}
+                                        </select>
+                                        <button type="button" onClick={() => remove(index)}>
+                                            Remove
+                                        </button>
+                                    </div>
+                                ))}
+                                <button type="button" onClick={() => append(0)}>
+                                    Add Ingredient
+                                </button>
+                            </div>
+                            {errors.ingredientIDs && (
+                                <p className="text-red-500">Please enter ingredient IDs for all fields.</p>
+                            )}
+                        </li>
+
 
                     </ul>
                 </div>
