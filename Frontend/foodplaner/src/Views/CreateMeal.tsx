@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form';
-import { Ingredient, Meal } from '../Datatypes/Meal';
+import { Ingredient, IngredientAmount, Meal } from '../Datatypes/Meal';
 import { MealService } from '../Endpoints/MealService';
 import { IngredientService } from '../Endpoints/IngredientService';
 
@@ -41,6 +41,11 @@ function CreateMeal() {
         try {
             const ingredients = data.ingredients.map((title) => title);
             console.log(data)
+            MealService.createMealWithAmounts({
+                title: "Test", description: "Test dskfjsd f", ingredients: [
+                    new IngredientAmount("Schokolade", 2, "Tafeln")
+                ]
+            })
             MealService.createMeal({ title: data.title, description: data.description, ingredients: ingredients })
         } catch (error) {
             console.log(error)
@@ -126,15 +131,12 @@ function CreateMeal() {
                                 <p className="text-red-500">Please enter ingredient IDs for all fields.</p>
                             )}
                         </li>
-
-
                     </ul>
                 </div>
                 <div className='w-100 my-4 flex flex-1 justify-center align-middle'>
                     <div className='mb-4 mx-6'>
                         <button className='p-2 bg-slate-500 text-white px-4 rounded-md text-lg' type='submit'>Save</button>
                     </div>
-
                 </div>
             </form>
         </>

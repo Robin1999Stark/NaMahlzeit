@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Meal } from '../Datatypes/Meal';
+import { IngredientAmount, Meal } from '../Datatypes/Meal';
 
 
 const BASE_URL = 'http://127.0.0.1:8000';
@@ -67,6 +67,30 @@ export namespace MealService {
         }
         try {
             let response = await instance.post('/meals/', JSON.stringify(requestBody), {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            return Meal.fromJSON(response.data);
+        } catch (error) {
+            console.error('Error creating Meal:', error);
+            return null;
+        }
+    }
+    interface CreateMealAmountInterface {
+        title: string;
+        description: string;
+        ingredients: IngredientAmount[];
+    }
+    export async function createMealWithAmounts({ title, description, ingredients }: CreateMealAmountInterface): Promise<Meal | null> {
+        const requestBody = {
+            title: title,
+            description: description,
+            ingredients: ingredients,
+        }
+        console.log(requestBody)
+        try {
+            let response = await instance.post('/create-meal/', JSON.stringify(requestBody), {
                 headers: {
                     'Content-Type': 'application/json'
                 }

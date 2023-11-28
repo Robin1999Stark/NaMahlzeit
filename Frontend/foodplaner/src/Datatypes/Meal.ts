@@ -30,6 +30,21 @@ export class Meal {
 
 }
 
+export class IngredientAmount {
+    ingredient: string;
+    amount: number;
+    unit: string;
+
+    constructor(ingredient: string, amount: number, unit: string) {
+        this.ingredient = ingredient;
+        this.amount = amount;
+        this.unit = unit;
+    }
+    static fromJSON(json: any): IngredientAmount {
+        return new IngredientAmount(json.ingredient, json.amount, json.unit);
+    }
+}
+
 export class FoodplanerItem {
     id: number;
     date: Date;
@@ -48,3 +63,4 @@ export class FoodplanerItem {
 export type FoodPlaner = {
     [key: string]: FoodplanerItem
 }
+
