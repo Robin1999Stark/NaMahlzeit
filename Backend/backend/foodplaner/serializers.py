@@ -13,7 +13,7 @@ class MealIngredientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MealIngredient
-        fields = ['ingredient', 'amount', 'unit']
+        fields = ['meal', 'ingredient', 'amount', 'unit']
 
 
 class MealSerializer(serializers.ModelSerializer):

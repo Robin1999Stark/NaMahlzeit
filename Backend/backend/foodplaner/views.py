@@ -54,6 +54,12 @@ class MealIngredientListView(generics.ListCreateAPIView):
     queryset = MealIngredient.objects.all()
     serializer_class = MealIngredientSerializer
 
+    def get(self, request, *args, **kwargs):
+        meal_pk = self.kwargs.get('meal_pk')
+        queryset = MealIngredient.objects.filter(meal=meal_pk)
+        serializer = MealIngredientSerializer(queryset, many=True)
+        return Response(serializer.data)
+
 
 class MealIngredientDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = MealIngredient.objects.all()
