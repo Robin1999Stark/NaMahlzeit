@@ -9,27 +9,28 @@ const instance = axios.create({
     withCredentials: true,
 })
 
-export namespace MealService {
-    export async function getAllMealsJSON(): Promise<any> {
+export namespace MealIngredientService {
+    export async function getAllMealIngredientsJSON(mealID: number): Promise<any> {
         try {
-            const response = await instance.get('/meals/');
+            const response = await instance.get(`/meals/${mealID}/ingredients/`);
             console.log(response)
             return response.data;
         } catch (error) {
-            throw new Error('Error fetching Meals: ' + error);
+            throw new Error('Error fetching Meal Ingredients: ' + error);
         }
     }
 
-    export async function getAllMeals(): Promise<Meal[]> {
-        let meals: Meal[] = [];
+    export async function getAllMealIngredients(mealID: number): Promise<IngredientAmount[]> {
+        console.log(mealID)
+        let ingredientAmounts: IngredientAmount[] = [];
         try {
-            const data = await getAllMealsJSON();
-            meals = data.map((meal1: any) => Meal.fromJSON(meal1));
-            return meals;
+            const data = await getAllMealIngredientsJSON(mealID);
+            ingredientAmounts = data.map((meal1: any) => IngredientAmount.fromJSON(meal1));
+            return ingredientAmounts;
         } catch (error) {
-            console.error('Error fetching Meals: ', error);
+            console.error('Error fetching Meals Ingredients: ', error);
         }
-        return meals;
+        return ingredientAmounts;
     }
 
 
