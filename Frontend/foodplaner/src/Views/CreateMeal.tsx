@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form';
-import { Ingredient, IngredientAmount, Meal } from '../Datatypes/Meal';
+import { Ingredient, IngredientAmount, Meal, MealWithIngredientAmount } from '../Datatypes/Meal';
 import { MealService } from '../Endpoints/MealService';
 import { IngredientService } from '../Endpoints/IngredientService';
 
@@ -24,7 +24,7 @@ function CreateMeal() {
         register,
         control,
         handleSubmit,
-        formState: { errors } } = useForm<Meal>({
+        formState: { errors } } = useForm<MealWithIngredientAmount>({
             defaultValues: {
                 title: "",
                 description: "",
@@ -37,16 +37,12 @@ function CreateMeal() {
         name: "ingredients"
     });
 
-    const onSubmit = (data: Meal) => {
+    const onSubmit = (data: MealWithIngredientAmount) => {
         try {
-            const ingredients = data.ingredients.map((title) => title);
             console.log(data)
             MealService.createMealWithAmounts({
-                title: "Test", description: "Test dskfjsd f", ingredients: [
-                    new IngredientAmount("Schokolade", 2, "Tafeln")
-                ]
+                title: data.title, description: data.title, ingredients: data.ingredients
             })
-            MealService.createMeal({ title: data.title, description: data.description, ingredients: ingredients })
         } catch (error) {
             console.log(error)
         }
@@ -103,7 +99,7 @@ function CreateMeal() {
                                         {/* Use a dropdown/select for ingredient titles */}
                                         <select
                                             key={"select-" + field.id}
-                                            {...register(`ingredients.${index}` as const, {
+                                            {...register(`ingredients.${index}.ingredient` as const, {
                                                 required: true,
                                             })}
                                             defaultValue={ingredients ? ingredients?.at(0)?.title : 0} // Ensure a valid initial value
@@ -118,6 +114,30 @@ function CreateMeal() {
                                                 </option>
                                             )) : <></>}
                                         </select>
+                                        <div className='flex flex-col justify-start'>
+                                            <input
+                                                type='number'
+                                                id='description'
+                                                {...register(`ingredients.${index}.amount` as const, {
+                                                    valueAsNumber: true,
+                                                    required: true,
+                                                })}
+                                                defaultValue={1}
+                                                className="border-slate-200 truncate text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
+
+                                        </div>
+                                        <div className='flex flex-col justify-start'>
+                                            <input
+                                                type='text'
+                                                id='description'
+                                                {...register(`ingredients.${index}.unit` as const, {
+                                                    required: true,
+                                                })}
+                                                defaultValue={"kg"}
+                                                className="border-slate-200 truncate text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
+
+                                        </div>
+
                                         <button type="button" onClick={() => remove(index)}>
                                             Remove
                                         </button>
