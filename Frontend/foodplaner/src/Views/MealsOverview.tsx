@@ -11,7 +11,8 @@ function MealsOverview() {
         async function fetchData() {
             try {
                 const data = await MealService.getAllMeals()
-                setMeals(data)
+                const sortedMealsByTitle = data.sort((a, b) => a.title.localeCompare(b.title))
+                setMeals(sortedMealsByTitle)
             } catch (error) {
                 console.log(error)
             }

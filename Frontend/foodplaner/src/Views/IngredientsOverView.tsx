@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Ingredient, Meal } from '../Datatypes/Meal'
-import { MealService } from '../Endpoints/MealService'
 import { IngredientService } from '../Endpoints/IngredientService'
 
 function IngredientsOverView() {
@@ -10,7 +9,8 @@ function IngredientsOverView() {
         async function fetchData() {
             try {
                 const data = await IngredientService.getAllIngredients()
-                setIngredients(data)
+                const sortedIngredientsByTitle = data.sort((a, b) => a.title.localeCompare(b.title))
+                setIngredients(sortedIngredientsByTitle)
             } catch (error) {
                 console.log(error)
             }

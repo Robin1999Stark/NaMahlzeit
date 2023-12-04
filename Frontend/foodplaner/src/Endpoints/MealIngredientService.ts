@@ -10,7 +10,7 @@ const instance = axios.create({
 })
 
 export namespace MealIngredientService {
-    export async function getAllMealIngredientsJSON(mealID: number): Promise<any> {
+    async function getAllMealIngredientsJSON(mealID: number): Promise<any> {
         try {
             const response = await instance.get(`/meals/${mealID}/ingredients/`);
             console.log(response)
