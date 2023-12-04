@@ -26,39 +26,42 @@ function InventoryListView() {
         control,
         name: "ingredients"
     });
+    async function fetchDataIngredients() {
+        try {
+            const data = await IngredientService.getAllIngredients()
+            setIngredients(data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    async function fetchDataInventory() {
+        try {
+            const data = await InventoryService.getAllInventoryItems()
+            setInventory(data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    async function fetchPipeline() {
+        await fetchDataIngredients();
+        await fetchDataInventory();
+    }
+
+    useEffect(() => {
+        fetchPipeline();
+    }, []);
+
     const onSubmit = (data: InventoryItem) => {
         try {
 
             InventoryService.createInventoryItem({ ingredient: data.ingredient, amount: data.amount, unit: data.unit })
-            const newInventory = inventory;
-            newInventory?.push(new InventoryItem(data.ingredient, data.amount, data.unit));
-            setInventory(newInventory);
+            fetchPipeline();
         } catch (error) {
             console.log(error)
         }
         console.log('Form submitted', data)
     }
 
-    useEffect(() => {
-        async function fetchDataIngredients() {
-            try {
-                const data = await IngredientService.getAllIngredients()
-                setIngredients(data)
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        async function fetchDataInventory() {
-            try {
-                const data = await InventoryService.getAllInventoryItems()
-                setInventory(data)
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        fetchDataIngredients();
-        fetchDataInventory();
-    }, [])
 
     return (
         <>

@@ -71,3 +71,23 @@ class InventoryItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = InventoryItem
         fields = ['ingredient', 'amount', 'unit']
+
+    def create(self, validated_data):
+
+        ingr = validated_data['ingredient']
+        items = InventoryItem.objects.filter(
+            ingredient=ingr)
+        if not items.exists():
+            inventory_item = InventoryItem.objects.create(
+                ingredient=validated_data['ingredient'], amount=validated_data['amount'], unit=validated_data['unit'])
+            return inventory_item
+        else:
+            first = items.first()
+            if validated_data['unit'] == first.unit:
+                first.amount = first.amount + validated_data['amount']
+                first.save()
+                return first
+            else:
+                inventory_item = InventoryItem.objects.create(
+                    ingredient=validated_data['ingredient'], amount=validated_data['amount'], unit=validated_data['unit'])
+                return inventory_item
