@@ -21,9 +21,15 @@ function MealsOverview() {
 
     return (
         <>
-            <h1 className='truncate mx-5 my-5 text-2xl font-semibold'>
-                Meals
-            </h1>
+            <div className='flex flex-row justify-between w-full'>
+                <h1 className='truncate mx-5 my-5 text-2xl font-semibold'>
+                    Meals
+                </h1>
+                <div className='bg-slate-600 my-3 px-3 rounded-md text-white text-base font-semibold flex flex-row items-center justify-center'>
+                    <Link to={'/meals/create'}>+ Create Meal</Link>
+                </div>
+            </div>
+
             <ul className='mx-5'>
                 {meals?.map(meal => (
                     <li key={meal.id} className='p-2'>
