@@ -7,6 +7,7 @@ import IngredientsOverView from "./Views/IngredientsOverView";
 import MealsOverview from "./Views/MealsOverview";
 import MealDetailView from "./Views/MealDetailView";
 import IngredientDetailView from "./Views/IngredientDetailView";
+import InventoryListView from "./Views/InventoryListView";
 
 export const mealListID = "meal-list";
 
@@ -23,8 +24,7 @@ function App() {
           <Route path="/ingredients/create" element={<CreateIngredient />} />
           <Route path="/ingredients" element={<IngredientsOverView />} />
           <Route path="/ingredients/:ingredientID" element={<IngredientDetailView />} />
-
-
+          <Route path="/inventory" element={<InventoryListView />} />
         </Routes>
       </Suspense>
     </>

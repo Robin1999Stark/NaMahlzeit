@@ -1,17 +1,5 @@
 from rest_framework import serializers
-from .models import Meal, FoodPlanerItem, Ingredient, MealIngredient, InventoryItem, InventoryList
-
-
-from collections import OrderedDict
-from collections.abc import Mapping
-from django.core.exceptions import ValidationError as DjangoValidationError
-from rest_framework.exceptions import ValidationError
-from rest_framework.fields import get_error_detail, set_value
-from rest_framework.settings import api_settings
-# Non-field imports, but public API
-from rest_framework.fields import (  # NOQA # isort:skip
-    SkipField
-)
+from .models import Meal, FoodPlanerItem, Ingredient, MealIngredient, InventoryItem
 
 
 class IngredientSerializer(serializers.ModelSerializer):
@@ -57,7 +45,6 @@ class MealSerializer(serializers.ModelSerializer):
         for ingredient_data in ingredients_data:
             ingredient_title = ingredient_data.pop('ingredient')['title']
 
-            # Fetch the ingredient or create it if it doesn't exist
             ingredient = Ingredient.objects.get(
                 title=ingredient_title)
 
@@ -75,23 +62,12 @@ class MealListSerializer(serializers.ModelSerializer):
 
 
 class FoodPlanerItemSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = FoodPlanerItem
         fields = ['id', 'date', 'meals']
 
 
 class InventoryItemSerializer(serializers.ModelSerializer):
-    ingredient = IngredientSerializer()
-
     class Meta:
         model = InventoryItem
         fields = ['ingredient', 'amount', 'unit']
-
-
-class InventoryListSerializer(serializers.ModelSerializer):
-    ingredients = InventoryItemSerializer(many=True)
-
-    class Meta:
-        model = InventoryList
-        fields = ['id', 'date', 'ingredients']

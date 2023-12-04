@@ -118,8 +118,12 @@ function CreateMeal() {
                                             <input
                                                 type='number'
                                                 id='description'
+                                                step={0.01}
                                                 {...register(`ingredients.${index}.amount` as const, {
                                                     valueAsNumber: true,
+                                                    min: 0,
+                                                    max: 50000,
+
                                                     required: true,
                                                 })}
                                                 defaultValue={1}

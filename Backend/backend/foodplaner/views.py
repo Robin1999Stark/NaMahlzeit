@@ -1,6 +1,6 @@
-from .models import InventoryItem, InventoryList, Meal, FoodPlanerItem, Ingredient, MealIngredient
+from .models import InventoryItem, Meal, FoodPlanerItem, Ingredient, MealIngredient
 from rest_framework import viewsets, generics
-from .serializers import MealSerializer, FoodPlanerItemSerializer, IngredientSerializer, MealIngredientSerializer, InventoryItemSerializer, InventoryListSerializer
+from .serializers import MealSerializer, FoodPlanerItemSerializer, IngredientSerializer, MealIngredientSerializer, InventoryItemSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -66,21 +66,6 @@ class MealIngredientDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = MealIngredientSerializer
 
 
-class InventoryItemListView(generics.ListCreateAPIView):
+class InventoryItemView(viewsets.ModelViewSet):
     serializer_class = InventoryItemSerializer
     queryset = InventoryItem.objects.all()
-
-
-class InventoryItemDetailView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = InventoryItemSerializer
-    queryset = InventoryItem.objects.all()
-
-
-class InventoryListView(generics.ListCreateAPIView):
-    serializer_class = InventoryListSerializer
-    queryset = InventoryList.objects.all()
-
-
-class InventoryDetailView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = InventoryListSerializer
-    queryset = InventoryList.objects.all()

@@ -10,7 +10,7 @@ const instance = axios.create({
 })
 
 export namespace MealService {
-    export async function getAllMealsJSON(): Promise<any> {
+    async function getAllMealsJSON(): Promise<any> {
         try {
             const response = await instance.get('/meals/');
             console.log(response)
@@ -33,7 +33,7 @@ export namespace MealService {
     }
 
 
-    export async function getMealJSON(id: string): Promise<any> {
+    async function getMealJSON(id: string): Promise<any> {
         try {
             const response = await instance.get('/meals/' + id + '/');
             return response.data;
@@ -60,7 +60,7 @@ export namespace MealService {
         description: string;
         ingredients: string[];
     }
-    export async function createMeal({ title, description, ingredients }: CreateMealInterface): Promise<Meal | null> {
+    async function createMeal({ title, description, ingredients }: CreateMealInterface): Promise<Meal | null> {
         const requestBody = {
             title: title,
             description: description,

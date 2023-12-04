@@ -7,14 +7,16 @@ from foodplaner.views import (
     FoodPlanerItemView, FoodPlanerItemDetailView,
     IngredientListView, IngredientDetailView,
     MealIngredientListView, MealIngredientDetailView,
-    InventoryItemListView, InventoryItemDetailView,
-    InventoryListView, InventoryDetailView
+    InventoryItemView,
 )
 
 router = routers.DefaultRouter()
 router.register(r'meals', MealListView, basename='meal')
 router.register(r'planer', FoodPlanerItemView, basename='foodplaneritem')
 router.register(r'ingredients', IngredientListView, basename='ingredients')
+router.register(r'inventory', InventoryItemView,
+                basename='inventory')
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -32,10 +34,4 @@ urlpatterns = [
     path('meals/<int:meal_pk>/ingredients/<int:pk>/',
          MealIngredientDetailView.as_view(), name='meals-ingredients-detail'),
 
-    path('inventory/<int:pk>/items/', InventoryItemListView.as_view(),
-         name='inventory-items-list'),
-    path('inventory/<int:pk>/items/<int:item_pk>/',
-         InventoryItemDetailView.as_view(), name='inventory-items-detail'),
-    path('inventory/<int:pk>/', InventoryDetailView.as_view(),
-         name='inventory-detail'),
 ]

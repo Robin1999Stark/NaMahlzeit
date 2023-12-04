@@ -8,7 +8,7 @@ const instance = axios.create({
     withCredentials: true,
 })
 export namespace IngredientService {
-    export async function getAllIngredientsJSON(): Promise<any> {
+    async function getAllIngredientsJSON(): Promise<any> {
         try {
             const response = await instance.get('/ingredients/');
             console.log(response)
@@ -31,7 +31,7 @@ export namespace IngredientService {
     }
 
 
-    export async function getIngredientJSON(id: string): Promise<any> {
+    async function getIngredientJSON(id: string): Promise<any> {
         try {
             const response = await instance.get('/ingredients/' + id + '/');
             return response.data;

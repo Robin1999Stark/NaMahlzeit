@@ -25,14 +25,7 @@ class FoodPlanerItem(models.Model):
     meals = models.ManyToManyField(Meal, blank=True)
 
 
-class InventoryList(models.Model):
-    date = models.DateField()
-    ingredients = models.ManyToManyField(
-        Ingredient, through='InventoryItem', blank=True)
-
-
 class InventoryItem(models.Model):
-    inventory_list = models.ForeignKey(InventoryList, on_delete=models.CASCADE)
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
-    unit = models.CharField(max_length=10)
+    amount = models.DecimalField(max_digits=10, decimal_places=2, null=True)
+    unit = models.CharField(max_length=10, null=True)

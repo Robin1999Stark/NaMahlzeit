@@ -8,7 +8,7 @@ const instance = axios.create({
     withCredentials: true,
 })
 export namespace PlanerService {
-    export async function getAllPlanerItemJSON(): Promise<any> {
+    async function getAllPlanerItemJSON(): Promise<any> {
         try {
             const response = await instance.get('/planer/');
             return response.data;
