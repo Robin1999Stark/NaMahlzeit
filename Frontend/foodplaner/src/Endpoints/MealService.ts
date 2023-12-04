@@ -84,6 +84,7 @@ export namespace MealService {
         ingredients: IngredientAmount[];
     }
     export async function createMealWithAmounts({ title, description, ingredients }: CreateMealAmountInterface): Promise<Meal | null> {
+
         const requestBody = {
             title: title,
             description: description,

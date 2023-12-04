@@ -24,10 +24,10 @@ function IngredientsOverView() {
                 Ingredients
             </h1>
             <ul className='mx-5'>
-                {ingredients?.map(Ingredient => (
+                {ingredients ? ingredients?.map(Ingredient => (
                     <li key={Ingredient.title} className='p-2'>
                         <Link to={`/ingredients/${Ingredient.title}`}>{Ingredient.title}</Link>
-                    </li>))}
+                    </li>)) : <h1>Loading...</h1>}
             </ul>
         </>
     )

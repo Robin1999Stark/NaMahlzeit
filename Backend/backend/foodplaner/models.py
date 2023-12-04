@@ -10,7 +10,7 @@ class Meal(models.Model):
     title = models.CharField(max_length=180)
     description = models.TextField(null=True, max_length=500)
     ingredients = models.ManyToManyField(
-        Ingredient, blank=True, through='MealIngredient')
+        Ingredient, blank=True, through='MealIngredient', through_fields=("meal", "ingredient"))
 
 
 class MealIngredient(models.Model):
