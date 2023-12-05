@@ -11,7 +11,7 @@ export namespace InventoryService {
     export async function getAllInventoryItemsJSON(): Promise<any> {
         try {
             const response = await instance.get(`/inventory/`);
-            console.log(response)
+            console.log("inventory:", response)
             return response.data;
         } catch (error) {
             throw new Error('Error fetching inventory: ' + error);
@@ -53,6 +53,15 @@ export namespace InventoryService {
         } catch (error) {
             console.error('Error creating Inventory Item:', error);
             return null;
+        }
+    }
+
+    export async function deleteInventoryItem(id: number) {
+        try {
+            const response = await instance.delete(`/inventory/${id}/`);
+            return response.data;
+        } catch (error) {
+            throw new Error('Error deleting InventoryItem: ' + error);
         }
     }
 }

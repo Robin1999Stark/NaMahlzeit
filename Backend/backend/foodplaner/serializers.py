@@ -70,7 +70,7 @@ class FoodPlanerItemSerializer(serializers.ModelSerializer):
 class InventoryItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = InventoryItem
-        fields = ['ingredient', 'amount', 'unit']
+        fields = ['id', 'ingredient', 'amount', 'unit']
 
     def create(self, validated_data):
         ingr = validated_data['ingredient']

@@ -57,14 +57,26 @@ function InventoryListView() {
         try {
             if (add) {
                 InventoryService.createInventoryItem({ ingredient: data.ingredient, amount: data.amount, unit: data.unit })
+                fetchPipeline();
+
             } else {
                 InventoryService.createInventoryItem({ ingredient: data.ingredient, amount: -data.amount, unit: data.unit })
+                fetchPipeline();
+
             }
             fetchPipeline();
         } catch (error) {
             console.log(error)
         }
         console.log('Form submitted', data)
+    }
+    async function deleteInventoryItem(id: number) {
+        try {
+            await InventoryService.deleteInventoryItem(id);
+            fetchPipeline();
+        } catch (error) {
+            console.log(error)
+        }
     }
 
 
@@ -106,8 +118,6 @@ function InventoryListView() {
                             })}
                             defaultValue={1}
                             className="border-slate-200 h-12 truncate text-base font-semibold align-middle mr-2 focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
-
-
                         <input
                             type='text'
                             id='unit'
@@ -126,8 +136,11 @@ function InventoryListView() {
                             <div key={inv.ingredient + Math.random()} className='p-2 flex flex-row font-semibold items-center'>
                                 {inv.ingredient}
                             </div>
-                            <div className='p-2 flex font-semibold flex-row items-center'>
+                            <div className='p-2 flex font-semibold flex-row justify-between items-center'>
                                 {inv.amount + " " + inv.unit}
+                                <button onClick={() => deleteInventoryItem(inv.id)} className='px-3 bg-red-400 py-1 rounded-md text-white text-base font-semibold flex flex-row items-center justify-center'>
+                                    x
+                                </button>
                             </div>
                         </>
                     )) : <h1>Loading...</h1>}

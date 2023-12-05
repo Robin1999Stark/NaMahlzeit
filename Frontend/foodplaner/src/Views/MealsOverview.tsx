@@ -7,18 +7,28 @@ import { Link } from 'react-router-dom'
 function MealsOverview() {
 
     const [meals, setMeals] = useState<Meal[]>()
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const data = await MealService.getAllMeals()
-                const sortedMealsByTitle = data.sort((a, b) => a.title.localeCompare(b.title))
-                setMeals(sortedMealsByTitle)
-            } catch (error) {
-                console.log(error)
-            }
+    async function fetchData() {
+        try {
+            const data = await MealService.getAllMeals()
+            const sortedMealsByTitle = data.sort((a, b) => a.title.localeCompare(b.title))
+            setMeals(sortedMealsByTitle)
+        } catch (error) {
+            console.log(error)
         }
+    }
+    useEffect(() => {
         fetchData();
     }, [])
+
+    async function deleteMeal(id: number) {
+        try {
+            await MealService.deleteMeal(id);
+            fetchData();
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 
     return (
         <>
@@ -33,8 +43,11 @@ function MealsOverview() {
 
             <ul className='mx-5'>
                 {meals?.map(meal => (
-                    <li key={meal.id} className='p-2'>
+                    <li key={meal.id} className='p-2 flex flex-row justify-between'>
                         <Link to={`/meals/${meal.id}`}>{meal.title}</Link>
+                        <button onClick={() => deleteMeal(meal.id)} className='px-3 bg-red-400 py-1 rounded-md text-white text-base font-semibold flex flex-row items-center justify-center'>
+                            x
+                        </button>
                     </li>))}
             </ul>
         </>

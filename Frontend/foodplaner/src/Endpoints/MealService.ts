@@ -117,5 +117,14 @@ export namespace MealService {
         }
     }
 
+    export async function deleteMeal(mealID: number) {
+        try {
+            const response = await instance.delete(`/meals/${mealID}/`);
+            return response.data;
+        } catch (error) {
+            throw new Error('Error deleting Meal: ' + error);
+        }
+    }
+
 
 }

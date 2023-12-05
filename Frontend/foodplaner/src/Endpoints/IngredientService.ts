@@ -79,7 +79,7 @@ export namespace IngredientService {
             const response = await instance.delete(`/ingredients/${ingredient}/`);
             return response.data;
         } catch (error) {
-            throw new Error('Error fetching Ingredient: ' + error);
+            throw new Error('Error deleting Ingredient: ' + error);
         }
     }
 
