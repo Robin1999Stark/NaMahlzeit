@@ -3,10 +3,13 @@ import { useFieldArray, useForm } from 'react-hook-form';
 import { Ingredient, IngredientAmount, Meal, MealWithIngredientAmount } from '../Datatypes/Meal';
 import { MealService } from '../Endpoints/MealService';
 import { IngredientService } from '../Endpoints/IngredientService';
+import { useNavigate } from 'react-router-dom';
 
 function CreateMeal() {
-
+    const navigate = useNavigate();
     const [ingredients, setIngredients] = useState<Ingredient[]>()
+    const [selectedIngredient, setSelectedIngredient] = useState<Ingredient>();
+
     useEffect(() => {
         async function fetchData() {
             try {
@@ -22,6 +25,8 @@ function CreateMeal() {
     const {
         register,
         control,
+        watch,
+        setValue,
         handleSubmit,
         formState: { errors } } = useForm<MealWithIngredientAmount>({
             defaultValues: {
@@ -31,6 +36,8 @@ function CreateMeal() {
             },
             mode: 'all'
         });
+    const selectedIngredientID = watch('ingredients');
+
     const { fields, append, remove } = useFieldArray<any>({
         control,
         name: "ingredients"

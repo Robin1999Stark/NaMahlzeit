@@ -5,6 +5,7 @@ import { Ingredient } from '../Datatypes/Meal';
 import { IngredientService } from '../Endpoints/IngredientService';
 import { ShoppingList, ShoppingListItem } from '../Datatypes/ShoppingList';
 import { ShoppingListService } from '../Endpoints/ShoppingListService';
+import MissingIngredientMealList from '../Components/MissingIngredientMealList';
 
 function ShoppingListView() {
     const [shoppingList, setShoppingList] = useState<ShoppingList>();
@@ -88,11 +89,7 @@ function ShoppingListView() {
     async function handleUnitChange() {
         const ingredient = await fetchIngredient(selectedIngredientID);
         ingredient ? setValue('unit', ingredient?.preferedUnit) : setValue('unit', 'kg')
-
-
-        console.log("selected", ingredient)
     }
-
     useEffect(() => {
         fetchPipeline();
         if (selectedIngredientID) {
@@ -113,7 +110,6 @@ function ShoppingListView() {
         } catch (error) {
             console.log(error)
         }
-        console.log('Form submitted', data)
     }
     async function deleteShoppingListItem(id: number) {
         try {
@@ -130,6 +126,7 @@ function ShoppingListView() {
                 <h1 className='truncate mx-5 my-5 text-2xl font-semibold'>
                     Shopping list
                 </h1>
+                <MissingIngredientMealList />
                 <div className='mx-4 w-full'>
                     <form className='grid grid-cols-2 gap-2' onSubmit={handleSubmit(onSubmit)}>
                         <select
@@ -158,7 +155,6 @@ function ShoppingListView() {
                                     valueAsNumber: true,
                                     min: 0,
                                     max: 50000,
-
                                     required: true,
                                 })}
                                 defaultValue={1}
