@@ -74,5 +74,13 @@ export namespace IngredientService {
             return null;
         }
     }
+    export async function deleteIngredient(ingredient: string) {
+        try {
+            const response = await instance.delete(`/ingredients/${ingredient}/`);
+            return response.data;
+        } catch (error) {
+            throw new Error('Error fetching Ingredient: ' + error);
+        }
+    }
 
 }
