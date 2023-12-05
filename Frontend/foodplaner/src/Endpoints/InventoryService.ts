@@ -11,7 +11,6 @@ export namespace InventoryService {
     export async function getAllInventoryItemsJSON(): Promise<any> {
         try {
             const response = await instance.get(`/inventory/`);
-            console.log("inventory:", response)
             return response.data;
         } catch (error) {
             throw new Error('Error fetching inventory: ' + error);

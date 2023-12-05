@@ -17,7 +17,6 @@ function CreateMeal() {
             }
         }
         fetchData();
-        console.log(ingredients)
 
     }, [])
     const {
@@ -39,14 +38,12 @@ function CreateMeal() {
 
     const onSubmit = (data: MealWithIngredientAmount) => {
         try {
-            console.log(data)
             MealService.createMealWithAmounts({
                 title: data.title, description: data.title, ingredients: data.ingredients
             })
         } catch (error) {
             console.log(error)
         }
-        console.log('Form submitted', data)
     }
     return (
         <>

@@ -62,6 +62,7 @@ function ShoppingListView() {
     }
     async function fetchPipeline() {
         const list = await fetchDataShoppingList();
+        console.log(list)
         list ? setShoppingList(list) : console.log("fehler")
         const ingredients = await fetchDataIngredients();
         ingredients ? setIngredients(ingredients) : setIngredients([])
@@ -80,8 +81,12 @@ function ShoppingListView() {
         try {
             if (shoppingList) {
                 const item = await ShoppingListService.createItemAndAddToShoppingList(shoppingList, { ingredient: data.ingredient, amount: data.amount, unit: data.unit, notes: "" })
+                if (item) {
+                    const newItems = shoppingListItems;
+                    newItems?.push(item);
+                    setShoppingListItems(newItems);
+                }
             }
-            fetchPipeline();
         } catch (error) {
             console.log(error)
         }

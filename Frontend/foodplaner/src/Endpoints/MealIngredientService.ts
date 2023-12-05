@@ -13,7 +13,6 @@ export namespace MealIngredientService {
     async function getAllMealIngredientsJSON(mealID: number): Promise<any> {
         try {
             const response = await instance.get(`/meals/${mealID}/ingredients/`);
-            console.log(response)
             return response.data;
         } catch (error) {
             throw new Error('Error fetching Meal Ingredients: ' + error);
@@ -21,7 +20,6 @@ export namespace MealIngredientService {
     }
 
     export async function getAllMealIngredients(mealID: number): Promise<IngredientAmount[]> {
-        console.log(mealID)
         let ingredientAmounts: IngredientAmount[] = [];
         try {
             const data = await getAllMealIngredientsJSON(mealID);
@@ -90,7 +88,6 @@ export namespace MealIngredientService {
             description: description,
             ingredients: ingredients,
         }
-        console.log(requestBody)
         try {
             let response = await instance.post('/create-meal/', JSON.stringify(requestBody), {
                 headers: {

@@ -23,7 +23,6 @@ export namespace ShoppingListService {
         let shoppingLists: ShoppingList[] = [];
         try {
             const data = await getAllShoppingListsJSON();
-            console.log(data)
             const shoppingLists: ShoppingList[] = []
             data.map((list: any) => shoppingLists.push(ShoppingList.fromJSON(list)));
             return shoppingLists;
@@ -81,9 +80,7 @@ export namespace ShoppingListService {
         let shoppingListItems: ShoppingListItem[] = [];
         try {
             const data = await getAllShoppingListItemsJSON();
-            console.log(data)
             data.map((inv: any) => shoppingListItems.push(ShoppingListItem.fromJSON(inv)));
-            console.log("shoppinglist", shoppingListItems)
             return shoppingListItems;
         } catch (error) {
             console.error('Error fetching shoppingListItems: ', error);
@@ -101,8 +98,7 @@ export namespace ShoppingListService {
     }
     export async function createShoppingListItem({ ingredient, amount, unit, notes }: CreateShoppingListItem): Promise<ShoppingListItem | null> {
         const date = new Date(Date.now())
-        const dateString = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate() + "T" + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + "." + date.getMilliseconds() + "Z";
-        console.log(dateString)
+        const dateString = date.toISOString()
         const requestBody = {
             bought: false,
             added: dateString,
@@ -117,7 +113,6 @@ export namespace ShoppingListService {
                     'Content-Type': 'application/json'
                 }
             })
-            console.log(response)
             return ShoppingListItem.fromJSON(response.data);
         } catch (error) {
             console.error('Error creating Shopping list Item:', error);
@@ -135,21 +130,19 @@ export namespace ShoppingListService {
     }
 
     export async function addItemToShoppingList(list: ShoppingList, itemID: number) {
-        const newItems = list.items.push(itemID);
-        console.log("new", newItems, list.items)
         const date = new Date(list.created)
-        const dateString = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate() + "T" + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + "." + date.getMilliseconds() + "Z";
-
-
+        const dateString = date.toISOString()
+        const items = list.items
+        items.push(itemID)
         const requestBody = {
             id: list.id,
             created: dateString,
-            items: list.items,
+            items: items,
 
         }
-
+        console.log(JSON.stringify(requestBody))
         try {
-            let response = await instance.patch(`/shopping-lists/${list.id}/`, JSON.stringify(requestBody), {
+            let response = await instance.put(`/shopping-lists/${list.id}/`, JSON.stringify(requestBody), {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -163,15 +156,16 @@ export namespace ShoppingListService {
 
     }
 
-    export async function createItemAndAddToShoppingList(list: ShoppingList, item: CreateShoppingListItem) {
+    export async function createItemAndAddToShoppingList(list: ShoppingList, item: CreateShoppingListItem): Promise<ShoppingListItem | null> {
         try {
             const createdItem = await createShoppingListItem(item);
             if (createdItem) {
-                console.log("created", createdItem)
                 addItemToShoppingList(list, createdItem.id)
             }
+            return createdItem ? createdItem : null
         } catch (error) {
             console.error('Error creating Shopping list Item:', error);
         }
+        return null
     }
 }

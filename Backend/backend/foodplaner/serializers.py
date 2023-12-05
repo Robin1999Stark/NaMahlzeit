@@ -109,6 +109,9 @@ class ShoppingListItemSerializer(serializers.ModelSerializer):
         fields = ['id', 'bought', 'added',
                   'ingredient', 'amount', 'unit', 'notes']
 
+    def update(self, instance, validated_data):
+        return self.update
+
 
 class ShoppingListSerializer(serializers.ModelSerializer):
     class Meta:

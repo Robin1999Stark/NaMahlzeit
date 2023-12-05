@@ -13,7 +13,6 @@ export namespace MealService {
     async function getAllMealsJSON(): Promise<any> {
         try {
             const response = await instance.get('/meals/');
-            console.log(response)
             return response.data;
         } catch (error) {
             throw new Error('Error fetching Meals: ' + error);
@@ -90,7 +89,6 @@ export namespace MealService {
             description: description,
             ingredients: ingredients,
         }
-        console.log(requestBody)
         try {
             let response = await instance.post('/create-meal/', JSON.stringify(requestBody), {
                 headers: {
