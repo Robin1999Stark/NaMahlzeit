@@ -3,7 +3,6 @@ import { useForm, useFieldArray } from 'react-hook-form';
 import { InventoryItem } from '../Datatypes/Inventory';
 import { Ingredient } from '../Datatypes/Meal';
 import { IngredientService } from '../Endpoints/IngredientService';
-import { InventoryService } from '../Endpoints/InventoryService';
 import { ShoppingList, ShoppingListItem } from '../Datatypes/ShoppingList';
 import { ShoppingListService } from '../Endpoints/ShoppingListService';
 
@@ -79,9 +78,8 @@ function ShoppingListView() {
 
     async function onSubmit(data: InventoryItem) {
         try {
-            const item = await ShoppingListService.createShoppingListItem({ ingredient: data.ingredient, amount: data.amount, unit: data.unit, notes: "" })
-            if (item) {
-                // TODO: Add item to shoppinglist
+            if (shoppingList) {
+                const item = await ShoppingListService.createItemAndAddToShoppingList(shoppingList, { ingredient: data.ingredient, amount: data.amount, unit: data.unit, notes: "" })
             }
             fetchPipeline();
         } catch (error) {
