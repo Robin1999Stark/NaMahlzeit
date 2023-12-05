@@ -2,30 +2,6 @@ from django.db import models
 from datetime import datetime
 
 
-class Ingredient(models.Model):
-    title = models.CharField(max_length=180, primary_key=True, null=False)
-    description = models.CharField(null=True, max_length=500)
-
-
-class Meal(models.Model):
-    title = models.CharField(max_length=180)
-    description = models.TextField(null=True, max_length=500)
-    ingredients = models.ManyToManyField(
-        Ingredient, blank=True, through='MealIngredient', through_fields=("meal", "ingredient"))
-
-
-class MealIngredient(models.Model):
-    meal = models.ForeignKey(Meal, on_delete=models.CASCADE)
-    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
-    unit = models.CharField(max_length=10)
-
-
-class FoodPlanerItem(models.Model):
-    date = models.DateField()
-    meals = models.ManyToManyField(Meal, blank=True)
-
-
 class UnitOptions(models.TextChoices):
     KG = 'kg', 'KG'
     LITER = 'l', 'L'
@@ -46,6 +22,35 @@ class UnitOptions(models.TextChoices):
     BOTTLE = 'bottle', 'Flasche'
     BUNCH = 'bund', 'bunch'
     PACKAGE = 'Package', 'package'
+
+
+class Ingredient(models.Model):
+    title = models.CharField(max_length=180, primary_key=True, null=False)
+    description = models.CharField(null=True, max_length=500)
+    preferedUnit = models.CharField(
+        choices=UnitOptions.choices,
+        null=True,
+        default=UnitOptions.PIECE,
+        max_length=20)
+
+
+class Meal(models.Model):
+    title = models.CharField(max_length=180)
+    description = models.TextField(null=True, max_length=500)
+    ingredients = models.ManyToManyField(
+        Ingredient, blank=True, through='MealIngredient', through_fields=("meal", "ingredient"))
+
+
+class MealIngredient(models.Model):
+    meal = models.ForeignKey(Meal, on_delete=models.CASCADE)
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    unit = models.CharField(max_length=10)
+
+
+class FoodPlanerItem(models.Model):
+    date = models.DateField()
+    meals = models.ManyToManyField(Meal, blank=True)
 
 
 class InventoryItem(models.Model):

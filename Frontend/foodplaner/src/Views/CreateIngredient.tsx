@@ -18,6 +18,7 @@ function CreateIngredient() {
             defaultValues: {
                 title: "",
                 description: "",
+                preferedUnit: "",
             },
             mode: 'all'
         });
@@ -67,6 +68,21 @@ function CreateIngredient() {
                                     required: true,
                                 })}
                                 defaultValue={"Lorem Ipsum"}
+                                className="border-slate-200 truncate text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
+                        </li>
+                        <li key={"li-pU"} className='flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3'>
+                            <label
+                                htmlFor='preferedUnit'
+                                className={`text-xs truncate text-left align-middle mb-3`} >
+                                Prefered Unit:
+                            </label>
+                            <input
+                                type='text'
+                                id='preferedUnit'
+                                {...register("preferedUnit", {
+                                    required: true,
+                                })}
+                                defaultValue={"kg"}
                                 className="border-slate-200 truncate text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
                         </li>
                     </ul>

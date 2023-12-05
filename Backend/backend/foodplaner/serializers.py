@@ -5,7 +5,7 @@ from .models import Meal, ShoppingList, ShoppingListItem, FoodPlanerItem, Ingred
 class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
-        fields = ['title', 'description']
+        fields = ['title', 'description', 'preferedUnit']
 
 
 class MealIngredientSerializer(serializers.ModelSerializer):

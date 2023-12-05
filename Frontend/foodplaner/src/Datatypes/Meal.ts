@@ -2,12 +2,14 @@
 export class Ingredient {
     title: string;
     description: string;
-    constructor(title: string, description: string) {
+    preferedUnit: string;
+    constructor(title: string, description: string, preferedUnit: string) {
         this.title = title;
         this.description = description;
+        this.preferedUnit = preferedUnit;
     }
     static fromJSON(json: any): Ingredient {
-        return new Ingredient(json.title, json.description);
+        return new Ingredient(json.title, json.description, json.preferedUnit);
     }
 }
 

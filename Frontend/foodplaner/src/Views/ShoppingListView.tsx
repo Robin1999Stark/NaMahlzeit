@@ -11,11 +11,14 @@ function ShoppingListView() {
     const [shoppingListItems, setShoppingListItems] = useState<ShoppingListItem[]>();
     const [ingredients, setIngredients] = useState<Ingredient[]>();
     const [loaded, setLoaded] = useState<boolean>(false);
+    const [selectedIngredient, setSelectedIngredient] = useState<Ingredient>();
 
     const {
         register,
         control,
         handleSubmit,
+        watch,
+        setValue,
         formState: { errors } } = useForm<ShoppingListItem>({
             defaultValues: {
                 ingredient: "",
@@ -24,6 +27,8 @@ function ShoppingListView() {
             },
             mode: 'all'
         });
+    const selectedIngredientID = watch('ingredient');
+
     const { fields, append, remove } = useFieldArray<any>({
         control,
         name: "ingredients"
@@ -71,11 +76,29 @@ function ShoppingListView() {
         items ? setShoppingListItems(items) : setShoppingListItems([])
         setLoaded(true);
     }
+    async function fetchIngredient(id: string): Promise<Ingredient | null> {
+        try {
+            const ingredient = await IngredientService.getIngredient(id);
+            return ingredient;
+        } catch (error) {
+            console.log(error)
+        }
+        return null
+    }
+    async function handleUnitChange() {
+        const ingredient = await fetchIngredient(selectedIngredientID);
+        ingredient ? setValue('unit', ingredient?.preferedUnit) : setValue('unit', 'kg')
+
+
+        console.log("selected", ingredient)
+    }
 
     useEffect(() => {
-
         fetchPipeline();
-    }, []);
+        if (selectedIngredientID) {
+            handleUnitChange();
+        }
+    }, [selectedIngredientID, setValue]);
 
     async function onSubmit(data: InventoryItem) {
         try {
@@ -146,7 +169,7 @@ function ShoppingListView() {
                                 {...register(`unit` as const, {
                                     required: true,
                                 })}
-                                defaultValue={"kg"}
+                                defaultValue={selectedIngredient ? selectedIngredient?.preferedUnit : "kg"}
                                 className="border-slate-200 truncate h-12 text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
 
                             <button className='p-2 ml-4 bg-green-400 text-gray-900 px-4 truncate w-full rounded-md text-lg' type='submit'>+ Add</button>
