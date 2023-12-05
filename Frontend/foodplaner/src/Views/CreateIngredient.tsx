@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { useForm, useFieldArray } from 'react-hook-form'
 import { Ingredient, Meal } from '../Datatypes/Meal'
 import { IngredientService } from '../Endpoints/IngredientService'
+import { useNavigate } from 'react-router-dom'
 
 function CreateIngredient() {
+    const navigate = useNavigate();
 
     useEffect(() => {
 
@@ -20,13 +22,13 @@ function CreateIngredient() {
             mode: 'all'
         });
 
-    const onSubmit = (data: Ingredient) => {
+    async function onSubmit(data: Ingredient) {
         try {
-            IngredientService.createIngredient({ title: data.title, description: data.description })
+            await IngredientService.createIngredient({ title: data.title, description: data.description })
+            navigate('/ingredients')
         } catch (error) {
             console.log(error)
         }
-        console.log('Form submitted', data)
     }
     return (
         <>
@@ -71,7 +73,7 @@ function CreateIngredient() {
                 </div>
                 <div className='w-100 my-4 flex flex-1 justify-center align-middle'>
                     <div className='mb-4 mx-6'>
-                        <button className='p-2 bg-slate-500 text-white px-4 rounded-md text-lg' type='submit'>Save</button>
+                        <button className='p-2 bg-slate-500 text-white px-4 rounded-md text-lg' type='submit'>Save and Return</button>
                     </div>
 
                 </div>

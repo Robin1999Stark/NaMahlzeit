@@ -9,6 +9,7 @@ import MealDetailView from "./Views/MealDetailView";
 import IngredientDetailView from "./Views/IngredientDetailView";
 import InventoryListView from "./Views/InventoryListView";
 import NavBar from "./Components/NavBar";
+import ShoppingListView from "./Views/ShoppingListView";
 
 export const mealListID = "meal-list";
 
@@ -28,6 +29,8 @@ function App() {
             <Route path="/ingredients" element={<IngredientsOverView />} />
             <Route path="/ingredients/:ingredientID" element={<IngredientDetailView />} />
             <Route path="/inventory" element={<InventoryListView />} />
+            <Route path="/shoppinglist" element={<ShoppingListView />} />
+
           </Routes>
         </Suspense>
       </div>

@@ -6,6 +6,8 @@ function NavBar() {
         { link: "/meals", title: "Meals" },
         { link: "/planer", title: "Planer" },
         { link: "/inventory", title: "Inventory" },
+        { link: "/shoppinglist", title: "Shoppinglist" },
+
     ];
 
     return (

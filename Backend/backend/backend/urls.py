@@ -7,15 +7,18 @@ from foodplaner.views import (
     FoodPlanerItemView, FoodPlanerItemDetailView,
     IngredientListView, IngredientDetailView,
     MealIngredientListView, MealIngredientDetailView,
-    InventoryItemView,
+    InventoryItemView, ShoppingListItemView,
+    ShoppingListView
 )
 
 router = routers.DefaultRouter()
 router.register(r'meals', MealListView, basename='meal')
 router.register(r'planer', FoodPlanerItemView, basename='foodplaneritem')
 router.register(r'ingredients', IngredientListView, basename='ingredients')
-router.register(r'inventory', InventoryItemView,
-                basename='inventory')
+router.register(r'inventory', InventoryItemView, basename='inventory')
+router.register(r'shopping-lists', ShoppingListView, basename='shopping-lists')
+router.register(r'shopping-list-items', ShoppingListItemView,
+                basename='shopping-list-items')
 
 
 urlpatterns = [

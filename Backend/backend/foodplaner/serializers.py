@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Meal, FoodPlanerItem, Ingredient, MealIngredient, InventoryItem
+from .models import Meal, ShoppingList, ShoppingListItem, FoodPlanerItem, Ingredient, MealIngredient, InventoryItem
 
 
 class IngredientSerializer(serializers.ModelSerializer):
@@ -101,3 +101,16 @@ class InventoryItemSerializer(serializers.ModelSerializer):
                 else:
                     pass
         return InventoryItem.objects.first()
+
+
+class ShoppingListItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ShoppingListItem
+        fields = ['id', 'bought', 'added',
+                  'ingredient', 'amount', 'unit', 'notes']
+
+
+class ShoppingListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ShoppingList
+        fields = ['id', 'created', 'items']

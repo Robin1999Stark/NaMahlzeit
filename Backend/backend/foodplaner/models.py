@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime
 
 
 class Ingredient(models.Model):
@@ -25,7 +26,56 @@ class FoodPlanerItem(models.Model):
     meals = models.ManyToManyField(Meal, blank=True)
 
 
+class UnitOptions(models.TextChoices):
+    KG = 'kg', 'KG'
+    LITER = 'l', 'L'
+    GRAM = 'g', 'G'
+    MILLILITRE = 'ml', 'ML'
+    PIECE = 'stk', 'stk.'
+    TEASPOON = 'tsp', 'TSP'
+    TABLESPOON = 'TBSP', 'Tbsp'
+    OUNCE = 'oz'
+    CUP = 'cup'
+    GALLON = 'gal', 'gallon'
+    PINCH = 'pinch', 'prise'
+    DROP = 'drop', 'Tropfen'
+    HANDFUL = 'handful'
+    SPRIG = 'sprig', 'Zweig'
+    CLOVE = 'Zehe', 'clove'
+    SHEET = 'sheet', 'Blatt'
+    BOTTLE = 'bottle', 'Flasche'
+    BUNCH = 'bund', 'bunch'
+    PACKAGE = 'Package', 'package'
+
+
 class InventoryItem(models.Model):
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2, null=True)
-    unit = models.CharField(max_length=10, null=True)
+    unit = models.CharField(
+        max_length=20,
+        choices=UnitOptions.choices,
+        default=UnitOptions.PIECE,
+    )
+
+
+class ShoppingListItem(models.Model):
+    bought = models.BooleanField(default=False)
+    added = models.DateTimeField(default=datetime.now())
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
+    amount = models.DecimalField(
+        max_digits=10, default=1, decimal_places=2, null=True)
+    unit = models.CharField(
+        max_length=20,
+        choices=UnitOptions.choices,
+        default=UnitOptions.PIECE,
+    )
+    notes = models.TextField(
+        blank=True,
+        null=True,
+        max_length=200,
+    )
+
+
+class ShoppingList(models.Model):
+    created = models.DateTimeField(default=datetime.now())
+    items = models.ManyToManyField(ShoppingListItem, blank=True)
