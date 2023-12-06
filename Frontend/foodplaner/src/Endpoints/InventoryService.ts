@@ -31,7 +31,7 @@ export namespace InventoryService {
 
 
 
-    interface CreateInventoryItemInterface {
+    export interface CreateInventoryItemInterface {
         ingredient: string;
         amount: number;
         unit: string;

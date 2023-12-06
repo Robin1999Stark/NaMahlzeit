@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { FoodplanerItem } from '../Datatypes/Meal';
+import { FoodplanerItem, IngredientAmountWithMeal, MealWithIngredientAmount } from '../Datatypes/Meal';
 
 const BASE_URL = 'http://127.0.0.1:8000';
 
@@ -27,6 +27,22 @@ export namespace PlanerService {
             console.error('Error fetching Planer: ', error);
         }
         return planer;
+    }
+
+    export async function getAllIngredientsFromPlanerInTimeRange(start: Date, end: Date): Promise<IngredientAmountWithMeal[] | null> {
+        try {
+            const data = await instance.get('/get-all-ingredients-from-planer/');
+            const meals: any[] = data.data.meals;
+            const ingredients: IngredientAmountWithMeal[] = []
+            meals.forEach((ingredient: any) => {
+                const ingr = IngredientAmountWithMeal.fromJSON(ingredient)
+                ingredients.push(ingr)
+            });
+            return ingredients
+        } catch (error) {
+            console.error(error)
+        }
+        return null;
     }
 
     interface CreatePlanerInterface {

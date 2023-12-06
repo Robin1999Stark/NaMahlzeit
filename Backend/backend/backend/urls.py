@@ -8,7 +8,8 @@ from foodplaner.views import (
     IngredientListView, IngredientDetailView,
     MealIngredientListView, MealIngredientDetailView,
     InventoryItemView, ShoppingListItemView,
-    ShoppingListView
+    ShoppingListView, get_all_meals_on_planer,
+    get_all_mealingredients_from_planer
 )
 
 router = routers.DefaultRouter()
@@ -27,6 +28,11 @@ urlpatterns = [
     path('meals/<int:pk>/', MealDetailView.as_view(), name='meals-detail'),
     path('planer/<int:pk>/', FoodPlanerItemDetailView.as_view(),
          name='foodplaneritem-detail'),
+    path('get-all-meals-from-planer/', get_all_meals_on_planer,
+         name='planer-get-all-meals'),
+
+    path('get-all-ingredients-from-planer/', get_all_mealingredients_from_planer,
+         name='planer-get-all-meals'),
     path('ingredients/<int:pk>/', IngredientDetailView.as_view(),
          name='ingredients-detail'),
     path('create-meal/', CreateMealWithIngredientsView.as_view(),

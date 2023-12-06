@@ -1,10 +1,30 @@
 import React, { useEffect, useState } from 'react'
-import { FoodPlaner, FoodplanerItem, Meal } from '../Datatypes/Meal'
+import { FoodPlaner, FoodplanerItem, IngredientAmountWithMeal, Meal } from '../Datatypes/Meal'
 import { PlanerService } from '../Endpoints/PlanerService';
 import { MealService } from '../Endpoints/MealService';
+import MissingIngredientMealListItem from './MissingIngredientMealListItem';
+import { InventoryItem } from '../Datatypes/Inventory';
+import { InventoryService } from '../Endpoints/InventoryService';
 
-function MissingIngredientMealList() {
+type Props = {
+    handleAddItemToShoppingList: (data: InventoryItem | InventoryService.CreateInventoryItemInterface) => Promise<void>
+}
+
+function MissingIngredientMealList({ handleAddItemToShoppingList }: Props) {
     const [planers, setPlaners] = useState<FoodplanerItem[]>();
+    const [ingredients, setIngredients] = useState<IngredientAmountWithMeal[]>([]);
+    const [inventoryItems, setInventoryItems] = useState<InventoryItem[]>([]);
+
+    useEffect(() => {
+    }, [])
+
+    async function handleAddAllToShoppingList() {
+        const inventoryItems: InventoryItem[] = [];
+        ingredients.forEach(async (ingr) => {
+            const inv: InventoryService.CreateInventoryItemInterface = { ingredient: ingr.ingredient, amount: ingr.amount, unit: ingr.unit };
+            await handleAddItemToShoppingList(inv);
+        })
+    }
 
     useEffect(() => {
         async function fetchDataPlaner(): Promise<FoodplanerItem[] | null> {
@@ -31,15 +51,22 @@ function MissingIngredientMealList() {
             }
             return meals;
         }
+        async function fetchIngredientsFromPlaner(start: Date, end: Date): Promise<IngredientAmountWithMeal[] | null> {
+            try {
+                const data = await PlanerService.getAllIngredientsFromPlanerInTimeRange(start, end);
+                return data;
+            } catch (error) {
+                console.log(error)
+            }
+            return null;
+        }
         async function combineMealsFromMultPlaner(planers: FoodplanerItem[]) {
             try {
 
                 let allMeals: Meal[] = []
                 for (const planer of planers) {
                     const meals = await fetchDataMeals(planer.meals);
-                    console.log(meals)
                     meals.forEach(meal => {
-                        console.log("meal", meal)
                         allMeals.push(meal)
                     })
                 }
@@ -54,25 +81,32 @@ function MissingIngredientMealList() {
             const planers = await fetchDataPlaner();
             if (!planers) return;
             setPlaners(planers);
-            console.log(planers)
             const allMeals = await combineMealsFromMultPlaner(planers);
-            console.log(allMeals)
+            const ingredients = await fetchIngredientsFromPlaner(new Date(Date.now()), new Date('2023-12-12'));
+            if (!ingredients) return;
+            setIngredients(ingredients)
         }
         fetchPipline();
     }, [])
 
     return (
-        <div>
-            <h2>Next Meals</h2>
-            <ul className='flex flex-row justify-start items-center'>
+        <div className='mx-4 w-full'>
+            <div className='flex flex-row justify-between items-center'>
+
+                <h1 className='truncate my-5 text-2xl font-semibold'>
+                    Needed Ingredients from Planer
+                </h1>
+                <div className='flex h-12 flex-row'>
+                    <button onClick={() => handleAddAllToShoppingList()} className='p-2 ml-4 bg-green-400 text-gray-900 px-4 truncate w-full rounded-md text-lg' type='submit'>+ Add All To Shopping</button>
+                </div>
+            </div>
+            <div className='grid grid-cols-3 gap-2'>
                 {
-                    planers?.map(planer => (
-                        <li>
-                            {planer.meals}
-                        </li>
+                    ingredients?.map(ingredient => (
+                        <MissingIngredientMealListItem ingredient={ingredient} />
                     ))
                 }
-            </ul>
+            </div>
         </div>
 
 

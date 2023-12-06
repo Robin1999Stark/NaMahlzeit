@@ -65,6 +65,16 @@ export class IngredientAmount {
         return new IngredientAmount(json.ingredient, json.amount, json.unit);
     }
 }
+export class IngredientAmountWithMeal extends IngredientAmount {
+    meal: number;
+    constructor(ingredient: string, amount: number, unit: string, meal: number) {
+        super(ingredient, amount, unit);
+        this.meal = meal;
+    }
+    static fromJSON(json: any): IngredientAmountWithMeal {
+        return new IngredientAmountWithMeal(json.ingredient, json.amount, json.unit, json.meal);
+    }
+}
 
 export class FoodplanerItem {
     id: number;

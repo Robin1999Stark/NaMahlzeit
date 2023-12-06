@@ -7,6 +7,17 @@ class IngredientSerializer(serializers.ModelSerializer):
         model = Ingredient
         fields = ['title', 'description', 'preferedUnit']
 
+    def get_attribute(self, instance):
+
+        value = super().get_attribute(instance)
+        return value
+
+
+class MealIngredientSerializerWithMeal(serializers.ModelSerializer):
+    class Meta:
+        model = MealIngredient
+        fields = ['meal', 'ingredient', 'amount', 'unit']
+
 
 class MealIngredientSerializer(serializers.ModelSerializer):
     ingredient = serializers.CharField(source='ingredient.title')
@@ -29,6 +40,17 @@ class MealIngredientSerializer(serializers.ModelSerializer):
         ingredient = Ingredient.objects.get(title=ingredient_title)
 
         return MealIngredient.objects.create(meal=meal, ingredient=ingredient, **validated_data)
+
+    def get_attribute(self, instance):
+
+        value = super().get_attribute(instance)
+        return value
+
+
+class MealSerializerNoAmounts(serializers.ModelSerializer):
+    class Meta:
+        model = Meal
+        fields = ['id', 'title', 'description', 'ingredients']
 
 
 class MealSerializer(serializers.ModelSerializer):
@@ -53,6 +75,11 @@ class MealSerializer(serializers.ModelSerializer):
                 meal=meal, ingredient=ingredient, **ingredient_data)
 
         return meal
+
+    def get_attribute(self, instance):
+
+        value = super().get_attribute(instance)
+        return value
 
 
 class MealListSerializer(serializers.ModelSerializer):

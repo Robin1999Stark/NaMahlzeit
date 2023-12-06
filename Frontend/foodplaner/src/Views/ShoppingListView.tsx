@@ -6,6 +6,7 @@ import { IngredientService } from '../Endpoints/IngredientService';
 import { ShoppingList, ShoppingListItem } from '../Datatypes/ShoppingList';
 import { ShoppingListService } from '../Endpoints/ShoppingListService';
 import MissingIngredientMealList from '../Components/MissingIngredientMealList';
+import { InventoryService } from '../Endpoints/InventoryService';
 
 function ShoppingListView() {
     const [shoppingList, setShoppingList] = useState<ShoppingList>();
@@ -95,9 +96,9 @@ function ShoppingListView() {
         if (selectedIngredientID) {
             handleUnitChange();
         }
-    }, [selectedIngredientID, setValue]);
+    }, [selectedIngredientID, setValue, loaded]);
 
-    async function onSubmit(data: InventoryItem) {
+    async function handleAddItemToShoppingList(data: InventoryItem | InventoryService.CreateInventoryItemInterface) {
         try {
             if (shoppingList) {
                 const item = await ShoppingListService.createItemAndAddToShoppingList(shoppingList, { ingredient: data.ingredient, amount: data.amount, unit: data.unit, notes: "" })
@@ -111,6 +112,10 @@ function ShoppingListView() {
             console.log(error)
         }
     }
+
+    async function onSubmit(data: InventoryItem) {
+        await handleAddItemToShoppingList(data);
+    }
     async function deleteShoppingListItem(id: number) {
         try {
             await ShoppingListService.deleteShoppingListItem(id);
@@ -123,12 +128,13 @@ function ShoppingListView() {
     if (loaded) {
         return (
             <>
+                <MissingIngredientMealList handleAddItemToShoppingList={handleAddItemToShoppingList} />
+
                 <h1 className='truncate mx-5 my-5 text-2xl font-semibold'>
                     Shopping list
                 </h1>
-                <MissingIngredientMealList />
                 <div className='mx-4 w-full'>
-                    <form className='grid grid-cols-2 gap-2' onSubmit={handleSubmit(onSubmit)}>
+                    <form className='grid grid-cols-3 gap-2' onSubmit={handleSubmit(onSubmit)}>
                         <select
                             key={"select-ingredient"}
                             {...register(`ingredient` as const, {
@@ -148,6 +154,7 @@ function ShoppingListView() {
                         </select>
                         <div className='flex h-12 flex-row'>
                             <input
+                                key={'amount'}
                                 type='number'
                                 id='amount'
                                 step={0.1}
@@ -160,6 +167,7 @@ function ShoppingListView() {
                                 defaultValue={1}
                                 className="border-slate-200 h-12 truncate text-base font-semibold align-middle mr-2 focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
                             <input
+                                key={'unit'}
                                 type='text'
                                 id='unit'
                                 {...register(`unit` as const, {
@@ -167,19 +175,25 @@ function ShoppingListView() {
                                 })}
                                 defaultValue={selectedIngredient ? selectedIngredient?.preferedUnit : "kg"}
                                 className="border-slate-200 truncate h-12 text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
-
-                            <button className='p-2 ml-4 bg-green-400 text-gray-900 px-4 truncate w-full rounded-md text-lg' type='submit'>+ Add</button>
-
                         </div>
+                        <div className='flex h-12 flex-row'>
+                            <button key={'add-item'} className='p-2 ml-4 bg-green-400 text-gray-900 px-4 truncate w-full rounded-md text-lg' type='submit'>+ Add</button>
+                        </div>
+
                         {shoppingListItems ? shoppingListItems?.map(item => (
                             item ?
                                 <>
                                     <div key={item.ingredient + Math.random()} className='p-2 flex flex-row font-semibold items-center'>
                                         {item.ingredient}
                                     </div>
-                                    <div key={item.ingredient + Math.random() + "delete"} className='p-2 flex font-semibold flex-row justify-between items-center'>
+                                    <div key={item.ingredient + Math.random() + "unit"} className='p-2 flex font-semibold flex-row justify-between items-center'>
                                         {item.amount + " " + item.unit}
-                                        <button onClick={() => deleteShoppingListItem(item.id)} className='px-3 bg-red-400 py-1 rounded-md text-white text-base font-semibold flex flex-row items-center justify-center'>
+                                    </div>
+                                    <div key={item.ingredient + Math.random() + "delete-notes"} className='p-2 flex font-semibold flex-row justify-between items-center'>
+                                        <div key={item.ingredient + Math.random() + "notes"}>
+                                            {item.notes}
+                                        </div>
+                                        <button key={item.ingredient + Math.random() + "delete"} onClick={() => deleteShoppingListItem(item.id)} className='px-3 bg-red-400 py-1 rounded-md text-white text-base font-semibold flex flex-row items-center justify-center'>
                                             x
                                         </button>
                                     </div>

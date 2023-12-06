@@ -1,10 +1,55 @@
 from .models import InventoryItem, ShoppingList, ShoppingListItem, Meal, FoodPlanerItem, Ingredient, MealIngredient
 from rest_framework import viewsets, generics
-from .serializers import MealSerializer, FoodPlanerItemSerializer, IngredientSerializer, MealIngredientSerializer, InventoryItemSerializer
+from .serializers import MealSerializer, FoodPlanerItemSerializer, IngredientSerializer, MealIngredientSerializerWithMeal, MealIngredientSerializer, InventoryItemSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import MealSerializer, MealListSerializer, ShoppingListItemSerializer, ShoppingListSerializer
+from .serializers import MealSerializerNoAmounts, MealSerializer, MealListSerializer, ShoppingListItemSerializer, ShoppingListSerializer
+from django.http import JsonResponse
+from datetime import datetime, date
+
+
+def get_all_mealingredients_from_planer(request):
+
+    start = date(2023, 12, 5)
+    end = date(2023, 12, 10)
+
+    planer_in_timeslot = FoodPlanerItem.objects.filter(date__range=[
+                                                       start, end])
+    all_meals = []
+    for planer in planer_in_timeslot:
+        all_meals.extend(planer.meals.all())
+
+    all_meal_ingredients = []
+    for meal_item in all_meals:
+        all_meal_ingredients.extend(
+            MealIngredient.objects.filter(meal=meal_item))
+
+    serialized_meal_ingredients = MealIngredientSerializerWithMeal(
+        all_meal_ingredients, many=True).data
+    data = {'meals': serialized_meal_ingredients}
+    return JsonResponse(data)
+
+
+def get_all_mealingredients_from_meals(request):
+
+    pass
+
+
+def get_all_meals_on_planer(request):
+
+    start = date(2023, 12, 5)
+    end = date(2023, 12, 10)
+
+    planer_in_timeslot = FoodPlanerItem.objects.filter(date__range=[
+                                                       start, end])
+    all_meals = []
+    for planer in planer_in_timeslot:
+        all_meals.extend(planer.meals.all())
+
+    serialized_meals = MealSerializerNoAmounts(all_meals, many=True).data
+    data = {'meals': serialized_meals}
+    return JsonResponse(data)
 
 
 class MealListView(viewsets.ModelViewSet):
