@@ -93,6 +93,10 @@ class FoodPlanerItemSerializer(serializers.ModelSerializer):
         model = FoodPlanerItem
         fields = ['id', 'date', 'meals']
 
+    def update(self, instance, validated_data):
+        print("test")
+        return super().update(instance, validated_data)
+
 
 class InventoryItemSerializer(serializers.ModelSerializer):
     class Meta:

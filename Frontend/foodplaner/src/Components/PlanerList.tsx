@@ -20,13 +20,29 @@ function PlanerList({ listId, listType, planerItem, isMealList = false }: Props)
             return (<h2>Meallist</h2>)
         }
         return (
-            <h2>
-                {planerItem.date instanceof Date ? Weekday[planerItem.date.getDay()] : Weekday[new Date(planerItem.date).getDay()]}
-            </h2>
+            <div className='flex flex-col justify-center items-center w-32 h-full rounded-xl p-2 bg-[#181818]'>
+                <h2 className='text-white text-2xl font-semibold'>
+                    {new Date(planerItem.date).getDate() + "." + new Date(planerItem.date).getMonth() + "."}
+
+                </h2>
+                <h3 className='font-base text-xs text-gray-500'>
+                    {planerItem.date instanceof Date ? Weekday[planerItem.date.getDay()] : Weekday[new Date(planerItem.date).getDay()]}
+                </h3>
+            </div>
+
         )
     }
+    const displayPlaceholder = () => {
+        if (isMealList) {
+            return <AddMealButton title='Remove' />
+        }
+        if (planerItem.meals.length === 0) {
+            return <AddMealButton title='Add Meal' />
+        }
+        return <></>
+    }
     return (
-        <div className='flex w-full flex-col items-center justify-start'>
+        <div className='flex w-full flex-row items-center justify-start'>
 
             {displayTitle()}
 
@@ -62,7 +78,7 @@ function PlanerList({ listId, listType, planerItem, isMealList = false }: Props)
                                     }
                                 </Draggable>
                             ))}
-                            {isMealList ? <AddMealButton title='Remove' /> : <AddMealButton title='Add Meal' />}
+                            {displayPlaceholder()}
 
                             {dropProvided.placeholder}
                         </div>

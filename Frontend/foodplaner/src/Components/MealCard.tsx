@@ -26,7 +26,7 @@ function MealCard({ mealID, index }: Props) {
     return (
 
         <div
-            className='m-2 px-4 py-1 flex flex-row justify-center items-center rounded-md truncate bg-slate-300'>
+            className='m-2 px-4 py-1 h-full flex flex-row justify-center items-center rounded-md font-semibold truncate border border-solid border-gray-400 bg-white'>
             {meal?.title}
         </div>
 
