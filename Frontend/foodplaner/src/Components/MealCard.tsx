@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { MealService } from '../Endpoints/MealService';
 import { Meal } from '../Datatypes/Meal';
-import { Draggable } from 'react-beautiful-dnd';
+import { GrDrag } from 'react-icons/gr'
+
 
 type Props = {
     mealID: string
@@ -25,9 +26,13 @@ function MealCard({ mealID, index }: Props) {
 
     return (
 
-        <div
-            className='m-2 px-4 py-1 h-full flex flex-row justify-center items-center rounded-md font-semibold truncate border border-solid border-gray-400 bg-white'>
-            {meal?.title}
+        <div className='mx-2 my-1 px-4 select-none py-2 h-full flex flex-row justify-between items-center rounded-md font-semibold truncate border border-solid border-gray-400 bg-white'>
+            <GrDrag className='text-gray-400' />
+            <h3 className='text-center whitespace-normal font-medium text-sm'>
+                {meal?.title}
+
+            </h3>
+            <div></div>
         </div>
 
 

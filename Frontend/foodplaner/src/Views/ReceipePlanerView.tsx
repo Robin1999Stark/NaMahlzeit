@@ -3,15 +3,25 @@ import { PlanerService } from '../Endpoints/PlanerService'
 import { FoodPlaner, FoodplanerItem } from '../Datatypes/Meal'
 import { DragDropContext } from 'react-beautiful-dnd'
 import { mealListID } from '../App'
-import MealList from '../Components/MealList'
 import PlanerList from '../Components/PlanerList'
 import { MealService } from '../Endpoints/MealService'
 import { reorderPlan } from '../reorder'
+import PlanerResourceCol from '../Components/PlanerResourceCol'
+import { start } from 'repl'
 
 
 function ReceipePlanerView() {
 
     const [planer, setPlaner] = useState<FoodPlaner>({})
+    const [timeSpan, setTimeSpan] = useState<{ start: Date, end: Date }>({ start: new Date(Date.now()), end: new Date(Date.now()) });
+
+
+    async function updateTimeSpan(from: Date, to: Date): Promise<[start: Date, end: Date]> {
+        const start = new Date(from);
+        const end = new Date(to);
+        setTimeSpan({ start: start, end: end });
+        return [start, end];
+    }
 
     useEffect(() => {
 
@@ -62,7 +72,8 @@ function ReceipePlanerView() {
                 const data: FoodplanerItem[] = await PlanerService.getAllPlanerItems();
                 const end = new Date();
                 end.setDate(end.getDate() + 13);
-                const filledData: FoodplanerItem[] = await fillWithEmptyDays(data, new Date(Date.now()), end);
+                const [from, to] = await updateTimeSpan(new Date(Date.now()), end);
+                const filledData: FoodplanerItem[] = await fillWithEmptyDays(data, from, to);
                 const foodPlaner = createFoodPlaner(filledData);
                 await addMealList(foodPlaner)
                 setPlaner(foodPlaner);
@@ -74,36 +85,39 @@ function ReceipePlanerView() {
         fetchData()
     }, [])
     return (
+        <div className='flex flex-col justify-start items-start'>
+            <h2>
+                <button onClick={() => updateTimeSpan(new Date('2023-12-01'), new Date(Date.now()))}>
+                    Last Week
+                </button>
+                This Week
+            </h2>
 
-        <DragDropContext onDragEnd={({ destination, source }) => {
-            if (!destination)
-                return;
-            setPlaner(reorderPlan(planer, source, destination));
-        }}>
-            <div className='flex flex-col justify-between'>
-                <div className='my-6 mx-4 w-full grid grid-flow-row grid-cols-5 gap-3 justify-between'>
-                    {Object.entries(planer).slice(0, -1).map(([key, value]) => (
-                        <PlanerList
-                            internalScroll
-                            key={key}
-                            listId={key}
-                            listType='LIST'
-                            planerItem={value}
-                        />
-                    ))}
+            <DragDropContext onDragEnd={({ destination, source }) => {
+                if (!destination)
+                    return;
+                setPlaner(reorderPlan(planer, source, destination));
+            }}>
+                <div className='flex flex-row justify-between'>
+                    <div className='my-6 mx-4 w-[70%] grid grid-flow-row grid-cols-3 gap-3 justify-between'>
+                        {Object.entries(planer).slice(0, -1).map(([key, value]) => (
+                            <PlanerList
+                                internalScroll
+                                key={key}
+                                listId={key}
+                                listType='LIST'
+                                planerItem={value}
+                            />
+                        ))}
+                    </div>
+                    <div className='w-[30%] my-6 h-full'>
+                        <PlanerResourceCol mealListID={mealListID} />
+                    </div>
                 </div>
-                <div className='w-[15%] my-6 h-full'>
-                    <MealList
-                        internalScroll
-                        key={mealListID}
-                        listId={mealListID}
-                        listType='LIST'
-                    />
 
-                </div>
-            </div>
+            </DragDropContext>
 
-        </DragDropContext>
+        </div>
 
     );
 }
