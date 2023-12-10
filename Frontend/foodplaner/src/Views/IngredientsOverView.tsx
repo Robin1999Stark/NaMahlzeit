@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Ingredient, Meal } from '../Datatypes/Meal'
 import { IngredientService } from '../Endpoints/IngredientService'
+import PrimaryButton from '../Components/PrimaryButton'
 
 function IngredientsOverView() {
     const [ingredients, setIngredients] = useState<Ingredient[]>()
+    const navigate = useNavigate();
     async function fetchData() {
         try {
             const data = await IngredientService.getAllIngredients()
@@ -34,9 +36,7 @@ function IngredientsOverView() {
                 <h1 className='truncate mx-5 my-5 text-2xl font-semibold'>
                     Ingredients
                 </h1>
-                <div className='bg-slate-600 my-3 px-3 rounded-md text-white text-base font-semibold flex flex-row items-center justify-center'>
-                    <Link to={'/ingredients/create'}>+ Create Ingredient</Link>
-                </div>
+                <PrimaryButton onClick={() => navigate('/ingredients/create')} title='+ Create Ingredient' />
             </div>
 
             <ul className='mx-5'>

@@ -89,7 +89,7 @@ function CreateIngredient() {
                 </div>
                 <div className='w-100 my-4 flex flex-1 justify-center align-middle'>
                     <div className='mb-4 mx-6'>
-                        <button className='p-2 bg-slate-500 text-white px-4 rounded-md text-lg' type='submit'>Save and Return</button>
+                        <button className='p-2 bg-[#181818] text-white px-4 rounded-md text-lg' type='submit'>Save and Return</button>
                     </div>
 
                 </div>

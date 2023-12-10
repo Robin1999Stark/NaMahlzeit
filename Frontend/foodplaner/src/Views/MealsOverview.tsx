@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Ingredient, Meal } from '../Datatypes/Meal'
-import { IngredientService } from '../Endpoints/IngredientService'
 import { MealService } from '../Endpoints/MealService'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import PrimaryButton from '../Components/PrimaryButton';
 
 function MealsOverview() {
-
-    const [meals, setMeals] = useState<Meal[]>()
+    const navigate = useNavigate();
+    const [meals, setMeals] = useState<Meal[]>();
     async function fetchData() {
         try {
             const data = await MealService.getAllMeals()
@@ -36,9 +36,7 @@ function MealsOverview() {
                 <h1 className='truncate mx-5 my-5 text-2xl font-semibold'>
                     Meals
                 </h1>
-                <div className='bg-slate-600 my-3 px-3 rounded-md text-white text-base font-semibold flex flex-row items-center justify-center'>
-                    <Link to={'/meals/create'}>+ Create Meal</Link>
-                </div>
+                <PrimaryButton title='+ Create Meal' onClick={() => navigate('/meals/create')} />
             </div>
 
             <ul className='mx-5'>
