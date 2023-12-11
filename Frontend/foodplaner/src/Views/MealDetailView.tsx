@@ -48,27 +48,27 @@ function MealDetailView() {
 
     return (
         <>
-            <div className='flex flex-wrap mt-12'>
-                <div className="w-full md:w-1/2 lg:w-1/2 xl:w-1/2 p-4 flex flex-row justify-center items-start">
-                    <div className='w-full max-w-[42rem] min-w-[200px]'>
+            <div className='flex flex-wrap mt-12 w-full rounded-sm min-w-[200px] bg-[#1E1E1E]'>
+                <div className="w-full md:w-1/2 lg:w-1/2 xl:w-1/2 p-4 flex flex-row justify-start items-start">
+                    <div className='w-full max-w-[42rem] '>
                         <PlaceholderMealImage />
                     </div>
 
                 </div>
                 <div className="w-full md:w-1/2 lg:w-1/2 xl:w-1/2 p-4 min-w-[200px]">
-                    <h1 className='truncate mx-5 my-5 text-2xl font-semibold'>
+                    <h1 className='truncate text-[#EBECF4] mx-5 my-5 text-2xl font-semibold'>
                         {meal?.title}
                     </h1>
-                    <blockquote className='mx-6 mb-6 text-base font-medium text-[#3E4C62]'>
+                    <blockquote className='mx-6 mb-6 text-base font-medium text-[#CED0E0]'>
                         {meal?.description}
                     </blockquote>
-                    <div className='bg-[#D6D9DE] text-[#272727] py-3 rounded-lg min-w-[200px]'>
-                        <h3 className='truncate mx-5 my-2 text-lg font-bold text-[#181818]'>
+                    <div className=' text-[#EBECF4] py-3 rounded-lg min-w-[200px]'>
+                        <h3 className='truncate mx-5 my-2 text-lg font-bold text-[#CED0E0]'>
                             Ingredients:
                         </h3>
                         {
                             mealIngredients ?
-                                <ul className='mx-5 h-full my-2 text-[#1F2632]'>
+                                <ul className='mx-5 h-full my-2 text-[#CED0E0]'>
                                     {mealIngredients?.map(ingredient => (
                                         <li key={ingredient.ingredient + Math.random()} className='px-3 py-1 w-full flex flex-row text-base font-semibold justify-between'>
                                             <Link to={`/ingredients/${ingredient.ingredient}`}>{ingredient.ingredient}</Link>
@@ -80,37 +80,34 @@ function MealDetailView() {
                     </div>
 
                 </div>
-                <div className='p-4 mx-4 w-full flex flex-col justify-start items-center'>
-                    <article className='my-6'>
-                        <h2 className='text-xl mb-2 font-semibold text-center'>
-                            Step 1:
-                        </h2>
-                        <p className='text-base text-center font-medium text-[#3E4C62]'>
-                            Lorem ipsum dolor sit amet consectetur. Amet enim venenatis adipiscing mauris eget nullam felis semper. Sapien et urna viverra habitasse proin turpis ultrices in. Id scelerisque at tempus et elementum malesuada augue. Feugiat libero eu nulla enim natoque urna vel.
-                        </p>
-                    </article>
-                    <article className='my-6'>
-                        <h2 className='text-xl mb-2 font-semibold text-center'>
-                            Step 2:
-                        </h2>
-                        <p className='text-base text-center font-medium text-[#3E4C62]'>
-                            Lorem ipsum dolor sit amet consectetur. Amet enim venenatis adipiscing mauris eget nullam felis semper. Sapien et urna viverra habitasse proin turpis ultrices in. Id scelerisque at tempus et elementum malesuada augue. Feugiat libero eu nulla enim natoque urna vel.
-                        </p>
-                    </article>
-                    <article className='my-6'>
-                        <h2 className='text-xl mb-2 font-semibold text-center'>
-                            Step 3:
-                        </h2>
-                        <p className='text-base text-center font-medium text-[#3E4C62]'>
-                            Lorem ipsum dolor sit amet consectetur. Amet enim venenatis adipiscing mauris eget nullam felis semper. Sapien et urna viverra habitasse proin turpis ultrices in. Id scelerisque at tempus et elementum malesuada augue. Feugiat libero eu nulla enim natoque urna vel.
-                        </p>
-                    </article>
-
-                </div>
-
+            </div>
+            <div className='p-4 w-full flex flex-col justify-start items-center min-w-[200px]'>
+                <article className='my-6'>
+                    <h2 className='text-xl mb-2 font-semibold text-center'>
+                        Step 1:
+                    </h2>
+                    <p className='text-base text-center font-medium text-[#3E4C62]'>
+                        Lorem ipsum dolor sit amet consectetur. Amet enim venenatis adipiscing mauris eget nullam felis semper. Sapien et urna viverra habitasse proin turpis ultrices in. Id scelerisque at tempus et elementum malesuada augue. Feugiat libero eu nulla enim natoque urna vel.
+                    </p>
+                </article>
+                <article className='my-6'>
+                    <h2 className='text-xl mb-2 font-semibold text-center'>
+                        Step 2:
+                    </h2>
+                    <p className='text-base text-center font-medium text-[#3E4C62]'>
+                        Lorem ipsum dolor sit amet consectetur. Amet enim venenatis adipiscing mauris eget nullam felis semper. Sapien et urna viverra habitasse proin turpis ultrices in. Id scelerisque at tempus et elementum malesuada augue. Feugiat libero eu nulla enim natoque urna vel.
+                    </p>
+                </article>
+                <article className='my-6'>
+                    <h2 className='text-xl mb-2 font-semibold text-center'>
+                        Step 3:
+                    </h2>
+                    <p className='text-base text-center font-medium text-[#3E4C62]'>
+                        Lorem ipsum dolor sit amet consectetur. Amet enim venenatis adipiscing mauris eget nullam felis semper. Sapien et urna viverra habitasse proin turpis ultrices in. Id scelerisque at tempus et elementum malesuada augue. Feugiat libero eu nulla enim natoque urna vel.
+                    </p>
+                </article>
 
             </div>
-
         </>
     )
 }

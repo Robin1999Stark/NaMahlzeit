@@ -5,7 +5,7 @@ import { MdClose } from "react-icons/md";
 
 function NavBar() {
 
-    const SIZE_MOBILE = 560;
+    const SIZE_MOBILE = 600;
 
     const componentRef = useRef<HTMLDivElement>(null);
     const [windowSize, setWindowSize] = useState({
@@ -58,7 +58,7 @@ function NavBar() {
     };
     if (windowSize.width > SIZE_MOBILE) {
         return (
-            <nav className='flex flex-row h-14 bg-[#181818] z-10 items-center justify-between shadow-md w-full'>
+            <nav className='flex flex-row h-20 bg-[#181818] z-10 items-center justify-between shadow-md w-full'>
                 <div>
 
                 </div>
@@ -66,7 +66,7 @@ function NavBar() {
                 <div className='w-[60%] flex flex-row justify-end items-center mr-8'>
                     {navItems.map((item) => (
                         <Link to={item.link}>
-                            <div className='h-full text-lg mx-4 font-normal text-white rounded-md hover:bg-[#fff] hover:text-[#181818]' key={item.title}>
+                            <div className='h-full text-lg px-4 py-2 font-semibold text-[#EBECF4] rounded-sm hover:bg-[#fff1] hover:ring-2 ring-[#FFC200]  hover:text-[#FFC200]' key={item.title}>
                                 {item.title}
                             </div>
                         </Link>
@@ -80,48 +80,54 @@ function NavBar() {
     } else {
 
         return (
-            <nav className='flex flex-row h-14 bg-[#181818] z-10 justify-between shadow-md w-full'>
-                {
-                    open ?
-                        <button
-                            className='text-3xl text-white p-4'
-                            onClick={(event) => {
-                                event.stopPropagation();
-                                setOpen(!open)
-                            }}>
-                            <MdClose />
 
-                        </button>
-                        :
-                        <button
-                            className='text-3xl text-white p-4'
-                            onClick={(event) => {
-                                event.stopPropagation();
-                                setOpen(!open)
-                            }}>
-                            <RxHamburgerMenu />
-                        </button>
-                }
+            <>
+                <nav className='flex flex-row fixed h-20 bg-[#181818] z-10 justify-between shadow-md w-full'>
+                    {
+                        open ?
+                            <button
+                                className='text-3xl hover:fill-[#FFC200] text-[#EBECF4] p-4'
+                                onClick={(event) => {
+                                    event.stopPropagation();
+                                    setOpen(!open)
+                                }}>
+                                <MdClose />
 
-                {
-                    open ?
-                        <div
-                            ref={componentRef}
-                            onClick={handleComponentClick}
-                            className='bg-white absolute z-10 m-2 top-14 h-fit w-fit shadow-md'>
-                            {
-                                navItems.map((item) => (
-                                    <Link to={item.link}>
-                                        <div className='px-6 py-2 m-3 text-lg font-normal rounded-md hover:bg-[#181818] hover:text-white' key={item.title}>
-                                            {item.title}
-                                        </div>
-                                    </Link>
-                                ))
-                            }
-                        </div> : <></>
-                }
+                            </button>
+                            :
+                            <button
+                                className='text-3xl text-[#EBECF4] p-4'
+                                onClick={(event) => {
+                                    event.stopPropagation();
+                                    setOpen(!open)
+                                }}>
+                                <RxHamburgerMenu />
+                            </button>
+                    }
 
-            </nav>
+                    {
+                        open ?
+                            <div
+                                ref={componentRef}
+                                onClick={handleComponentClick}
+                                className='bg-[#EBECF4] absolute z-10 m-2 top-20 h-fit w-fit shadow-md'>
+                                {
+                                    navItems.map((item) => (
+                                        <Link to={item.link}>
+                                            <div className='px-6 py-2 m-3 text-lg font-normal rounded-md hover:bg-[#181818] hover:text-[#EBECF4]' key={item.title}>
+                                                {item.title}
+                                            </div>
+                                        </Link>
+                                    ))
+                                }
+                            </div> : <></>
+                    }
+
+                </nav>
+                <div className='h-20'>
+
+                </div>
+            </>
         )
     }
 
