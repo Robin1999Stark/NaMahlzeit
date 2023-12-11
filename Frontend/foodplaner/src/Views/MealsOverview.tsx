@@ -34,7 +34,6 @@ function MealsOverview() {
     }
 
     function searchForMeals(search: string) {
-        console.log(search)
         if (search === undefined || search === null || search === "") {
             setFilteredMeals(meals);
         } else {

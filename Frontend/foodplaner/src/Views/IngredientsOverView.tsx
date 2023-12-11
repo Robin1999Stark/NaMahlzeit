@@ -36,7 +36,6 @@ function IngredientsOverView() {
     }
 
     function searchForIngredients(search: string) {
-        console.log(search)
         if (search === undefined || search === null || search === "") {
             setFilteredIngredients(ingredients);
         } else {
@@ -50,13 +49,15 @@ function IngredientsOverView() {
     return (
         <>
             <div className='w-full my-4 flex flex-row justify-center'>
-                <input type="text" value={searchString}
+                <input
+                    type="text"
+                    value={searchString}
                     onChange={(e) => {
                         setSearchString(e.target.value);
                         searchForIngredients(e.target.value.trim());
                     }}
-                    className='bg-[#F2F2F2] w-1/2 py-3 px-4 rounded-md m-3'
-                    placeholder='Search for Meals' />
+                    className='bg-[#F2F2F2] w-1/2 py-3 px-4 placeholder:text-center placeholder:text-[#A7B1C1] rounded-md m-3'
+                    placeholder='Search for Ingredients' />
                 <PrimaryButton title='Filter' onClick={() => searchForIngredients(searchString)} />
             </div>
             <div className='flex flex-row justify-between w-full'>
