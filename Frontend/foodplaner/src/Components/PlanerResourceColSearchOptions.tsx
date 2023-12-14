@@ -1,20 +1,38 @@
 import React from 'react'
+import { Meal } from '../Datatypes/Meal';
 
-function PlanerResourceColSearchOptions() {
+type Props = {
+    meals: Meal[],
+    setMeals: React.Dispatch<React.SetStateAction<Meal[]>>,
+    shuffleFkt: ((meals: Meal[], numberOfResults: number) => Meal[]) | undefined,
+    setShuffleFkt: React.Dispatch<React.SetStateAction<((meals: Meal[], numberOfResults: number) => Meal[]) | undefined>>
+}
+
+function PlanerResourceColSearchOptions({ meals, setMeals, shuffleFkt, setShuffleFkt }: Props) {
+
+    function shuffleFromAll(meals: Meal[], numberOfResults: number): Meal[] {
+        const shuffled = meals.sort((a, b) => 0.5 - Math.random());
+        return shuffled;
+    }
+
+    function shuffleFromLibrary(meals: Meal[], numberOfResults: number): Meal[] {
+        const shuffled = meals.sort((a, b) => 0.5 - Math.random());
+        return shuffled;
+    }
 
     const options = [
-        { title: 'Random Shuffle', icon: <></> },
-        { title: '', icon: <></> },
-        { title: 'Random Shuffle', icon: <></> },
-        { title: 'Random Shuffle', icon: <></> },
+        { title: 'Random Shuffle', icon: <></>, fkt: shuffleFromAll },
+        { title: 'Random Shuffle', icon: <></>, fkt: shuffleFromLibrary },
     ];
-
 
     return (
         <>
-            {options.map(opt => <div>
+            {options.map(opt => <button
+                onClick={() => {
+                    setShuffleFkt(opt.fkt);
+                }} className='bg-slate-500 m-2 p-1'>
                 {opt.title}
-            </div>)}
+            </button>)}
         </>
     )
 }

@@ -11,22 +11,13 @@ interface Props {
     internalScroll?: boolean,
     isCombinedEnabled?: boolean,
     isMealList?: boolean,
+    meals: Meal[],
+    setMeals: React.Dispatch<React.SetStateAction<Meal[]>>,
 };
 
-function MealList({ listId, listType, internalScroll }: Props) {
-    const [meals, setMeals] = useState<Meal[]>([])
+function MealList({ listId, listType, internalScroll, meals, setMeals }: Props) {
 
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const data: Meal[] = await MealService.getAllMeals();
-                setMeals(data)
-            } catch (error) {
-                console.error('Error fetching planer:', error);
-            }
-        }
-        fetchData()
-    }, [])
+
 
     return (
         <div className='flex w-full flex-col items-center justify-start'>

@@ -71,7 +71,7 @@ function ReceipePlanerView() {
             try {
                 const data: FoodplanerItem[] = await PlanerService.getAllPlanerItems();
                 const end = new Date();
-                end.setDate(end.getDate() + 13);
+                end.setDate(end.getDate() + 17);
                 const [from, to] = await updateTimeSpan(new Date(Date.now()), end);
                 const filledData: FoodplanerItem[] = await fillWithEmptyDays(data, from, to);
                 const foodPlaner = createFoodPlaner(filledData);
@@ -98,8 +98,8 @@ function ReceipePlanerView() {
                     return;
                 setPlaner(reorderPlan(planer, source, destination));
             }}>
-                <div className='flex flex-row justify-between'>
-                    <div className='my-6 mx-4 w-[70%] grid grid-flow-row grid-cols-3 gap-3 justify-between'>
+                <div className='flex flex-row h-full justify-between'>
+                    <div className='my-6 mx-4 h-full w-[70%] grid grid-cols-3 grid-rows-6 grid-flow-col gap-3'>
                         {Object.entries(planer).slice(0, -1).map(([key, value]) => (
                             <PlanerList
                                 internalScroll

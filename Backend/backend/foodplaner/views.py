@@ -39,7 +39,7 @@ def get_all_mealingredients_from_meals(request):
 def get_all_meals_on_planer(request):
 
     start = date(2023, 12, 5)
-    end = date(2023, 12, 10)
+    end = date(2023, 12, 24)
 
     planer_in_timeslot = FoodPlanerItem.objects.filter(date__range=[
                                                        start, end])
