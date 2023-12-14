@@ -67,7 +67,7 @@ function MealsOverview() {
             <ul className='mx-5'>
                 {filteredMeals ? filteredMeals?.map((meal, index) => {
                     let prefix = <></>;
-                    const firstChar = meal.title.charAt(0);
+                    const firstChar = meal.title.charAt(0).toUpperCase();
 
                     if (index === 0) {
                         prefix = <li className='p-2 font-semibold text-lg text-[#74768C]' key={prefix + firstChar}>
@@ -76,7 +76,7 @@ function MealsOverview() {
                         </li>
                     } else if (index > 0) {
                         const lastElement = filteredMeals[index - 1];
-                        if (lastElement.title.charAt(0) !== firstChar) {
+                        if (lastElement.title.charAt(0).toUpperCase() !== firstChar) {
                             prefix = <li className='p-2 font-semibold text-lg text-[#74768C]' key={prefix + firstChar}>
                                 - {firstChar.toUpperCase()} -
                             </li>

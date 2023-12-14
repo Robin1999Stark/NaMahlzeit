@@ -5,6 +5,7 @@ import { MealService } from '../Endpoints/MealService'
 import { Link } from 'react-router-dom'
 import { MealIngredientService } from '../Endpoints/MealIngredientService'
 import PlaceholderMealImage from '../Components/PlaceholderMealImage'
+import URLify from '../Helperfunctions/urlify'
 
 function MealDetailView() {
     const { mealID } = useParams()
@@ -60,7 +61,11 @@ function MealDetailView() {
                         {meal?.title}
                     </h1>
                     <blockquote className='mx-6 mb-6 text-base font-medium text-[#CED0E0]'>
-                        {meal?.description}
+                        {meal?.description ?
+                            <URLify text={meal?.description} /> :
+                            <></>
+                        }
+
                     </blockquote>
                     <div className=' text-[#EBECF4] py-3 rounded-lg min-w-[200px]'>
                         <h3 className='truncate mx-5 my-2 text-lg font-bold text-[#CED0E0]'>

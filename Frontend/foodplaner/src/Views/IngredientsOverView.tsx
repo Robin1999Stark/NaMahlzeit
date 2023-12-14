@@ -70,7 +70,7 @@ function IngredientsOverView() {
             <ul className='mx-5'>
                 {filteredIngredients ? filteredIngredients?.map((ingredient, index) => {
                     let prefix = <></>;
-                    const firstChar = ingredient.title.charAt(0);
+                    const firstChar = ingredient.title.charAt(0).toUpperCase();
 
                     if (index === 0) {
                         prefix = <li className='p-2 font-semibold text-lg text-[#74768C]' key={prefix + firstChar}>
@@ -79,7 +79,7 @@ function IngredientsOverView() {
                         </li>
                     } else if (index > 0) {
                         const lastElement = filteredIngredients[index - 1];
-                        if (lastElement.title.charAt(0) !== firstChar) {
+                        if (lastElement.title.charAt(0).toUpperCase() !== firstChar) {
                             prefix = <li className='p-2 font-semibold text-lg text-[#74768C]' key={prefix + firstChar}>
                                 - {firstChar.toUpperCase()} -
                             </li>

@@ -88,6 +88,8 @@ export namespace MealService {
             title: title,
             description: description,
             ingredients: ingredients,
+            duration: 45,
+            preparation: "Test",
         }
         try {
             let response = await instance.post('/create-meal/', JSON.stringify(requestBody), {

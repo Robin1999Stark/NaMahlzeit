@@ -50,7 +50,8 @@ class MealIngredientSerializer(serializers.ModelSerializer):
 class MealSerializerNoAmounts(serializers.ModelSerializer):
     class Meta:
         model = Meal
-        fields = ['id', 'title', 'description', 'ingredients']
+        fields = ['id', 'title', 'description',
+                  'ingredients', 'duration', 'preparation']
 
 
 class MealSerializer(serializers.ModelSerializer):
@@ -58,7 +59,8 @@ class MealSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Meal
-        fields = ['id', 'title', 'description', 'ingredients']
+        fields = ['id', 'title', 'description',
+                  'ingredients', 'duration', 'preparation']
 
     def create(self, validated_data):
         ingredients_data = validated_data.pop('ingredients')
@@ -85,7 +87,8 @@ class MealSerializer(serializers.ModelSerializer):
 class MealListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Meal
-        fields = ['id', 'title', 'description', 'ingredients']
+        fields = ['id', 'title', 'description',
+                  'ingredients', 'duration', 'preparation']
 
 
 class FoodPlanerItemSerializer(serializers.ModelSerializer):

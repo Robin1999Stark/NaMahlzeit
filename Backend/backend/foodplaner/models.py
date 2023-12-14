@@ -39,6 +39,8 @@ class Meal(models.Model):
     description = models.TextField(null=True, max_length=500)
     ingredients = models.ManyToManyField(
         Ingredient, blank=True, through='MealIngredient', through_fields=("meal", "ingredient"))
+    duration = models.PositiveSmallIntegerField(default=0)
+    preparation = models.TextField(null=True, blank=True)
 
 
 class MealIngredient(models.Model):

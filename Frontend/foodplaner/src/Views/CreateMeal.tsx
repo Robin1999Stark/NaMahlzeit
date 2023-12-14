@@ -46,7 +46,7 @@ function CreateMeal() {
     const onSubmit = (data: MealWithIngredientAmount) => {
         try {
             MealService.createMealWithAmounts({
-                title: data.title, description: data.title, ingredients: data.ingredients
+                title: data.title, description: data.description, ingredients: data.ingredients
             })
         } catch (error) {
             console.log(error)
