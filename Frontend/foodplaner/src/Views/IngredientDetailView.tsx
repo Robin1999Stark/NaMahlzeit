@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { Ingredient, Meal } from '../Datatypes/Meal'
 import { MealService } from '../Endpoints/MealService'
 import { IngredientService } from '../Endpoints/IngredientService'
+import URLify from '../Helperfunctions/urlify'
 
 function IngredientDetailView() {
     const { ingredientID } = useParams()
@@ -28,7 +29,7 @@ function IngredientDetailView() {
                 {ingredient?.title}
             </h1>
             <blockquote className='mx-5 mb-4'>
-                {ingredient?.description}
+                {ingredient?.description ? <URLify text={ingredient?.description} /> : <></>}
             </blockquote>
         </>
     )

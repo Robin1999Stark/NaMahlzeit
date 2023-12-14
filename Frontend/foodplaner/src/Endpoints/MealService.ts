@@ -81,15 +81,17 @@ export namespace MealService {
         title: string;
         description: string;
         ingredients: IngredientAmount[];
+        preparation: string;
+        duration: number;
     }
-    export async function createMealWithAmounts({ title, description, ingredients }: CreateMealAmountInterface): Promise<Meal | null> {
+    export async function createMealWithAmounts({ title, description, ingredients, preparation, duration }: CreateMealAmountInterface): Promise<Meal | null> {
 
         const requestBody = {
             title: title,
             description: description,
             ingredients: ingredients,
-            duration: 45,
-            preparation: "Test",
+            duration: duration,
+            preparation: preparation,
         }
         try {
             let response = await instance.post('/create-meal/', JSON.stringify(requestBody), {

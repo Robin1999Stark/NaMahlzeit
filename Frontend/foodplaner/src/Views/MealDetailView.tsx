@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom'
 import { MealIngredientService } from '../Endpoints/MealIngredientService'
 import PlaceholderMealImage from '../Components/PlaceholderMealImage'
 import URLify from '../Helperfunctions/urlify'
+import { LuClock } from "react-icons/lu";
+import { PlanerService } from '../Endpoints/PlanerService'
 
 function MealDetailView() {
     const { mealID } = useParams()
@@ -13,7 +15,15 @@ function MealDetailView() {
     const [meal, setMeal] = useState<Meal>()
     const [error, setError] = useState<string>("")
     const [mealIngredients, setMealIngredients] = useState<IngredientAmount[]>([])
+    const [isPlanned, setIsPlanned] = useState<PlanerService.IsPlannedResponse>();
 
+    function displayIsPlanned() {
+        if (isPlanned && isPlanned.isPlanned) {
+            return <p aria-label='planned for' className='text-[#FFC200] mx-5 font-semibold p-1 ring-1 ring-[#FFC200] text-center text-sm w-24 rounded-full'>{new Date(isPlanned.plannedDate!).toLocaleDateString()}</p>
+        } else {
+            return <p>is not planned</p>
+        }
+    }
     useEffect(() => {
 
         async function fetchMeal() {
@@ -35,13 +45,22 @@ function MealDetailView() {
                 console.log(e)
             }
         }
-        async function fetchAllData() {
+
+        async function checkIsPlanned(mealId: string) {
             try {
-                await fetchMeal();
-                await fetchMealIngredients();
-            } catch (e) {
-                console.log(e)
+                const response = await PlanerService.isPlanned(Number(mealId));
+                return response;
+            } catch (error) {
+                console.error(error)
             }
+            return null;
+        }
+        async function fetchAllData() {
+            fetchMeal();
+            fetchMealIngredients();
+            const planned = await checkIsPlanned(mealID!);
+            if (!planned) return;
+            setIsPlanned(planned);
         }
         fetchAllData()
 
@@ -56,10 +75,15 @@ function MealDetailView() {
                     </div>
 
                 </div>
-                <div className="w-full md:w-1/2 lg:w-1/2 xl:w-1/2 p-4 min-w-[200px]">
-                    <h1 className='truncate text-[#EBECF4] mx-5 my-5 text-2xl font-semibold'>
+                <div className="w-full md:w-1/2 flex flex-col justify-between h-full lg:w-1/2 xl:w-1/2 p-4 min-w-[200px]">
+
+                    <h1 className='truncate flex flex-row flex-wrap justify-between h-full items-center text-[#EBECF4] mx-5 my-3 text-2xl font-semibold'>
                         {meal?.title}
+                        {
+                            displayIsPlanned()
+                        }
                     </h1>
+
                     <blockquote className='mx-6 mb-6 text-base font-medium text-[#CED0E0]'>
                         {meal?.description ?
                             <URLify text={meal?.description} /> :
@@ -84,31 +108,26 @@ function MealDetailView() {
                         }
                     </div>
 
+
                 </div>
             </div>
             <div className='p-4 w-full flex flex-col justify-start items-center min-w-[200px]'>
+                <div className='flex w-full text-[#3E4C62] py-3 flex-row justify-end'>
+                    <div className='ml-5 flex flex-row justify-end items-center'>
+                        <LuClock />
+                        <p className='ml-2 font-semibold'>
+                            {meal?.duration} min
+
+                        </p>
+
+                    </div>
+                </div>
                 <article className='my-6'>
                     <h2 className='text-xl mb-2 font-semibold text-center'>
-                        Step 1:
+                        Preparation:
                     </h2>
                     <p className='text-base text-center font-medium text-[#3E4C62]'>
-                        Lorem ipsum dolor sit amet consectetur. Amet enim venenatis adipiscing mauris eget nullam felis semper. Sapien et urna viverra habitasse proin turpis ultrices in. Id scelerisque at tempus et elementum malesuada augue. Feugiat libero eu nulla enim natoque urna vel.
-                    </p>
-                </article>
-                <article className='my-6'>
-                    <h2 className='text-xl mb-2 font-semibold text-center'>
-                        Step 2:
-                    </h2>
-                    <p className='text-base text-center font-medium text-[#3E4C62]'>
-                        Lorem ipsum dolor sit amet consectetur. Amet enim venenatis adipiscing mauris eget nullam felis semper. Sapien et urna viverra habitasse proin turpis ultrices in. Id scelerisque at tempus et elementum malesuada augue. Feugiat libero eu nulla enim natoque urna vel.
-                    </p>
-                </article>
-                <article className='my-6'>
-                    <h2 className='text-xl mb-2 font-semibold text-center'>
-                        Step 3:
-                    </h2>
-                    <p className='text-base text-center font-medium text-[#3E4C62]'>
-                        Lorem ipsum dolor sit amet consectetur. Amet enim venenatis adipiscing mauris eget nullam felis semper. Sapien et urna viverra habitasse proin turpis ultrices in. Id scelerisque at tempus et elementum malesuada augue. Feugiat libero eu nulla enim natoque urna vel.
+                        {meal?.preparation ? <URLify text={meal.preparation} /> : "No Preparation found"}
                     </p>
                 </article>
 

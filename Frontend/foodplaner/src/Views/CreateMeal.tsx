@@ -46,7 +46,11 @@ function CreateMeal() {
     const onSubmit = (data: MealWithIngredientAmount) => {
         try {
             MealService.createMealWithAmounts({
-                title: data.title, description: data.description, ingredients: data.ingredients
+                title: data.title,
+                description: data.description,
+                ingredients: data.ingredients,
+                preparation: data.preparation,
+                duration: data.duration,
             })
         } catch (error) {
             console.log(error)
@@ -158,6 +162,40 @@ function CreateMeal() {
                             {errors.ingredients && (
                                 <p className="text-red-500">Please enter ingredient IDs for all fields.</p>
                             )}
+                        </li>
+                        <li key={"li-prep"} className='flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3'>
+                            <label
+                                htmlFor='preparation'
+                                className={`text-xs truncate text-left align-middle mb-3`} >
+                                Preparation:
+                            </label>
+                            <input
+                                type='text'
+                                id='preparation'
+                                {...register("preparation", {
+                                    required: false,
+                                })}
+                                defaultValue={"Step 1"}
+                                className="border-slate-200 truncate text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
+                        </li>
+                        <li key={"li-duration"} className='flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3'>
+                            <label
+                                htmlFor='duration'
+                                className={`text-xs truncate text-left align-middle mb-3`} >
+                                Duration in min:
+                            </label>
+                            <input
+                                type='number'
+                                id='duration'
+                                step={1}
+                                {...register("duration", {
+                                    required: true,
+                                    valueAsNumber: true,
+                                    min: 0,
+                                    max: 1000,
+                                })}
+                                defaultValue={10}
+                                className="border-slate-200 truncate text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
                         </li>
                     </ul>
                 </div>

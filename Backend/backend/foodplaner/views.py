@@ -7,6 +7,23 @@ from rest_framework import status
 from .serializers import MealSerializerNoAmounts, MealSerializer, MealListSerializer, ShoppingListItemSerializer, ShoppingListSerializer
 from django.http import JsonResponse
 from datetime import datetime, date
+from django.shortcuts import get_object_or_404
+
+
+def is_planned(request, meal_pk):
+    meal = get_object_or_404(Meal, id=meal_pk)
+
+    today = date.today()
+    planned_items = FoodPlanerItem.objects.filter(meals=meal, date__gte=today)
+
+    if planned_items.exists():
+        planned_date = planned_items.first().date
+        response_data = {'is_planned': True, 'planned_date': planned_date}
+    else:
+        response_data = {'is_planned': False, 'planned_date': None}
+
+    # Return a JSON response indicating whether the meal is planned and its date
+    return JsonResponse(response_data)
 
 
 def get_all_mealingredients_from_planer(request):

@@ -42,16 +42,20 @@ export class MealWithIngredientAmount {
     title: string;
     description: string;
     ingredients: IngredientAmount[];
+    duration: number;
+    preparation: string;
 
-    constructor(id: number, title: string, description: string, ingredients: IngredientAmount[]) {
+    constructor(id: number, title: string, description: string, ingredients: IngredientAmount[], duration: number, preparation: string) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.ingredients = ingredients;
+        this.duration = duration;
+        this.preparation = preparation;
     }
 
     static fromJSON(json: any): MealWithIngredientAmount {
-        return new MealWithIngredientAmount(json.id, json.title, json.description, json.ingredients);
+        return new MealWithIngredientAmount(json.id, json.title, json.description, json.ingredients, json.duration, json.preparation);
     }
 
 }
