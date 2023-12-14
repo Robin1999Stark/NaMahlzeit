@@ -68,13 +68,36 @@ function IngredientsOverView() {
             </div>
 
             <ul className='mx-5'>
-                {filteredIngredients ? filteredIngredients?.map(Ingredient => (
-                    <li key={Ingredient.title} className='p-2 flex flex-row justify-between'>
-                        <Link to={`/ingredients/${Ingredient.title}`}>{Ingredient.title}</Link>
-                        <button onClick={() => deleteIngredient(Ingredient.title)} className='px-3 bg-red-400 py-1 rounded-md text-white text-base font-semibold flex flex-row items-center justify-center'>
-                            x
-                        </button>
-                    </li>)) : <h1>Loading...</h1>}
+                {filteredIngredients ? filteredIngredients?.map((ingredient, index) => {
+                    let prefix = <></>;
+                    const firstChar = ingredient.title.charAt(0);
+
+                    if (index === 0) {
+                        prefix = <li className='p-2 font-semibold text-lg text-[#74768C]' key={prefix + firstChar}>
+                            - {firstChar.toUpperCase()} -
+
+                        </li>
+                    } else if (index > 0) {
+                        const lastElement = filteredIngredients[index - 1];
+                        if (lastElement.title.charAt(0) !== firstChar) {
+                            prefix = <li className='p-2 font-semibold text-lg text-[#74768C]' key={prefix + firstChar}>
+                                - {firstChar.toUpperCase()} -
+                            </li>
+                        }
+
+                    }
+
+                    return <>
+                        {prefix}
+                        <li key={ingredient.title} className='p-2 flex flex-row justify-between'>
+                            <Link to={`/ingredients/${ingredient.title}`}>{ingredient.title}</Link>
+                            <button onClick={() => deleteIngredient(ingredient.title)} className='px-3 bg-red-400 py-1 rounded-md text-white text-base font-semibold flex flex-row items-center justify-center'>
+                                x
+                            </button>
+                        </li>
+                    </>
+                }
+                ) : <h1>Loading...</h1>}
             </ul>
         </>
     )

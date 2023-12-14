@@ -65,13 +65,37 @@ function MealsOverview() {
             </div>
 
             <ul className='mx-5'>
-                {filteredMeals?.map(meal => (
-                    <li key={meal.id} className='p-2 flex flex-row justify-between'>
-                        <Link to={`/meals/${meal.id}`}>{meal.title}</Link>
-                        <button onClick={() => deleteMeal(meal.id)} className='px-3 bg-red-400 py-1 rounded-md text-white text-base font-semibold flex flex-row items-center justify-center'>
-                            x
-                        </button>
-                    </li>))}
+                {filteredMeals ? filteredMeals?.map((meal, index) => {
+                    let prefix = <></>;
+                    const firstChar = meal.title.charAt(0);
+
+                    if (index === 0) {
+                        prefix = <li className='p-2 font-semibold text-lg text-[#74768C]' key={prefix + firstChar}>
+                            - {firstChar.toUpperCase()} -
+
+                        </li>
+                    } else if (index > 0) {
+                        const lastElement = filteredMeals[index - 1];
+                        if (lastElement.title.charAt(0) !== firstChar) {
+                            prefix = <li className='p-2 font-semibold text-lg text-[#74768C]' key={prefix + firstChar}>
+                                - {firstChar.toUpperCase()} -
+                            </li>
+                        }
+
+                    }
+                    return <>
+                        {prefix}
+                        <li key={meal.id} className='p-2 flex flex-row justify-between'>
+                            <Link to={`/meals/${meal.id}`}>{meal.title}</Link>
+                            <button onClick={() => deleteMeal(meal.id)} className='px-3 bg-red-400 py-1 rounded-md text-white text-base font-semibold flex flex-row items-center justify-center'>
+                                x
+                            </button>
+                        </li>
+                    </>
+
+
+                }
+                ) : <></>}
             </ul>
         </>
     )
