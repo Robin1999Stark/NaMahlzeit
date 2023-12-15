@@ -33,7 +33,7 @@ function PlanerList({ listId, listType, planerItem, isMealList = false }: Props)
         return (
             <div className='flex select-none flex-col justify-center items-center min-h-[5rem] w-32 h-full rounded-xl px-2 bg-[#181818]'>
                 <h2 className={isToday ? 'text-[#FFC200] text-2xl font-semibold' : 'text-white text-2xl font-semibold'}>
-                    {new Date(planerItem.date).getDate() + "." + new Date(planerItem.date).getMonth() + "."}
+                    {new Date(planerItem.date).getDate() + "." + (new Date(planerItem.date).getMonth() + 1) + "."}
                 </h2>
                 <h3 className='font-base text-xs text-gray-500'>
                     {planerItem.date instanceof Date ? Weekday[planerItem.date.getDay()] : Weekday[new Date(planerItem.date).getDay()]}
