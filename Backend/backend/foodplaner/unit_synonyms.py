@@ -1,4 +1,4 @@
-from FoodPlanerWG.Backend.backend.foodplaner.models import UnitOptions
+from .models import UnitOptions
 
 
 def get_unit_syn_dict():
@@ -77,5 +77,29 @@ def get_unit_syn_dict():
         'packung': UnitOptions.PACKAGE,
         'päckchen': UnitOptions.PACKAGE,
         'pkt': UnitOptions.PACKAGE,
+
+        'tafel': UnitOptions.PACKAGE,
+        'tablée': UnitOptions.PACKAGE,
+        'bar': UnitOptions.PACKAGE,
+        'slab': UnitOptions.PACKAGE,
+        'tablet': UnitOptions.PACKAGE,
+
+        'stick': UnitOptions.STICK,
+        'stange': UnitOptions.STICK,
+        'stem': UnitOptions.STICK,
+        'rod': UnitOptions.STICK,
+        'roll': UnitOptions.STICK,
+        'röhre': UnitOptions.STICK,
+        'stiel': UnitOptions.STICK,
+
+        'dose': UnitOptions.CAN,
+        'büchse': UnitOptions.CAN,
+        'konservendose': UnitOptions.CAN,
+        'can': UnitOptions.CAN,
+        'tin': UnitOptions.CAN,
+        'canning': UnitOptions.CAN,
+        'tin can': UnitOptions.CAN,
+        'container': UnitOptions.CAN,
+
     }
     return prefered_unit_synonyms

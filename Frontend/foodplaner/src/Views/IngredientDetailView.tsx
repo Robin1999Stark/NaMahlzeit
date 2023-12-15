@@ -31,6 +31,10 @@ function IngredientDetailView() {
             <blockquote className='mx-5 mb-4'>
                 {ingredient?.description ? <URLify text={ingredient?.description} /> : <></>}
             </blockquote>
+            <blockquote className='mx-5 mb-4 font-semibold'>
+                prefered Unit:
+                {" " + ingredient?.preferedUnit}
+            </blockquote>
         </>
     )
 }

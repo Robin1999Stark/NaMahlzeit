@@ -22,6 +22,9 @@ class UnitOptions(models.TextChoices):
     BOTTLE = 'bottle', 'Flasche'
     BUNCH = 'bund', 'bunch'
     PACKAGE = 'Package', 'package'
+    BAR = 'tafel', 'bar'
+    CAN = 'can', 'dose'
+    STICK = 'stick', 'stange'
 
 
 class Ingredient(models.Model):
