@@ -85,7 +85,13 @@ export namespace MealService {
         duration: number;
     }
 
-    async function createMealIngredient(ingredient: IngredientAmountWithMeal): Promise<IngredientAmountWithMeal | null> {
+    interface CreateMealngredientInterface {
+        ingredient: string;
+        meal: number;
+        amount: number;
+        unit: string;
+    }
+    async function createMealIngredient(ingredient: CreateMealngredientInterface): Promise<IngredientAmountWithMeal | null> {
         const requestBody = {
             meal: ingredient.meal,
             ingredient: ingredient.ingredient,
@@ -132,7 +138,7 @@ export namespace MealService {
 
             const results = Promise.all(
                 ingredients.map(async (ingredient) => {
-                    return await createMealIngredient(new IngredientAmountWithMeal(ingredient.ingredient, ingredient.amount, ingredient.unit, meal.id));
+                    return await createMealIngredient({ ingredient: ingredient.ingredient, meal: meal.id, amount: ingredient.amount, unit: ingredient.unit });
                 })
             )
             console.log("results", results);

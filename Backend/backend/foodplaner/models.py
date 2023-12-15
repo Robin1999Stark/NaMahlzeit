@@ -54,6 +54,13 @@ class MealIngredient(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     unit = models.CharField(max_length=10)
 
+    class Meta:
+        db_table = 'meal_ingredient'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['meal', 'ingredient'], name='unique_meal_ingredient')
+        ]
+
 
 class FoodPlanerItem(models.Model):
     date = models.DateField()

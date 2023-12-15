@@ -75,13 +75,15 @@ export class IngredientAmount {
     }
 }
 export class IngredientAmountWithMeal extends IngredientAmount {
+    id: number;
     meal: number;
-    constructor(ingredient: string, amount: number, unit: string, meal: number) {
+    constructor(id: number, ingredient: string, amount: number, unit: string, meal: number) {
         super(ingredient, amount, unit);
+        this.id = id;
         this.meal = meal;
     }
     static fromJSON(json: any): IngredientAmountWithMeal {
-        return new IngredientAmountWithMeal(json.ingredient, json.amount, json.unit, json.meal);
+        return new IngredientAmountWithMeal(json.id, json.ingredient, json.amount, json.unit, json.meal);
     }
 }
 

@@ -6,7 +6,7 @@ from .ingredient_serializers import IngredientSerializer
 class MealIngredientSerializerWithMeal(serializers.ModelSerializer):
     class Meta:
         model = MealIngredient
-        fields = ['meal', 'ingredient', 'amount', 'unit']
+        fields = ['id', 'meal', 'ingredient', 'amount', 'unit']
 
 
 class MealIngredientSerializer(serializers.ModelSerializer):

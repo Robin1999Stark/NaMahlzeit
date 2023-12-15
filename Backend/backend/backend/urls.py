@@ -43,7 +43,4 @@ urlpatterns = [
          MealIngredientListView.as_view(), name='meals-ingredients-list'),
     path('meals/<int:meal_pk>/ingredients/<int:pk>/',
          MealIngredientDetailView.as_view(), name='meals-ingredients-detail'),
-
 ]
-
-#
