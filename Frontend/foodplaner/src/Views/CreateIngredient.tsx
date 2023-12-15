@@ -25,8 +25,8 @@ function CreateIngredient() {
 
     async function onSubmit(data: Ingredient) {
         try {
-            await IngredientService.createIngredient({ title: data.title, description: data.description })
-            navigate('/ingredients')
+            await IngredientService.createIngredient({ title: data.title, description: data.description, preferedUnit: data.preferedUnit })
+            //navigate('/ingredients')
         } catch (error) {
             console.log(error)
         }

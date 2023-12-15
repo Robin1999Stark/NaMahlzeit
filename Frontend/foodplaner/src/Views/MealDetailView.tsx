@@ -19,9 +19,9 @@ function MealDetailView() {
 
     function displayIsPlanned() {
         if (isPlanned && isPlanned.isPlanned) {
-            return <p aria-label='planned for' className='text-[#FFC200] mx-5 font-semibold p-1 ring-1 ring-[#FFC200] text-center text-sm w-24 rounded-full'>{new Date(isPlanned.plannedDate!).toLocaleDateString()}</p>
+            return <p aria-label='planned for' className='text-[#FFC200] mr-1 font-semibold p-1 ring-1 ring-[#FFC200] text-center text-sm w-24 rounded-full'>{new Date(isPlanned.plannedDate!).toLocaleDateString()}</p>
         } else {
-            return <p>is not planned</p>
+            return <></>
         }
     }
     useEffect(() => {

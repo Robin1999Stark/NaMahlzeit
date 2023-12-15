@@ -55,11 +55,13 @@ export namespace IngredientService {
     interface CreateIngredientInterface {
         title: string;
         description: string;
+        preferedUnit: string;
     }
-    export async function createIngredient({ title, description }: CreateIngredientInterface): Promise<Ingredient | null> {
+    export async function createIngredient({ title, description, preferedUnit }: CreateIngredientInterface): Promise<Ingredient | null> {
         const requestBody = {
             title: title,
             description: description,
+            preferedUnit: preferedUnit,
         }
         try {
             let response = await instance.post('/ingredients/', JSON.stringify(requestBody), {

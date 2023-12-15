@@ -6,7 +6,7 @@
     TEASPOON = 'teaspoon', 'Teaspoon', 'tsp', 'tsp.', 'TSP', 'TSP.' 'TL', 'tl', 'Tl', 'tl.', 'Tl.', 'TL.', 'Teelöffel', 'teelöffel'
     TABLESPOON = 'Tablespoon', 'tablespoon', 'tbsp', 'tbsp.', 'TBSP', 'Tbsp', 'Esslöffel', 'esslöffel', 'EL', 'El.', 'EL', 'EL.', 'el', 'el.'
     OUNCE = 'oz', 'oz.', 'OZ', 'OZ.', 'ounce', 'Unze', 'unze'
-    CUP = 'cup', 'c', 'Cup', 'Tasse'
+    CUP = 'cup', 'c', 'Cup', 'Tasse', 'Becher
     GALLON = 'gal', 'Gal', 'Gallone', 'gallone', 'gallon', 'Gallon'
     PINCH = 'pinch', 'Prise', 'prise', 'Pinch'
     DROP = 'Drop', 'drop', 'Tropfen', 'tropfen'
