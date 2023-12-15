@@ -1,13 +1,16 @@
 from .models import InventoryItem, ShoppingList, ShoppingListItem, Meal, FoodPlanerItem, Ingredient, MealIngredient
 from rest_framework import viewsets, generics
-from .serializers import MealSerializer, FoodPlanerItemSerializer, IngredientSerializer, MealIngredientSerializerWithMeal, MealIngredientSerializer, InventoryItemSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import MealSerializerNoAmounts, MealSerializer, MealListSerializer, ShoppingListItemSerializer, ShoppingListSerializer
 from django.http import JsonResponse
-from datetime import datetime, date
+from datetime import date
 from django.shortcuts import get_object_or_404
+from .serializers.ingredient_serializers import Ingredient, IngredientSerializer
+from .serializers.meal_serializers import MealIngredientSerializer, MealListSerializer, MealIngredientSerializerWithMeal, MealSerializerNoAmounts, MealSerializer
+from .serializers.planer_serializers import FoodPlanerItem, FoodPlanerItemSerializer
+from .serializers.inventory_serializers import InventoryItem, InventoryItemSerializer
+from .serializers.shoppinglist_serializers import ShoppingListItemSerializer, ShoppingListSerializer
 
 
 def is_planned(request, meal_pk):

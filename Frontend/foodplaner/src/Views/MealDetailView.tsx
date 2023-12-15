@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Ingredient, IngredientAmount, Meal } from '../Datatypes/Meal'
 import { MealService } from '../Endpoints/MealService'
 import { Link } from 'react-router-dom'
@@ -8,9 +8,11 @@ import PlaceholderMealImage from '../Components/PlaceholderMealImage'
 import URLify from '../Helperfunctions/urlify'
 import { LuClock } from "react-icons/lu";
 import { PlanerService } from '../Endpoints/PlanerService'
+import { CiEdit } from "react-icons/ci";
 
 function MealDetailView() {
-    const { mealID } = useParams()
+    const navigate = useNavigate();
+    const { mealID } = useParams();
 
     const [meal, setMeal] = useState<Meal>()
     const [error, setError] = useState<string>("")
@@ -113,6 +115,13 @@ function MealDetailView() {
             </div>
             <div className='p-4 w-full flex flex-col justify-start items-center min-w-[200px]'>
                 <div className='flex w-full text-[#3E4C62] py-3 flex-row justify-end'>
+                    <button className='p-2 bg-slate-400 text-white rounded-md flex flex-row justify-between items-center' onClick={() => navigate(`edit`)}>
+                        <p className='mx-2'>
+                            Edit
+
+                        </p>
+                        <CiEdit />
+                    </button>
                     <div className='ml-5 flex flex-row justify-end items-center'>
                         <LuClock />
                         <p className='ml-2 font-semibold'>
