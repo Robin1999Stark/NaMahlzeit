@@ -53,7 +53,7 @@ function MealsOverview() {
                         setSearchString(e.target.value);
                         searchForMeals(e.target.value.trim());
                     }}
-                    className='bg-[#F2F2F2] w-1/2 py-3 px-4 rounded-md m-3'
+                    className='bg-[#F2F2F2] w-1/2 py-3 text-center px-4 rounded-md m-3'
                     placeholder='Search for Meals' />
                 <PrimaryButton title='Filter' onClick={() => searchForMeals(searchString)} />
             </div>

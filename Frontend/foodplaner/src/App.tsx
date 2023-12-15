@@ -10,6 +10,7 @@ import IngredientDetailView from "./Views/IngredientDetailView";
 import InventoryListView from "./Views/InventoryListView";
 import NavBar from "./Components/NavBar";
 import ShoppingListView from "./Views/ShoppingListView";
+import EditMeal from "./Views/EditMeal";
 
 export const mealListID = "meal-list";
 
@@ -25,6 +26,7 @@ function App() {
             <Route path="/meals/create" element={<CreateMeal />} />
             <Route path="/meals" element={<MealsOverview />} />
             <Route path="/meals/:mealID" element={<MealDetailView />} />
+            <Route path="/meals/:mealID/edit" element={<EditMeal />} />
             <Route path="/ingredients/create" element={<CreateIngredient />} />
             <Route path="/ingredients" element={<IngredientsOverView />} />
             <Route path="/ingredients/:ingredientID" element={<IngredientDetailView />} />

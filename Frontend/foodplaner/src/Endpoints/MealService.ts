@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IngredientAmount, Meal } from '../Datatypes/Meal';
+import { IngredientAmount, Meal, MealWithIngredientAmount } from '../Datatypes/Meal';
 
 
 const BASE_URL = 'http://127.0.0.1:8000';
@@ -106,7 +106,7 @@ export namespace MealService {
         }
     }
 
-    export async function updateMeal(id: number, meal: Meal) {
+    export async function updateMeal(id: number, meal: MealWithIngredientAmount) {
         let json = JSON.stringify(meal)
         try {
             let response = await instance.put(`/meals/${id}/`, json, {
