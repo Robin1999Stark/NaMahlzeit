@@ -41,14 +41,16 @@ class Meal(models.Model):
     title = models.CharField(max_length=180)
     description = models.TextField(null=True, max_length=500)
     ingredients = models.ManyToManyField(
-        Ingredient, blank=True, through='MealIngredient', through_fields=("meal", "ingredient"))
+        Ingredient, blank=True, through='MealIngredient')
     duration = models.PositiveSmallIntegerField(default=0)
     preparation = models.TextField(null=True, blank=True)
 
 
 class MealIngredient(models.Model):
-    meal = models.ForeignKey(Meal, on_delete=models.CASCADE)
-    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
+    meal = models.ForeignKey(
+        Meal, on_delete=models.CASCADE, related_name='meal_to_ingredient')
+    ingredient = models.ForeignKey(
+        Ingredient, on_delete=models.CASCADE, related_name='ingredient_to_meal')
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     unit = models.CharField(max_length=10)
 

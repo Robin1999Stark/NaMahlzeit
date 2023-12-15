@@ -2,6 +2,7 @@ from .models import InventoryItem, ShoppingList, ShoppingListItem, Meal, FoodPla
 from rest_framework import viewsets, generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from django.http import JsonResponse
 from datetime import date
@@ -11,6 +12,7 @@ from .serializers.meal_serializers import MealIngredientSerializer, MealListSeri
 from .serializers.planer_serializers import FoodPlanerItem, FoodPlanerItemSerializer
 from .serializers.inventory_serializers import InventoryItem, InventoryItemSerializer
 from .serializers.shoppinglist_serializers import ShoppingListItemSerializer, ShoppingListSerializer
+from django.db import transaction
 
 
 def is_planned(request, meal_pk):
@@ -76,21 +78,81 @@ class MealListView(viewsets.ModelViewSet):
     serializer_class = MealListSerializer
     queryset = Meal.objects.all()
 
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = MealSerializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+
+        # Update Meal data
+        meal_data = serializer.validated_data
+        instance.title = meal_data.get('title', instance.title)
+        instance.description = meal_data.get(
+            'description', instance.description)
+        instance.duration = meal_data.get('duration', instance.duration)
+        instance.preparation = meal_data.get(
+            'preparation', instance.preparation)
+        instance.save()
+
+        # Update or create MealIngredient entries
+        ingredients_data = meal_data.get('ingredients', [])
+
+        # Track existing ingredients for removal
+        existing_ingredient_titles = [
+            ingredient.title for ingredient in instance.ingredients.all()]
+
+        with transaction.atomic():
+            for ingredient_data in ingredients_data:
+                ingredient_dict = ingredient_data.get('ingredient', {})
+
+                # Ensure ingredient_dict is a dictionary
+                if isinstance(ingredient_dict, dict):
+                    ingredient_title = ingredient_dict.get('title')
+
+                    # Ensure ingredient_title is provided and not empty
+                    if ingredient_title:
+                        amount = ingredient_data.get('amount')
+                        unit = ingredient_data.get('unit')
+
+                        # Try to get existing Ingredient
+                        ingredient, created = Ingredient.objects.get_or_create(
+                            title=ingredient_title,
+                            defaults={'preferedUnit': unit}
+                        )
+
+                        # Now create MealIngredient using the retrieved or created Ingredient
+                        meal_ingredient, created = MealIngredient.objects.get_or_create(
+                            meal=instance,
+                            ingredient=ingredient,
+                            defaults={'amount': amount, 'unit': unit}
+                        )
+
+                        # Update existing MealIngredient if it was not created
+                        if not created:
+                            meal_ingredient.amount = amount
+                            meal_ingredient.unit = unit
+                            meal_ingredient.save()
+
+                        # Remove the ingredient title from the list of existing ingredients
+                        existing_ingredient_titles.remove(ingredient_title)
+
+        # Remove any remaining ingredients that were not in the received data
+        instance.ingredients.filter(
+            title__in=existing_ingredient_titles).delete()
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class MealDetailView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated]
     queryset = Meal.objects.all()
     serializer_class = MealSerializer
 
+    def put(self, request, *args, **kwargs):
+        return super().put(request, *args, **kwargs)
 
-class CreateMealWithIngredientsView(APIView):
-    def post(self, request, *args, **kwargs):
-        serializer = MealSerializer(data=request.data)
-
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def update(self, request, *args, **kwargs):
+        print("test")
+        return super().update(request, *args, **kwargs)
 
 
 class FoodPlanerItemView(viewsets.ModelViewSet):
@@ -129,6 +191,11 @@ class MealIngredientListView(generics.ListCreateAPIView):
 class MealIngredientDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = MealIngredient.objects.all()
     serializer_class = MealIngredientSerializer
+
+
+class MealIngredientListViewNormal(viewsets.ModelViewSet):
+    queryset = MealIngredient.objects.all()
+    serializer_class = MealIngredientSerializerWithMeal
 
 
 class InventoryItemView(viewsets.ModelViewSet):

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IngredientAmount, Meal, MealWithIngredientAmount } from '../Datatypes/Meal';
+import { IngredientAmount, IngredientAmountWithMeal, Meal, MealWithIngredientAmount } from '../Datatypes/Meal';
 
 
 const BASE_URL = 'http://127.0.0.1:8000';
@@ -84,22 +84,61 @@ export namespace MealService {
         preparation: string;
         duration: number;
     }
+
+    async function createMealIngredient(ingredient: IngredientAmountWithMeal): Promise<IngredientAmountWithMeal | null> {
+        const requestBody = {
+            meal: ingredient.meal,
+            ingredient: ingredient.ingredient,
+            amount: ingredient.amount,
+            unit: ingredient.unit,
+        }
+
+        try {
+            const response = await axios.post('http://localhost:8000/meal-ingredients/', JSON.stringify(requestBody), {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            return IngredientAmountWithMeal.fromJSON(response);
+        } catch (error) {
+            console.error(error)
+        }
+        return null;
+    }
+
     export async function createMealWithAmounts({ title, description, ingredients, preparation, duration }: CreateMealAmountInterface): Promise<Meal | null> {
 
         const requestBody = {
             title: title,
             description: description,
-            ingredients: ingredients,
+            ingredients: ingredients.map((ingredientAmount) => ({
+                title: ingredientAmount.ingredient,
+                amount: ingredientAmount.amount,
+                unit: ingredientAmount.unit,
+            })),
             duration: duration,
             preparation: preparation,
         }
+        const requestJSON = JSON.stringify(requestBody)
+        console.debug(requestJSON)
+
         try {
-            let response = await instance.post('/create-meal/', JSON.stringify(requestBody), {
+            let response = await instance.post('/meals/', requestJSON, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
-            return Meal.fromJSON(response.data);
+            const meal = Meal.fromJSON(response.data);
+
+            const results = Promise.all(
+                ingredients.map(async (ingredient) => {
+                    return await createMealIngredient(new IngredientAmountWithMeal(ingredient.ingredient, ingredient.amount, ingredient.unit, meal.id));
+                })
+            )
+            console.log("results", results);
+            if (results === null) return null;
+
+            return meal;
         } catch (error) {
             console.error('Error creating Meal:', error);
             return null;
