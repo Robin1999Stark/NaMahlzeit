@@ -29,9 +29,7 @@ function PlanerResourceCol({ mealListID }: Props) {
     }
 
     function shuffle(meals: Meal[], shuffleFkt: ((meals: Meal[], numberOfResults: number) => Meal[]) | undefined) {
-        console.log("shuffle")
         const shuffled = shuffleFromAll(meals, 10);
-        console.log(shuffled);
         setMeals(shuffled);
     }
 

@@ -140,7 +140,6 @@ export namespace ShoppingListService {
             items: items,
 
         }
-        console.log(JSON.stringify(requestBody))
         try {
             let response = await instance.put(`/shopping-lists/${list.id}/`, JSON.stringify(requestBody), {
                 headers: {

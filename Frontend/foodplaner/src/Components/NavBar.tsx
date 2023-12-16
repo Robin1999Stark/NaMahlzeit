@@ -29,7 +29,6 @@ function NavBar() {
             width: window.innerWidth,
             height: window.innerHeight,
         });
-        console.log(windowSize.width)
     }
 
     const handleClickOutside = (event: MouseEvent) => {

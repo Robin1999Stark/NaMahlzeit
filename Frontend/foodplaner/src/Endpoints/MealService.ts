@@ -116,7 +116,6 @@ export namespace MealService {
                     return await MealIngredientService.createMealIngredient({ ingredient: ingredient.ingredient, meal: meal.id, amount: ingredient.amount, unit: ingredient.unit });
                 })
             )
-            console.log("results", results);
             if (results === null) return null;
 
             return meal;
@@ -141,41 +140,48 @@ export namespace MealService {
         }
 
         try {
+
+            // update Meal
             let responseMeal = await instance.put(`/meals/${id}/`, JSON.stringify(requestBody), {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
 
+            // update Meal Ingredients
+
+            // get existing MealIngredients to check the changes
             const existingMealIngredients: IngredientAmountWithMeal[] = await MealIngredientService.getAllMealIngredients(id)
             const existingMealIngredientsIDs: number[] = existingMealIngredients.map((ingr) => ingr.id);
 
+            // filter the new created ingredients from the ingredientsToChange
             const createdIngredients = ingredientsToChange.filter((ingr) => !existingMealIngredientsIDs.includes(ingr.id));
 
+            // filter the deleted MealIngredients from the existing Meal Ingredients
             const deletedMealIngredientsIDs: number[] = existingMealIngredientsIDs.filter((ingrID) => !ingredientsToChangeIDs.includes(ingrID));
 
+            // create new MealIngredients
             const responseIngredientCreate = Promise.all(
                 createdIngredients.map(async (ingr) => {
                     return await MealIngredientService.createMealIngredient({ meal: id, ingredient: ingr.ingredient, amount: ingr.amount, unit: ingr.unit })
                 })
             )
-            console.log(responseIngredientCreate)
 
-            // delete MealIngredients
+            // delete removed MealIngredients
             const responseIngredientsDelete = Promise.all(
                 deletedMealIngredientsIDs.map(async (ingredientID) => {
                     return await MealIngredientService.deleteMealIngredient(ingredientID);
                 })
             )
 
-            // update existing MealIngredients
+            // exclude deleted and created MealIngredients from the ingredients to change
             const updatedIngredients = ingredientsToChange.filter((ingr) => {
                 if (deletedMealIngredientsIDs.includes(ingr.id)) return false;
                 if (createdIngredients.map((ingr) => ingr.id).includes(ingr.id)) return false;
                 return true;
             })
 
-
+            // update existing MealIngredients
             const responseIngredientsUpdate = Promise.all(
                 updatedIngredients.map(async (ingredient) => {
                     return await MealIngredientService.updateMealIngredient(ingredient.id, ingredient);

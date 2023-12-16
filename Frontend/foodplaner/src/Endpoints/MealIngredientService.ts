@@ -67,7 +67,6 @@ export namespace MealIngredientService {
                     'Content-Type': 'application/json'
                 }
             });
-            console.log("update mi", response.data)
             return IngredientAmountWithMeal.fromJSON(response.data)
         } catch (error) {
             console.error('Error updating Meal Ingredients:', error);

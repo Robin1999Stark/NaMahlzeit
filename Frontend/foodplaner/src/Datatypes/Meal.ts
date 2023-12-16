@@ -31,7 +31,6 @@ export class Meal {
     }
 
     static fromJSON(json: any): Meal {
-        console.log("meal full", json)
         return new Meal(json.id, json.title, json.description, json.ingredients, json.duration, json.preparation);
     }
 
