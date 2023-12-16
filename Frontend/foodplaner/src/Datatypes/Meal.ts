@@ -60,6 +60,30 @@ export class MealWithIngredientAmount {
 
 }
 
+
+export class MealWithIngredientAmountMIID {
+    id: number;
+    title: string;
+    description: string;
+    ingredients: IngredientAmountWithMeal[];
+    duration: number;
+    preparation: string;
+
+    constructor(id: number, title: string, description: string, ingredients: IngredientAmountWithMeal[], duration: number, preparation: string) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.ingredients = ingredients;
+        this.duration = duration;
+        this.preparation = preparation;
+    }
+
+    static fromJSON(json: any): MealWithIngredientAmountMIID {
+        return new MealWithIngredientAmountMIID(json.id, json.title, json.description, json.ingredients, json.duration, json.preparation);
+    }
+
+}
+
 export class IngredientAmount {
     ingredient: string;
     amount: number;

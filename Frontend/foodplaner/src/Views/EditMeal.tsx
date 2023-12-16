@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form';
-import { Ingredient, IngredientAmount, Meal, MealWithIngredientAmount } from '../Datatypes/Meal';
+import { Ingredient, IngredientAmount, IngredientAmountWithMeal, Meal, MealWithIngredientAmount, MealWithIngredientAmountMIID } from '../Datatypes/Meal';
 import { MealService } from '../Endpoints/MealService';
 import { IngredientService } from '../Endpoints/IngredientService';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -11,7 +11,7 @@ function EditMeal() {
     const { mealID } = useParams();
 
     const [mealData, setMealData] = useState<Meal | null>(null);
-    const [mealIngredients, setMealIngredients] = useState<IngredientAmount[]>([])
+    const [mealIngredients, setMealIngredients] = useState<IngredientAmountWithMeal[]>([])
 
     const [ingredients, setIngredients] = useState<Ingredient[]>()
     const [selectedIngredient, setSelectedIngredient] = useState<Ingredient>();
@@ -23,7 +23,7 @@ function EditMeal() {
         watch,
         setValue,
         handleSubmit,
-        formState: { errors } } = useForm<MealWithIngredientAmount>({
+        formState: { errors } } = useForm<MealWithIngredientAmountMIID>({
             defaultValues: {
                 title: mealData?.title || "",
                 description: mealData?.description || "",
@@ -53,6 +53,8 @@ function EditMeal() {
                 setValue('preparation', meal?.preparation || '');
                 setValue('duration', meal?.duration || 0);
                 setValue('ingredients', mealIngredients || []);
+
+                console.log("mi", mealIngredients)
             } catch (error) {
                 console.log(error);
             }
@@ -68,7 +70,7 @@ function EditMeal() {
         name: "ingredients"
     });
 
-    const onSubmit = (data: MealWithIngredientAmount) => {
+    const onSubmit = (data: MealWithIngredientAmountMIID) => {
         try {
             MealService.updateMeal(Number(mealID), data)
         } catch (error) {

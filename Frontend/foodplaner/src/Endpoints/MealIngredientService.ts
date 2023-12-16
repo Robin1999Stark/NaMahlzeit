@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IngredientAmount, Meal } from '../Datatypes/Meal';
+import { IngredientAmount, IngredientAmountWithMeal, Meal } from '../Datatypes/Meal';
 
 
 const BASE_URL = 'http://127.0.0.1:8000';
@@ -19,50 +19,69 @@ export namespace MealIngredientService {
         }
     }
 
-    export async function getAllMealIngredients(mealID: number): Promise<IngredientAmount[]> {
-        let ingredientAmounts: IngredientAmount[] = [];
+    export async function getAllMealIngredients(mealID: number): Promise<IngredientAmountWithMeal[]> {
+        let ingredientAmounts: IngredientAmountWithMeal[] = [];
         try {
             const data = await getAllMealIngredientsJSON(mealID);
-            ingredientAmounts = data.map((meal1: any) => IngredientAmount.fromJSON(meal1));
+            ingredientAmounts = data.map((ingredient: any) => IngredientAmountWithMeal.fromJSON(ingredient));
             return ingredientAmounts;
         } catch (error) {
-            console.error('Error fetching Meals Ingredients: ', error);
+            console.error('Error fetching Meal Ingredients: ', error);
         }
         return ingredientAmounts;
     }
 
-
-    export async function getMealJSON(id: string): Promise<any> {
-        try {
-            const response = await instance.get('/meals/' + id + '/');
-            return response.data;
-        } catch (error) {
-            throw new Error('Error fetching Meal: ' + error);
-        }
+    export interface CreateMealngredientInterface {
+        meal: number;
+        ingredient: string;
+        amount: number;
+        unit: string;
     }
 
-    export async function getMeal(id: string): Promise<Meal | null> {
-        let meal: Meal | null = null;
-        try {
-            const response = await getMealJSON(id);
-            meal = Meal.fromJSON(response);
-        } catch (error) {
-            console.error('Error fetching Meal:', error);
+    export async function createMealIngredient(ingredient: CreateMealngredientInterface): Promise<IngredientAmountWithMeal | null> {
+        const requestBody = {
+            meal: ingredient.meal,
+            ingredient: ingredient.ingredient,
+            amount: ingredient.amount,
+            unit: ingredient.unit,
         }
-        return meal;
 
-    }
-
-    export async function updateMeal(id: number, meal: Meal) {
-        let json = JSON.stringify(meal)
         try {
-            let response = await instance.put(`/meals/${id}/`, json, {
+            const response = await axios.post('http://localhost:8000/meal-ingredients/', JSON.stringify(requestBody), {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
+            return IngredientAmountWithMeal.fromJSON(response);
         } catch (error) {
-            console.error('Error updating Meals:', error);
+            console.error(error)
+        }
+        return null;
+    }
+
+    export async function updateMealIngredient(miID: number, mealIngredient: IngredientAmountWithMeal): Promise<IngredientAmountWithMeal | null> {
+        let json = JSON.stringify(mealIngredient)
+        try {
+            let response = await instance.put(`/meal-ingredients/${miID}/`, json, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            console.log("update mi", response.data)
+            return IngredientAmountWithMeal.fromJSON(response.data)
+        } catch (error) {
+            console.error('Error updating Meal Ingredients:', error);
+        }
+        return null;
+    }
+
+
+    export async function deleteMealIngredient(miID: number) {
+        try {
+            const response = await instance.delete(`/meal-ingredients/${miID}/`);
+            return response.data;
+        } catch (error) {
+            throw new Error('Error deleting Meal Ingredient: ' + error);
         }
     }
 
