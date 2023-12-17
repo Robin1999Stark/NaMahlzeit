@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 import { Ingredient, Meal } from '../Datatypes/Meal'
-import { MealService } from '../Endpoints/MealService'
 import { IngredientService } from '../Endpoints/IngredientService'
 import URLify from '../Helperfunctions/urlify'
 
 function IngredientDetailView() {
-    const { ingredientID } = useParams()
+    const navigate = useNavigate();
+    const { ingredientID } = useParams();
 
     const [ingredient, setIngredient] = useState<Ingredient>()
     const [error, setError] = useState<string>("")
@@ -35,6 +35,11 @@ function IngredientDetailView() {
                 prefered Unit:
                 {" " + ingredient?.preferedUnit}
             </blockquote>
+            <div className='w-full flex flex-row justify-start py-3 items-center'>
+                <div className='mb-4 mx-6'>
+                    <button className='p-2 bg-slate-500 text-white px-4 rounded-md text-lg' onClick={() => navigate(-1)}>Go Back</button>
+                </div>
+            </div>
         </>
     )
 }

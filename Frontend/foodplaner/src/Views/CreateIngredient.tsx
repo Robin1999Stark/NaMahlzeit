@@ -3,10 +3,26 @@ import { useForm, useFieldArray } from 'react-hook-form'
 import { Ingredient, Meal } from '../Datatypes/Meal'
 import { IngredientService } from '../Endpoints/IngredientService'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 function CreateIngredient() {
     const navigate = useNavigate();
+    const [wikiResult, setWikiResult] = useState<string>('');
 
+    async function handleWikiSearch(searchTerm: string) {
+        try {
+            const response = await axios.get(
+                `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&exintro&explaintext&titles=${searchTerm}`
+            );
+            console.log(response)
+            const pageId = Object.keys(response.data.query.pages)[0];
+            const extract = response.data.query.pages[pageId].extract;
+
+            setWikiResult(extract);
+        } catch (error) {
+            console.error('Error fetching data from Wikipedia:', error);
+        }
+    }
     useEffect(() => {
 
     }, [])
@@ -26,7 +42,7 @@ function CreateIngredient() {
     async function onSubmit(data: Ingredient) {
         try {
             await IngredientService.createIngredient({ title: data.title, description: data.description, preferedUnit: data.preferedUnit })
-            //navigate('/ingredients')
+            navigate('/ingredients')
         } catch (error) {
             console.log(error)
         }
@@ -49,6 +65,7 @@ function CreateIngredient() {
                             <input
                                 type='text'
                                 id='title'
+                                autoFocus={true}
                                 {...register("title", {
                                     required: true,
                                 })}
@@ -61,13 +78,15 @@ function CreateIngredient() {
                                 className={`text-xs truncate text-left align-middle mb-3`} >
                                 Description:
                             </label>
-                            <input
-                                type='text'
+                            <textarea
+                                cols={50}
+                                rows={6}
                                 id='description'
                                 {...register("description", {
                                     required: true,
                                 })}
                                 defaultValue={"Lorem Ipsum"}
+                                style={{ whiteSpace: 'pre-line' }}
                                 className="border-slate-200 truncate text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
                         </li>
                         <li key={"li-pU"} className='flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3'>
@@ -94,6 +113,12 @@ function CreateIngredient() {
 
                 </div>
             </form>
+            <div className='mb-4 mx-6'>
+                <button className='p-2 bg-slate-500 text-white px-4 rounded-md text-lg' onClick={() => {
+                    handleWikiSearch('Ajvar')
+                    console.log(wikiResult)
+                }}>Autofill with wikipedia</button>
+            </div>
         </>
     )
 }

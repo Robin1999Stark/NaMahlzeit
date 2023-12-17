@@ -4,11 +4,13 @@ import { Ingredient, IngredientAmount, Meal, MealWithIngredientAmount } from '..
 import { MealService } from '../Endpoints/MealService';
 import { IngredientService } from '../Endpoints/IngredientService';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function CreateMeal() {
     const navigate = useNavigate();
     const [ingredients, setIngredients] = useState<Ingredient[]>()
     const [selectedIngredient, setSelectedIngredient] = useState<Ingredient>();
+
 
     useEffect(() => {
         async function fetchData() {
@@ -52,6 +54,7 @@ function CreateMeal() {
                 preparation: data.preparation,
                 duration: data.duration,
             })
+            navigate(-1);
         } catch (error) {
             console.log(error)
         }
@@ -74,6 +77,7 @@ function CreateMeal() {
                             <input
                                 type='text'
                                 id='title'
+                                autoFocus={true}
                                 {...register("title", {
                                     required: true,
                                 })}
@@ -205,6 +209,7 @@ function CreateMeal() {
                     </div>
                 </div>
             </form>
+
         </>
     )
 }

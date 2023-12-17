@@ -29,7 +29,7 @@ class UnitOptions(models.TextChoices):
 
 class Ingredient(models.Model):
     title = models.CharField(max_length=180, primary_key=True, null=False)
-    description = models.CharField(null=True, max_length=500)
+    description = models.CharField(null=True, max_length=1200)
     preferedUnit = models.CharField(
         choices=UnitOptions.choices,
         null=True,

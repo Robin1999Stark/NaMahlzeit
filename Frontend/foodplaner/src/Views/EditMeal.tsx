@@ -95,6 +95,7 @@ function EditMeal() {
                             <input
                                 type='text'
                                 id='title'
+                                autoFocus={true}
                                 {...register("title", {
                                     required: true,
                                 })}
@@ -221,11 +222,15 @@ function EditMeal() {
                     </ul>
                 </div>
                 <div className='w-100 my-4 flex flex-1 justify-center align-middle'>
+
                     <div className='mb-4 mx-6'>
                         <button className='p-2 bg-slate-500 text-white px-4 rounded-md text-lg' type='submit'>Save</button>
                     </div>
                 </div>
             </form>
+            <div className='mb-4 mx-6'>
+                <button className='p-2 bg-slate-500 text-white px-4 rounded-md text-lg' onClick={() => navigate(-1)}>Go Back</button>
+            </div>
         </>
     )
 }
