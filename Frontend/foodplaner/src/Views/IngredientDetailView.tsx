@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, Link, useNavigate } from 'react-router-dom'
-import { Ingredient, Meal } from '../Datatypes/Meal'
+import { useParams, useNavigate } from 'react-router-dom'
 import { IngredientService } from '../Endpoints/IngredientService'
 import URLify from '../Helperfunctions/urlify'
+import { Ingredient } from '../Datatypes/Ingredient';
 
 function IngredientDetailView() {
     const navigate = useNavigate();

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { FoodplanerItem, Meal } from '../Datatypes/Meal';
+import { Meal } from '../Datatypes/Meal';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import MealCard from './MealCard';
 import { Weekday } from '../Datatypes/Weekday';
 import AddMealButton from './AddMealButton';
+import { FoodplanerItem } from '../Datatypes/FoodPlaner';
 
 interface Props {
     planerItem: FoodplanerItem,

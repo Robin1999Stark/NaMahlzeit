@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Ingredient, Meal } from '../Datatypes/Meal'
 import { MealService } from '../Endpoints/MealService'
 import { Link, useNavigate } from 'react-router-dom'
 import PrimaryButton from '../Components/PrimaryButton';
+import { Meal } from '../Datatypes/Meal';
 
 function MealsOverview() {
     const navigate = useNavigate();

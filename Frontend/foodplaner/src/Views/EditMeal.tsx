@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form';
-import { Ingredient, IngredientAmount, IngredientAmountWithMeal, Meal, MealWithIngredientAmount, MealWithIngredientAmountMIID } from '../Datatypes/Meal';
 import { MealService } from '../Endpoints/MealService';
 import { IngredientService } from '../Endpoints/IngredientService';
 import { useNavigate, useParams } from 'react-router-dom';
 import { MealIngredientService } from '../Endpoints/MealIngredientService';
+import { IngredientAmountWithMeal, Ingredient } from '../Datatypes/Ingredient';
+import { Meal, MealWithIngredientAmountMIID } from '../Datatypes/Meal';
 
 function EditMeal() {
     const navigate = useNavigate();

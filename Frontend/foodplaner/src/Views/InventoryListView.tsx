@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { InventoryItem } from '../Datatypes/Inventory'
 import { InventoryService } from '../Endpoints/InventoryService'
 import { useForm, useFieldArray } from 'react-hook-form';
-import { Ingredient, MealWithIngredientAmount } from '../Datatypes/Meal';
-import { MealService } from '../Endpoints/MealService';
 import { IngredientService } from '../Endpoints/IngredientService';
+import { Ingredient } from '../Datatypes/Ingredient';
 
 function InventoryListView() {
     const [ingredients, setIngredients] = useState<Ingredient[]>()

@@ -21,7 +21,7 @@ function NavBar() {
         { link: "/planer", title: "Planer" },
         { link: "/inventory", title: "Inventory" },
         { link: "/shoppinglist", title: "Shoppinglist" },
-
+        { link: "/tags", title: "Tags" },
     ];
 
     const handleResize = () => {

@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { PlanerService } from '../Endpoints/PlanerService'
-import { FoodPlaner, FoodplanerItem } from '../Datatypes/Meal'
 import { DragDropContext } from 'react-beautiful-dnd'
 import { mealListID } from '../App'
 import PlanerList from '../Components/PlanerList'
 import { MealService } from '../Endpoints/MealService'
 import { reorderPlan } from '../reorder'
 import PlanerResourceCol from '../Components/PlanerResourceCol'
-import { start } from 'repl'
+import { FoodPlaner, FoodplanerItem } from '../Datatypes/FoodPlaner'
 
 
 function ReceipePlanerView() {

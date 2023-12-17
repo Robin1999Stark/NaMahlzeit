@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useForm, useFieldArray } from 'react-hook-form'
-import { Ingredient, Meal } from '../Datatypes/Meal'
+import { Meal } from '../Datatypes/Meal'
 import { IngredientService } from '../Endpoints/IngredientService'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { Ingredient } from '../Datatypes/Ingredient'
 
 function CreateIngredient() {
     const navigate = useNavigate();

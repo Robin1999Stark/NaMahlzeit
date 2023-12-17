@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Ingredient, Meal } from '../Datatypes/Meal'
 import { IngredientService } from '../Endpoints/IngredientService'
 import PrimaryButton from '../Components/PrimaryButton'
+import { Ingredient } from '../Datatypes/Ingredient'
 
 function IngredientsOverView() {
     const [ingredients, setIngredients] = useState<Ingredient[]>()

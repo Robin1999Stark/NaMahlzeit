@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { IngredientAmount, IngredientAmountWithMeal, Meal } from '../Datatypes/Meal';
+import { Meal } from '../Datatypes/Meal'
+import { IngredientAmount, IngredientAmountWithMeal } from '../Datatypes/Ingredient';
 
 
 const BASE_URL = 'http://127.0.0.1:8000';

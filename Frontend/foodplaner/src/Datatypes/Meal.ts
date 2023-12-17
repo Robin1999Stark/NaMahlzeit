@@ -1,17 +1,4 @@
-
-export class Ingredient {
-    title: string;
-    description: string;
-    preferedUnit: string;
-    constructor(title: string, description: string, preferedUnit: string) {
-        this.title = title;
-        this.description = description;
-        this.preferedUnit = preferedUnit;
-    }
-    static fromJSON(json: any): Ingredient {
-        return new Ingredient(json.title, json.description, json.preferedUnit);
-    }
-}
+import { IngredientAmount, IngredientAmountWithMeal } from "./Ingredient";
 
 export class Meal {
     id: number;
@@ -81,51 +68,5 @@ export class MealWithIngredientAmountMIID {
         return new MealWithIngredientAmountMIID(json.id, json.title, json.description, json.ingredients, json.duration, json.preparation);
     }
 
-}
-
-export class IngredientAmount {
-    ingredient: string;
-    amount: number;
-    unit: string;
-
-    constructor(ingredient: string, amount: number, unit: string) {
-        this.ingredient = ingredient;
-        this.amount = amount;
-        this.unit = unit;
-    }
-    static fromJSON(json: any): IngredientAmount {
-        return new IngredientAmount(json.ingredient, json.amount, json.unit);
-    }
-}
-export class IngredientAmountWithMeal extends IngredientAmount {
-    id: number;
-    meal: number;
-    constructor(id: number, ingredient: string, amount: number, unit: string, meal: number) {
-        super(ingredient, amount, unit);
-        this.id = id;
-        this.meal = meal;
-    }
-    static fromJSON(json: any): IngredientAmountWithMeal {
-        return new IngredientAmountWithMeal(json.id, json.ingredient, json.amount, json.unit, json.meal);
-    }
-}
-
-export class FoodplanerItem {
-    id: number;
-    date: Date;
-    meals: number[];
-    constructor(id: number, date: Date, food: number[]) {
-        this.id = id;
-        this.date = date;
-        this.meals = food;
-    }
-
-    static fromJSON(json: any): FoodplanerItem {
-        return new FoodplanerItem(json.id, json.date, json.meals)
-    }
-}
-
-export type FoodPlaner = {
-    [key: string]: FoodplanerItem
 }
 

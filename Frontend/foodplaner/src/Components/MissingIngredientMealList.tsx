@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { FoodPlaner, FoodplanerItem, IngredientAmountWithMeal, Meal } from '../Datatypes/Meal'
 import { PlanerService } from '../Endpoints/PlanerService';
 import { MealService } from '../Endpoints/MealService';
 import MissingIngredientMealListItem from './MissingIngredientMealListItem';
 import { InventoryItem } from '../Datatypes/Inventory';
 import { InventoryService } from '../Endpoints/InventoryService';
+import { IngredientAmountWithMeal } from '../Datatypes/Ingredient';
+import { FoodplanerItem } from '../Datatypes/FoodPlaner';
+import { Meal } from '../Datatypes/Meal';
 
 type Props = {
     handleAddItemToShoppingList: (data: InventoryItem | InventoryService.CreateInventoryItemInterface) => Promise<void>

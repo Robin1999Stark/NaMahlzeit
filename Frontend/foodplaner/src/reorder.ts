@@ -1,7 +1,7 @@
 import { DraggableLocation } from "react-beautiful-dnd";
-import { FoodPlaner, FoodplanerItem } from "./Datatypes/Meal";
 import { PlanerService } from "./Endpoints/PlanerService";
 import { mealListID } from "./App";
+import { FoodPlaner, FoodplanerItem } from "./Datatypes/FoodPlaner";
 
 export const reorder = (
     list: any[],

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { FoodplanerItem, Meal } from '../Datatypes/Meal'
 import AddMealButton from './AddMealButton';
 import MealCard from './MealCard';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
-import { MealService } from '../Endpoints/MealService';
+import { Meal } from '../Datatypes/Meal';
 
 interface Props {
     listId: string,

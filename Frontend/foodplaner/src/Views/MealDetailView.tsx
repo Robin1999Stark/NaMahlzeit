@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Ingredient, IngredientAmount, Meal } from '../Datatypes/Meal'
 import { MealService } from '../Endpoints/MealService'
 import { Link } from 'react-router-dom'
 import { MealIngredientService } from '../Endpoints/MealIngredientService'
@@ -9,6 +8,8 @@ import URLify from '../Helperfunctions/urlify'
 import { LuClock } from "react-icons/lu";
 import { PlanerService } from '../Endpoints/PlanerService'
 import { CiEdit } from "react-icons/ci";
+import { IngredientAmount } from '../Datatypes/Ingredient'
+import { Meal } from '../Datatypes/Meal'
 
 function MealDetailView() {
     const navigate = useNavigate();

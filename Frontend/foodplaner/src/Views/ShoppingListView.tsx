@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useForm, useFieldArray } from 'react-hook-form';
 import { InventoryItem } from '../Datatypes/Inventory';
-import { Ingredient } from '../Datatypes/Meal';
 import { IngredientService } from '../Endpoints/IngredientService';
 import { ShoppingList, ShoppingListItem } from '../Datatypes/ShoppingList';
 import { ShoppingListService } from '../Endpoints/ShoppingListService';
 import MissingIngredientMealList from '../Components/MissingIngredientMealList';
 import { InventoryService } from '../Endpoints/InventoryService';
+import { Ingredient } from '../Datatypes/Ingredient';
 
 function ShoppingListView() {
     const [shoppingList, setShoppingList] = useState<ShoppingList>();

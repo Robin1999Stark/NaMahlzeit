@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { IngredientAmountWithMeal, Meal } from '../Datatypes/Meal'
+import { Meal } from '../Datatypes/Meal'
 import { MealService } from '../Endpoints/MealService';
+import { IngredientAmountWithMeal } from '../Datatypes/Ingredient';
 
 interface Props {
     ingredient: IngredientAmountWithMeal
