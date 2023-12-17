@@ -39,3 +39,17 @@ export class IngredientAmountWithMeal extends IngredientAmount {
         return new IngredientAmountWithMeal(json.id, json.ingredient, json.amount, json.unit, json.meal);
     }
 }
+
+export class IngredientTags {
+    ingredient: string;
+    tags: string[];
+
+    constructor(ingredient: string, tags: string[]) {
+        this.ingredient = ingredient;
+        this.tags = tags;
+    }
+
+    static fromJSON(json: any): IngredientTags {
+        return new IngredientTags(json.ingredient, json.tags);
+    }
+}

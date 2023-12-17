@@ -1,4 +1,5 @@
 import { IngredientAmount, IngredientAmountWithMeal } from "./Ingredient";
+import { Tag } from "./Tag";
 
 export class Meal {
     id: number;
@@ -68,5 +69,19 @@ export class MealWithIngredientAmountMIID {
         return new MealWithIngredientAmountMIID(json.id, json.title, json.description, json.ingredients, json.duration, json.preparation);
     }
 
+}
+
+export class MealTags {
+    mealID: number;
+    tags: string[];
+
+    constructor(mealID: number, tags: string[]) {
+        this.mealID = mealID;
+        this.tags = tags;
+    }
+
+    static fromJSON(json: any): MealTags {
+        return new MealTags(json.meal, json.tags);
+    }
 }
 

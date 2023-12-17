@@ -11,7 +11,7 @@ import InventoryListView from "./Views/InventoryListView";
 import NavBar from "./Components/NavBar";
 import ShoppingListView from "./Views/ShoppingListView";
 import EditMeal from "./Views/EditMeal";
-import TagsListView from "./Views/TagsListView";
+import TagsOverView from "./Views/TagsOverView";
 import CreateTag from "./Views/CreateTag";
 import EditTag from "./Views/EditTag";
 
@@ -35,7 +35,7 @@ function App() {
             <Route path="/ingredients/:ingredientID" element={<IngredientDetailView />} />
             <Route path="/inventory" element={<InventoryListView />} />
             <Route path="/shoppinglist" element={<ShoppingListView />} />
-            <Route path="/tags" element={<TagsListView />} />
+            <Route path="/tags" element={<TagsOverView />} />
             <Route path="/tags/create" element={<CreateTag />} />
             <Route path="/tags/:tagID/edit" element={<EditTag />} />
           </Routes>

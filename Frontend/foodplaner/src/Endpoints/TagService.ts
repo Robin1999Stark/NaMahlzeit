@@ -1,5 +1,7 @@
 import axios from "axios";
-import { ShoppingList, ShoppingListItem } from "../Datatypes/ShoppingList";
+import { Tag } from "../Datatypes/Tag";
+import { MealTags } from "../Datatypes/Meal";
+import { IngredientTags } from "../Datatypes/Ingredient";
 
 const BASE_URL = 'http://127.0.0.1:8000';
 
@@ -9,161 +11,189 @@ const instance = axios.create({
 })
 export namespace TagService {
 
-    export async function getAllTagsJSON(): Promise<any> {
+    async function getAllTagsJSON(): Promise<any> {
         try {
-            const response = await instance.get(`/shopping-lists/`);
+            const response = await instance.get(`/tags/`);
             return response.data;
         } catch (error) {
-            throw new Error('Error fetching Shopping Lists: ' + error);
+            throw new Error('Error fetching Tags: ' + error);
         }
     }
 
-    export async function getAllTags(): Promise<ShoppingList[]> {
-        let shoppingLists: ShoppingList[] = [];
+    export async function getAllTags(): Promise<Tag[]> {
+        let tags: Tag[] = [];
         try {
             const data = await getAllTagsJSON();
-            const shoppingLists: ShoppingList[] = []
-            data.map((list: any) => shoppingLists.push(ShoppingList.fromJSON(list)));
-            return shoppingLists;
+            const tags: Tag[] = []
+            data.map((tag: any) => tags.push(Tag.fromJSON(tag)));
+            return tags;
         } catch (error) {
-            console.error('Error fetching shoppingLists: ', error);
+            console.error('Error fetching tags: ', error);
         }
-        return shoppingLists;
+        return tags;
     }
 
-    interface CreateShoppingList {
-        items: number[],
+    interface CreateTagInterface {
+        name: string,
     }
-    export async function CreateShoppingList({ items }: CreateShoppingList): Promise<ShoppingList | null> {
 
-        const date = new Date(Date.now())
-        const dateString = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate() + "T" + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + "." + date.getMilliseconds() + "Z";
+    export async function createTag({ name }: CreateTagInterface): Promise<Tag | null> {
+
 
         const requestBody = {
-            created: dateString,
-            items: items,
+            name: name,
         }
         try {
-            let response = await instance.post('/shopping-lists/', JSON.stringify(requestBody), {
+            let response = await instance.post('/tags/', JSON.stringify(requestBody), {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
-            return ShoppingList.fromJSON(response.data);
+            return Tag.fromJSON(response.data);
         } catch (error) {
-            console.error('Error creating Shopping List:', error);
+            console.error('Error creating Tag:', error);
             return null;
         }
     }
 
-    export async function deleteShoppingList(id: number) {
+    export async function deleteTag(tag: string) {
         try {
-            const response = await instance.delete(`/shopping-lists/${id}/`);
+            const response = await instance.delete(`/tags/${tag}/`);
             return response.data;
         } catch (error) {
-            throw new Error('Error deleting ShoppingList: ' + error);
+            throw new Error('Error deleting Tag: ' + error);
         }
     }
 
 
-    export async function getAllShoppingListItemsJSON(): Promise<any> {
+    export async function getAllTagsFromMealJSON(meal: number): Promise<any> {
         try {
-            const response = await instance.get(`/shopping-list-items/`);
+            const response = await instance.get(`/meal-tags/${meal}/`);
             return response.data;
         } catch (error) {
-            throw new Error('Error fetching Shopping List Items: ' + error);
+            throw new Error('Error fetching Tags from Meal: ' + error);
         }
     }
 
-    export async function getAllShoppingListItems(): Promise<ShoppingListItem[]> {
-        let shoppingListItems: ShoppingListItem[] = [];
+    export async function getAllTagsFromMeal(meal: number): Promise<MealTags | null> {
         try {
-            const data = await getAllShoppingListItemsJSON();
-            data.map((inv: any) => shoppingListItems.push(ShoppingListItem.fromJSON(inv)));
-            return shoppingListItems;
+            const data = await getAllTagsFromMealJSON(meal);
+            return MealTags.fromJSON(data);
         } catch (error) {
-            console.error('Error fetching shoppingListItems: ', error);
+            console.error('Error fetching tags: ', error);
         }
-        return shoppingListItems;
+        return null;
     }
 
-
-
-    interface CreateShoppingListItem {
-        ingredient: string;
-        amount: number;
-        unit: string;
-        notes: string;
-    }
-    export async function createShoppingListItem({ ingredient, amount, unit, notes }: CreateShoppingListItem): Promise<ShoppingListItem | null> {
-        const date = new Date(Date.now())
-        const dateString = date.toISOString()
+    export async function createMealTags(mealTags: MealTags): Promise<MealTags | null> {
         const requestBody = {
-            bought: false,
-            added: dateString,
+            meal: mealTags.mealID,
+            tags: mealTags.tags,
+        }
+        try {
+            let response = await instance.post('/meal-tags/', JSON.stringify(requestBody), {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            return MealTags.fromJSON(response.data);
+        } catch (error) {
+            console.error('Error creating Meal Tags:', error);
+            return null;
+        }
+    }
+
+
+    export async function deleteMealTags(meal: number) {
+        try {
+            const response = await instance.delete(`/meal-tags/${meal}/`);
+            return response.data;
+        } catch (error) {
+            throw new Error('Error while deleting Meal Tags: ' + error);
+        }
+    }
+
+
+
+    export async function updateMealTags(meal: number, tags: MealTags) {
+        let requestBody = {
+            meal: meal,
+            tags: tags.tags,
+        }
+
+        try {
+            let response = await instance.put(`/meal-tags/${meal}/`, JSON.stringify(requestBody), {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+        } catch (error) {
+            throw new Error('Error while deleting Meal Tags occured: ' + error);
+        }
+    }
+
+    export async function getAllTagsFromIngredientJSON(ingredient: string): Promise<any> {
+        try {
+            const response = await instance.get(`/ingredient-tags/${ingredient}/`);
+            return response.data;
+        } catch (error) {
+            throw new Error('Error fetching Tags from Ingredient: ' + error);
+        }
+    }
+
+    export async function getAllTagsFromIngredient(ingredient: string): Promise<IngredientTags> {
+        try {
+            const data = await getAllTagsFromIngredientJSON(ingredient);
+            return IngredientTags.fromJSON(data);
+        } catch (error) {
+            throw new Error('Error fetching Tags from Ingredient: ' + error);
+        }
+    }
+
+    export async function createIngredientTags(ingredientTags: IngredientTags): Promise<IngredientTags> {
+        const requestBody = {
+            ingredient: ingredientTags.ingredient,
+            tags: ingredientTags.tags,
+        }
+        try {
+            let response = await instance.post('/ingredient-tags/', JSON.stringify(requestBody), {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            return IngredientTags.fromJSON(response.data);
+        } catch (error) {
+            throw new Error('Error while creating Tags from Ingredient: ' + error);
+        }
+    }
+
+
+    export async function deleteIngredientTags(ingredient: string) {
+        try {
+            const response = await instance.delete(`/ingredient-tags/${ingredient}/`);
+            return response.data;
+        } catch (error) {
+            throw new Error('Error while deleting Ingredient Tags: ' + error);
+        }
+    }
+
+
+
+    export async function updateIngredientTags(ingredient: number, tags: IngredientTags) {
+        let requestBody = {
             ingredient: ingredient,
-            amount: amount,
-            unit: unit,
-            notes: notes,
+            tags: tags.tags,
         }
+
         try {
-            let response = await instance.post('/shopping-list-items/', JSON.stringify(requestBody), {
+            let response = await instance.put(`/ingredient-tags/${ingredient}/`, JSON.stringify(requestBody), {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
-            return ShoppingListItem.fromJSON(response.data);
         } catch (error) {
-            console.error('Error creating Shopping list Item:', error);
-            return null;
+            throw new Error('Error while updating Ingredient Tags occured: ' + error);
         }
     }
 
-    export async function deleteShoppingListItem(id: number) {
-        try {
-            const response = await instance.delete(`/shopping-list-items/${id}/`);
-            return response.data;
-        } catch (error) {
-            throw new Error('Error deleting ShoppinglistItem: ' + error);
-        }
-    }
-
-    export async function addItemToShoppingList(list: ShoppingList, itemID: number) {
-        const date = new Date(list.created)
-        const dateString = date.toISOString()
-        const items = list.items
-        items.push(itemID)
-        const requestBody = {
-            id: list.id,
-            created: dateString,
-            items: items,
-
-        }
-        try {
-            let response = await instance.put(`/shopping-lists/${list.id}/`, JSON.stringify(requestBody), {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            return response;
-
-        } catch (error) {
-            console.error('Error creating Shopping list Item:', error);
-            return null;
-        }
-
-    }
-
-    export async function createItemAndAddToShoppingList(list: ShoppingList, item: CreateShoppingListItem): Promise<ShoppingListItem | null> {
-        try {
-            const createdItem = await createShoppingListItem(item);
-            if (createdItem) {
-                addItemToShoppingList(list, createdItem.id)
-            }
-            return createdItem ? createdItem : null
-        } catch (error) {
-            console.error('Error creating Shopping list Item:', error);
-        }
-        return null
-    }
 }
