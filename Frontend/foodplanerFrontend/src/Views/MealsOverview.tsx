@@ -5,12 +5,14 @@ import PrimaryButton from '../Components/PrimaryButton';
 import { Meal } from '../Datatypes/Meal';
 import { TagService } from '../Endpoints/TagService';
 import { Tag } from '../Datatypes/Tag';
+import debounce from 'lodash/debounce';
 
 function MealsOverview() {
     const navigate = useNavigate();
     const [meals, setMeals] = useState<Meal[]>();
     const [filteredMeals, setFilteredMeals] = useState<Meal[]>();
     const [searchString, setSearchString] = useState<string>("");
+    const [debounceTimeout, setDebounceTimeout] = useState<number | null>(null);
 
     async function fetchData() {
         try {
@@ -34,10 +36,8 @@ function MealsOverview() {
             console.log(error)
         }
     }
-    async function searchAfterTags(search: string) {
-        const response = await TagService.getMealTagsFromTagList([new Tag(search)])
 
-    }
+    const debouncedSearchForMeals = debounce(searchForMeals, 500);
 
     async function searchForMeals(search: string) {
         if (search === undefined || search === null || search === "") {
@@ -58,7 +58,25 @@ function MealsOverview() {
             setFilteredMeals(filteredMeals);
         }
     }
+    // Debounce the searchForMeals function with a delay before making the API call
+    useEffect(() => {
+        if (debounceTimeout) {
+            clearTimeout(debounceTimeout);
+        }
 
+        const timeoutId = window.setTimeout(() => {
+            searchForMeals(searchString.trim());
+        }, 500);
+
+        setDebounceTimeout(timeoutId);
+
+        // Cleanup function to clear the timeout when the component unmounts or when searchString changes
+        return () => {
+            if (debounceTimeout) {
+                clearTimeout(debounceTimeout);
+            }
+        };
+    }, [searchString]);
 
     return (
         <>
@@ -66,7 +84,10 @@ function MealsOverview() {
                 <input type="text" value={searchString}
                     onChange={(e) => {
                         setSearchString(e.target.value);
-                        searchForMeals(e.target.value.trim());
+                        // debounced search - delays search
+                        if (debounceTimeout) {
+                            clearTimeout(debounceTimeout);
+                        }
                     }}
                     autoFocus={true}
                     className='bg-[#F2F2F2] w-1/2 py-3 text-center px-4 rounded-md m-3'
