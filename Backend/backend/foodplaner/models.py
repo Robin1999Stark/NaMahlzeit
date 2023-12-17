@@ -27,6 +27,10 @@ class UnitOptions(models.TextChoices):
     STICK = 'stick', 'stange'
 
 
+class Tag(models.Model):
+    name = models.CharField(primary_key=True, max_length=200, unique=True)
+
+
 class Ingredient(models.Model):
     title = models.CharField(max_length=180, primary_key=True, null=False)
     description = models.CharField(null=True, max_length=1200)
@@ -37,6 +41,12 @@ class Ingredient(models.Model):
         max_length=20)
 
 
+class IngredientTags(models.Model):
+    ingredient = models.OneToOneField(
+        Ingredient, blank=False, primary_key=True, on_delete=models.CASCADE)
+    tags = models.ManyToManyField(Tag, blank=True)
+
+
 class Meal(models.Model):
     title = models.CharField(max_length=180)
     description = models.TextField(null=True, max_length=500)
@@ -44,6 +54,12 @@ class Meal(models.Model):
         Ingredient, blank=True, through='MealIngredient')
     duration = models.PositiveSmallIntegerField(default=0)
     preparation = models.TextField(null=True, blank=True)
+
+
+class MealTags(models.Model):
+    meal = models.OneToOneField(
+        Meal, blank=False, primary_key=True, on_delete=models.CASCADE)
+    tags = models.ManyToManyField(Tag, blank=True)
 
 
 class MealIngredient(models.Model):

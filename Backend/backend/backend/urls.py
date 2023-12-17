@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 
-from foodplaner.views import (
+from foodplaner.allviews import (
     MealListView,
     FoodPlanerItemView, FoodPlanerItemDetailView,
     IngredientListView, IngredientDetailView,
@@ -12,6 +12,7 @@ from foodplaner.views import (
     ShoppingListView, get_all_meals_on_planer,
     get_all_mealingredients_from_planer, is_planned,
 )
+from foodplaner.views.tag_views import TagListView, MealTagsListView, IngredientTagsListView
 
 router = routers.DefaultRouter()
 router.register(r'meals', MealListView, basename='meal')
@@ -23,6 +24,10 @@ router.register(r'meal-ingredients', MealIngredientListViewNormal,
 router.register(r'shopping-lists', ShoppingListView, basename='shopping-lists')
 router.register(r'shopping-list-items', ShoppingListItemView,
                 basename='shopping-list-items')
+router.register(r'tags', TagListView, basename='tags')
+router.register(r'meal-tags', MealTagsListView, basename='meal-tags')
+router.register(r'ingredient-tags', IngredientTagsListView,
+                basename='ingredient-tags')
 
 
 urlpatterns = [
