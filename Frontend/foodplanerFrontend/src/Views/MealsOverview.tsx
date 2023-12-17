@@ -37,7 +37,7 @@ function MealsOverview() {
         }
     }
 
-    const debouncedSearchForMeals = debounce(searchForMeals, 500);
+    debounce(searchForMeals, 500);
 
     async function searchForMeals(search: string) {
         if (search === undefined || search === null || search === "") {

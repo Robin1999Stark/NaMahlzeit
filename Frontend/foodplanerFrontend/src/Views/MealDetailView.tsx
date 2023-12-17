@@ -9,7 +9,9 @@ import { LuClock } from "react-icons/lu";
 import { PlanerService } from '../Endpoints/PlanerService'
 import { CiEdit } from "react-icons/ci";
 import { IngredientAmount } from '../Datatypes/Ingredient'
-import { Meal } from '../Datatypes/Meal'
+import { Meal, MealTags } from '../Datatypes/Meal'
+import { TagService } from '../Endpoints/TagService'
+import Tag from '../Components/Tag'
 
 function MealDetailView() {
     const navigate = useNavigate();
@@ -19,6 +21,7 @@ function MealDetailView() {
     const [error, setError] = useState<string>("")
     const [mealIngredients, setMealIngredients] = useState<IngredientAmount[]>([])
     const [isPlanned, setIsPlanned] = useState<PlanerService.IsPlannedResponse>();
+    const [tags, setTags] = useState<MealTags>();
 
     function displayIsPlanned() {
         if (isPlanned && isPlanned.isPlanned) {
@@ -28,6 +31,15 @@ function MealDetailView() {
         }
     }
     useEffect(() => {
+
+        async function fetchTags(id: string) {
+            try {
+                const response = await TagService.getAllTagsFromMeal(Number(id));
+                response ? setTags(response) : setError("No Meal Found");
+            } catch (error) {
+                setError("Error while fetching Tags occured");
+            }
+        }
 
         async function fetchMeal() {
             try {
@@ -59,7 +71,9 @@ function MealDetailView() {
             return null;
         }
         async function fetchAllData() {
+            if (mealID === undefined) return;
             fetchMeal();
+            fetchTags(mealID);
             fetchMealIngredients();
             const planned = await checkIsPlanned(mealID!);
             if (!planned) return;
@@ -115,6 +129,11 @@ function MealDetailView() {
                 </div>
             </div>
             <div className='p-4 w-full flex flex-col justify-start items-center min-w-[200px]'>
+                <div className='w-full flex flex-row justify-start h-full flex-wrap items-center'>
+                    {tags?.tags.map(tag => (
+                        <Tag title={tag} />
+                    ))}
+                </div>
                 <div className='flex w-full text-[#3E4C62] py-3 flex-row justify-end'>
                     <button className='p-2 bg-slate-400 text-white rounded-md flex flex-row justify-between items-center' onClick={() => navigate(`edit`)}>
                         <p className='mx-2'>

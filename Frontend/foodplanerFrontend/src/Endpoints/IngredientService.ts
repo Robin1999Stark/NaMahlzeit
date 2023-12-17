@@ -39,16 +39,14 @@ export namespace IngredientService {
         }
     }
 
-    export async function getIngredient(id: string): Promise<Ingredient | null> {
-        let meal: Ingredient | null = null;
+    export async function getIngredient(id: string): Promise<Ingredient> {
         try {
             const response = await getIngredientJSON(id);
-            meal = Ingredient.fromJSON(response);
-        } catch (error) {
-            console.error('Error fetching Ingredient:', error);
-        }
-        return meal;
+            return Ingredient.fromJSON(response);
 
+        } catch (error) {
+            throw new Error("Error occured while getting Ingredient")
+        }
     }
 
 
