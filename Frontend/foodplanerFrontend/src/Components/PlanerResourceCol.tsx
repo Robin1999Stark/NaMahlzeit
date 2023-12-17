@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import MealList from './MealList';
-import PlanerResourceColSearchOptions from './PlanerResourceColSearchOptions';
 import { Meal } from '../Datatypes/Meal';
 import { MealService } from '../Endpoints/MealService';
 

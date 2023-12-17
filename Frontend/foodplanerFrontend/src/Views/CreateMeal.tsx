@@ -115,7 +115,7 @@ function CreateMeal() {
                                             {...register(`ingredients.${index}.ingredient` as const, {
                                                 required: true,
                                             })}
-                                            defaultValue={ingredients ? ingredients?.at(0)?.title : 0} // Ensure a valid initial value
+                                            defaultValue={ingredients ? ingredients[0].title : 0} // Ensure a valid initial value
                                             className="border-slate-200 text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500"
                                         >
                                             <option key={"select-ingredient"} value="">Select Ingredient</option>

@@ -6,6 +6,7 @@ import { Meal } from '../Datatypes/Meal';
 import { TagService } from '../Endpoints/TagService';
 import { Tag } from '../Datatypes/Tag';
 import debounce from 'lodash/debounce';
+import MealListItem from '../Components/MealListItem';
 
 function MealsOverview() {
     const navigate = useNavigate();
@@ -60,22 +61,27 @@ function MealsOverview() {
     }
     // Debounce the searchForMeals function with a delay before making the API call
     useEffect(() => {
-        if (debounceTimeout) {
-            clearTimeout(debounceTimeout);
-        }
+        if (searchString !== "" && searchString !== undefined && searchString !== null) {
 
-        const timeoutId = window.setTimeout(() => {
-            searchForMeals(searchString.trim());
-        }, 500);
-
-        setDebounceTimeout(timeoutId);
-
-        // Cleanup function to clear the timeout when the component unmounts or when searchString changes
-        return () => {
             if (debounceTimeout) {
                 clearTimeout(debounceTimeout);
             }
-        };
+
+            const timeoutId = window.setTimeout(() => {
+                searchForMeals(searchString.trim());
+            }, 500);
+
+            setDebounceTimeout(timeoutId);
+
+            // Cleanup function to clear the timeout when the component unmounts or when searchString changes
+            return () => {
+                if (debounceTimeout) {
+                    clearTimeout(debounceTimeout);
+                }
+            };
+        } else {
+            setFilteredMeals(meals);
+        }
     }, [searchString]);
 
     return (
@@ -123,10 +129,7 @@ function MealsOverview() {
                     return <>
                         {prefix}
                         <li key={meal.id} className='p-2 flex flex-row justify-between'>
-                            <Link to={`/meals/${meal.id}`}>{meal.title}</Link>
-                            <button onClick={() => deleteMeal(meal.id)} className='px-3 bg-red-400 py-1 rounded-md text-white text-base font-semibold flex flex-row items-center justify-center'>
-                                x
-                            </button>
+                            <MealListItem meal={meal} deleteMeal={deleteMeal} />
                         </li>
                     </>
 
