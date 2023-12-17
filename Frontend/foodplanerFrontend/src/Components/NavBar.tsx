@@ -57,7 +57,7 @@ function NavBar() {
     };
     if (windowSize.width > SIZE_MOBILE) {
         return (
-            <nav className='flex flex-row h-20 bg-[#181818] z-10 items-center justify-between shadow-md w-full'>
+            <nav className='flex flex-row h-20 absolute top-0 left-0 right-0 bg-[#181818] z-10 items-center justify-between shadow-md w-full'>
                 <div>
 
                 </div>
@@ -81,7 +81,7 @@ function NavBar() {
         return (
 
             <>
-                <nav className='flex flex-row fixed h-20 bg-[#181818] z-10 justify-between shadow-md w-full'>
+                <nav className='flex flex-row fixed top-0 left-0 right-0 h-20 bg-[#181818] z-10 justify-between shadow-md w-full'>
                     {
                         open ?
                             <button

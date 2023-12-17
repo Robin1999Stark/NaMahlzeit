@@ -21,7 +21,7 @@ function App() {
   return (
     <>
       <NavBar />
-      <div className="absolute w-[95%] h-full left-[50%] translate-x-[-50%]">
+      <div className="absolute w-[95%] h-full top-20 left-[50%] translate-x-[-50%]">
         <Suspense fallback={<div>Loading ...</div>}>
           <Routes>
             <Route path="/" element={<ReceipePlanerView />} />
