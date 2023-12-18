@@ -2,6 +2,7 @@ import axios from "axios";
 import { Tag } from "../Datatypes/Tag";
 import { MealTags } from "../Datatypes/Meal";
 import { IngredientTags } from "../Datatypes/Ingredient";
+import { ResponseCodes } from "./Errors";
 
 const BASE_URL = 'http://127.0.0.1:8000';
 
@@ -16,21 +17,25 @@ export namespace TagService {
             const response = await instance.get(`/tags/`);
             return response.data;
         } catch (error) {
-            throw new Error('Error fetching Tags: ' + error);
+            return null;
         }
     }
 
-    export async function getAllTags(): Promise<Tag[]> {
-        let tags: Tag[] = [];
+    export async function getAllTags(): Promise<Tag[] | null> {
         try {
             const data = await getAllTagsJSON();
-            const tags: Tag[] = []
+
+            // If data is null, it means there was an error, and the calling function can handle it
+            if (data === null) {
+                return null;
+            }
+            const tags: Tag[] = [];
             data.map((tag: any) => tags.push(Tag.fromJSON(tag)));
             return tags;
         } catch (error) {
-            console.error('Error fetching tags: ', error);
+            console.error('Error fetching Tags: ', error);
+            return null;
         }
-        return tags;
     }
 
     interface CreateTagInterface {
@@ -70,17 +75,19 @@ export namespace TagService {
         try {
             const response = await instance.get(`/meal-tags/${meal}/`);
             return response.data;
-        } catch (error) {
-            throw new Error('Error fetching Tags from Meal: ' + error);
+        } catch (error: any) {
+            return null;
         }
     }
 
-    export async function getAllTagsFromMeal(meal: number): Promise<MealTags> {
+    export async function getAllTagsFromMeal(meal: number): Promise<MealTags | null> {
         try {
             const data = await getAllTagsFromMealJSON(meal);
+            if (data === null)
+                return null;
             return MealTags.fromJSON(data);
-        } catch (error) {
-            throw new Error("Error while fetsching Meals")
+        } catch (error: any) {
+            return null
         }
     }
 
@@ -119,17 +126,12 @@ export namespace TagService {
         try {
             console.log(mealTags)
             const existingMealTags = await getAllTagsFromMeal(mealTags.mealID);
-            console.log(existingMealTags)
+
             if (existingMealTags) {
                 const updatedMealTags = await updateMealTags(mealTags.mealID, mealTags);
                 console.log("update", updateIngredientTags)
                 return updatedMealTags;
-            } else {
-                throw new Error("Meal Tags does not Exist")
-            }
-        } catch (error: any) {
-            console.log(error)
-            if (error.response && error.response.status === 404) {
+            } else if (existingMealTags === null) {
                 try {
                     const newMealTags = await createMealTags(mealTags);
                     console.log("create", newMealTags)
@@ -137,11 +139,12 @@ export namespace TagService {
                 } catch (errorWhileCreating: any) {
                     throw new Error(errorWhileCreating);
                 }
-
             } else {
-                throw new Error("Server Error");
-            }
+                throw new Error("Meal Tags does not Exist")
 
+            }
+        } catch (error: any) {
+            return null;
         }
     }
 

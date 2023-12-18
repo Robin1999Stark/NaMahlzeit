@@ -12,30 +12,6 @@ function SetTagsMeal() {
     const [tags, setTags] = useState<Tag[]>();
     const [mealTags, setMealTags] = useState<MealTags>();
     const [meal, setMeal] = useState<Meal>();
-
-    useEffect(() => {
-        async function fetchData() {
-            if (!mealID) return;
-            try {
-                const [mealTags, tags, meal] = await Promise.all([
-                    TagService.getAllTagsFromMeal(Number(mealID)),
-                    TagService.getAllTags(),
-                    MealService.getMeal(mealID)
-                ]);
-
-                if (mealTags !== null) setMealTags(mealTags);
-                if (tags !== null) setTags(tags);
-                if (meal !== null) setMeal(meal);
-
-                // Manually set default values
-                setValue('tags', mealTags.tags || []);
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        fetchData();
-    }, []);
-
     const {
         register,
         control,
@@ -50,17 +26,50 @@ function SetTagsMeal() {
             mode: 'all'
         });
 
+    useEffect(() => {
+        async function fetchData() {
+            if (!mealID) return;
+            try {
+                const tags = await TagService.getAllTags();
+                const meal = await MealService.getMeal(mealID);
+                let mealTags = null;
+
+                try {
+                    mealTags = await TagService.getAllTagsFromMeal(Number(mealID));
+                } catch (error: any) {
+                    // Handle 404 or other errors for mealTags
+                    if (error.response && error.response.status === 404) {
+                        console.log('MealTags not found (404)');
+                    } else {
+                        console.error('Error fetching MealTags:', error);
+                    }
+                }
+
+                // Set states based on the retrieved data
+                if (tags !== null) setTags(tags.sort((a, b) => a.name.localeCompare(b.name)));
+                if (meal !== null) setMeal(meal);
+
+                // Set mealTags in the form
+                setValue('tags', mealTags ? mealTags.tags : []);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        fetchData();
+    }, [mealID, setValue]);
+
     const { fields, append, remove } = useFieldArray<any>({
         control,
         name: "tags"
     });
 
 
-    const onSubmit = (data: MealTags) => {
+    const onSubmit = async (data: MealTags) => {
         try {
             console.log(data)
-            TagService.createOrUpdateMealTags(data);
-            //navigate(-1);
+            await TagService.createOrUpdateMealTags(data);
+            navigate(-1);
         } catch (error) {
             console.log(error)
         }
@@ -88,7 +97,7 @@ function SetTagsMeal() {
                                             {...register(`tags.${index}` as const, {
                                                 required: true,
                                             })}
-                                            defaultValue={tags ? tags[0].name : 0} // Ensure a valid initial value
+                                            defaultValue={tags && tags.length > 0 ? tags[0].name : ""}
                                             className="border-slate-200 text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500"
                                         >
                                             <option key={"select-ingredient"} value="">Select Ingredient</option>
@@ -119,7 +128,7 @@ function SetTagsMeal() {
                 </div>
                 <div className='w-100 my-4 flex flex-1 justify-center align-middle'>
                     <div className='mb-4 mx-6'>
-                        <button className='p-2 bg-slate-500 text-white px-4 rounded-md text-lg' type='submit'>Save</button>
+                        <button className='p-2 bg-slate-500 text-white px-4 rounded-md text-lg' type='submit'>Save and Go Back</button>
                     </div>
                 </div>
             </form>

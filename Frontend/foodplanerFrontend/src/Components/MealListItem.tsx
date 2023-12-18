@@ -16,7 +16,7 @@ function MealListItem({ meal, deleteMeal }: Props) {
         async function fetchTags(id: number) {
             try {
                 const response = await TagService.getAllTagsFromMeal(id);
-                setTags(response);
+                response ? setTags(response) : console.log("Error")
             } catch (error) {
                 console.error("error");
             }

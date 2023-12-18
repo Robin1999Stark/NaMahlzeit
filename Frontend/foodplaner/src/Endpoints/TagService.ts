@@ -75,14 +75,13 @@ export namespace TagService {
         }
     }
 
-    export async function getAllTagsFromMeal(meal: number): Promise<MealTags | null> {
+    export async function getAllTagsFromMeal(meal: number): Promise<MealTags> {
         try {
             const data = await getAllTagsFromMealJSON(meal);
             return MealTags.fromJSON(data);
-        } catch (error) {
-            console.error('Error fetching tags: ', error);
+        } catch (error: any) {
+            throw new Error('Error fetching tags: ', error);
         }
-        return null;
     }
 
     export async function getMealTagsFromTagList(tags: Tag[]): Promise<MealTags[]> {
@@ -99,7 +98,7 @@ export namespace TagService {
 
     }
 
-    export async function createMealTags(mealTags: MealTags): Promise<MealTags | null> {
+    export async function createMealTags(mealTags: MealTags): Promise<MealTags> {
         const requestBody = {
             meal: mealTags.mealID,
             tags: mealTags.tags,
@@ -111,9 +110,8 @@ export namespace TagService {
                 }
             })
             return MealTags.fromJSON(response.data);
-        } catch (error) {
-            console.error('Error creating Meal Tags:', error);
-            return null;
+        } catch (error: any) {
+            throw new Error("Error while creating Meal Tags", error)
         }
     }
 

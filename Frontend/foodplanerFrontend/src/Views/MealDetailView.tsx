@@ -133,12 +133,12 @@ function MealDetailView() {
                     {tags?.tags.map(tag => (
                         <Tag title={tag} />
                     ))}
+                    <Tag title={'Edit Tags'} onClick={() => navigate('tags')} />
                 </div>
                 <div className='flex w-full text-[#3E4C62] py-3 flex-row justify-end'>
                     <button className='p-2 bg-slate-400 text-white rounded-md flex flex-row justify-between items-center' onClick={() => navigate(`edit`)}>
                         <p className='mx-2'>
                             Edit
-
                         </p>
                         <CiEdit />
                     </button>

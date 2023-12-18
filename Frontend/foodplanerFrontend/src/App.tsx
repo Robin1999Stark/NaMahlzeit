@@ -30,8 +30,8 @@ function App() {
             <Route path="/meals/create" element={<CreateMeal />} />
             <Route path="/meals" element={<MealsOverview />} />
             <Route path="/meals/:mealID" element={<MealDetailView />} />
-            <Route path="/meals/:mealID/tags" element={<SetTagsMeal />} />
             <Route path="/meals/:mealID/edit" element={<EditMeal />} />
+            <Route path="/meals/:mealID/tags" element={<SetTagsMeal />} />
             <Route path="/ingredients/create" element={<CreateIngredient />} />
             <Route path="/ingredients" element={<IngredientsOverView />} />
             <Route path="/ingredients/:ingredientID" element={<IngredientDetailView />} />
@@ -49,14 +49,3 @@ function App() {
 }
 
 export default App;
-
-/*
-   <Suspense fallback={<div>Loading ...</div>}>
-        <Routes>
-          <Route path="/" element={<ReceipePlanerView />} />
-          <Route path="/planer" element={<ReceipePlanerView />} />
-          <Route path="/meals/create" element={<CreateMeal />} />
-
-        </Routes>
-      </Suspense>
-*/
