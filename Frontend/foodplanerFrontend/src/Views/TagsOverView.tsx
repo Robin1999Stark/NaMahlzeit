@@ -55,7 +55,7 @@ function TagsOverView() {
                         searchForTags(e.target.value.trim());
                     }}
                     autoFocus={true}
-                    className='bg-[#F2F2F2] w-1/2 py-3 text-center px-4 rounded-md m-3'
+                    className='bg-[#F2F2F2] w-full lg:w-2/3 py-3 text-center px-4 rounded-md m-3'
                     placeholder='Search for Tags' />
                 <PrimaryButton title='Filter' onClick={() => {
                     TagService.getMealTagsFromTagList([new Tag("obst"), new Tag("vegetarisch")])

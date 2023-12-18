@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Meal } from '../Datatypes/Meal';
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import { useEffect, useState } from 'react';
+import { Draggable, Droppable } from 'react-beautiful-dnd';
 import MealCard from './MealCard';
 import { Weekday } from '../Datatypes/Weekday';
 import AddMealButton from './AddMealButton';
@@ -32,7 +31,7 @@ function PlanerList({ listId, listType, planerItem, isMealList = false }: Props)
         const isToday = new Date(Date.now()).getDate() === new Date(planerItem.date).getDate()
 
         return (
-            <div className='flex select-none flex-col justify-center items-center min-h-[5rem] w-32 h-full rounded-xl px-2 bg-[#181818]'>
+            <div className='flex select-none flex-row xl:flex-col xl:justify-center justify-between items-center min-h-[3rem] xl:min-h-[5rem] w-full xl:w-32 h-full rounded-md xl:rounded-xl px-4 xl:px-2 bg-[#181818]'>
                 <h2 className={isToday ? 'text-[#FFC200] text-2xl font-semibold' : 'text-white text-2xl font-semibold'}>
                     {new Date(planerItem.date).getDate() + "." + (new Date(planerItem.date).getMonth() + 1) + "."}
                 </h2>
@@ -53,7 +52,7 @@ function PlanerList({ listId, listType, planerItem, isMealList = false }: Props)
         return <></>
     }
     return (
-        <div className={'flex w-full flex-row items-center justify-start'} >
+        <div className={'flex w-full flex-col xl:flex-row items-start justify-start'} >
 
             {displayTitle()}
 

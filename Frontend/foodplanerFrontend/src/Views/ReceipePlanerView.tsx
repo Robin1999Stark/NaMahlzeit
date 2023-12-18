@@ -97,19 +97,24 @@ function ReceipePlanerView() {
                     return;
                 setPlaner(reorderPlan(planer, source, destination));
             }}>
-                <div className='flex flex-row h-full justify-between'>
-                    <div className='my-6 mx-4 h-full w-[70%] grid grid-cols-3 grid-rows-6 grid-flow-col gap-3'>
+                <div className='md:flex md:flex-row md:relative h-full md:justify-between w-full'>
+
+                    <div className='my-6 md:mx-4 h-full w-full md:w-1/2 lg:w-[70%] flex-grow flex flex-row flex-wrap justify-start items-start'>
                         {Object.entries(planer).slice(0, -1).map(([key, value]) => (
-                            <PlanerList
-                                internalScroll
-                                key={key}
-                                listId={key}
-                                listType='LIST'
-                                planerItem={value}
-                            />
+                            <div className='w-full md:w-[20rem] m-3'>
+                                <PlanerList
+                                    internalScroll
+                                    key={key}
+                                    listId={key}
+                                    listType='LIST'
+                                    planerItem={value}
+                                />
+                            </div>
                         ))}
                     </div>
-                    <div className='w-[30%] my-6 h-full'>
+
+                    <div
+                        className='md:w-[50%] lg:w-[30%] w-full z-20 p-2 sticky md:relative bottom-0 left-0 right-0 pt-3 bg-white  rounded-md h-[50vh] md:h-full'>
                         <PlanerResourceCol mealListID={mealListID} />
                     </div>
                 </div>

@@ -85,7 +85,7 @@ function NavBar() {
                     {
                         open ?
                             <button
-                                className='text-3xl hover:fill-[#FFC200] text-[#EBECF4] p-4'
+                                className='text-3xl hover:fill-[#FFC200] bg-[#181818] text-[#EBECF4] p-2 m-2'
                                 onClick={(event) => {
                                     event.stopPropagation();
                                     setOpen(!open)
@@ -95,7 +95,7 @@ function NavBar() {
                             </button>
                             :
                             <button
-                                className='text-3xl text-[#EBECF4] p-4'
+                                className='text-3xl bg-[#181818] text-[#EBECF4] p-2 m-2'
                                 onClick={(event) => {
                                     event.stopPropagation();
                                     setOpen(!open)

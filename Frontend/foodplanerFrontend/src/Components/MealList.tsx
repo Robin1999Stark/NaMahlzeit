@@ -20,9 +20,6 @@ function MealList({ listId, listType, internalScroll, meals, setMeals }: Props) 
 
     return (
         <div className='flex w-full flex-col items-center justify-start'>
-
-            <h2>MealList</h2>
-
             <Droppable
                 droppableId={listId}
                 type={listType}

@@ -57,7 +57,7 @@ function IngredientsOverView() {
                         searchForIngredients(e.target.value.trim());
                     }}
                     autoFocus={true}
-                    className='bg-[#F2F2F2] w-1/2 py-3 px-4 placeholder:text-center placeholder:text-[#A7B1C1] rounded-md m-3'
+                    className='bg-[#F2F2F2] w-full lg:w-2/3 py-3 px-4 placeholder:text-center placeholder:text-[#A7B1C1] rounded-md m-3'
                     placeholder='Search for Ingredients' />
                 <PrimaryButton title='Filter' onClick={() => searchForIngredients(searchString)} />
             </div>
