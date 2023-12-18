@@ -13,10 +13,12 @@ function TagsOverView() {
     async function fetchData() {
         try {
             const data = await TagService.getAllTags()
-            const sortedTagsByName = data.sort((a, b) => a.name.localeCompare(b.name))
-            setTags(sortedTagsByName);
-            setFilteredTags(sortedTagsByName);
+            if (data !== null) {
+                const sortedTagsByName = data.sort((a, b) => a.name.localeCompare(b.name))
+                setTags(sortedTagsByName);
+                setFilteredTags(sortedTagsByName);
 
+            }
         } catch (error) {
             console.log(error)
         }
@@ -61,7 +63,7 @@ function TagsOverView() {
             </div>
             <div className='flex flex-row justify-between w-full'>
                 <h1 className='truncate mx-5 my-5 text-2xl font-semibold'>
-                    Tags ({tags?.length})
+                    Tags ({filteredTags?.length})
                 </h1>
                 <PrimaryButton title='+ Create Tag' onClick={() => navigate('/tags/create')} />
             </div>

@@ -34,7 +34,7 @@ function CreateTag() {
     return (
         <>
             <h1 className='truncate mx-5 my-5 text-2xl font-semibold'>
-                Create Meal
+                Create Tag
             </h1>
             <form onSubmit={handleSubmit(onSubmit)}>
 

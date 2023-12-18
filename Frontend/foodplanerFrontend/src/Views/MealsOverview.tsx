@@ -102,7 +102,7 @@ function MealsOverview() {
             </div>
             <div className='flex flex-row justify-between w-full'>
                 <h1 className='truncate mx-5 my-5 text-2xl font-semibold'>
-                    Meals ({meals?.length})
+                    Meals ({filteredMeals?.length})
                 </h1>
                 <PrimaryButton title='+ Create Meal' onClick={() => navigate('/meals/create')} />
             </div>
