@@ -3,7 +3,7 @@ import { MealService } from '../Endpoints/MealService'
 import { useNavigate } from 'react-router-dom'
 import { Meal } from '../Datatypes/Meal';
 import { TagService } from '../Endpoints/TagService';
-import { Tag } from '../Datatypes/Tag';
+import { TagDT } from '../Datatypes/Tag';
 import debounce from 'lodash/debounce';
 import MealListItem from '../Components/MealListItem';
 import ButtonRound from '../Components/ButtonRound';
@@ -51,7 +51,7 @@ function MealsOverview() {
             let filteredMeals = meals;
             const lowerCaseSearch = search.toLowerCase();
             const mealsFromTags = await Promise.all(
-                (await TagService.getMealTagsFromTagList([new Tag(lowerCaseSearch)])).map((tag) => tag.mealID)
+                (await TagService.getMealTagsFromTagList([new TagDT(lowerCaseSearch)])).map((tag) => tag.mealID)
             );
 
             filteredMeals = filteredMeals?.filter((meal) => {
@@ -112,7 +112,9 @@ function MealsOverview() {
                     }
                     return <>
                         {prefix}
-                        <li key={meal.id} className='py-4 px-2 my-4 flex flex-row justify-between overflow-hidden rounded-sm bg-white bg-opacity-10'>
+                        <li
+                            key={meal.id}
+                            className='py-4 px-2 my-4 flex flex-row justify-between overflow-hidden rounded-sm bg-white bg-opacity-10'>
                             <MealListItem meal={meal} deleteMeal={deleteMeal} />
                         </li>
                     </>
@@ -173,7 +175,9 @@ function MealsOverview() {
                 <h1 className='truncate text-[#57D1C2] mx-5 my-5 text-2xl font-semibold'>
                     Meals ({filteredMeals?.length})
                 </h1>
-                <ButtonRound className='m-3 text-xl' onClick={() => navigate('/meals/create')}  >
+                <ButtonRound
+                    className='m-3 text-xl'
+                    onClick={() => navigate('/meals/create')}  >
                     <MdAdd />
                 </ButtonRound>
             </div>

@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { IngredientService } from '../Endpoints/IngredientService'
-import PrimaryButton from '../Components/PrimaryButton'
 import { Ingredient } from '../Datatypes/Ingredient'
+import { LuFilter } from 'react-icons/lu'
+import ButtonRound from '../Components/ButtonRound'
+import { MdAdd } from 'react-icons/md'
+import IngredientListItem from '../Components/IngredientListItem'
 
 function IngredientsOverView() {
     const [ingredients, setIngredients] = useState<Ingredient[]>()
@@ -31,6 +34,7 @@ function IngredientsOverView() {
             fetchData();
 
         } catch (error) {
+            return;
             console.log(error)
         }
     }
@@ -46,42 +50,22 @@ function IngredientsOverView() {
         }
     }
 
-    return (
-        <>
-            <div className='w-full my-4 flex flex-row justify-center'>
-                <input
-                    type="text"
-                    value={searchString}
-                    onChange={(e) => {
-                        setSearchString(e.target.value);
-                        searchForIngredients(e.target.value.trim());
-                    }}
-                    autoFocus={true}
-                    className='bg-[#F2F2F2] w-full lg:w-2/3 py-3 px-4 placeholder:text-center placeholder:text-[#A7B1C1] rounded-md m-3'
-                    placeholder='Search for Ingredients' />
-                <PrimaryButton title='Filter' onClick={() => searchForIngredients(searchString)} />
-            </div>
-            <div className='flex flex-row justify-between w-full'>
-                <h1 className='truncate m x-5 my-5 text-2xl font-semibold'>
-                    Ingredients ({filteredIngredients?.length})
-                </h1>
-                <PrimaryButton onClick={() => navigate('/ingredients/create')} title='+ Create Ingredient' />
-            </div>
-
+    const ingredientList = () => {
+        return (
             <ul className='mx-5'>
                 {filteredIngredients ? filteredIngredients?.map((ingredient, index) => {
                     let prefix = <></>;
                     const firstChar = ingredient.title.charAt(0).toUpperCase();
 
                     if (index === 0) {
-                        prefix = <li className='p-2 font-semibold text-lg text-[#74768C]' key={prefix + firstChar}>
+                        prefix = <li className='p-2 font-semibold text-lg text-[#57D1C2]' key={prefix + firstChar}>
                             - {firstChar.toUpperCase()} -
 
                         </li>
                     } else if (index > 0) {
                         const lastElement = filteredIngredients[index - 1];
                         if (lastElement.title.charAt(0).toUpperCase() !== firstChar) {
-                            prefix = <li className='p-2 font-semibold text-lg text-[#74768C]' key={prefix + firstChar}>
+                            prefix = <li className='p-2 font-semibold text-lg text-[#57D1C2]' key={prefix + firstChar}>
                                 - {firstChar.toUpperCase()} -
                             </li>
                         }
@@ -90,16 +74,55 @@ function IngredientsOverView() {
 
                     return <>
                         {prefix}
-                        <li key={ingredient.title} className='p-2 flex flex-row justify-between'>
-                            <Link to={`/ingredients/${ingredient.title}`}>{ingredient.title}</Link>
-                            <button onClick={() => deleteIngredient(ingredient.title)} className='px-3 bg-red-400 py-1 rounded-md text-white text-base font-semibold flex flex-row items-center justify-center'>
-                                x
-                            </button>
+                        <li
+                            key={ingredient.title}
+                            className='py-4 px-2 my-4 flex flex-row justify-between overflow-hidden rounded-sm bg-white bg-opacity-10'>
+                            <IngredientListItem ingredient={ingredient} deleteIngredient={deleteIngredient} />
                         </li>
                     </>
                 }
                 ) : <h1>Loading...</h1>}
             </ul>
+        )
+    }
+
+    return (
+        <>
+            <div className='w-full my-4 flex flex-row justify-center flex-grow'>
+
+                <div className=' flex flex-grow flex-row justify-center items-center'>
+                    <input
+                        type="text"
+                        value={searchString}
+                        onChange={(e) => {
+                            setSearchString(e.target.value);
+                            searchForIngredients(e.target.value.trim());
+                        }}
+                        autoFocus={true}
+                        className='bg-[rgba(237, 237, 240, 0.85)] w-full focus:ring-0 lg:w-2/3 py-3 text-center px-4 rounded-full my-3 ml-3 mr-2'
+                        placeholder='Search for Ingredients' />
+                    <ButtonRound
+                        className='my-3 mr-3 text-xl'
+                        onClick={() => searchForIngredients(searchString)}  >
+                        <LuFilter />
+                    </ButtonRound>
+                </div>
+
+
+            </div>
+
+            <div className='flex flex-row justify-between w-full'>
+                <h1 className='truncate text-[#57D1C2] mx-5 my-5 text-2xl font-semibold'>
+                    Ingredients ({filteredIngredients?.length})
+                </h1>
+                <ButtonRound
+                    className='m-3 text-xl'
+                    onClick={() => navigate('/ingredients/create')}>
+                    <MdAdd />
+                </ButtonRound>
+            </div>
+            {ingredientList()}
+
         </>
     )
 }

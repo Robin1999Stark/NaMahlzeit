@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import { Tag } from '../Datatypes/Tag';
+import { TagDT } from '../Datatypes/Tag';
 import { TagService } from '../Endpoints/TagService';
 import PrimaryButton from '../Components/PrimaryButton';
 
 function TagsOverView() {
     const navigate = useNavigate();
-    const [tags, setTags] = useState<Tag[]>();
-    const [filteredTags, setFilteredTags] = useState<Tag[]>();
+    const [tags, setTags] = useState<TagDT[]>();
+    const [filteredTags, setFilteredTags] = useState<TagDT[]>();
 
     const [searchString, setSearchString] = useState<string>("");
     async function fetchData() {
@@ -58,7 +58,7 @@ function TagsOverView() {
                     className='bg-[#F2F2F2] w-full lg:w-2/3 py-3 text-center px-4 rounded-md m-3'
                     placeholder='Search for Tags' />
                 <PrimaryButton title='Filter' onClick={() => {
-                    TagService.getMealTagsFromTagList([new Tag("obst"), new Tag("vegetarisch")])
+                    TagService.getMealTagsFromTagList([new TagDT("obst"), new TagDT("vegetarisch")])
                 }} />
             </div>
             <div className='flex flex-row justify-between w-full'>

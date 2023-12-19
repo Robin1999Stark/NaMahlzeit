@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { useForm, useFieldArray } from 'react-hook-form'
-import { Meal } from '../Datatypes/Meal'
+import { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { IngredientService } from '../Endpoints/IngredientService'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
@@ -29,7 +28,6 @@ function CreateIngredient() {
     }, [])
     const {
         register,
-        control,
         handleSubmit,
         formState: { errors } } = useForm<Ingredient>({
             defaultValues: {

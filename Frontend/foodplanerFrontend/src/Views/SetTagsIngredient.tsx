@@ -1,26 +1,24 @@
 import { useEffect, useState } from 'react'
-import { TagDT } from '../Datatypes/Tag';
+import { useForm, useFieldArray } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
+import { TagDT } from '../Datatypes/Tag';
 import { TagService } from '../Endpoints/TagService';
-import { useFieldArray, useForm } from 'react-hook-form';
-import { Meal, MealTags } from '../Datatypes/Meal';
-import { MealService } from '../Endpoints/MealService';
+import { Ingredient, IngredientTags } from '../Datatypes/Ingredient';
+import { IngredientService } from '../Endpoints/IngredientService';
 
-function SetTagsMeal() {
+function SetTagsIngredient() {
     const navigate = useNavigate();
-    const { mealID } = useParams();
+    const { ingredientID } = useParams();
     const [tags, setTags] = useState<TagDT[]>();
-    const [mealTags, setMealTags] = useState<MealTags>();
-    const [meal, setMeal] = useState<Meal>();
+    const [ingredient, setMeal] = useState<Ingredient>();
     const {
         register,
         control,
-        watch,
         setValue,
         handleSubmit,
-        formState: { errors } } = useForm<MealTags>({
+        formState: { errors } } = useForm<IngredientTags>({
             defaultValues: {
-                mealID: Number(mealID),
+                ingredient: ingredientID,
                 tags: [],
             },
             mode: 'all'
@@ -28,16 +26,16 @@ function SetTagsMeal() {
 
     useEffect(() => {
         async function fetchData() {
-            if (!mealID) return;
+            if (!ingredientID) return;
             try {
                 const tags = await TagService.getAllTags();
-                const meal = await MealService.getMeal(mealID);
-                let mealTags = null;
+                const ingredient = await IngredientService.getIngredient(ingredientID);
+                let ingredientTags = null;
 
                 try {
-                    mealTags = await TagService.getAllTagsFromMeal(Number(mealID));
+                    ingredientTags = await TagService.getAllTagsFromIngredient(ingredientID);
                 } catch (error: any) {
-                    // Handle 404 or other errors for mealTags
+                    // Handle 404 or other errors for ingredientTags
                     if (error.response && error.response.status === 404) {
                         console.log('MealTags not found (404)');
                     } else {
@@ -47,17 +45,17 @@ function SetTagsMeal() {
 
                 // Set states based on the retrieved data
                 if (tags !== null) setTags(tags.sort((a, b) => a.name.localeCompare(b.name)));
-                if (meal !== null) setMeal(meal);
+                if (ingredient !== null) setMeal(ingredient);
 
-                // Set mealTags in the form
-                setValue('tags', mealTags ? mealTags.tags : []);
+                // Set ingredientTags in the form
+                setValue('tags', ingredientTags ? ingredientTags.tags : []);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         }
 
         fetchData();
-    }, [mealID, setValue]);
+    }, [ingredientID, setValue]);
 
     const { fields, append, remove } = useFieldArray<any>({
         control,
@@ -65,10 +63,10 @@ function SetTagsMeal() {
     });
 
 
-    const onSubmit = async (data: MealTags) => {
+    const onSubmit = async (data: IngredientTags) => {
         try {
             console.log(data)
-            await TagService.createOrUpdateMealTags(data);
+            await TagService.createOrUpdateIngredientTags(data);
             navigate(-1);
         } catch (error) {
             console.log(error)
@@ -77,7 +75,7 @@ function SetTagsMeal() {
     return (
         <>
             <h1 className='truncate mx-5 my-5 text-2xl font-semibold'>
-                Set Tags for {meal?.title}
+                Set Tags for {ingredient?.title}
             </h1>
             <form onSubmit={handleSubmit(onSubmit)}>
 
@@ -100,17 +98,17 @@ function SetTagsMeal() {
                                             defaultValue={tags && tags.length > 0 ? tags[0].name : ""}
                                             className="border-slate-200 text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500"
                                         >
-                                            <option key={"select-ingredient"} value="">Select Ingredient</option>
+                                            <option key={"select-ingredient" + field.id} value="">Select Ingredient</option>
                                             {tags ? tags.map((tag) => (
                                                 <option
-                                                    key={tag.name}
+                                                    key={tag.name + field.id}
                                                     value={tag.name}>
                                                     {tag.name}
                                                 </option>
                                             )) : <></>}
                                         </select>
 
-                                        <button type="button" onClick={() => remove(index)}>
+                                        <button key={'remove-' + field.id} type="button" onClick={() => remove(index)}>
                                             Remove
                                         </button>
                                     </div>
@@ -137,4 +135,4 @@ function SetTagsMeal() {
     )
 }
 
-export default SetTagsMeal
+export default SetTagsIngredient

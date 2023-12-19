@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { MealService } from '../Endpoints/MealService'
 import { Link } from 'react-router-dom'
@@ -18,7 +18,7 @@ function MealDetailView() {
     const { mealID } = useParams();
 
     const [meal, setMeal] = useState<Meal>()
-    const [error, setError] = useState<string>("")
+    const [_error, setError] = useState<string>("")
     const [mealIngredients, setMealIngredients] = useState<IngredientAmount[]>([])
     const [isPlanned, setIsPlanned] = useState<PlanerService.IsPlannedResponse>();
     const [tags, setTags] = useState<MealTags>();

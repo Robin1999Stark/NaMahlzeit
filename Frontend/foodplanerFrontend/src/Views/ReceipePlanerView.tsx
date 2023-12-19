@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { PlanerService } from '../Endpoints/PlanerService'
 import { DragDropContext } from 'react-beautiful-dnd'
 import { mealListID } from '../App'
@@ -12,7 +12,7 @@ import { FoodPlaner, FoodplanerItem } from '../Datatypes/FoodPlaner'
 function ReceipePlanerView() {
 
     const [planer, setPlaner] = useState<FoodPlaner>({})
-    const [timeSpan, setTimeSpan] = useState<{ start: Date, end: Date }>({ start: new Date(Date.now()), end: new Date(Date.now()) });
+    const [_timeSpan, setTimeSpan] = useState<{ start: Date, end: Date }>({ start: new Date(Date.now()), end: new Date(Date.now()) });
 
 
     async function updateTimeSpan(from: Date, to: Date): Promise<[start: Date, end: Date]> {
@@ -37,7 +37,7 @@ function ReceipePlanerView() {
 
             // Use Promise.all to wait for all asynchronous calls
             await Promise.all(
-                dates.map(async (date, index) => {
+                dates.map(async (date, _index) => {
                     const item = planer.find((item) => new Date(item.date).getUTCDate() === new Date(date).getUTCDate());
 
                     if (item === undefined) {
@@ -114,7 +114,7 @@ function ReceipePlanerView() {
                     </div>
 
                     <div
-                        className='md:w-[50%] lg:w-[30%] w-full z-20 p-2 sticky md:relative bottom-0 left-0 right-0 pt-3 bg-white  rounded-md h-[50vh] md:h-full'>
+                        className='md:w-[50%] lg:w-[30%] w-full z-20 p-2 sticky md:relative bottom-0 left-0 right-0 pt-3 bg-black md:bg-transparent rounded-md h-[50vh] md:h-full'>
                         <PlanerResourceCol mealListID={mealListID} />
                     </div>
                 </div>

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { IngredientService } from '../Endpoints/IngredientService'
 import URLify from '../Helperfunctions/urlify'
-import { Ingredient, IngredientTags } from '../Datatypes/Ingredient';
+import { Ingredient } from '../Datatypes/Ingredient';
 import { TagService } from '../Endpoints/TagService';
 import Tag from '../Components/Tag';
 
@@ -11,7 +11,7 @@ function IngredientDetailView() {
     const { ingredientID } = useParams();
 
     const [ingredient, setIngredient] = useState<Ingredient>()
-    const [error, setError] = useState<string>("")
+    const [_error, setError] = useState<string>("")
     const [tags, setTags] = useState<string[]>();
 
     useEffect(() => {
@@ -56,8 +56,10 @@ function IngredientDetailView() {
                 </h1>
                 <div className='w-full flex flex-row justify-start mx-5 mb-4 flex-wrap items-center'>
                     {tags?.map(tag => (
-                        <Tag title={tag} />
+                        <Tag key={tag} title={tag} />
                     ))}
+                    <Tag key={'edit'} title={'Edit Tags'} onClick={() => navigate('tags')} />
+
                 </div>
                 <blockquote className='mx-5 mb-4'>
                     {ingredient?.description ? <URLify text={ingredient?.description} /> : <></>}

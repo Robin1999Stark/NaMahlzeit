@@ -64,7 +64,7 @@ function NavBar() {
 
                 <div className='w-[60%] flex flex-row justify-end items-center mr-8'>
                     {navItems.map((item) => (
-                        <Link to={item.link}>
+                        <Link key={item.title} to={item.link}>
                             <div className='h-full text-lg px-4 py-2 font-medium text-[#EBECF4] rounded-full hover:bg-[#fff1] hover:ring-2 ring-[#FF6B00]  hover:text-[#FF6B00]' key={item.title}>
                                 {item.title}
                             </div>

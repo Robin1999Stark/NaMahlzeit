@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Tag } from "../Datatypes/Tag";
+import { TagDT } from "../Datatypes/Tag";
 import { MealTags } from "../Datatypes/Meal";
 import { IngredientTags } from "../Datatypes/Ingredient";
 import { ResponseCodes } from "./Errors";
@@ -21,7 +21,7 @@ export namespace TagService {
         }
     }
 
-    export async function getAllTags(): Promise<Tag[] | null> {
+    export async function getAllTags(): Promise<TagDT[] | null> {
         try {
             const data = await getAllTagsJSON();
 
@@ -29,8 +29,8 @@ export namespace TagService {
             if (data === null) {
                 return null;
             }
-            const tags: Tag[] = [];
-            data.map((tag: any) => tags.push(Tag.fromJSON(tag)));
+            const tags: TagDT[] = [];
+            data.map((tag: any) => tags.push(TagDT.fromJSON(tag)));
             return tags;
         } catch (error) {
             console.error('Error fetching Tags: ', error);
@@ -42,7 +42,7 @@ export namespace TagService {
         name: string,
     }
 
-    export async function createTag({ name }: CreateTagInterface): Promise<Tag | null> {
+    export async function createTag({ name }: CreateTagInterface): Promise<TagDT | null> {
 
 
         const requestBody = {
@@ -54,7 +54,7 @@ export namespace TagService {
                     'Content-Type': 'application/json'
                 }
             })
-            return Tag.fromJSON(response.data);
+            return TagDT.fromJSON(response.data);
         } catch (error) {
             console.error('Error creating Tag:', error);
             return null;
@@ -91,7 +91,7 @@ export namespace TagService {
         }
     }
 
-    export async function getMealTagsFromTagList(tags: Tag[]): Promise<MealTags[]> {
+    export async function getMealTagsFromTagList(tags: TagDT[]): Promise<MealTags[]> {
         try {
             const tagString = tags.map(tag => tag.name).join(',')
             console.log(tagString)
@@ -182,16 +182,20 @@ export namespace TagService {
             const response = await instance.get(`/ingredient-tags/${ingredient}/`);
             return response.data;
         } catch (error) {
-            throw new Error('Error fetching Tags from Ingredient: ' + error);
+            return null;
         }
     }
 
-    export async function getAllTagsFromIngredient(ingredient: string): Promise<IngredientTags> {
+    export async function getAllTagsFromIngredient(ingredient: string): Promise<IngredientTags | null> {
         try {
             const data = await getAllTagsFromIngredientJSON(ingredient);
-            return IngredientTags.fromJSON(data);
+            if (data !== null) console.log(data)
+            if (data === null)
+                return null;
+            const tags = IngredientTags.fromJSON(data);
+            return tags;
         } catch (error) {
-            throw new Error('Error fetching Tags from Ingredient: ' + error);
+            return null;
         }
     }
 
@@ -224,7 +228,9 @@ export namespace TagService {
 
 
 
-    export async function updateIngredientTags(ingredient: number, tags: IngredientTags) {
+
+
+    export async function updateIngredientTags(ingredient: string, tags: IngredientTags) {
         let requestBody = {
             ingredient: ingredient,
             tags: tags.tags,
@@ -241,4 +247,29 @@ export namespace TagService {
         }
     }
 
+
+    export async function createOrUpdateIngredientTags(ingredientTags: IngredientTags) {
+        try {
+            const existingIngredientTags = await getAllTagsFromIngredient(ingredientTags.ingredient);
+
+            if (existingIngredientTags) {
+                const updatedIngredientTags = await updateIngredientTags(ingredientTags.ingredient, ingredientTags);
+                console.log("update", updateIngredientTags)
+                return updatedIngredientTags;
+            } else if (existingIngredientTags === null) {
+                try {
+                    const newIngredientTags = await createIngredientTags(ingredientTags);
+                    console.log("create", newIngredientTags)
+                    return newIngredientTags;
+                } catch (errorWhileCreating: any) {
+                    throw new Error(errorWhileCreating);
+                }
+            } else {
+                throw new Error("Ingredient Tags does not Exist")
+
+            }
+        } catch (error: any) {
+            return null;
+        }
+    }
 }
