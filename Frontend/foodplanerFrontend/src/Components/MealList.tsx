@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import AddMealButton from './AddMealButton';
-import MealCard from './MealCard';
+import MealDragElement from './MealDragElement';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { Meal } from '../Datatypes/Meal';
 
@@ -44,7 +44,7 @@ function MealList({ listId, listType, internalScroll, meals, setMeals }: Props) 
                                                     {...dragProvided.dragHandleProps}
                                                     {...dragProvided.draggableProps}
                                                     ref={dragProvided.innerRef}>
-                                                    <MealCard mealID={food.id + ""} index={index} />
+                                                    <MealDragElement mealID={food.id + ""} index={index} />
 
                                                 </div>
                                             )

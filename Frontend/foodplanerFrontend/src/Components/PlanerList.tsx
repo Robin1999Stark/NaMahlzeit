@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
-import MealCard from './MealCard';
+import MealDragElement from './MealDragElement';
 import { Weekday } from '../Datatypes/Weekday';
 import AddMealButton from './AddMealButton';
 import { FoodplanerItem } from '../Datatypes/FoodPlaner';
@@ -84,7 +84,7 @@ function PlanerList({ listId, listType, planerItem, isMealList = false }: Props)
 
                                                     ref={dragProvided.innerRef}>
 
-                                                    <MealCard mealID={food + ""} index={index} />
+                                                    <MealDragElement mealID={food + ""} index={index} />
 
                                                 </div>
                                             )

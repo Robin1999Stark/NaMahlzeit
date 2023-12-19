@@ -5,7 +5,7 @@ import { MdClose } from "react-icons/md";
 
 function NavBar() {
 
-    const SIZE_MOBILE = 600;
+    const SIZE_MOBILE = 700;
 
     const componentRef = useRef<HTMLDivElement>(null);
     const [windowSize, setWindowSize] = useState({
@@ -57,7 +57,7 @@ function NavBar() {
     };
     if (windowSize.width > SIZE_MOBILE) {
         return (
-            <nav className='flex flex-row h-20 absolute top-0 left-0 right-0 bg-[#181818] z-10 items-center justify-between shadow-md w-full'>
+            <nav className='flex flex-row h-20 absolute top-0 left-0 right-0  z-10 items-center justify-between w-full'>
                 <div>
 
                 </div>
@@ -65,7 +65,7 @@ function NavBar() {
                 <div className='w-[60%] flex flex-row justify-end items-center mr-8'>
                     {navItems.map((item) => (
                         <Link to={item.link}>
-                            <div className='h-full text-lg px-4 py-2 font-semibold text-[#EBECF4] rounded-sm hover:bg-[#fff1] hover:ring-2 ring-[#FFC200]  hover:text-[#FFC200]' key={item.title}>
+                            <div className='h-full text-lg px-4 py-2 font-medium text-[#EBECF4] rounded-full hover:bg-[#fff1] hover:ring-2 ring-[#FF6B00]  hover:text-[#FF6B00]' key={item.title}>
                                 {item.title}
                             </div>
                         </Link>
@@ -81,11 +81,11 @@ function NavBar() {
         return (
 
             <>
-                <nav className='flex flex-row fixed top-0 left-0 right-0 h-20 bg-[#181818] z-10 justify-between shadow-md w-full'>
+                <nav className='flex flex-row fixed top-0 left-0 right-0 h-20 bg-[#008979] z-10 justify-between shadow-md w-full'>
                     {
                         open ?
                             <button
-                                className='text-3xl hover:fill-[#FFC200] bg-[#181818] text-[#EBECF4] p-2 m-2'
+                                className='text-3xl hover:fill-[#FFC200] bg-[#008979] text-[#EBECF4] p-2 m-2'
                                 onClick={(event) => {
                                     event.stopPropagation();
                                     setOpen(!open)
@@ -95,7 +95,7 @@ function NavBar() {
                             </button>
                             :
                             <button
-                                className='text-3xl bg-[#181818] text-[#EBECF4] p-2 m-2'
+                                className='text-3xl bg-[#008979] text-[#EBECF4] p-2 m-2'
                                 onClick={(event) => {
                                     event.stopPropagation();
                                     setOpen(!open)
@@ -109,11 +109,11 @@ function NavBar() {
                             <div
                                 ref={componentRef}
                                 onClick={handleComponentClick}
-                                className='bg-[#EBECF4] absolute z-10 m-2 top-20 h-fit w-fit shadow-md'>
+                                className='bg-[#008979] absolute z-10 m-2 top-20 h-screen w-1/2 shadow-md'>
                                 {
                                     navItems.map((item) => (
                                         <Link to={item.link}>
-                                            <div className='px-6 py-2 m-3 text-lg font-normal rounded-md hover:bg-[#181818] hover:text-[#EBECF4]' key={item.title}>
+                                            <div className='px-6 py-2 m-3 text-lg font-normal rounded-md hover:bg-[#181818] hover:text-[#57D1C2]' key={item.title}>
                                                 {item.title}
                                             </div>
                                         </Link>

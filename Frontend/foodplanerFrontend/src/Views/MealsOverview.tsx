@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { MealService } from '../Endpoints/MealService'
-import { Link, useNavigate } from 'react-router-dom'
-import PrimaryButton from '../Components/PrimaryButton';
+import { useNavigate } from 'react-router-dom'
 import { Meal } from '../Datatypes/Meal';
 import { TagService } from '../Endpoints/TagService';
 import { Tag } from '../Datatypes/Tag';
 import debounce from 'lodash/debounce';
 import MealListItem from '../Components/MealListItem';
+import ButtonRound from '../Components/ButtonRound';
+import { MdAdd } from 'react-icons/md';
+import { LuFilter, LuList, LuSquareStack } from 'react-icons/lu';
+import MealCard from '../Components/MealCard';
 
 function MealsOverview() {
     const navigate = useNavigate();
@@ -14,6 +17,7 @@ function MealsOverview() {
     const [filteredMeals, setFilteredMeals] = useState<Meal[]>();
     const [searchString, setSearchString] = useState<string>("");
     const [debounceTimeout, setDebounceTimeout] = useState<number | null>(null);
+    const [isList, setIsList] = useState<boolean>(true);
 
     async function fetchData() {
         try {
@@ -84,28 +88,8 @@ function MealsOverview() {
         }
     }, [searchString]);
 
-    return (
-        <>
-            <div className='w-full my-4 flex flex-row justify-center'>
-                <input type="text" value={searchString}
-                    onChange={(e) => {
-                        setSearchString(e.target.value);
-                        // debounced search - delays search
-                        if (debounceTimeout) {
-                            clearTimeout(debounceTimeout);
-                        }
-                    }}
-                    autoFocus={true}
-                    className='bg-[#F2F2F2] w-full lg:w-2/3 py-3 text-center px-4 rounded-md m-3'
-                    placeholder='Search for Meals' />
-                <PrimaryButton title='Filter' onClick={() => searchForMeals(searchString)} />
-            </div>
-            <div className='flex flex-row justify-between w-full'>
-                <h1 className='truncate mx-5 my-5 text-2xl font-semibold'>
-                    Meals ({filteredMeals?.length})
-                </h1>
-                <PrimaryButton title='+ Create Meal' onClick={() => navigate('/meals/create')} />
-            </div>
+    const mealList = () => {
+        return (
 
             <ul className='mx-5'>
                 {filteredMeals ? filteredMeals?.map((meal, index) => {
@@ -113,14 +97,14 @@ function MealsOverview() {
                     const firstChar = meal.title.charAt(0).toUpperCase();
 
                     if (index === 0) {
-                        prefix = <li className='p-2 font-semibold text-lg text-[#74768C]' key={prefix + firstChar}>
+                        prefix = <li className='p-2 font-semibold text-lg text-[#57D1C2]' key={prefix + firstChar}>
                             - {firstChar.toUpperCase()} -
 
                         </li>
                     } else if (index > 0) {
                         const lastElement = filteredMeals[index - 1];
                         if (lastElement.title.charAt(0).toUpperCase() !== firstChar) {
-                            prefix = <li className='p-2 font-semibold text-lg text-[#74768C]' key={prefix + firstChar}>
+                            prefix = <li className='p-2 font-semibold text-lg text-[#57D1C2]' key={prefix + firstChar}>
                                 - {firstChar.toUpperCase()} -
                             </li>
                         }
@@ -128,7 +112,7 @@ function MealsOverview() {
                     }
                     return <>
                         {prefix}
-                        <li key={meal.id} className='p-2 flex flex-row justify-between'>
+                        <li key={meal.id} className='py-4 px-2 my-4 flex flex-row justify-between overflow-hidden rounded-sm bg-white bg-opacity-10'>
                             <MealListItem meal={meal} deleteMeal={deleteMeal} />
                         </li>
                     </>
@@ -137,6 +121,66 @@ function MealsOverview() {
                 }
                 ) : <></>}
             </ul>
+        )
+    }
+
+    const mealCards = () => {
+        return (
+            <div className='w-full h-full flex flex-row flex-wrap flex-grow'>
+                {filteredMeals ? filteredMeals?.map((meal, index) => {
+                    return <>
+                        <MealCard meal={meal} deleteMeal={deleteMeal} />
+                    </>
+                }
+                ) : <></>}
+            </div>
+        )
+    }
+
+    return (
+        <>
+            <div className='w-full my-4 flex flex-row justify-between flex-grow'>
+                <div className='flex-1 hidden lg:flex'></div>
+                <div className=' flex flex-grow flex-row justify-center items-center'>
+                    <input type="text" value={searchString}
+                        onChange={(e) => {
+                            setSearchString(e.target.value);
+                            // debounced search - delays search
+                            if (debounceTimeout) {
+                                clearTimeout(debounceTimeout);
+                            }
+                        }}
+                        autoFocus={true}
+                        className='bg-[rgba(237, 237, 240, 0.85)] w-full focus:ring-0 lg:w-2/3 py-3 text-center px-4 rounded-full my-3 ml-3 mr-2'
+                        placeholder='Search for Meals' />
+                    <ButtonRound className='my-3 mr-3 text-xl' onClick={() => searchForMeals(searchString)} >
+                        <LuFilter />
+                    </ButtonRound>
+                </div>
+
+                <div className='flex-row flex-1 hidden md:flex justify-end items-center w-full'>
+                    <ButtonRound className={isList ? ' text-[#FF6B00] border-[#FF6B00] my-3 mr-2 text-xl' : 'my-3 mr-2 text-xl'} onClick={() => setIsList(true)} >
+                        <LuList />
+                    </ButtonRound>
+                    <ButtonRound className={!isList ? ' text-[#FF6B00] border-[#FF6B00] my-3 mr-3 text-xl' : 'my-3 mr-3 text-xl'} onClick={() => setIsList(false)} >
+                        <LuSquareStack />
+                    </ButtonRound>
+
+                </div>
+
+            </div>
+            <div className='flex flex-row justify-between w-full'>
+                <h1 className='truncate text-[#57D1C2] mx-5 my-5 text-2xl font-semibold'>
+                    Meals ({filteredMeals?.length})
+                </h1>
+                <ButtonRound className='m-3 text-xl' onClick={() => navigate('/meals/create')}  >
+                    <MdAdd />
+                </ButtonRound>
+            </div>
+
+            {
+                isList ? mealList() : mealCards()
+            }
         </>
     )
 }
