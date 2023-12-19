@@ -12,7 +12,7 @@ from foodplaner.allviews import (
     ShoppingListView, get_all_meals_on_planer,
     get_all_mealingredients_from_planer, is_planned,
 )
-from foodplaner.views.tag_views import TagListView, MealTagsListView, IngredientTagsListView, meals_by_tags
+from foodplaner.views.tag_views import TagListView, MealTagsListView, IngredientTagsListView, ingredients_by_tags, meals_by_tags
 
 router = routers.DefaultRouter()
 router.register(r'meals', MealListView, basename='meal')
@@ -49,4 +49,7 @@ urlpatterns = [
     path('meals/<int:meal_pk>/ingredients/<int:pk>/',
          MealIngredientDetailView.as_view(), name='meals-ingredients-detail'),
     path('meals_by_tags/<str:tags>/', meals_by_tags, name='meals_by_tags'),
+    path('ingredients_by_tags/<str:tags>/',
+         ingredients_by_tags, name='ingredients_by_tags'),
+
 ]
