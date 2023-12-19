@@ -73,6 +73,26 @@ export namespace IngredientService {
             return null;
         }
     }
+
+
+    export async function updateIngredient(ingredient: Ingredient) {
+        let requestBody = {
+            title: ingredient.title,
+            description: ingredient.description,
+            preferedUnit: ingredient.preferedUnit,
+        }
+
+        try {
+            let response = await instance.put(`/ingredients/${ingredient.title}/`, JSON.stringify(requestBody), {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+        } catch (error) {
+            throw new Error('Error while updating Ingredient occured: ' + error);
+        }
+    }
+
     export async function deleteIngredient(ingredient: string) {
         try {
             const response = await instance.delete(`/ingredients/${ingredient}/`);

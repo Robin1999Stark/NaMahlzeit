@@ -144,7 +144,9 @@ function MealsOverview() {
             <div className='w-full my-4 flex flex-row justify-between flex-grow'>
                 <div className='flex-1 hidden lg:flex'></div>
                 <div className=' flex flex-grow flex-row justify-center items-center'>
-                    <input type="text" value={searchString}
+                    <input
+                        type="text"
+                        value={searchString}
                         onChange={(e) => {
                             setSearchString(e.target.value);
                             // debounced search - delays search

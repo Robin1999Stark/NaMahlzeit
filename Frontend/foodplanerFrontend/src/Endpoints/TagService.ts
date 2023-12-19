@@ -2,7 +2,6 @@ import axios from "axios";
 import { TagDT } from "../Datatypes/Tag";
 import { MealTags } from "../Datatypes/Meal";
 import { IngredientTags } from "../Datatypes/Ingredient";
-import { ResponseCodes } from "./Errors";
 
 const BASE_URL = 'http://127.0.0.1:8000';
 
@@ -198,7 +197,19 @@ export namespace TagService {
             return null;
         }
     }
+    export async function getIngredientTagsFromTagList(tags: TagDT[]): Promise<IngredientTags[]> {
+        try {
+            const tagString = tags.map(tag => tag.name).join(',')
+            console.log(tagString)
+            const response = await instance.get(`/ingredients_by_tags/${tagString}/`)
+            console.log(response)
+            const ingredients = response.data.ingredients.map((tag: any) => IngredientTags.fromJSON(tag))
+            return ingredients;
+        } catch (error) {
+            throw new Error('Error finding Ingredients: ' + error);
+        }
 
+    }
     export async function createIngredientTags(ingredientTags: IngredientTags): Promise<IngredientTags> {
         const requestBody = {
             ingredient: ingredientTags.ingredient,
