@@ -15,6 +15,7 @@ function PlanerResourceCol({ mealListID }: Props) {
         async function fetchData() {
             try {
                 const data: Meal[] = await MealService.getAllMeals();
+                console.log(data)
                 setMeals(data)
             } catch (error) {
                 console.error('Error fetching planer:', error);

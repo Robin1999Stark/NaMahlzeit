@@ -99,7 +99,7 @@ function ReceipePlanerView() {
             }}>
                 <div className='md:flex md:flex-row md:relative h-full mt-4 md:justify-center w-full'>
 
-                    <div className='grid flex-grow grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 overflow-hidden mr-4'>
+                    <div className='grid flex-grow grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8 overflow-hidden mr-4'>
                         {Object.entries(planer).slice(0, -1).map(([key, value], index) => {
                             if (index === 0) {
                                 return <div className='col-span-full '>
@@ -130,7 +130,7 @@ function ReceipePlanerView() {
                     </div>
 
                     <div
-                        className='flex flex-shrink'>
+                        className='flex md:min-w-[20rem] lg:min-w-[30rem]'>
                         <PlanerResourceCol mealListID={mealListID} />
                     </div>
                 </div>

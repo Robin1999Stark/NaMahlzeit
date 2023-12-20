@@ -62,7 +62,7 @@ function MealList({ listId, listType, internalScroll, meals, setMeals }: Props) 
                                                     }}
                                                     ref={dragProvided.innerRef}>
 
-                                                    <MealDragElement mealID={food + ""} index={index} />
+                                                    <MealDragElement mealID={food.id + ""} index={index} />
 
                                                 </div>
                                             )

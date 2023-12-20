@@ -26,11 +26,13 @@ function PlanerList({ listId, listType, planerItem }: Props) {
         const isToday = new Date(Date.now()).getDate() === new Date(planerItem.date).getDate()
 
         return (
-            <div className='flex select-none flex-row justify-between items-center min-h-[3rem]  w-full mb-2  h-full rounded-md px-4 bg-[#181818]'>
-                <h2 className={isToday ? 'text-[#FFC200] text-2xl font-semibold' : 'text-white text-2xl font-semibold'}>
+            <div className='flex select-none flex-row justify-between items-center min-h-[3rem]  w-full mb-2  h-full rounded-md px-4 '>
+                <h2 className={isToday ? 'text-[#FF6B00] text-2xl flex flex-row justify-start items-center font-semibold' : 'text-[#DFF9FF] text-2xl font-semibold'}>
+                    {isToday ? <p>Today (</p> : <></>}
                     {new Date(planerItem.date).getDate() + "." + (new Date(planerItem.date).getMonth() + 1) + "."}
+                    {isToday ? <p>)</p> : <></>}
                 </h2>
-                <h3 className='font-base text-xs text-gray-500'>
+                <h3 className='font-semibold flex flex-row justify-end items-center text-sm text-[#57D1C2]'>
                     {planerItem.date instanceof Date ? Weekday[planerItem.date.getDay()] : Weekday[new Date(planerItem.date).getDay()]}
                 </h3>
             </div>
@@ -60,7 +62,7 @@ function PlanerList({ listId, listType, planerItem }: Props) {
                     return (
                         <div
                             style={{ scrollbarWidth: 'none' }}
-                            className={snapshot.isDraggingOver ? 'w-full h-[12rem] overflow-y-auto overflow-x-visible border-2 border-dotted border-[#FF6B00]' : 'w-full h-[12rem] overflow-y-scroll rounded-md border-2 border-dotted border-[#006054]'}
+                            className={snapshot.isDraggingOver ? 'w-full h-[12rem] p-2 overflow-y-auto overflow-x-visible border-2 border-dotted border-[#FF6B00]' : 'w-full h-[12rem] overflow-y-scroll rounded-md border-2 border-dotted border-[#006054]'}
                             ref={dropProvided.innerRef}
                             {...dropProvided.droppableProps}>
                             {planerItem.meals.map((food, index) => (

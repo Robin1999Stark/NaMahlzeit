@@ -31,14 +31,14 @@ function MealDragElement({ mealID, index }: Props) {
                 <GrDrag />
 
             </div>
-            <h3 className='text-center flex flex-row justify-start ml-3 items-center w-full whitespace-normal text-[#C8EFEA] font-semibold text-sm'>
+            <div className='text-center flex flex-row justify-start ml-3 items-center w-full whitespace-normal text-[#C8EFEA] font-semibold text-sm'>
 
                 <h3 className='text-start'>
                     {meal?.title}
 
                 </h3>
 
-            </h3>
+            </div>
             <div></div>
 
         </>
