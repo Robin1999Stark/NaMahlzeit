@@ -3,6 +3,7 @@ import AddMealButton from './AddMealButton';
 import MealDragElement from './MealDragElement';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { Meal } from '../Datatypes/Meal';
+import { LuTrendingUp } from 'react-icons/lu';
 
 interface Props {
     listId: string,
@@ -22,6 +23,7 @@ function MealList({ listId, listType, internalScroll, meals, setMeals }: Props) 
         <div className='flex w-full flex-col items-center justify-start'>
             <Droppable
                 droppableId={listId}
+                isDropDisabled={true}
                 type={listType}
                 direction="vertical"
                 isCombineEnabled={false}
@@ -38,13 +40,29 @@ function MealList({ listId, listType, internalScroll, meals, setMeals }: Props) 
                                     draggableId={listId + "-" + food.id + "-" + index}
                                     index={index}>
                                     {
-                                        dragProvided => {
+                                        (dragProvided, snapshot) => {
                                             return (
                                                 <div
                                                     {...dragProvided.dragHandleProps}
                                                     {...dragProvided.draggableProps}
+                                                    className='my-1 select-none h-full flex flex-row justify-between items-center rounded-md font-semibold truncate border-2 border-solid bg-[#17635A] border-[#18A192]'
+                                                    style={{
+                                                        left: '0 !important',
+                                                        top: '0 !important',
+                                                        bottom: '0 !important',
+                                                        userSelect: 'none',
+                                                        display: 'flex',
+                                                        flexDirection: 'row',
+                                                        width: '100%',
+                                                        height: '4rem',
+                                                        borderColor: snapshot.isDragging ? '#FF6B00' : '#18A192',
+                                                        color: snapshot.isDragging ? '#FF6B00' : '#18A192',
+
+                                                        ...dragProvided.draggableProps.style
+                                                    }}
                                                     ref={dragProvided.innerRef}>
-                                                    <MealDragElement mealID={food.id + ""} index={index} />
+
+                                                    <MealDragElement mealID={food + ""} index={index} />
 
                                                 </div>
                                             )

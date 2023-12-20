@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { MealService } from '../Endpoints/MealService';
 import { Meal } from '../Datatypes/Meal';
 import { GrDrag } from 'react-icons/gr'
-import PlaceholderMealImage from './PlaceholderMealImage';
 
 
 type Props = {
@@ -27,15 +26,13 @@ function MealDragElement({ mealID, index }: Props) {
 
     return (
 
-        <div className='xl:mx-2 my-1 select-none h-full flex flex-row backdrop-filter backdrop-blur-lg justify-between items-center rounded-md font-semibold truncate border-2 border-solid border-[#18A192] bg-black bg-opacity-10'>
+        <>
             <div className='bg-[#18A192] h-full py-5 px-2 text-[#C8FFF8]'>
                 <GrDrag />
 
             </div>
-            <h3 className='text-center flex flex-row justify-start items-center w-full whitespace-normal text-[#C8EFEA] font-semibold text-sm'>
-                <div className='w-[3rem] ml-1 mr-3'>
-                    <PlaceholderMealImage />
-                </div>
+            <h3 className='text-center flex flex-row justify-start ml-3 items-center w-full whitespace-normal text-[#C8EFEA] font-semibold text-sm'>
+
                 <h3 className='text-start'>
                     {meal?.title}
 
@@ -43,7 +40,8 @@ function MealDragElement({ mealID, index }: Props) {
 
             </h3>
             <div></div>
-        </div>
+
+        </>
 
 
     )

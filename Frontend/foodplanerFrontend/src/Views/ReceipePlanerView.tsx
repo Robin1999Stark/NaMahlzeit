@@ -84,7 +84,7 @@ function ReceipePlanerView() {
         fetchData()
     }, [])
     return (
-        <div className='flex flex-col justify-start items-start'>
+        <div className='flex flex-col justify-start items-center mt-4'>
             <h2>
                 <button onClick={() => updateTimeSpan(new Date('2023-12-01'), new Date(Date.now()))}>
                     Last Week
@@ -97,24 +97,40 @@ function ReceipePlanerView() {
                     return;
                 setPlaner(reorderPlan(planer, source, destination));
             }}>
-                <div className='md:flex md:flex-row md:relative h-full md:justify-between w-full'>
+                <div className='md:flex md:flex-row md:relative h-full mt-4 md:justify-center w-full'>
 
-                    <div className='my-6 md:mx-4 h-full w-full md:w-1/2 lg:w-[70%] flex-grow flex flex-row flex-wrap justify-start items-start'>
-                        {Object.entries(planer).slice(0, -1).map(([key, value]) => (
-                            <div className='w-full md:w-[20rem] m-3'>
-                                <PlanerList
-                                    internalScroll
-                                    key={key}
-                                    listId={key}
-                                    listType='LIST'
-                                    planerItem={value}
-                                />
-                            </div>
-                        ))}
+                    <div className='grid flex-grow grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 overflow-hidden mr-4'>
+                        {Object.entries(planer).slice(0, -1).map(([key, value], index) => {
+                            if (index === 0) {
+                                return <div className='col-span-full '>
+                                    <PlanerList
+                                        internalScroll
+                                        key={key}
+                                        listId={key}
+                                        listType='LIST'
+                                        planerItem={value}
+                                    />
+                                </div>
+                            } else {
+
+                                return (
+                                    <div className='w-full'>
+                                        <PlanerList
+                                            internalScroll
+                                            key={key}
+                                            listId={key}
+                                            listType='LIST'
+                                            planerItem={value}
+                                        />
+                                    </div>
+                                )
+                            }
+
+                        })}
                     </div>
 
                     <div
-                        className='md:w-[50%] lg:w-[30%] w-full z-20 p-2 sticky md:relative bottom-0 left-0 right-0 pt-3 bg-black md:bg-transparent rounded-md h-[50vh] md:h-full'>
+                        className='flex flex-shrink'>
                         <PlanerResourceCol mealListID={mealListID} />
                     </div>
                 </div>
@@ -128,3 +144,10 @@ function ReceipePlanerView() {
 
 
 export default ReceipePlanerView
+
+/*
+  <div
+                        className='md:w-[50%] lg:w-[30%] w-full z-20 p-2 sticky md:relative bottom-0 left-0 right-0 pt-3 bg-black md:bg-transparent rounded-md h-[50vh] md:h-full'>
+                        <PlanerResourceCol mealListID={mealListID} />
+                    </div>
+*/
