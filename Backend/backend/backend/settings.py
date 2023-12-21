@@ -97,12 +97,12 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'mealplaner',
-        'USER': 'postgres',
-        'PASSWORD': 'Ptest1234',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'mealplaner',     # Database name
+        'USER': 'postgres',       # Database user
+        'PASSWORD': 'Ptest1234',  # Database password
+        'HOST': '172.17.0.2',     # Use the IP address of the PostgreSQL container
+        'PORT': '5432',           # PostgreSQL database port
     }
 }
 # Password validation

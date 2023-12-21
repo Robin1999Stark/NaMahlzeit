@@ -97,7 +97,7 @@ function ReceipePlanerView() {
                     return;
                 setPlaner(reorderPlan(planer, source, destination));
             }}>
-                <div className='md:flex md:flex-row md:relative h-full mt-4 md:justify-center w-full'>
+                <div className='md:flex static md:flex-row md:relative h-full mt-4 md:justify-center w-full'>
 
                     <div className='grid flex-grow grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8 overflow-hidden mr-4'>
                         {Object.entries(planer).slice(0, -1).map(([key, value], index) => {
@@ -128,9 +128,9 @@ function ReceipePlanerView() {
 
                         })}
                     </div>
+                    <div className='flex md:min-w-[20rem] lg:min-w-[30rem]'></div>
 
-                    <div
-                        className='flex md:min-w-[20rem] lg:min-w-[30rem]'>
+                    <div className='hidden md:flex  md:min-w-[20rem] lg:min-w-[30rem] fixed top-0 right-0'>
                         <PlanerResourceCol mealListID={mealListID} />
                     </div>
                 </div>
