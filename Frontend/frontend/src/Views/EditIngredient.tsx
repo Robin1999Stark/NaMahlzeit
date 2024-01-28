@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import { useFieldArray, useForm } from 'react-hook-form';
-import { MealService } from '../Endpoints/MealService';
+import { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form';
 import { IngredientService } from '../Endpoints/IngredientService';
 import { useNavigate, useParams } from 'react-router-dom';
-import { MealIngredientService } from '../Endpoints/MealIngredientService';
 import { Ingredient } from '../Datatypes/Ingredient';
-import { Meal, MealWithIngredientAmountMIID } from '../Datatypes/Meal';
 
 function EditIngredient() {
     const navigate = useNavigate();
@@ -17,8 +14,6 @@ function EditIngredient() {
 
     const {
         register,
-        control,
-        watch,
         setValue,
         handleSubmit,
         formState: { errors } } = useForm<Ingredient>({
@@ -29,7 +24,7 @@ function EditIngredient() {
             },
             mode: 'all'
         });
-
+    console.log(errors)
     useEffect(() => {
         async function fetchData() {
             if (!ingredientID) return;

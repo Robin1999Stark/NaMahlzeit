@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form';
 import { MealService } from '../Endpoints/MealService';
 import { IngredientService } from '../Endpoints/IngredientService';
@@ -15,13 +15,12 @@ function EditMeal() {
     const [mealIngredients, setMealIngredients] = useState<IngredientAmountWithMeal[]>([])
 
     const [ingredients, setIngredients] = useState<Ingredient[]>()
-    const [selectedIngredient, setSelectedIngredient] = useState<Ingredient>();
+    const [_selectedIngredient, _setSelectedIngredient] = useState<Ingredient>();
 
 
     const {
         register,
         control,
-        watch,
         setValue,
         handleSubmit,
         formState: { errors } } = useForm<MealWithIngredientAmountMIID>({
@@ -64,7 +63,7 @@ function EditMeal() {
         fetchData();
     }, [mealID, setValue]);
 
-    const selectedIngredientID = watch('ingredients');
+    //const selectedIngredientID = watch('ingredients');
 
     const { fields, append, remove } = useFieldArray<any>({
         control,

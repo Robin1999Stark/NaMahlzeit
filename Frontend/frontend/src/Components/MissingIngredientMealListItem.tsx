@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Meal } from '../Datatypes/Meal'
 import { MealService } from '../Endpoints/MealService';
 import { IngredientAmountWithMeal } from '../Datatypes/Ingredient';

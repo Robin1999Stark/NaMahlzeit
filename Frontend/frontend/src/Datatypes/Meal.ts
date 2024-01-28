@@ -1,5 +1,4 @@
 import { IngredientAmount, IngredientAmountWithMeal } from "./Ingredient";
-import { TagDT } from "./Tag";
 
 export class Meal {
     id: number;

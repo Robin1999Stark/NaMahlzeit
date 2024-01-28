@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form';
 import { InventoryItem } from '../Datatypes/Inventory';
 import { IngredientService } from '../Endpoints/IngredientService';
 import { ShoppingList, ShoppingListItem } from '../Datatypes/ShoppingList';
@@ -13,11 +13,10 @@ function ShoppingListView() {
     const [shoppingListItems, setShoppingListItems] = useState<ShoppingListItem[]>();
     const [ingredients, setIngredients] = useState<Ingredient[]>();
     const [loaded, setLoaded] = useState<boolean>(false);
-    const [selectedIngredient, setSelectedIngredient] = useState<Ingredient>();
+    const [selectedIngredient, _setSelectedIngredient] = useState<Ingredient>();
 
     const {
         register,
-        control,
         handleSubmit,
         watch,
         setValue,
@@ -29,6 +28,7 @@ function ShoppingListView() {
             },
             mode: 'all'
         });
+    console.log(errors)
     const selectedIngredientID = watch('ingredient');
 
     /*const { fields, append, remove } = useFieldArray<any>({

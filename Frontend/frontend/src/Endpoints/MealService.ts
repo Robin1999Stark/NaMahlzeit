@@ -56,30 +56,30 @@ export namespace MealService {
 
     }
 
-
-    interface CreateMealInterface {
-        title: string;
-        description: string;
-        ingredients: string[];
-    }
-    async function createMeal({ title, description, ingredients }: CreateMealInterface): Promise<Meal | null> {
-        const requestBody = {
-            title: title,
-            description: description,
-            ingredients: ingredients,
+    /*
+        interface CreateMealInterface {
+            title: string;
+            description: string;
+            ingredients: string[];
         }
-        try {
-            let response = await instance.post('/meals/', JSON.stringify(requestBody), {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            return Meal.fromJSON(response.data);
-        } catch (error) {
-            console.error('Error creating Meal:', error);
-            return null;
-        }
-    }
+        async function createMeal({ title, description, ingredients }: CreateMealInterface): Promise<Meal | null> {
+            const requestBody = {
+                title: title,
+                description: description,
+                ingredients: ingredients,
+            }
+            try {
+                let response = await instance.post('/meals/', JSON.stringify(requestBody), {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                return Meal.fromJSON(response.data);
+            } catch (error) {
+                console.error('Error creating Meal:', error);
+                return null;
+            }
+        }*/
     interface CreateMealAmountInterface {
         title: string;
         description: string;
@@ -163,14 +163,14 @@ export namespace MealService {
             const deletedMealIngredientsIDs: number[] = existingMealIngredientsIDs.filter((ingrID) => !ingredientsToChangeIDs.includes(ingrID));
 
             // create new MealIngredients
-            const responseIngredientCreate = Promise.all(
+            Promise.all(
                 createdIngredients.map(async (ingr) => {
                     return await MealIngredientService.createMealIngredient({ meal: id, ingredient: ingr.ingredient, amount: ingr.amount, unit: ingr.unit })
                 })
             )
 
             // delete removed MealIngredients
-            const responseIngredientsDelete = Promise.all(
+            Promise.all(
                 deletedMealIngredientsIDs.map(async (ingredientID) => {
                     return await MealIngredientService.deleteMealIngredient(ingredientID);
                 })
@@ -184,7 +184,7 @@ export namespace MealService {
             })
 
             // update existing MealIngredients
-            const responseIngredientsUpdate = Promise.all(
+            Promise.all(
                 updatedIngredients.map(async (ingredient) => {
                     return await MealIngredientService.updateMealIngredient(ingredient.id, ingredient);
                 })

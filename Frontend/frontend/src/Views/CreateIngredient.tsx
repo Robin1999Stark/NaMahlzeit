@@ -37,6 +37,7 @@ function CreateIngredient() {
             },
             mode: 'all'
         });
+    console.log(errors)
 
     async function onSubmit(data: Ingredient) {
         try {

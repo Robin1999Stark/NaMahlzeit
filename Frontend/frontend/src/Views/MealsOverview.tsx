@@ -129,7 +129,7 @@ function MealsOverview() {
     const mealCards = () => {
         return (
             <div className='w-full h-full flex flex-row flex-wrap flex-grow'>
-                {filteredMeals ? filteredMeals?.map((meal, index) => {
+                {filteredMeals ? filteredMeals?.map((meal, _index) => {
                     return <>
                         <MealCard meal={meal} deleteMeal={deleteMeal} />
                     </>

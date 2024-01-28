@@ -83,7 +83,7 @@ export namespace IngredientService {
         }
 
         try {
-            let response = await instance.put(`/ingredients/${ingredient.title}/`, JSON.stringify(requestBody), {
+            await instance.put(`/ingredients/${ingredient.title}/`, JSON.stringify(requestBody), {
                 headers: {
                     'Content-Type': 'application/json'
                 }

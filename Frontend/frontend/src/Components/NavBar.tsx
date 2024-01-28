@@ -13,7 +13,7 @@ function NavBar() {
         height: window.innerHeight,
     })
 
-    const [clickedOutside, setClickedOutside] = useState(false);
+    const [_clickedOutside, setClickedOutside] = useState(false);
     const [open, setOpen] = useState<boolean>(false);
     const navItems = [
         { link: "/ingredients", title: "Ingredients" },

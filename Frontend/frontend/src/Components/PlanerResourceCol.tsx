@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import MealList from './MealList';
 import { Meal } from '../Datatypes/Meal';
 import { MealService } from '../Endpoints/MealService';
@@ -9,7 +9,7 @@ type Props = {
 
 function PlanerResourceCol({ mealListID }: Props) {
     const [meals, setMeals] = useState<Meal[]>([]);
-    const [shuffleFkt, setShuffleFkt] = useState<(meals: Meal[], numberOfResults: number) => Meal[]>();
+    const [shuffleFkt, _setShuffleFkt] = useState<(meals: Meal[], numberOfResults: number) => Meal[]>();
 
     useEffect(() => {
         async function fetchData() {
@@ -24,11 +24,11 @@ function PlanerResourceCol({ mealListID }: Props) {
         fetchData()
     }, [])
     function shuffleFromAll(meals: Meal[], numberOfResults: number): Meal[] {
-        const shuffled = meals.sort((a, b) => 0.5 - Math.random()).slice(0, numberOfResults);
+        const shuffled = meals.sort((_a, _b) => 0.5 - Math.random()).slice(0, numberOfResults);
         return shuffled;
     }
 
-    function shuffle(meals: Meal[], shuffleFkt: ((meals: Meal[], numberOfResults: number) => Meal[]) | undefined) {
+    function shuffle(meals: Meal[], _shuffleFkt: ((meals: Meal[], numberOfResults: number) => Meal[]) | undefined) {
         const shuffled = shuffleFromAll(meals, 10);
         setMeals(shuffled);
     }

@@ -1,4 +1,3 @@
-import React from 'react'
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { TagDT } from '../Datatypes/Tag';
@@ -9,9 +8,6 @@ function CreateTag() {
     const navigate = useNavigate();
     const {
         register,
-        control,
-        watch,
-        setValue,
         handleSubmit,
         formState: { errors } } = useForm<TagDT>({
             defaultValues: {
@@ -19,7 +15,7 @@ function CreateTag() {
             },
             mode: 'all'
         });
-
+    console.log(errors)
 
     const onSubmit = (data: TagDT) => {
         try {

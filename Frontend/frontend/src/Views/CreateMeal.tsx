@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form';
 import { MealService } from '../Endpoints/MealService';
 import { IngredientService } from '../Endpoints/IngredientService';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { Ingredient } from '../Datatypes/Ingredient';
 import { MealWithIngredientAmount } from '../Datatypes/Meal';
 
 function CreateMeal() {
     const navigate = useNavigate();
     const [ingredients, setIngredients] = useState<Ingredient[]>()
-    const [selectedIngredient, setSelectedIngredient] = useState<Ingredient>();
+    const [_selectedIngredient, _setSelectedIngredient] = useState<Ingredient>();
 
 
     useEffect(() => {
@@ -28,8 +27,6 @@ function CreateMeal() {
     const {
         register,
         control,
-        watch,
-        setValue,
         handleSubmit,
         formState: { errors } } = useForm<MealWithIngredientAmount>({
             defaultValues: {
@@ -39,7 +36,7 @@ function CreateMeal() {
             },
             mode: 'all'
         });
-    const selectedIngredientID = watch('ingredients');
+    //const selectedIngredientID = watch('ingredients');
 
     const { fields, append, remove } = useFieldArray<any>({
         control,

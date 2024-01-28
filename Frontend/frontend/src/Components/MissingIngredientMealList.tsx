@@ -1,27 +1,24 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { PlanerService } from '../Endpoints/PlanerService';
-import { MealService } from '../Endpoints/MealService';
 import MissingIngredientMealListItem from './MissingIngredientMealListItem';
 import { InventoryItem } from '../Datatypes/Inventory';
 import { InventoryService } from '../Endpoints/InventoryService';
 import { IngredientAmountWithMeal } from '../Datatypes/Ingredient';
 import { FoodplanerItem } from '../Datatypes/FoodPlaner';
-import { Meal } from '../Datatypes/Meal';
 
 type Props = {
     handleAddItemToShoppingList: (data: InventoryItem | InventoryService.CreateInventoryItemInterface) => Promise<void>
 }
 
 function MissingIngredientMealList({ handleAddItemToShoppingList }: Props) {
-    const [planers, setPlaners] = useState<FoodplanerItem[]>();
+    const [_planers, setPlaners] = useState<FoodplanerItem[]>();
     const [ingredients, setIngredients] = useState<IngredientAmountWithMeal[]>([]);
-    const [inventoryItems, setInventoryItems] = useState<InventoryItem[]>([]);
+    const [_inventoryItems, _setInventoryItems] = useState<InventoryItem[]>([]);
 
     useEffect(() => {
     }, [])
 
     async function handleAddAllToShoppingList() {
-        const inventoryItems: InventoryItem[] = [];
         ingredients.forEach(async (ingr) => {
             const inv: InventoryService.CreateInventoryItemInterface = { ingredient: ingr.ingredient, amount: ingr.amount, unit: ingr.unit };
             await handleAddItemToShoppingList(inv);
@@ -39,7 +36,7 @@ function MissingIngredientMealList({ handleAddItemToShoppingList }: Props) {
             }
             return null;
         }
-        async function fetchDataMeals(ids: number[]): Promise<Meal[]> {
+        /*async function fetchDataMeals(ids: number[]): Promise<Meal[]> {
             const meals: Meal[] = [];
             try {
 
@@ -52,7 +49,7 @@ function MissingIngredientMealList({ handleAddItemToShoppingList }: Props) {
                 console.log(error);
             }
             return meals;
-        }
+        }*/
         async function fetchIngredientsFromPlaner(start: Date, end: Date): Promise<IngredientAmountWithMeal[] | null> {
             try {
                 const data = await PlanerService.getAllIngredientsFromPlanerInTimeRange(start, end);
@@ -62,7 +59,7 @@ function MissingIngredientMealList({ handleAddItemToShoppingList }: Props) {
             }
             return null;
         }
-        async function combineMealsFromMultPlaner(planers: FoodplanerItem[]) {
+        /*async function combineMealsFromMultPlaner(planers: FoodplanerItem[]) {
             try {
 
                 let allMeals: Meal[] = []
@@ -76,14 +73,14 @@ function MissingIngredientMealList({ handleAddItemToShoppingList }: Props) {
             } catch (error) {
                 console.error(error)
             }
-        }
+        }*/
 
         async function fetchPipline() {
 
             const planers = await fetchDataPlaner();
             if (!planers) return;
             setPlaners(planers);
-            const allMeals = await combineMealsFromMultPlaner(planers);
+            //const allMeals = await combineMealsFromMultPlaner(planers);
             const ingredients = await fetchIngredientsFromPlaner(new Date(Date.now()), new Date('2023-12-12'));
             if (!ingredients) return;
             setIngredients(ingredients)

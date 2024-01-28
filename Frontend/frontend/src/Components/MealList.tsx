@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import AddMealButton from './AddMealButton';
 import MealDragElement from './MealDragElement';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { Meal } from '../Datatypes/Meal';
-import { LuTrendingUp } from 'react-icons/lu';
 
 interface Props {
     listId: string,
@@ -15,9 +14,7 @@ interface Props {
     setMeals: React.Dispatch<React.SetStateAction<Meal[]>>,
 };
 
-function MealList({ listId, listType, internalScroll, meals, setMeals }: Props) {
-
-
+function MealList({ listId, listType, meals }: Props) {
 
     return (
         <div className='flex w-full flex-col items-center justify-start'>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Meal, MealTags } from '../Datatypes/Meal'
 import PlaceholderMealImage from './PlaceholderMealImage'
 import { TagService } from '../Endpoints/TagService';
@@ -8,11 +8,11 @@ import { Link } from 'react-router-dom';
 
 type Props = {
     meal: Meal,
-    deleteMeal: (id: number) => Promise<void>,
+    deleteMeal?: (id: number) => Promise<void>,
 }
 
 
-function MealCard({ meal, deleteMeal }: Props) {
+function MealCard({ meal }: Props) {
 
     const [tags, setTags] = useState<MealTags>();
     useEffect(() => {

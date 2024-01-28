@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { MealWithIngredientAmount } from '../Datatypes/Meal';
 import { IngredientAmountWithMeal } from '../Datatypes/Ingredient';
 import { FoodplanerItem } from '../Datatypes/FoodPlaner';
 
@@ -31,7 +30,7 @@ export namespace PlanerService {
         return planer;
     }
 
-    export async function getAllIngredientsFromPlanerInTimeRange(start: Date, end: Date): Promise<IngredientAmountWithMeal[] | null> {
+    export async function getAllIngredientsFromPlanerInTimeRange(_start: Date, _end: Date): Promise<IngredientAmountWithMeal[] | null> {
         try {
             const data = await instance.get('/get-all-ingredients-from-planer/');
             const meals: any[] = data.data.meals;
@@ -73,7 +72,7 @@ export namespace PlanerService {
     export async function updatePlanerItem(id: number, planer: FoodplanerItem) {
         let json = JSON.stringify(planer)
         try {
-            let response = await instance.put(`/planer/${id}/`, json, {
+            await instance.put(`/planer/${id}/`, json, {
                 headers: {
                     'Content-Type': 'application/json'
                 }

@@ -2,21 +2,21 @@ import React from 'react'
 import { Meal } from '../Datatypes/Meal';
 
 type Props = {
-    meals: Meal[],
-    setMeals: React.Dispatch<React.SetStateAction<Meal[]>>,
-    shuffleFkt: ((meals: Meal[], numberOfResults: number) => Meal[]) | undefined,
+    meals?: Meal[],
+    setMeals?: React.Dispatch<React.SetStateAction<Meal[]>>,
+    shuffleFkt?: ((meals: Meal[], numberOfResults: number) => Meal[]) | undefined,
     setShuffleFkt: React.Dispatch<React.SetStateAction<((meals: Meal[], numberOfResults: number) => Meal[]) | undefined>>
 }
 
-function PlanerResourceColSearchOptions({ meals, setMeals, shuffleFkt, setShuffleFkt }: Props) {
+function PlanerResourceColSearchOptions({ setShuffleFkt }: Props) {
 
-    function shuffleFromAll(meals: Meal[], numberOfResults: number): Meal[] {
-        const shuffled = meals.sort((a, b) => 0.5 - Math.random());
+    function shuffleFromAll(meals: Meal[], _numberOfResults: number): Meal[] {
+        const shuffled = meals.sort((_a, _b) => 0.5 - Math.random());
         return shuffled;
     }
 
-    function shuffleFromLibrary(meals: Meal[], numberOfResults: number): Meal[] {
-        const shuffled = meals.sort((a, b) => 0.5 - Math.random());
+    function shuffleFromLibrary(meals: Meal[], _numberOfResults: number): Meal[] {
+        const shuffled = meals.sort((_a, _b) => 0.5 - Math.random());
         return shuffled;
     }
 

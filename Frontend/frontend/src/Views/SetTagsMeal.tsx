@@ -10,12 +10,11 @@ function SetTagsMeal() {
     const navigate = useNavigate();
     const { mealID } = useParams();
     const [tags, setTags] = useState<TagDT[]>();
-    const [mealTags, setMealTags] = useState<MealTags>();
+    const [_mealTags, _setMealTags] = useState<MealTags>();
     const [meal, setMeal] = useState<Meal>();
     const {
         register,
         control,
-        watch,
         setValue,
         handleSubmit,
         formState: { errors } } = useForm<MealTags>({

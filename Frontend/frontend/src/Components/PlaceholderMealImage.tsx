@@ -1,4 +1,3 @@
-import React from 'react'
 import PlaceholderImage from '../Assets/placeholderMeal.png';
 
 function PlaceholderMealImage() {

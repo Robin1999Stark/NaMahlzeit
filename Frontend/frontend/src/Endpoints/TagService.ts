@@ -166,7 +166,7 @@ export namespace TagService {
         }
 
         try {
-            let response = await instance.put(`/meal-tags/${meal}/`, JSON.stringify(requestBody), {
+            await instance.put(`/meal-tags/${meal}/`, JSON.stringify(requestBody), {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -248,7 +248,7 @@ export namespace TagService {
         }
 
         try {
-            let response = await instance.put(`/ingredient-tags/${ingredient}/`, JSON.stringify(requestBody), {
+            await instance.put(`/ingredient-tags/${ingredient}/`, JSON.stringify(requestBody), {
                 headers: {
                     'Content-Type': 'application/json'
                 }

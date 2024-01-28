@@ -6,10 +6,10 @@ import { GrDrag } from 'react-icons/gr'
 
 type Props = {
     mealID: string
-    index: number
+    index?: number
 }
 
-function MealDragElement({ mealID, index }: Props) {
+function MealDragElement({ mealID }: Props) {
     const [meal, setMeal] = useState<Meal>();
     const [_error, setError] = useState<boolean>(false);
     useEffect(() => {

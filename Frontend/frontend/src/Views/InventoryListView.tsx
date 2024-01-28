@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { InventoryItem } from '../Datatypes/Inventory'
 import { InventoryService } from '../Endpoints/InventoryService'
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { IngredientService } from '../Endpoints/IngredientService';
 import { Ingredient } from '../Datatypes/Ingredient';
 
@@ -12,7 +12,6 @@ function InventoryListView() {
 
     const {
         register,
-        control,
         handleSubmit,
         formState: { errors } } = useForm<InventoryItem>({
             defaultValues: {
@@ -22,10 +21,11 @@ function InventoryListView() {
             },
             mode: 'all'
         });
+    console.log(errors)
     /*const { fields, append, remove } = useFieldArray<any>({
-        control,
-        name: "ingredients"
-    });*/
+    control,
+    name: "ingredients"
+});*/
     async function fetchDataIngredients() {
         try {
             const data = await IngredientService.getAllIngredients()
@@ -37,7 +37,7 @@ function InventoryListView() {
     async function fetchDataInventory() {
         try {
             const data = await InventoryService.getAllInventoryItems()
-            const sorted = data.sort((a, b) => a.ingredient.localeCompare(b.ingredient))
+            //const sorted = data.sort((a, b) => a.ingredient.localeCompare(b.ingredient))
             setInventory(data)
         } catch (error) {
             console.log(error)

@@ -1,5 +1,4 @@
 import axios from "axios";
-import { InventoryItem } from "../Datatypes/Inventory";
 import { ShoppingList, ShoppingListItem } from "../Datatypes/ShoppingList";
 
 const BASE_URL = 'http://127.0.0.1:8000';
