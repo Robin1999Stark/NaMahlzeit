@@ -36,8 +36,14 @@ function PlanerResourceCol({ mealListID }: Props) {
     return (
         <>
 
-            <div className='flex flex-col w-full h-full justify-between items-center'>
-                <h2 className='mx-2 p-1 text-lg font-semibold'>MealList</h2>
+            <div className='flex flex-col w-full h-screen pt-4 justify-between items-center bg-[#004A41]'>
+                <button
+                    className='bg-[#FF6B00] text-white m-2 p-3 rounded-full font-bold mb-5 w-full xl:w-2/3 min-w-[10rem]'
+                    onClick={() => shuffle(meals, shuffleFkt)}>
+                    Shuffle
+                </button>
+                <div className='h-px bg-[#57D1C2] w-[75%] my-2'></div>
+                <h2 className='mx-2 p-1 text-[#57D1C2] text-lg font-semibold'>Meals</h2>
                 <div className='w-full xl:w-[70%] h-full overflow-y-scroll md:overflow-y-visible flex flex-col-reverse md:flex-col justify-start'>
 
                     <MealList
@@ -50,11 +56,7 @@ function PlanerResourceCol({ mealListID }: Props) {
                     />
 
                 </div>
-                <button
-                    className='bg-slate-500 m-2 p-1 mb-5 w-full xl:w-2/3 min-w-[10rem]'
-                    onClick={() => shuffle(meals, shuffleFkt)}>
-                    Shuffle
-                </button>
+
 
             </div>
 

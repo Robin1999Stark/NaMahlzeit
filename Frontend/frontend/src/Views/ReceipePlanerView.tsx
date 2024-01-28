@@ -85,12 +85,6 @@ function ReceipePlanerView() {
     }, [])
     return (
         <div className='flex flex-col justify-start items-center mt-4'>
-            <h2>
-                <button onClick={() => updateTimeSpan(new Date('2023-12-01'), new Date(Date.now()))}>
-                    Last Week
-                </button>
-                This Week
-            </h2>
 
             <DragDropContext onDragEnd={({ destination, source }) => {
                 if (!destination)
