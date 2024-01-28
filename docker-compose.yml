@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  postgres_mealplaner:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: mealplaner
+      POSTGRES_USER: postgres_mealplaner
+      POSTGRES_PASSWORD: Ptest1234
+
+  backend_mealplaner:
+    build:
+      context: ./Backend/backend
+    ports:
+      - "8000:8000"
+    expose:
+      - 8000
+    depends_on:
+      - postgres_mealplaner
+
+  frontend_mealplaner:
+    build:
+      context: ./Frontend/foodplanerFrontend
+    ports:
+      - "3000:3000"
