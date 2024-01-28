@@ -4,18 +4,12 @@ import socket
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-FRONTEND_PORT = '3000'
-
-DOCKER_HOST_NAME = socket.gethostbyname(socket.gethostname())
-
-FRONTEND_CONTAINER_IP = socket.gethostbyname('frontend_mealplaner')
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-xv)dlm1)0q&d8wsd71u@s476v!1(=e9oee-ylr1if8_3*shu%w'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -41,24 +35,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    f'http://{FRONTEND_CONTAINER_IP}:{FRONTEND_PORT}'
-]
-
-CORS_ALLOW_HEADERS = [
-    "accept",
-    "accept-encoding",
-    "authorization",
-    "content-type",
-    "dnt",
-    "origin",
-    "user-agent",
-    "x-csrftoken",
-    "x-requested-with",
-]
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -81,6 +59,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -88,10 +77,10 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mealplaner',
-        'USER': 'postgres_mealplaner',
-        'PASSWORD': 'Ptest1234',
-        'HOST': 'postgres_mealplaner',
+        'NAME': 'postgres',
+        'USER': 'robin',
+        'PASSWORD': 'postgres',
+        'HOST': 'db',
         'PORT': '5432',
     }
 }
@@ -137,12 +126,8 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_CREDENTIALS = True
 
-
-CORS_ORIGIN_WHITELIST = [
-    f'http://{FRONTEND_CONTAINER_IP}:{FRONTEND_PORT}'
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8080",
+    "http://frontend:8080",
 ]
-
-CORS_ALLOWED_ORIGINS.append(f'http://{DOCKER_HOST_NAME}:{FRONTEND_PORT}')

@@ -11,16 +11,8 @@ services:
   backend:
     image: python:3
     build:
-      context: ./Backend/backend
+      context: ./backend
     ports:
       - "8000:8000"
     depends_on:
       - db
-
-  frontend:
-    build:
-      context: ./Frontend/frontend
-    ports:
-      - "8080:8080"
-    depends_on:
-      - backend

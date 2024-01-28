@@ -3,7 +3,7 @@ import { TagDT } from "../Datatypes/Tag";
 import { MealTags } from "../Datatypes/Meal";
 import { IngredientTags } from "../Datatypes/Ingredient";
 
-const BASE_URL = 'http://127.0.0.1:8000';
+const BASE_URL = 'http://localhost:8000';
 
 const instance = axios.create({
     baseURL: BASE_URL,

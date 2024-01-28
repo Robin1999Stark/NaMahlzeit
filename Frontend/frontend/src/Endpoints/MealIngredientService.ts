@@ -1,14 +1,11 @@
 import axios from 'axios';
 import { IngredientAmountWithMeal } from '../Datatypes/Ingredient';
 
-
-const BASE_URL = 'http://127.0.0.1:8000';
-
+const BASE_URL = 'http://localhost:8000';
 const instance = axios.create({
     baseURL: BASE_URL,
     withCredentials: true,
 })
-
 export namespace MealIngredientService {
     async function getAllMealIngredientsJSON(mealID: number): Promise<any> {
         try {
@@ -47,7 +44,7 @@ export namespace MealIngredientService {
         }
 
         try {
-            const response = await axios.post('http://localhost:8000/meal-ingredients/', JSON.stringify(requestBody), {
+            const response = await axios.post('http://backend:8000/meal-ingredients/', JSON.stringify(requestBody), {
                 headers: {
                     'Content-Type': 'application/json'
                 }

@@ -1,13 +1,12 @@
-FROM python:3.11
+FROM python:3
 
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-# PROJECT SETUP
-# ----------------
+WORKDIR /code
 
-# copy these two files from <src> to <dest>
-# <src> = current directory on host machine
-# <dest> = filesystem of the container
-COPY Pipfile Pipfile.lock ./
+COPY Pipfile Pipfile.lock /code/
 
 # install pipenv on the container
 RUN pip install -U pipenv
@@ -15,8 +14,7 @@ RUN pip install -U pipenv
 # install project dependencies
 RUN pipenv install --system
 
-# copy all files and directories from <src> to <dest>
-COPY . .
+COPY . /code/
 
 
 # RUN SERVER
