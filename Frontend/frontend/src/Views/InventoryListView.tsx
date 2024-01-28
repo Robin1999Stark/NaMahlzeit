@@ -22,10 +22,10 @@ function InventoryListView() {
             },
             mode: 'all'
         });
-    const { fields, append, remove } = useFieldArray<any>({
+    /*const { fields, append, remove } = useFieldArray<any>({
         control,
         name: "ingredients"
-    });
+    });*/
     async function fetchDataIngredients() {
         try {
             const data = await IngredientService.getAllIngredients()
