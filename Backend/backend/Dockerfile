@@ -1,12 +1,10 @@
-FROM python:3
+FROM python:3.11
 
-# set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONUNBUFFERED=1
 
-WORKDIR /code
+WORKDIR /backend
 
-COPY Pipfile Pipfile.lock /code/
+COPY Pipfile Pipfile.lock /backend/
 
 # install pipenv on the container
 RUN pip install -U pipenv
@@ -14,14 +12,4 @@ RUN pip install -U pipenv
 # install project dependencies
 RUN pipenv install --system
 
-COPY . /code/
-
-
-# RUN SERVER
-# ------------
-
-# expose the port
-EXPOSE 8000
-
-# Command to run
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+COPY . /backend/

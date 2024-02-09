@@ -2,18 +2,26 @@ version: '3'
 
 services:
   db:
-    image: postgres:latest
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: postgres
-      POSTGRES_USER: robin
-      POSTGRES_PASSWORD: postgres
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=robin
+      - POSTGRES_PASSWORD=postgres
 
   backend:
-    image: python:3
     build:
       context: ./Backend/backend
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
     ports:
       - "8000:8000"
+    environment:
+      - POSTGRES_NAME=postgres
+      - POSTGRES_USER=robin
+      - POSTGRES_PASSWORD=postgres
     depends_on:
       - db
 
