@@ -24,11 +24,3 @@ services:
       - POSTGRES_PASSWORD=postgres
     depends_on:
       - db
-
-  frontend:
-    build:
-      context: ./Frontend/frontend
-    ports:
-      - "8080:8080"
-    depends_on:
-      - backend

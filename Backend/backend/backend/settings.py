@@ -1,5 +1,6 @@
 from pathlib import Path
 import socket
+from corsheaders.defaults import default_methods, default_headers
 import os
 
 
@@ -31,12 +32,12 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
 
 
@@ -72,6 +73,11 @@ CORS_ALLOW_HEADERS = [
     "x-csrftoken",
     "x-requested-with",
 ]
+
+CORS_ALLOW_METHODS = (
+    *default_methods,
+    "POKE",
+)
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -133,3 +139,10 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
     "http://frontend:8080",
 ]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:8080",
+    "http://frontend:8080",
+]
+
+CORS_ALLOW_CREDENTIALS = True

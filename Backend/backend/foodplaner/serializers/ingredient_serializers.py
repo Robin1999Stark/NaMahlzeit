@@ -14,17 +14,18 @@ class IngredientSerializer(serializers.ModelSerializer):
         return value
 
     def to_internal_value(self, data):
-        prefered_unit = data.get('preferedUnit', '').lower()
+        data_copy = data.copy()
+        prefered_unit = data_copy.get('preferedUnit', '').lower()
         prefered_unit_synonyms = get_unit_syn_dict()
         mapped_prefered_unit = prefered_unit_synonyms.get(prefered_unit)
 
         if mapped_prefered_unit:
-            data['preferedUnit'] = mapped_prefered_unit
+            data_copy['preferedUnit'] = mapped_prefered_unit
         else:
             raise serializers.ValidationError(
                 f"Invalid preferedUnit: {prefered_unit}")
 
-        return super().to_internal_value(data)
+        return super().to_internal_value(data_copy)
 
     def create(self, validated_data):
         instance = super().create(validated_data)
