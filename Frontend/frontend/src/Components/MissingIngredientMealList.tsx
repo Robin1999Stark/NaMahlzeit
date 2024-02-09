@@ -92,7 +92,7 @@ function MissingIngredientMealList({ handleAddItemToShoppingList }: Props) {
         <div className='mx-4 w-full'>
             <div className='flex flex-row justify-between items-center'>
 
-                <h1 className='truncate my-5 text-2xl font-semibold'>
+                <h1 className='truncate text-[#57D1C2] my-5 text-2xl font-semibold'>
                     Needed Ingredients from Planer
                 </h1>
                 <div className='flex h-12 flex-row'>

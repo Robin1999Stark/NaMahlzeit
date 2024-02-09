@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { MealIngredientService } from '../Endpoints/MealIngredientService';
 import { IngredientAmountWithMeal, Ingredient } from '../Datatypes/Ingredient';
 import { Meal, MealWithIngredientAmountMIID } from '../Datatypes/Meal';
+import { IoRemove } from 'react-icons/io5';
 
 function EditMeal() {
     const navigate = useNavigate();
@@ -79,7 +80,7 @@ function EditMeal() {
     }
     return (
         <>
-            <h1 className='truncate mx-5 my-5 text-2xl font-semibold'>
+            <h1 className='truncate text-[#57D1C2] mx-5 my-5 text-2xl font-semibold'>
                 Edit Meal
             </h1>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -89,7 +90,7 @@ function EditMeal() {
                         <li key={"li-title"} className='flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3'>
                             <label
                                 htmlFor='title'
-                                className={`text-xs truncate text-left align-middle mb-3`} >
+                                className={`text-md text-[#57D1C2] font-bold truncate text-left align-middle mb-3`} >
                                 Title:
                             </label>
                             <input
@@ -100,32 +101,32 @@ function EditMeal() {
                                     required: true,
                                 })}
                                 defaultValue={"Expert Model"}
-                                className="border-slate-200 truncate text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
+                                className="border-slate-200 bg-white truncate text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
                         </li>
                         <li key={"li-description"} className='flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3'>
                             <label
                                 htmlFor='description'
-                                className={`text-xs truncate text-left align-middle mb-3`} >
+                                className={`text-md text-[#57D1C2] font-bold truncate text-left align-middle mb-3`} >
                                 Description:
                             </label>
-                            <input
-                                type='text'
+                            <textarea
+                                rows={7}
                                 id='description'
                                 {...register("description", {
                                     required: true,
                                 })}
                                 defaultValue={"Lorem Ipsum"}
-                                className="border-slate-200 truncate text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
+                                className="border-slate-200 bg-white truncate text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
                         </li>
-
-
                         <li key={"ingredients-key"} className="flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3">
-                            <label htmlFor="ingredients" className="text-xs truncate text-left align-middle mb-3">
-                                Ingredient Titles:
+                            <label
+                                htmlFor="ingredients"
+                                className={`text-md text-[#57D1C2] font-bold truncate text-left align-middle mb-3`} >
+                                Ingredients:
                             </label>
-                            <div>
+                            <ul key={'ingredients'} className='w-full'>
                                 {fields.map((field, index) => (
-                                    <div key={field.id} className="flex">
+                                    <li key={field.id} className="flex w-full mb-4">
                                         {/* Use a dropdown/select for ingredient titles */}
                                         <select
                                             key={"select-" + field.id}
@@ -133,7 +134,7 @@ function EditMeal() {
                                                 required: true,
                                             })}
                                             defaultValue={ingredients ? ingredients[0].title : 0} // Ensure a valid initial value
-                                            className="border-slate-200 text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500"
+                                            className="border-slate-200 bg-white text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500"
                                         >
                                             <option key={"select-ingredient"} value="">Select Ingredient</option>
                                             {ingredients ? ingredients.map((ingredient) => (
@@ -144,10 +145,10 @@ function EditMeal() {
                                                 </option>
                                             )) : <></>}
                                         </select>
-                                        <div className='flex flex-col justify-start'>
+                                        <div className='flex flex-col justify-start ml-4'>
                                             <input
                                                 type='number'
-                                                id='description'
+                                                id='amount'
                                                 step={0.01}
                                                 {...register(`ingredients.${index}.amount` as const, {
                                                     valueAsNumber: true,
@@ -157,30 +158,34 @@ function EditMeal() {
                                                     required: true,
                                                 })}
                                                 defaultValue={1}
-                                                className="border-slate-200 truncate text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
+                                                className="border-slate-200 bg-white truncate text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
 
                                         </div>
-                                        <div className='flex flex-col justify-start'>
+                                        <div className='flex flex-col justify-start ml-4'>
                                             <input
                                                 type='text'
-                                                id='description'
+                                                id='unit'
                                                 {...register(`ingredients.${index}.unit` as const, {
                                                     required: true,
                                                 })}
                                                 defaultValue={"kg"}
-                                                className="border-slate-200 truncate text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
-
+                                                className="border-slate-200 bg-white truncate text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
                                         </div>
-
-                                        <button type="button" onClick={() => remove(index)}>
-                                            Remove
+                                        <button className='px-3 bg-red-400 py-3 rounded-md ml-4 text-white text-base font-semibold flex flex-row items-center justify-center' type="button" onClick={() => remove(index)}>
+                                            <IoRemove />
                                         </button>
-                                    </div>
+                                    </li>
                                 ))}
-                                <button type="button" onClick={() => append(0)}>
-                                    Add Ingredient
-                                </button>
-                            </div>
+                                <li className='w-full flex flex-row justify-end items-center'>
+                                    <button
+                                        type="button"
+                                        className='py-2 px-4 bg-[#FF6B00] text-white rounded-md flex flex-row justify-between items-center'
+                                        onClick={() => append(0)}>
+                                        Add Ingredient
+                                    </button>
+                                </li>
+
+                            </ul>
                             {errors.ingredients && (
                                 <p className="text-red-500">Please enter ingredient IDs for all fields.</p>
                             )}
@@ -188,7 +193,7 @@ function EditMeal() {
                         <li key={"li-prep"} className='flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3'>
                             <label
                                 htmlFor='preparation'
-                                className={`text-xs truncate text-left align-middle mb-3`} >
+                                className={`text-md text-[#57D1C2] font-bold truncate text-left align-middle mb-3`} >
                                 Preparation:
                             </label>
                             <input
@@ -198,12 +203,12 @@ function EditMeal() {
                                     required: false,
                                 })}
                                 defaultValue={"Step 1"}
-                                className="border-slate-200 truncate text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
+                                className="border-slate-200 bg-white truncate text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
                         </li>
                         <li key={"li-duration"} className='flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3'>
                             <label
                                 htmlFor='duration'
-                                className={`text-xs truncate text-left align-middle mb-3`} >
+                                className={`text-md text-[#57D1C2] font-bold truncate text-left align-middle mb-3`} >
                                 Duration in min:
                             </label>
                             <input
@@ -217,20 +222,18 @@ function EditMeal() {
                                     max: 1000,
                                 })}
                                 defaultValue={10}
-                                className="border-slate-200 truncate text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
+                                className="border-slate-200 bg-white truncate text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
                         </li>
                     </ul>
                 </div>
-                <div className='w-100 my-4 flex flex-1 justify-center align-middle'>
-
-                    <div className='mb-4 mx-6'>
-                        <button className='p-2 bg-slate-500 text-white px-4 rounded-md text-lg' type='submit'>Save</button>
-                    </div>
+                <div className='w-full flex flex-row justify-end'>
+                    <button className='p-2 bg-slate-500 text-white mr-4 px-4 rounded-md text-lg' onClick={() => navigate(-1)}>Go Back</button>
+                    <button className='p-2 mr-6 bg-[#FF6B00] text-white px-4 rounded-md text-lg' type='submit'>
+                        Save Meal
+                    </button>
                 </div>
             </form>
-            <div className='mb-4 mx-6'>
-                <button className='p-2 bg-slate-500 text-white px-4 rounded-md text-lg' onClick={() => navigate(-1)}>Go Back</button>
-            </div>
+
         </>
     )
 }

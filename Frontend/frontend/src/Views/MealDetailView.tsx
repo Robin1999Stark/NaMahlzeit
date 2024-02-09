@@ -136,13 +136,15 @@ function MealDetailView() {
                     <Tag title={'Edit Tags'} onClick={() => navigate('tags')} />
                 </div>
                 <div className='flex w-full text-[#3E4C62] py-3 flex-row justify-end'>
-                    <button className='p-2 bg-slate-400 text-white rounded-md flex flex-row justify-between items-center' onClick={() => navigate(`edit`)}>
+                    <button
+                        className='p-2 bg-[#FF6B00] text-white rounded-md flex flex-row justify-between items-center'
+                        onClick={() => navigate(`edit`)}>
                         <p className='mx-2'>
                             Edit
                         </p>
                         <CiEdit />
                     </button>
-                    <div className='ml-5 flex flex-row justify-end items-center'>
+                    <div className='ml-5 flex flex-row text-white justify-end items-center'>
                         <LuClock />
                         <p className='ml-2 font-semibold'>
                             {meal?.duration} min
@@ -151,11 +153,11 @@ function MealDetailView() {
 
                     </div>
                 </div>
-                <article className='my-6'>
-                    <h2 className='text-xl mb-2 font-semibold text-center'>
+                <article className='my-6 w-full'>
+                    <h2 className='text-xl mb-3 font-semibold text-[#57D1C2] text-start'>
                         Preparation:
                     </h2>
-                    <p className='text-base text-center font-medium text-[#3E4C62]'>
+                    <p className='text-base text-start font-medium text-white text'>
                         {meal?.preparation ? <URLify text={meal.preparation} /> : "No Preparation found"}
                     </p>
                 </article>

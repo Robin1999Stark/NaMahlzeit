@@ -3,6 +3,7 @@ import { Ingredient } from '../Datatypes/Ingredient'
 import { Link } from 'react-router-dom'
 import { TagService } from '../Endpoints/TagService';
 import Tag from './Tag';
+import { MdDeleteForever } from 'react-icons/md';
 
 type Props = {
     ingredient: Ingredient,
@@ -32,7 +33,7 @@ function IngredientListItem({ ingredient, deleteIngredient }: Props) {
     return (
         <>
             <Link
-                className='w-full flex flex-row ml-4 text-lg font-semibold justify-start items-center'
+                className='w-full flex flex-row ml-4 text-white text-lg font-semibold justify-start items-center'
                 to={`/ingredients/${ingredient.title}`}>
                 {ingredient.title}
             </Link>
@@ -47,8 +48,9 @@ function IngredientListItem({ ingredient, deleteIngredient }: Props) {
 
                 <button
                     onClick={() => deleteIngredient(ingredient.title)}
-                    className='px-3 bg-red-400 py-1 rounded-md text-white text-base font-semibold flex flex-row items-center justify-center'>
-                    x
+                    className='px-3 bg-red-400 py-3 rounded-md text-white text-base font-semibold flex flex-row items-center justify-center'>
+                    <MdDeleteForever />
+
                 </button>
             </div>
         </>

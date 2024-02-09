@@ -12,7 +12,7 @@ services:
 
   backend:
     build:
-      context: ./Backend/backend
+      context: ./backend
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/code
@@ -24,12 +24,3 @@ services:
       - POSTGRES_PASSWORD=postgres
     depends_on:
       - db
-
-  frontend:
-    build:
-      context: ./Frontend/frontend
-    command: npm run dev -- --port 8080
-    ports:
-      - "8080:8080"
-    depends_on:
-      - backend

@@ -5,6 +5,7 @@ import { IngredientService } from '../Endpoints/IngredientService';
 import { useNavigate } from 'react-router-dom';
 import { Ingredient } from '../Datatypes/Ingredient';
 import { MealWithIngredientAmount } from '../Datatypes/Meal';
+import { IoRemove } from 'react-icons/io5';
 
 function CreateMeal() {
     const navigate = useNavigate();
@@ -43,16 +44,20 @@ function CreateMeal() {
         name: "ingredients"
     });
 
-    const onSubmit = (data: MealWithIngredientAmount) => {
+    async function onSubmit(data: MealWithIngredientAmount) {
         try {
-            MealService.createMealWithAmounts({
+            const meal = await MealService.createMealWithAmounts({
                 title: data.title,
                 description: data.description,
                 ingredients: data.ingredients,
                 preparation: data.preparation,
                 duration: data.duration,
             })
-            navigate(-1);
+            if (meal) {
+                navigate(-1);
+            } else {
+                console.log("Error when creating a meal")
+            }
         } catch (error) {
             console.log(error)
         }
@@ -69,7 +74,7 @@ function CreateMeal() {
                         <li key={"li-title"} className='flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3'>
                             <label
                                 htmlFor='title'
-                                className={`text-xs truncate text-left align-middle mb-3`} >
+                                className={`text-md text-[#57D1C2] font-bold truncate text-left align-middle mb-3`} >
                                 Title:
                             </label>
                             <input
@@ -85,11 +90,11 @@ function CreateMeal() {
                         <li key={"li-description"} className='flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3'>
                             <label
                                 htmlFor='description'
-                                className={`text-xs truncate text-left align-middle mb-3`} >
+                                className={`text-md text-[#57D1C2] font-bold truncate text-left align-middle mb-3`} >
                                 Description:
                             </label>
-                            <input
-                                type='text'
+                            <textarea
+                                rows={7}
                                 id='description'
                                 {...register("description", {
                                     required: true,
@@ -100,12 +105,14 @@ function CreateMeal() {
 
 
                         <li key={"ingredients-key"} className="flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3">
-                            <label htmlFor="ingredients" className="text-xs truncate text-left align-middle mb-3">
-                                Ingredient Titles:
+                            <label
+                                htmlFor="ingredients"
+                                className={`text-md text-[#57D1C2] font-bold truncate text-left align-middle mb-3`} >
+                                Ingredients:
                             </label>
-                            <div>
+                            <ul className='w-full'>
                                 {fields.map((field, index) => (
-                                    <div key={field.id} className="flex">
+                                    <li key={field.id} className="flex w-full mb-4">
                                         {/* Use a dropdown/select for ingredient titles */}
                                         <select
                                             key={"select-" + field.id}
@@ -113,7 +120,7 @@ function CreateMeal() {
                                                 required: true,
                                             })}
                                             defaultValue={ingredients ? ingredients[0].title : 0} // Ensure a valid initial value
-                                            className="border-slate-200 text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500"
+                                            className="border-slate-200 bg-white mr-4 text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500"
                                         >
                                             <option key={"select-ingredient"} value="">Select Ingredient</option>
                                             {ingredients ? ingredients.map((ingredient) => (
@@ -124,10 +131,10 @@ function CreateMeal() {
                                                 </option>
                                             )) : <></>}
                                         </select>
-                                        <div className='flex flex-col justify-start'>
+                                        <div className='flex flex-col mr-4 justify-start'>
                                             <input
                                                 type='number'
-                                                id='description'
+                                                id='amount'
                                                 step={0.01}
                                                 {...register(`ingredients.${index}.amount` as const, {
                                                     valueAsNumber: true,
@@ -143,7 +150,7 @@ function CreateMeal() {
                                         <div className='flex flex-col justify-start'>
                                             <input
                                                 type='text'
-                                                id='description'
+                                                id='unit'
                                                 {...register(`ingredients.${index}.unit` as const, {
                                                     required: true,
                                                 })}
@@ -152,15 +159,21 @@ function CreateMeal() {
 
                                         </div>
 
-                                        <button type="button" onClick={() => remove(index)}>
-                                            Remove
+                                        <button type="button" onClick={() => remove(index)} className='px-3 bg-red-400 py-3 rounded-md text-white ml-4 text-base font-semibold flex flex-row items-center justify-center'>
+                                            <IoRemove />
                                         </button>
-                                    </div>
+                                    </li>
                                 ))}
-                                <button type="button" onClick={() => append(0)}>
-                                    Add Ingredient
-                                </button>
-                            </div>
+                                <li className='w-full flex flex-row justify-end items-center'>
+                                    <button
+                                        type="button"
+                                        className='p-2 bg-[#FF6B00] text-white rounded-md flex flex-row justify-between items-center'
+                                        onClick={() => append(0)}>
+                                        Add Ingredient
+                                    </button>
+                                </li>
+
+                            </ul>
                             {errors.ingredients && (
                                 <p className="text-red-500">Please enter ingredient IDs for all fields.</p>
                             )}
@@ -168,7 +181,7 @@ function CreateMeal() {
                         <li key={"li-prep"} className='flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3'>
                             <label
                                 htmlFor='preparation'
-                                className={`text-xs truncate text-left align-middle mb-3`} >
+                                className={`text-md text-[#57D1C2] font-bold truncate text-left align-middle mb-3`} >
                                 Preparation:
                             </label>
                             <input
@@ -183,8 +196,8 @@ function CreateMeal() {
                         <li key={"li-duration"} className='flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3'>
                             <label
                                 htmlFor='duration'
-                                className={`text-xs truncate text-left align-middle mb-3`} >
-                                Duration in min:
+                                className={`text-md text-[#57D1C2] font-bold truncate text-left align-middle mb-3`} >
+                                Duration (in min):
                             </label>
                             <input
                                 type='number'
@@ -201,10 +214,10 @@ function CreateMeal() {
                         </li>
                     </ul>
                 </div>
-                <div className='w-100 my-4 flex flex-1 justify-center align-middle'>
-                    <div className='mb-4 mx-6'>
-                        <button className='p-2 bg-slate-500 text-white px-4 rounded-md text-lg' type='submit'>Save</button>
-                    </div>
+                <div className='w-full flex flex-row justify-end mb-6'>
+                    <button className='p-2 bg-[#FF6B00] mr-6 text-white px-4 rounded-md text-lg' type='submit'>
+                        Save Meal
+                    </button>
                 </div>
             </form>
 
