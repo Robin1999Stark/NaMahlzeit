@@ -100,6 +100,11 @@ function ShoppingListView() {
 
     async function handleAddItemToShoppingList(data: InventoryItem | InventoryService.CreateInventoryItemInterface) {
         try {
+            if (!shoppingList) {
+                const list = await ShoppingListService.CreateShoppingList({ items: [] })
+                if (!list) return
+                setShoppingList(list)
+            }
             if (shoppingList) {
                 const item = await ShoppingListService.createItemAndAddToShoppingList(shoppingList, { ingredient: data.ingredient, amount: data.amount, unit: data.unit, notes: "" })
                 if (item) {
@@ -130,7 +135,7 @@ function ShoppingListView() {
             <>
                 <MissingIngredientMealList handleAddItemToShoppingList={handleAddItemToShoppingList} />
 
-                <h1 className='truncate mx-5 my-5 text-2xl font-semibold'>
+                <h1 className='truncate text-[#57D1C2] mx-5 my-5 text-2xl font-semibold'>
                     Shopping list
                 </h1>
                 <div className='mx-4 w-full'>
@@ -165,7 +170,7 @@ function ShoppingListView() {
                                     required: true,
                                 })}
                                 defaultValue={1}
-                                className="border-slate-200 h-12 truncate text-base font-semibold align-middle mr-2 focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
+                                className="border-slate-200 bg-white h-12 truncate text-base font-semibold align-middle mr-2 focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
                             <input
                                 key={'unit'}
                                 type='text'
@@ -174,7 +179,7 @@ function ShoppingListView() {
                                     required: true,
                                 })}
                                 defaultValue={selectedIngredient ? selectedIngredient?.preferedUnit : "kg"}
-                                className="border-slate-200 truncate h-12 text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
+                                className="border-slate-200 bg-white truncate h-12 text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
                         </div>
                         <div className='flex h-12 flex-row'>
                             <button key={'add-item'} className='p-2 ml-4 bg-green-400 text-gray-900 px-4 truncate w-full rounded-md text-lg' type='submit'>+ Add</button>
@@ -183,10 +188,10 @@ function ShoppingListView() {
                         {shoppingListItems ? shoppingListItems?.map(item => (
                             item ?
                                 <>
-                                    <div key={item.ingredient + Math.random()} className='p-2 flex flex-row font-semibold items-center'>
+                                    <div key={item.ingredient + Math.random()} className='p-2 text-white flex flex-row font-semibold items-center'>
                                         {item.ingredient}
                                     </div>
-                                    <div key={item.ingredient + Math.random() + "unit"} className='p-2 flex font-semibold flex-row justify-between items-center'>
+                                    <div key={item.ingredient + Math.random() + "unit"} className='p-2 flex text-white font-semibold flex-row justify-between items-center'>
                                         {item.amount + " " + item.unit}
                                     </div>
                                     <div key={item.ingredient + Math.random() + "delete-notes"} className='p-2 flex font-semibold flex-row justify-between items-center'>
@@ -199,7 +204,6 @@ function ShoppingListView() {
                                     </div>
                                 </> : <>
                                     <h1 key={"loading1"}>Loading...</h1>
-                                    <h1 key={"loading2"}>Loading...</h1>
                                 </>
                         )) : <h1>Loading...</h1>}
                     </form>
