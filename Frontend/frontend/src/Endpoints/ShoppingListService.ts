@@ -1,8 +1,7 @@
 import axios from "axios";
 import { ShoppingList, ShoppingListItem } from "../Datatypes/ShoppingList";
 
-const BASE_URL = 'http://127.0.0.1:8000';
-
+const BASE_URL = 'http://localhost:8000';
 const instance = axios.create({
     baseURL: BASE_URL,
     withCredentials: true,

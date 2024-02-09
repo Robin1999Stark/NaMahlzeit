@@ -4,7 +4,7 @@ import { TagDT } from '../Datatypes/Tag';
 import { TagService } from '../Endpoints/TagService';
 import { LuFilter } from 'react-icons/lu';
 import ButtonRound from '../Components/ButtonRound';
-import { MdAdd } from 'react-icons/md';
+import { MdAdd, MdDeleteForever } from 'react-icons/md';
 
 function TagsOverView() {
     const navigate = useNavigate();
@@ -85,14 +85,14 @@ function TagsOverView() {
                     const firstChar = tag.name.charAt(0).toUpperCase();
 
                     if (index === 0) {
-                        prefix = <li className='p-2 font-semibold text-lg text-[#74768C]' key={prefix + firstChar}>
+                        prefix = <li className='p-2 font-semibold text-lg text-[#57D1C2]' key={prefix + firstChar}>
                             - {firstChar.toUpperCase()} -
 
                         </li>
                     } else if (index > 0) {
                         const lastElement = filteredTags[index - 1];
                         if (lastElement.name.charAt(0).toUpperCase() !== firstChar) {
-                            prefix = <li className='p-2 font-semibold text-lg text-[#74768C]' key={prefix + firstChar}>
+                            prefix = <li className='p-2 font-semibold text-lg text-[#57D1C2]' key={prefix + firstChar}>
                                 - {firstChar.toUpperCase()} -
                             </li>
                         }
@@ -100,10 +100,10 @@ function TagsOverView() {
                     }
                     return <>
                         {prefix}
-                        <li key={tag.name} className='p-2 flex flex-row justify-between'>
+                        <li key={tag.name} className='p-2 text-white text-lg font-bold flex flex-row justify-between'>
                             {tag.name}
-                            <button onClick={() => deleteTag(tag.name)} className='px-3 bg-red-400 py-1 rounded-md text-white text-base font-semibold flex flex-row items-center justify-center'>
-                                x
+                            <button onClick={() => deleteTag(tag.name)} className='px-3 bg-red-400 py-3 rounded-md text-white text-base font-semibold flex flex-row items-center justify-center'>
+                                <MdDeleteForever />
                             </button>
                         </li>
                     </>
