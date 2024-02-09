@@ -44,7 +44,7 @@ export namespace MealIngredientService {
         }
 
         try {
-            const response = await axios.post('http://backend:8000/meal-ingredients/', JSON.stringify(requestBody), {
+            const response = await instance.post('/meal-ingredients/', JSON.stringify(requestBody), {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -59,7 +59,7 @@ export namespace MealIngredientService {
     export async function updateMealIngredient(miID: number, mealIngredient: IngredientAmountWithMeal): Promise<IngredientAmountWithMeal | null> {
         let json = JSON.stringify(mealIngredient)
         try {
-            let response = await instance.put(`/meal-ingredients/${miID}/`, json, {
+            let response = await instance.post(`/meal-ingredients/${miID}/`, json, {
                 headers: {
                     'Content-Type': 'application/json'
                 }

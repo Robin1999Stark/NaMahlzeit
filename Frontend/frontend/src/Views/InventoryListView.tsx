@@ -4,6 +4,7 @@ import { InventoryService } from '../Endpoints/InventoryService'
 import { useForm } from 'react-hook-form';
 import { IngredientService } from '../Endpoints/IngredientService';
 import { Ingredient } from '../Datatypes/Ingredient';
+import { IoRemove } from 'react-icons/io5';
 
 function InventoryListView() {
     const [ingredients, setIngredients] = useState<Ingredient[]>()
@@ -132,13 +133,13 @@ function InventoryListView() {
                     </div>
                     {inventory ? inventory?.map(inv => (
                         <>
-                            <div key={inv.ingredient + Math.random()} className='p-2 flex flex-row font-semibold items-center'>
+                            <div key={inv.ingredient + Math.random()} className='p-2 flex text-white flex-row font-semibold items-center'>
                                 {inv.ingredient}
                             </div>
-                            <div className='p-2 flex font-semibold flex-row justify-between items-center'>
+                            <div className='p-2 flex font-semibold flex-row justify-between text-white items-center'>
                                 {inv.amount + " " + inv.unit}
-                                <button onClick={() => deleteInventoryItem(inv.id)} className='px-3 bg-red-400 py-1 rounded-md text-white text-base font-semibold flex flex-row items-center justify-center'>
-                                    x
+                                <button onClick={() => deleteInventoryItem(inv.id)} className='px-3 bg-red-400 py-3 rounded-md text-white text-base font-semibold flex flex-row items-center justify-center'>
+                                    <IoRemove />
                                 </button>
                             </div>
                         </>

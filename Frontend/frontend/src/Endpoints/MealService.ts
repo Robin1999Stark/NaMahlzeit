@@ -108,7 +108,6 @@ export namespace MealService {
         try {
             let response = await instance.post('/meals/', requestJSON, {
                 headers: {
-                    'Access-Control-Allow-Credentials': true,
                     'Content-Type': 'application/json'
                 }
             })
@@ -147,7 +146,6 @@ export namespace MealService {
             // update Meal
             let responseMeal = await instance.put(`/meals/${id}/`, JSON.stringify(requestBody), {
                 headers: {
-                    'Access-Control-Allow-Credentials': true,
                     'Content-Type': 'application/json'
                 }
             })
@@ -201,11 +199,7 @@ export namespace MealService {
 
     export async function deleteMeal(mealID: number) {
         try {
-            const response = await instance.delete(`/meals/${mealID}/`, {
-                headers: {
-                    'Access-Control-Allow-Credentials': true,
-                }
-            });
+            const response = await instance.delete(`/meals/${mealID}/`);
             return response.data;
         } catch (error) {
             throw new Error('Error deleting Meal: ' + error);
