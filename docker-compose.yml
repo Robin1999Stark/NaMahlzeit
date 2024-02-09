@@ -24,3 +24,12 @@ services:
       - POSTGRES_PASSWORD=postgres
     depends_on:
       - db
+
+  frontend:
+    build:
+      context: ./Frontend/frontend
+    command: npm run dev -- --port 8080
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend
