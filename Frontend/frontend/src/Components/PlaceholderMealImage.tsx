@@ -1,9 +1,13 @@
 import PlaceholderImage from '../Assets/placeholderMeal.jpg';
 
-function PlaceholderMealImage() {
+interface Props {
+    rounded?: boolean
+}
+
+function PlaceholderMealImage({ rounded = false }: Props) {
     if (true) {
         return (
-            <svg className='w-full h-full' width="1687" height="1687" viewBox="0 0 1687 1687" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg className={rounded ? 'w-full h-full rounded-full' : 'w-full h-full'} width="1687" height="1687" viewBox="0 0 1687 1687" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect width="1687" height="1687" fill="#272727" />
                 <path d="M1403.53 796.62C1403.53 1093.88 1162.56 1334.85 865.304 1334.85C568.048 1334.85 327.074 1093.88 327.074 796.62C327.074 499.364 568.048 258.39 865.304 258.39C1162.56 258.39 1403.53 499.364 1403.53 796.62Z" fill="#A49480" />
                 <path d="M344.866 658.726L1180.07 359.586C1260.09 421.327 1295.36 462.493 1342.37 546.966L338.194 906.157C321.999 809.51 322.247 755.333 344.866 658.726Z" fill="#958878" />

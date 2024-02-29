@@ -8,8 +8,8 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: #213547;
-  background: linear-gradient(90deg, #008979 12.12%, #004A41 99.96%);
+  color: #011413;
+  background: #F8FBFF;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -49,12 +49,12 @@ body {
     color: #DFF9FF;
   }
   a:hover {
-    color: #FF6B00;
+    color: #046865;
   }
   button {
     background-color: #f9f9f9;
   }
   input[type="text"] {
-    background-color: #fff;
+    background-color: #011413;
   }
 }

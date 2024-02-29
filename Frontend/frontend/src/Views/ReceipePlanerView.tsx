@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { PlanerService } from '../Endpoints/PlanerService'
 import { DragDropContext } from 'react-beautiful-dnd'
 import { mealListID } from '../App'
-import PlanerList from '../Components/PlanerList'
+import MealDropList from '../Components/MealDropList'
 import { MealService } from '../Endpoints/MealService'
 import { reorderPlan } from '../reorder'
 import PlanerResourceCol from '../Components/PlanerResourceCol'
@@ -84,64 +84,53 @@ function ReceipePlanerView() {
         fetchData()
     }, [])
     return (
-        <div className='flex flex-col justify-start items-center mt-4'>
+        <section className='flex flex-row justify-start items-start mt-4'>
 
             <DragDropContext onDragEnd={({ destination, source }) => {
                 if (!destination)
                     return;
                 setPlaner(reorderPlan(planer, source, destination));
             }}>
-                <div className='md:flex static md:flex-row md:relative h-full mt-4 md:justify-center w-full'>
+                <section className='w-full flex flex-col mr-3'>
+                    <h1 className='font-bold text-[#011413] text-xl mb-6'>FoodPlaner</h1>
+                    {Object.entries(planer).slice(0, -1).map(([key, value], index) => {
+                        if (index === 0) {
+                            return <article className='w-full'>
+                                <MealDropList
+                                    internalScroll
+                                    key={key}
+                                    listId={key}
+                                    listType='LIST'
+                                    planerItem={value}
+                                />
+                            </article>
+                        } else {
 
-                    <div className='grid flex-grow grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8 overflow-hidden mr-4'>
-                        {Object.entries(planer).slice(0, -1).map(([key, value], index) => {
-                            if (index === 0) {
-                                return <div className='col-span-full '>
-                                    <PlanerList
+                            return (
+                                <article className='w-full'>
+                                    <MealDropList
                                         internalScroll
                                         key={key}
                                         listId={key}
                                         listType='LIST'
                                         planerItem={value}
                                     />
-                                </div>
-                            } else {
+                                </article>
+                            )
+                        }
 
-                                return (
-                                    <div className='w-full'>
-                                        <PlanerList
-                                            internalScroll
-                                            key={key}
-                                            listId={key}
-                                            listType='LIST'
-                                            planerItem={value}
-                                        />
-                                    </div>
-                                )
-                            }
-
-                        })}
-                    </div>
-                    <div className='flex md:min-w-[20rem] lg:min-w-[30rem]'></div>
-
-                    <div className='hidden md:flex  md:min-w-[20rem] lg:min-w-[30rem] fixed top-0 right-0'>
-                        <PlanerResourceCol mealListID={mealListID} />
-                    </div>
-                </div>
+                    })}
+                </section>
+                <section className='w-full sticky ml-3'>
+                    <PlanerResourceCol mealListID={mealListID} />
+                </section>
 
             </DragDropContext>
 
-        </div>
+        </section>
 
     );
 }
 
 
 export default ReceipePlanerView
-
-/*
-  <div
-                        className='md:w-[50%] lg:w-[30%] w-full z-20 p-2 sticky md:relative bottom-0 left-0 right-0 pt-3 bg-black md:bg-transparent rounded-md h-[50vh] md:h-full'>
-                        <PlanerResourceCol mealListID={mealListID} />
-                    </div>
-*/
