@@ -20,20 +20,17 @@ function MealDropList({ listId, listType, planerItem }: Props) {
     const [mealIDs, setMealIDs] = useState<number[]>(planerItem.meals)
 
     useEffect(() => {
-        if (isEmpty)
-            setIsEmpty(true)
-        else
-            setIsEmpty(false)
-    }, [mealIDs.length])
+        setIsEmpty(planerItem.meals.length === 0);
+    }, [planerItem.meals]);
 
     const displayTitle = (isEmpty: boolean) => {
         const isToday = new Date(Date.now()).getDate() === new Date(planerItem.date).getDate()
-
+        console.log(planerItem.date)
         return (
             <span className='flex select-none flex-row justify-start items-center w-full rounded-md my-4'>
-                {isEmpty ? <IoMdWarning className='w-5 h-5 text-[#F96E46] mr-2' /> : <FaCheckCircle className='w-5 h-5 text-[#046865] mr-2' />}
+                {isEmpty ? <IoMdWarning className='size-4 text-[#F96E46] mr-2' /> : <FaCheckCircle className='size-4 text-[#046865] mr-2' />}
 
-                <h2 className={isToday ? 'text-[#046865] text-base font-bold' : 'text-[#7A8587] text-base font-bold'}>
+                <h2 className={isToday ? 'text-[#046865] text-sm font-bold' : 'text-[#7A8587] text-sm font-bold'}>
                     {planerItem.date instanceof Date ? Weekday[planerItem.date.getDay()] : Weekday[new Date(planerItem.date).getDay()]}
                     {", " + new Date(planerItem.date).getDate() + "." + (new Date(planerItem.date).getMonth() + 1) + "." + (new Date(planerItem.date).getFullYear())}
                 </h2>

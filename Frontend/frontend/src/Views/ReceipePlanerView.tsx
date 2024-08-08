@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { PlanerService } from '../Endpoints/PlanerService'
 import { DragDropContext } from 'react-beautiful-dnd'
 import { mealListID } from '../App'
@@ -7,9 +7,17 @@ import { MealService } from '../Endpoints/MealService'
 import { reorderPlan } from '../reorder'
 import PlanerResourceCol from '../Components/PlanerResourceCol'
 import { FoodPlaner, FoodplanerItem } from '../Datatypes/FoodPlaner'
+import { MealContext } from '../Components/MealContext'
 
 
 function ReceipePlanerView() {
+
+    const context = useContext(MealContext);
+
+    if (!context) {
+        throw new Error('PlanerResourceCol must be used within a MealProvider');
+    }
+    const { meals, setMeals } = context;
 
     const [planer, setPlaner] = useState<FoodPlaner>({})
     const [_timeSpan, setTimeSpan] = useState<{ start: Date, end: Date }>({
@@ -83,34 +91,38 @@ function ReceipePlanerView() {
             }
         }
         fetchData()
-    }, []);
+    }, [meals]);
     const handleDragEnd = ({ destination, source }: { destination: any; source: any }) => {
-        if (!destination) return;
+        if (!destination)
+            return;
+        console.log(meals)
+        const mealList = meals.map((m) => m.id)
 
-        // Assuming `reorderPlan` correctly updates the planer based on the drag result
-        const updatedPlaner = reorderPlan(planer, source, destination);
-        setPlaner(updatedPlaner);
+        setPlaner(prevPlaner => {
+            const updatedPlaner = reorderPlan(prevPlaner, source, mealList, destination);
+            return updatedPlaner;
+        });
     };
 
     return (
         <section className='flex flex-row pt-4 h-full justify-start items-start'>
             <DragDropContext onDragEnd={handleDragEnd}>
-                <section className='flex-1 h-full overflow-y-scroll flex flex-col pl-6 pr-4'>
-                    <h1 className='font-bold text-[#011413] text-xl'>FoodPlaner</h1>
-                    {Object.entries(planer).slice(0, -1).map(([key, value]) => (
-                        <article className='w-full' key={key}>
-                            <MealDropList
-                                internalScroll
-                                listId={key}
-                                listType='LIST'
-                                planerItem={value}
-                            />
-                        </article>
-                    ))}
+                <section className='flex-1 h-full flex flex-col pl-6 pr-4'>
+                    <h1 className='mb-4 font-semibold text-[#011413] text-xl'>Foodplaner</h1>
+                    <ul className='h-full overflow-y-scroll'>
+                        {Object.entries(planer).slice(0, -1).map(([key, value]) => (
+                            <li className='w-full pr-4' key={key}>
+                                <MealDropList
+                                    internalScroll
+                                    listId={key}
+                                    listType='LIST'
+                                    planerItem={value}
+                                />
+                            </li>
+                        ))}
+                    </ul>
                 </section>
-                <section className='flex-1 h-full overflow-y-scroll flex flex-col pr-6 pl-4'>
-                    <PlanerResourceCol mealListID={mealListID} />
-                </section>
+                <PlanerResourceCol mealListID={mealListID} />
             </DragDropContext>
         </section>
 

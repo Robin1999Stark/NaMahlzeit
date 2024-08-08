@@ -22,6 +22,7 @@ function removeDoubles(list: number[]): number[] {
 export const reorderPlan = (
     plan: FoodPlaner,
     source: DraggableLocation,
+    mealList: number[],
     destination: DraggableLocation
 ): FoodPlaner => {
     const currentFoodplanerItem: FoodplanerItem = plan[source.droppableId]
@@ -29,6 +30,10 @@ export const reorderPlan = (
     const nextFoodplanerItem: FoodplanerItem = plan[destination.droppableId]
     const nextFood = [...plan[destination.droppableId].meals];
     const target = currentFood[source.index];
+
+    console.log(currentFood)
+
+
     if (source.droppableId === mealListID && destination.droppableId === mealListID) {
         return plan;
     }
@@ -49,7 +54,8 @@ export const reorderPlan = (
     // moving from meal list to planer list
     if (source.droppableId === mealListID) {
         // insert into nextFood
-        nextFood.splice(destination.index, 0, target);
+        const resourceTarget = mealList[source.index]
+        nextFood.splice(destination.index, 0, resourceTarget);
         const updatedDestinationItem: FoodplanerItem = {
             ...nextFoodplanerItem,
             meals: removeDoubles(nextFood)

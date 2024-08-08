@@ -16,7 +16,6 @@ type Props = {
 function MealDragElement({ mealID, dragProvided, snapshot, customStyle }: Props) {
     const [meal, setMeal] = useState<Meal>();
     const [_error, setError] = useState<boolean>(false);
-    const [cursorPosition, setCursorPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
 
     useEffect(() => {
         async function fetchMeal() {
@@ -30,24 +29,14 @@ function MealDragElement({ mealID, dragProvided, snapshot, customStyle }: Props)
         fetchMeal()
     }, [mealID]);
 
-    useEffect(() => {
-        const handleMouseMove = (event: MouseEvent) => {
-            setCursorPosition({ x: event.pageX, y: event.pageY });
-        };
-
-        document.addEventListener('mousemove', handleMouseMove);
-        return () => {
-            document.removeEventListener('mousemove', handleMouseMove);
-        };
-    }, [snapshot.isDragging]);
 
 
-    const getDraggableStyle = (snapshot: DraggableStateSnapshot, cursorPosition: { x: number; y: number }, dragProvided: DraggableProvided): CSSProperties => {
-        console.log(cursorPosition)
+
+    const getDraggableStyle = (snapshot: DraggableStateSnapshot, dragProvided: DraggableProvided): CSSProperties => {
         const style: CSSProperties = {
             // Apply the base styles
-            left: snapshot.isDragging ? `${cursorPosition.x}px !important` : 'auto !important',
-            top: snapshot.isDragging ? `${cursorPosition.y}px !important` : 'auto !important',
+            left: snapshot.isDragging ? `0 !important` : 'auto !important',
+            top: snapshot.isDragging ? `0 !important` : 'auto !important',
             userSelect: 'none',
             position: snapshot.isDragging ? 'fixed' : 'static',
             flexDirection: 'row',
@@ -68,7 +57,7 @@ function MealDragElement({ mealID, dragProvided, snapshot, customStyle }: Props)
 
     };
 
-    const style = getDraggableStyle(snapshot, cursorPosition, dragProvided);
+    const style = getDraggableStyle(snapshot, dragProvided);
     return (
 
         <li
