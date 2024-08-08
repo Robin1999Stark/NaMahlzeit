@@ -74,7 +74,7 @@ function ReceipePlanerView() {
 
         async function fillWithEmptyDays(planer: FoodplanerItem[], from: Date, to: Date): Promise<FoodplanerItem[]> {
             const dates: Date[] = [];
-            const currentDate = new Date(from.getTime());
+            const currentDate = new Date(from.getFullYear(), from.getMonth(), from.getDate());
             const newPlaner: FoodplanerItem[] = []
             planer.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
@@ -82,19 +82,27 @@ function ReceipePlanerView() {
                 dates.push(new Date(currentDate.getTime()));
                 currentDate.setDate(currentDate.getDate() + 1);
             }
+            console.log(dates)
 
             await Promise.all(
-                dates.map(async (date, _index) => {
-                    const item = planer.find((item) => new Date(item.date).getUTCDate() === new Date(date).getUTCDate());
+                dates.map(async (date) => {
+                    const dateString = date.toISOString().split('T')[0];
+                    const item = planer.find(item => {
+                        const itemDate = new Date(item.date).toISOString().split('T')[0];
+                        return itemDate === dateString;
+                    });
 
                     if (item === undefined) {
                         const newItem = await PlanerService.createPlanerItem({ date, meals: [] });
-                        newPlaner.push(newItem!);
+                        if (newItem) {
+                            newPlaner.push(newItem);
+                        }
                     } else {
                         newPlaner.push(item);
                     }
                 })
             );
+
 
             return newPlaner
         }
@@ -118,7 +126,9 @@ function ReceipePlanerView() {
                 const end = new Date();
                 end.setDate(end.getDate() + 17);
                 const [from, to] = await updateTimeSpan(new Date(Date.now()), end);
+                console.log(from, to)
                 const filledData: FoodplanerItem[] = await fillWithEmptyDays(data, from, to);
+                console.log(filledData)
                 const foodPlaner = createFoodPlaner(filledData);
                 await addMealList(foodPlaner)
                 setPlaner(foodPlaner);

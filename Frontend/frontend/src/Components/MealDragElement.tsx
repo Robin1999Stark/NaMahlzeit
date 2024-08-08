@@ -33,8 +33,6 @@ function MealDragElement({ mealID, dragProvided, snapshot, customStyle, planerID
 
 
     async function handleRemoveMeal(planerID: string, mealID: number) {
-        console.log("pi", planerID)
-        console.log("mi", mealID)
 
         if (onRemoveMeal === undefined) return;
         const result = await onRemoveMeal(planerID, mealID);

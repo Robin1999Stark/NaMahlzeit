@@ -25,7 +25,6 @@ function MealDropList({ listId, listType, planerItem, onRemoveMeal }: Props) {
 
     const displayTitle = (isEmpty: boolean) => {
         const isToday = new Date(Date.now()).getDate() === new Date(planerItem.date).getDate()
-        console.log(planerItem.date)
         return (
             <span className='flex select-none flex-row justify-start items-center w-full rounded-md my-4'>
                 {isEmpty ? <IoMdWarning title='Nothing planed for now' className='size-4 text-[#F96E46] mr-2' /> : <FaCheckCircle className='size-4 text-[#046865] mr-2' />}

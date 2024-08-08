@@ -31,8 +31,6 @@ export const reorderPlan = (
     const nextFood = [...plan[destination.droppableId].meals];
     const target = currentFood[source.index];
 
-    console.log(currentFood)
-
 
     if (source.droppableId === mealListID && destination.droppableId === mealListID) {
         return plan;
