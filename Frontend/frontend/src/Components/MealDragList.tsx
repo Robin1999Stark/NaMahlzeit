@@ -32,8 +32,8 @@ function MealDragList({ listId, listType, meals }: Props) {
                             {...dropProvided.droppableProps}>
                             {meals.map((food, index) => (
                                 <Draggable
-                                    key={listId + "-" + food.id + "-" + index}
-                                    draggableId={listId + "-" + food.id + "-" + index}
+                                    key={listId + "-" + food.id}
+                                    draggableId={listId + "-" + food.id}
                                     index={index}>
                                     {
                                         (dragProvided, snapshot) => {

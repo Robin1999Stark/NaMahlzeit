@@ -57,7 +57,7 @@ function NavBar() {
     };
     if (windowSize.width > SIZE_MOBILE) {
         return (
-            <nav className='flex flex-row h-20 absolute top-0 left-0 right-0 bg-[#004A41] z-10 items-center justify-between w-full'>
+            <nav className='flex col-span-2 flex-row h-16 relative bg-[#004A41] z-10 items-center justify-between w-full'>
                 <div>
 
                 </div>

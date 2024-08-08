@@ -17,12 +17,14 @@ interface Props {
 
 function MealDropList({ listId, listType, planerItem }: Props) {
     const [isEmpty, setIsEmpty] = useState<boolean>(planerItem.meals.length === 0);
+    const [mealIDs, setMealIDs] = useState<number[]>(planerItem.meals)
 
     useEffect(() => {
-        if (planerItem.meals.length === 0) setIsEmpty(true)
-        else setIsEmpty(false)
-        console.log("test")
-    }, [isEmpty])
+        if (isEmpty)
+            setIsEmpty(true)
+        else
+            setIsEmpty(false)
+    }, [mealIDs.length])
 
     const displayTitle = (isEmpty: boolean) => {
         const isToday = new Date(Date.now()).getDate() === new Date(planerItem.date).getDate()
@@ -40,16 +42,15 @@ function MealDropList({ listId, listType, planerItem }: Props) {
         )
     }
     const displayPlaceholder = () => {
-        if (planerItem.meals.length === 0) {
-            return <DropMealPlaceholder />
-        }
-        return <></>
+        if (isEmpty)
+            return <DropMealPlaceholder />;
+        return null;
 
     }
     return (
         <span className={'flex w-full flex-col items-start justify-start'} >
 
-            {isEmpty ? displayTitle(isEmpty) : displayTitle(isEmpty)}
+            {displayTitle(isEmpty)}
 
             <Droppable
                 droppableId={listId}
@@ -61,7 +62,7 @@ function MealDropList({ listId, listType, planerItem }: Props) {
                     return (
                         <ul
                             style={{ scrollbarWidth: 'none' }}
-                            className={snapshot.isDraggingOver ? 'w-full min-h-4 p-2 border-2 border-dotted border-[#046865]' : 'w-full min-h-4 border-2 border-[#00000000]'}
+                            className={snapshot.isDraggingOver ? 'w-full min-h-4 border-2 border-dotted border-[#046865]' : 'w-full min-h-4 border-2 border-[#00000000]'}
                             ref={dropProvided.innerRef}
                             {...dropProvided.droppableProps}>
                             {planerItem.meals.map((food, index) => (
@@ -78,8 +79,8 @@ function MealDropList({ listId, listType, planerItem }: Props) {
                                     }
                                 </Draggable>
                             ))}
+                            {isEmpty ? displayPlaceholder() : <></>}
 
-                            {displayPlaceholder()}
 
                             {dropProvided.placeholder}
                         </ul>

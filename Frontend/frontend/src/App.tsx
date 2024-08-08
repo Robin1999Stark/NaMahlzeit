@@ -23,30 +23,32 @@ export const mealListID = "meal-list";
 function App() {
   return (
     <>
-      <NavBar />
-      <div className="absolute w-[95%] h-full top-20 left-[50%] translate-x-[-50%]">
-        <Suspense fallback={<div>Loading ...</div>}>
-          <Routes>
-            <Route path="/" element={<ReceipePlanerView />} />
-            <Route path="/planer" element={<ReceipePlanerView />} />
-            <Route path="/meals/create" element={<CreateMeal />} />
-            <Route path="/meals" element={<MealsOverview />} />
-            <Route path="/meals/:mealID" element={<MealDetailView />} />
-            <Route path="/meals/:mealID/edit" element={<EditMeal />} />
-            <Route path="/meals/:mealID/tags" element={<SetTagsMeal />} />
-            <Route path="/ingredients/create" element={<CreateIngredient />} />
-            <Route path="/ingredients" element={<IngredientsOverView />} />
-            <Route path="/ingredients/:ingredientID" element={<IngredientDetailView />} />
-            <Route path="/ingredients/:ingredientID/edit" element={<EditIngredient />} />
-            <Route path="/ingredients/:ingredientID/tags" element={<SetTagsIngredient />} />
-            <Route path="/inventory" element={<InventoryListView />} />
-            <Route path="/shoppinglist" element={<ShoppingListView />} />
-            <Route path="/tags" element={<TagsOverView />} />
-            <Route path="/tags/create" element={<CreateTag />} />
-            <Route path="/tags/:tagID/edit" element={<EditTag />} />
-          </Routes>
-        </Suspense>
-      </div>
+      <span className="h-screen flex flex-col">
+        <NavBar />
+        <main className="flex-1 overflow-y-auto">
+          <Suspense fallback={<div>Loading ...</div>}>
+            <Routes>
+              <Route path="/" element={<ReceipePlanerView />} />
+              <Route path="/planer" element={<ReceipePlanerView />} />
+              <Route path="/meals/create" element={<CreateMeal />} />
+              <Route path="/meals" element={<MealsOverview />} />
+              <Route path="/meals/:mealID" element={<MealDetailView />} />
+              <Route path="/meals/:mealID/edit" element={<EditMeal />} />
+              <Route path="/meals/:mealID/tags" element={<SetTagsMeal />} />
+              <Route path="/ingredients/create" element={<CreateIngredient />} />
+              <Route path="/ingredients" element={<IngredientsOverView />} />
+              <Route path="/ingredients/:ingredientID" element={<IngredientDetailView />} />
+              <Route path="/ingredients/:ingredientID/edit" element={<EditIngredient />} />
+              <Route path="/ingredients/:ingredientID/tags" element={<SetTagsIngredient />} />
+              <Route path="/inventory" element={<InventoryListView />} />
+              <Route path="/shoppinglist" element={<ShoppingListView />} />
+              <Route path="/tags" element={<TagsOverView />} />
+              <Route path="/tags/create" element={<CreateTag />} />
+              <Route path="/tags/:tagID/edit" element={<EditTag />} />
+            </Routes>
+          </Suspense>
+        </main>
+      </span>
 
     </>
   );

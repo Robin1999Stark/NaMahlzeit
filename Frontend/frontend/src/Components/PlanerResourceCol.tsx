@@ -6,6 +6,7 @@ import { BiShuffle } from 'react-icons/bi';
 import debounce from 'lodash/debounce';
 import { TagDT } from '../Datatypes/Tag';
 import { TagService } from '../Endpoints/TagService';
+import { resetServerContext } from "react-beautiful-dnd";
 
 type Props = {
     mealListID: string;
@@ -35,7 +36,6 @@ function PlanerResourceCol({ mealListID }: Props) {
     }, [])
 
     debounce(searchForMeals, 500);
-
 
     async function searchForMeals(search: string) {
         if (search === undefined || search === null || search === "") {
@@ -88,7 +88,8 @@ function PlanerResourceCol({ mealListID }: Props) {
 
     function shuffle(meals: Meal[], _shuffleFkt: ((meals: Meal[], numberOfResults: number) => Meal[]) | undefined) {
         const shuffled = shuffleFromAll(meals, 10);
-        setMeals(shuffled);
+        setFilteredMeals(shuffled);
+        resetServerContext();
     }
 
     return (
@@ -116,7 +117,7 @@ function PlanerResourceCol({ mealListID }: Props) {
                 </button>
             </li>
 
-            <div className='w-full h-full overflow-y-scroll md:overflow-y-visible flex flex-col-reverse md:flex-col justify-start'>
+            <section className='w-full h-full overflow-y-scroll md:overflow-y-visible flex flex-col-reverse md:flex-col justify-start'>
                 {
                     filteredMeals && setFilteredMeals ? <MealDragList
                         meals={filteredMeals}
@@ -127,14 +128,8 @@ function PlanerResourceCol({ mealListID }: Props) {
                         listType='LIST'
                     /> : <></>
                 }
-
-
-            </div>
-
-
+            </section>
         </ul>
-
-
     )
 }
 

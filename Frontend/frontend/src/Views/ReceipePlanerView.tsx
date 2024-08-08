@@ -12,7 +12,10 @@ import { FoodPlaner, FoodplanerItem } from '../Datatypes/FoodPlaner'
 function ReceipePlanerView() {
 
     const [planer, setPlaner] = useState<FoodPlaner>({})
-    const [_timeSpan, setTimeSpan] = useState<{ start: Date, end: Date }>({ start: new Date(Date.now()), end: new Date(Date.now()) });
+    const [_timeSpan, setTimeSpan] = useState<{ start: Date, end: Date }>({
+        start: new Date(Date.now()),
+        end: new Date(Date.now())
+    });
 
 
     async function updateTimeSpan(from: Date, to: Date): Promise<[start: Date, end: Date]> {
@@ -35,13 +38,11 @@ function ReceipePlanerView() {
                 currentDate.setDate(currentDate.getDate() + 1);
             }
 
-            // Use Promise.all to wait for all asynchronous calls
             await Promise.all(
                 dates.map(async (date, _index) => {
                     const item = planer.find((item) => new Date(item.date).getUTCDate() === new Date(date).getUTCDate());
 
                     if (item === undefined) {
-                        // if a day is missing, create a new Planer for the day in the DB
                         const newItem = await PlanerService.createPlanerItem({ date, meals: [] });
                         newPlaner.push(newItem!);
                     } else {
@@ -82,51 +83,35 @@ function ReceipePlanerView() {
             }
         }
         fetchData()
-    }, [])
+    }, []);
+    const handleDragEnd = ({ destination, source }: { destination: any; source: any }) => {
+        if (!destination) return;
+
+        // Assuming `reorderPlan` correctly updates the planer based on the drag result
+        const updatedPlaner = reorderPlan(planer, source, destination);
+        setPlaner(updatedPlaner);
+    };
+
     return (
-        <section className='flex flex-row justify-start items-start mt-4'>
-
-            <DragDropContext onDragEnd={({ destination, source }) => {
-                if (!destination)
-                    return;
-                setPlaner(reorderPlan(planer, source, destination));
-            }}>
-                <section className='w-full flex flex-col mr-3'>
-                    <h1 className='font-bold text-[#011413] text-xl mb-6'>FoodPlaner</h1>
-                    {Object.entries(planer).slice(0, -1).map(([key, value], index) => {
-                        if (index === 0) {
-                            return <article className='w-full'>
-                                <MealDropList
-                                    internalScroll
-                                    key={key}
-                                    listId={key}
-                                    listType='LIST'
-                                    planerItem={value}
-                                />
-                            </article>
-                        } else {
-
-                            return (
-                                <article className='w-full'>
-                                    <MealDropList
-                                        internalScroll
-                                        key={key}
-                                        listId={key}
-                                        listType='LIST'
-                                        planerItem={value}
-                                    />
-                                </article>
-                            )
-                        }
-
-                    })}
+        <section className='flex flex-row pt-4 h-full justify-start items-start'>
+            <DragDropContext onDragEnd={handleDragEnd}>
+                <section className='flex-1 h-full overflow-y-scroll flex flex-col pl-6 pr-4'>
+                    <h1 className='font-bold text-[#011413] text-xl'>FoodPlaner</h1>
+                    {Object.entries(planer).slice(0, -1).map(([key, value]) => (
+                        <article className='w-full' key={key}>
+                            <MealDropList
+                                internalScroll
+                                listId={key}
+                                listType='LIST'
+                                planerItem={value}
+                            />
+                        </article>
+                    ))}
                 </section>
-                <section className='w-full sticky ml-3'>
+                <section className='flex-1 h-full overflow-y-scroll flex flex-col pr-6 pl-4'>
                     <PlanerResourceCol mealListID={mealListID} />
                 </section>
-
             </DragDropContext>
-
         </section>
 
     );
