@@ -13,11 +13,11 @@ interface Props {
     listType?: string,
     internalScroll?: boolean,
     isCombinedEnabled?: boolean,
+    onRemoveMeal?: (planerId: string, mealId: number) => void;
 };
 
-function MealDropList({ listId, listType, planerItem }: Props) {
+function MealDropList({ listId, listType, planerItem, onRemoveMeal }: Props) {
     const [isEmpty, setIsEmpty] = useState<boolean>(planerItem.meals.length === 0);
-    const [mealIDs, setMealIDs] = useState<number[]>(planerItem.meals)
 
     useEffect(() => {
         setIsEmpty(planerItem.meals.length === 0);
@@ -28,7 +28,7 @@ function MealDropList({ listId, listType, planerItem }: Props) {
         console.log(planerItem.date)
         return (
             <span className='flex select-none flex-row justify-start items-center w-full rounded-md my-4'>
-                {isEmpty ? <IoMdWarning className='size-4 text-[#F96E46] mr-2' /> : <FaCheckCircle className='size-4 text-[#046865] mr-2' />}
+                {isEmpty ? <IoMdWarning title='Nothing planed for now' className='size-4 text-[#F96E46] mr-2' /> : <FaCheckCircle className='size-4 text-[#046865] mr-2' />}
 
                 <h2 className={isToday ? 'text-[#046865] text-sm font-bold' : 'text-[#7A8587] text-sm font-bold'}>
                     {planerItem.date instanceof Date ? Weekday[planerItem.date.getDay()] : Weekday[new Date(planerItem.date).getDay()]}
@@ -70,13 +70,19 @@ function MealDropList({ listId, listType, planerItem }: Props) {
                                     {
                                         (dragProvided, snapshot) => {
                                             return (
-                                                <MealDragElement mealID={food + ""} dragProvided={dragProvided} snapshot={snapshot} index={index} />
+                                                <MealDragElement
+                                                    onRemoveMeal={onRemoveMeal}
+                                                    mealID={food}
+                                                    planerID={planerItem.id + ""}
+                                                    dragProvided={dragProvided}
+                                                    snapshot={snapshot}
+                                                    index={index} />
                                             )
                                         }
                                     }
                                 </Draggable>
                             ))}
-                            {isEmpty ? displayPlaceholder() : <></>}
+                            {isEmpty && displayPlaceholder()}
 
 
                             {dropProvided.placeholder}

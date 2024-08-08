@@ -6,21 +6,23 @@ import PlaceholderMealImage from './PlaceholderMealImage';
 import { CSSProperties } from 'react';
 
 type Props = {
-    mealID: string
+    mealID: number
+    planerID?: string
     dragProvided: DraggableProvided
     snapshot: DraggableStateSnapshot
     customStyle?: React.CSSProperties
+    onRemoveMeal?: (planerId: string, mealId: number) => void;
     index?: number
 }
 
-function MealDragElement({ mealID, dragProvided, snapshot, customStyle }: Props) {
+function MealDragElement({ mealID, dragProvided, snapshot, customStyle, planerID, onRemoveMeal }: Props) {
     const [meal, setMeal] = useState<Meal>();
     const [_error, setError] = useState<boolean>(false);
 
     useEffect(() => {
         async function fetchMeal() {
             try {
-                const response = await MealService.getMeal(mealID)
+                const response = await MealService.getMeal(mealID + "")
                 response ? setMeal(response) : setError(true)
             } catch (e) {
                 console.log(e)
@@ -28,6 +30,15 @@ function MealDragElement({ mealID, dragProvided, snapshot, customStyle }: Props)
         }
         fetchMeal()
     }, [mealID]);
+
+
+    async function handleRemoveMeal(planerID: string, mealID: number) {
+        console.log("pi", planerID)
+        console.log("mi", mealID)
+
+        if (onRemoveMeal === undefined) return;
+        const result = await onRemoveMeal(planerID, mealID);
+    }
 
 
 
@@ -63,7 +74,7 @@ function MealDragElement({ mealID, dragProvided, snapshot, customStyle }: Props)
         <li
             {...dragProvided.dragHandleProps}
             {...dragProvided.draggableProps}
-            className='select-none h-full my-2 flex flex-row justify-start items-center rounded-md border-l-[6px] border-[#046865] truncate bg-[#fff]'
+            className='select-none h-full my-2 flex flex-row justify-between items-center rounded-md border-l-[6px] border-[#046865] truncate bg-[#fff]'
             style={style}
             ref={dragProvided.innerRef}>
             <article className='text-center  flex flex-row justify-start ml-3 items-center w-full whitespace-normal text-[#011413] text-base '>
@@ -74,6 +85,12 @@ function MealDragElement({ mealID, dragProvided, snapshot, customStyle }: Props)
                     {meal?.title}
                 </h3>
             </article>
+            {
+                planerID && <button onClick={() => handleRemoveMeal(planerID, mealID)}>
+                    Remove
+                </button>
+            }
+
         </li>
     )
 }

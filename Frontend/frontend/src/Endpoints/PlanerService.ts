@@ -81,6 +81,31 @@ export namespace PlanerService {
             console.error('Error fetching planers:', error);
         }
     }
+    export async function removeMealFromPlaner(planerId: string, mealId: number): Promise<void> {
+        try {
+            // Fetch the current planner item
+            const response = await instance.get(`/planer/${planerId}/`);
+            const planerItem: FoodplanerItem = FoodplanerItem.fromJSON(response.data);
+
+            // Remove the specified meal
+            const updatedMeals = planerItem.meals.filter((id) => id !== mealId);
+
+            // Update the planner item with the new meal list
+            const updatedPlanerItem: FoodplanerItem = {
+                ...planerItem,
+                meals: updatedMeals
+            };
+
+            await instance.put(`/planer/${planerId}/`, JSON.stringify(updatedPlanerItem), {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+        } catch (error) {
+            console.error('Error removing meal from planer:', error);
+        }
+    }
+
 
     export interface IsPlannedResponse {
         isPlanned: boolean;

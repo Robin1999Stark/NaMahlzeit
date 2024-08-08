@@ -25,6 +25,43 @@ function ReceipePlanerView() {
         end: new Date(Date.now())
     });
 
+    const updatePlanerItem = (id: string, updatedItem: FoodplanerItem) => {
+        setPlaner(prevPlaner => ({
+            ...prevPlaner,
+            [id]: updatedItem
+        }));
+    };
+
+    const handleRemoveMeal = async (planerId: string, mealId: number) => {
+        try {
+            console.log("remove");
+            await PlanerService.removeMealFromPlaner(planerId, mealId);
+
+            // Update the local state to reflect the removal
+            setPlaner(prevPlaner => {
+                // Create a copy of the previous state
+                const updatedPlaner = { ...prevPlaner };
+
+                // Find the correct entry by planerId
+                for (const [key, value] of Object.entries(updatedPlaner)) {
+                    if (value.id.toString() === planerId) {
+                        // Remove the mealId from the meals array
+                        updatedPlaner[key] = {
+                            ...value,
+                            meals: value.meals.filter(id => id !== mealId),
+                        };
+                        break;  // Exit loop once the correct entry is found and updated
+                    }
+                }
+
+                return updatedPlaner;
+            });
+
+        } catch (error) {
+            console.error('Error removing meal:', error);
+        }
+    };
+
 
     async function updateTimeSpan(from: Date, to: Date): Promise<[start: Date, end: Date]> {
         const start = new Date(from);
@@ -116,7 +153,8 @@ function ReceipePlanerView() {
                                     internalScroll
                                     listId={key}
                                     listType='LIST'
-                                    planerItem={value}
+                                    onRemoveMeal={handleRemoveMeal}
+                                    planerItem={planer[key]}
                                 />
                             </li>
                         ))}
