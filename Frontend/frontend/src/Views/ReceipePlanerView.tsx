@@ -8,6 +8,7 @@ import { reorderPlan } from '../reorder'
 import PlanerResourceCol from '../Components/PlanerResourceCol'
 import { FoodPlaner, FoodplanerItem } from '../Datatypes/FoodPlaner'
 import { MealContext } from '../Components/MealContext'
+import Calendar from '../Components/Calendar'
 
 
 function ReceipePlanerView() {
@@ -82,26 +83,28 @@ function ReceipePlanerView() {
                 dates.push(new Date(currentDate.getTime()));
                 currentDate.setDate(currentDate.getDate() + 1);
             }
-            console.log(dates)
 
-            await Promise.all(
-                dates.map(async (date) => {
-                    const dateString = date.toISOString().split('T')[0];
-                    const item = planer.find(item => {
-                        const itemDate = new Date(item.date).toISOString().split('T')[0];
-                        return itemDate === dateString;
-                    });
+            for (const date of dates) {
+                // Normalize date to remove time components
+                const normalizedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
-                    if (item === undefined) {
-                        const newItem = await PlanerService.createPlanerItem({ date, meals: [] });
-                        if (newItem) {
-                            newPlaner.push(newItem);
-                        }
-                    } else {
-                        newPlaner.push(item);
+                // Find the planer item that matches the normalized date
+                const existingItem = planer.find(item => {
+                    const itemDate = new Date(item.date);
+                    const normalizedItemDate = new Date(itemDate.getFullYear(), itemDate.getMonth(), itemDate.getDate());
+                    return normalizedItemDate.getTime() === normalizedDate.getTime();
+                });
+
+                if (existingItem) {
+                    newPlaner.push(existingItem);
+                } else {
+                    // Only create a new item if it doesn't already exist
+                    const newItem = await PlanerService.createPlanerItem({ date: normalizedDate, meals: [] });
+                    if (newItem) {
+                        newPlaner.push(newItem);
                     }
-                })
-            );
+                }
+            }
 
 
             return newPlaner
@@ -123,7 +126,7 @@ function ReceipePlanerView() {
         async function fetchData() {
             try {
                 const data: FoodplanerItem[] = await PlanerService.getAllPlanerItems();
-                const end = new Date();
+                const end = new Date(Date.now());
                 end.setDate(end.getDate() + 17);
                 const [from, to] = await updateTimeSpan(new Date(Date.now()), end);
                 console.log(from, to)
@@ -156,9 +159,10 @@ function ReceipePlanerView() {
             <DragDropContext onDragEnd={handleDragEnd}>
                 <section className='flex-1 h-full flex flex-col pl-6 pr-4'>
                     <h1 className='mb-4 font-semibold text-[#011413] text-xl'>Foodplaner</h1>
-                    <ul className='h-full overflow-y-scroll'>
+                    <Calendar planer={planer} />
+                    <ul className='h-full overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-[#046865] scrollbar-track-slate-100'>
                         {Object.entries(planer).slice(0, -1).map(([key, value]) => (
-                            <li className='w-full pr-4' key={key}>
+                            <li id={key} className='w-full pr-4' key={key}>
                                 <MealDropList
                                     internalScroll
                                     listId={key}

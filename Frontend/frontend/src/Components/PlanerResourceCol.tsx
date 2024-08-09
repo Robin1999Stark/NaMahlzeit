@@ -97,7 +97,7 @@ function PlanerResourceCol({ mealListID }: Props) {
                     <BiShuffle />
                 </button>
             </span>
-            <ul className='flex flex-col justify-start items-start w-full h-full overflow-y-scroll pr-4 pt-4'>
+            <ul className='flex flex-col justify-start items-start w-full h-full overflow-y-scroll pr-4 pt-4 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-[#046865] scrollbar-track-slate-100'>
                 <li className='w-full h-full flex flex-col justify-start'>
                     {
                         filteredMeals.length > 0 ? <MealDragList
