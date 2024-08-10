@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import { TagService } from '../Endpoints/TagService';
 import Tag from './Tag';
 import PlaceholderMealImage from './PlaceholderMealImage';
-import { MdDeleteForever } from 'react-icons/md';
 
 type Props = {
     meal: Meal,
@@ -28,25 +27,31 @@ function MealListItem({ meal, deleteMeal }: Props) {
 
     return (
         <>
-            <div className='w-full flex flex-row items-center justify-start'>
-                <div className='w-[4rem] md:w-full max-w-[4rem] min-w-[2rem] h-fit mr-4'>
-                    <PlaceholderMealImage />
-                </div>
-                <Link className='w-full flex flex-row  text-lg font-semibold text-white underline justify-start items-center' to={`/meals/${meal.id}`}>{meal.title}</Link>
-            </div>
 
-            <div className='w-full hidden lg:flex flex-row flex-wrap justify-start items-center'>
-                {tags?.tags.map(tag => (
-                    <div className='my-1'>
-                        <Tag title={tag} />
-                    </div>
-                ))}
-            </div>
-            <div className='w-fit flex flex-row flex-shrink justify-end items-center'>
-                <button onClick={() => deleteMeal(meal.id)} className='px-3 bg-red-400 py-3 mx-2 rounded-md text-white text-base font-semibold flex flex-row items-center justify-center'>
-                    <MdDeleteForever />
+            <li
+                className='select-none w-full h-full py-3 flex flex-row justify-between items-center rounded-md border-l-[6px] border-[#046865] truncate bg-[#fff]'>
+                <article className='text-center  flex flex-row justify-start ml-3 items-center w-full whitespace-normal text-[#011413] text-base '>
+                    <figure className='w-7 h-7 rounded-full mr-3'>
+                        <PlaceholderMealImage rounded />
+                    </figure>
+                    <Link className='text-[#011413] underline' to={`/meals/${meal.id}`}>
+                        <h3 className='text-start'>
+                            {meal?.title}
+                        </h3>
+                    </Link>
+                </article>
+                <ul className='w-full'>
+                    {tags?.tags.map(tag => (
+                        <li className='my-1'>
+                            <Tag title={tag} />
+                        </li>
+                    ))}
+                </ul>
+
+                <button className='mr-4' onClick={() => deleteMeal(meal.id)}>
+                    Remove
                 </button>
-            </div>
+            </li>
 
         </>
 

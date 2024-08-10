@@ -102,7 +102,7 @@ function PlanerResourceCol({ mealListID }: Props) {
                     {
                         filteredMeals.length > 0 ? <MealDragList
                             meals={filteredMeals}
-                            setMeals={setFilteredMeals} // Update filteredMeals directly
+                            setMeals={setFilteredMeals}
                             internalScroll
                             key={mealListID}
                             listId={mealListID}

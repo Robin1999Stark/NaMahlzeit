@@ -6,8 +6,8 @@ type Props = {
 
 function Tag({ title, onClick }: Props) {
     return (
-        <span onClick={onClick} className="bg-[#2C8E83] border border-[#18A192] text-[#C8EFEA] text-xs cursor-pointer font-medium me-2 px-2.5 py-1 rounded-full">
-            {title}
+        <span onClick={onClick} className="border-2 border-[#18A192] text-sm cursor-pointer px-2 py-0.5 rounded-full">
+            #{title}
         </span>
     )
 }

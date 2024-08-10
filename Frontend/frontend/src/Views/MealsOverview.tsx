@@ -97,14 +97,14 @@ function MealsOverview() {
                     const firstChar = meal.title.charAt(0).toUpperCase();
 
                     if (index === 0) {
-                        prefix = <li className='p-2 font-semibold text-lg text-[#57D1C2]' key={prefix + firstChar}>
+                        prefix = <li className='p-2 font-semibold text-base text-[#7A8587]' key={prefix + firstChar}>
                             - {firstChar.toUpperCase()} -
 
                         </li>
                     } else if (index > 0) {
                         const lastElement = filteredMeals[index - 1];
                         if (lastElement.title.charAt(0).toUpperCase() !== firstChar) {
-                            prefix = <li className='p-2 font-semibold text-lg text-[#57D1C2]' key={prefix + firstChar}>
+                            prefix = <li className='p-2 font-semibold text-base text-[#7A8587]' key={prefix + firstChar}>
                                 - {firstChar.toUpperCase()} -
                             </li>
                         }
@@ -114,7 +114,7 @@ function MealsOverview() {
                         {prefix}
                         <li
                             key={meal.id}
-                            className='py-4 px-2 my-4 flex flex-row justify-between overflow-hidden rounded-sm bg-white bg-opacity-10'>
+                            className='py-[0.2rem] px-2 flex flex-row justify-between overflow-hidden rounded-sm bg-white bg-opacity-10'>
                             <MealListItem meal={meal} deleteMeal={deleteMeal} />
                         </li>
                     </>
@@ -128,21 +128,23 @@ function MealsOverview() {
 
     const mealCards = () => {
         return (
-            <div className='w-full h-full flex flex-row flex-wrap flex-grow'>
+            <ul className='w-full h-full flex px-7 py-4 flex-row flex-wrap flex-grow'>
                 {filteredMeals ? filteredMeals?.map((meal, _index) => {
-                    return <>
+                    return <li className='mr-2'>
                         <MealCard meal={meal} deleteMeal={deleteMeal} />
-                    </>
+                    </li>
                 }
                 ) : <></>}
-            </div>
+            </ul>
         )
     }
 
     return (
         <>
-            <div className='w-full my-4 flex flex-row justify-between flex-grow'>
-                <div className='flex-1 hidden lg:flex'></div>
+            <section className='w-full my-4 px-7 flex flex-row items-center justify-between flex-grow'>
+                <h1 className='truncate text-[#011413] text-xl font-semibold flex-1'>
+                    Meals ({filteredMeals?.length})
+                </h1>
                 <div className='flex flex-grow flex-row justify-center items-center'>
                     <input
                         type="text"
@@ -155,34 +157,31 @@ function MealsOverview() {
                             }
                         }}
                         autoFocus={true}
-                        className='bg-white opacity-95 w-full focus:ring-0 lg:w-2/3 py-3 text-center px-4 rounded-full my-3 ml-3 mr-2'
+                        className='bg-white w-full focus:ring-0 py-2 text-start shadow-md px-6 rounded-full mr-2'
                         placeholder='Search for Meals' />
-                    <ButtonRound className='my-3 mr-3 text-xl' onClick={() => searchForMeals(searchString)} >
+                    <button
+                        className='p-3 text-lg bg-[#046865] text-white rounded-full'
+                        onClick={() => searchForMeals(searchString)} >
                         <LuFilter />
-                    </ButtonRound>
+                    </button>
                 </div>
 
-                <div className='flex-row flex-1 hidden md:flex justify-end items-center w-full'>
-                    <ButtonRound className={isList ? ' text-[#FF6B00] border-[#FF6B00] my-3 mr-2 text-xl' : 'my-3 mr-2 text-xl'} onClick={() => setIsList(true)} >
+                <div className='flex-row flex-1 flex justify-end items-center w-full'>
+                    <button className={isList ? ' text-[#FF6B00] border-[#FF6B00] border-2 rounded-full p-2.5 mr-3 text-lg' : 'text-[#046865] border-[#046865] border-2 rounded-full p-2.5 mr-3 text-lg'} onClick={() => setIsList(true)} >
                         <LuList />
-                    </ButtonRound>
-                    <ButtonRound className={!isList ? ' text-[#FF6B00] border-[#FF6B00] my-3 mr-3 text-xl' : 'my-3 mr-3 text-xl'} onClick={() => setIsList(false)} >
+                    </button>
+                    <button className={!isList ? ' text-[#FF6B00] border-[#FF6B00] border-2 rounded-full p-2.5 mr-3 text-lg' : 'text-[#046865] border-[#046865] border-2 rounded-full p-2.5 mr-3 text-lg'} onClick={() => setIsList(false)} >
                         <LuSquareStack />
-                    </ButtonRound>
+                    </button>
+                    <button
+                        className='p-3 text-lg bg-[#046865] text-white rounded-full'
+                        onClick={() => navigate('/meals/create')}  >
+                        <MdAdd />
+                    </button>
 
                 </div>
 
-            </div>
-            <div className='flex flex-row justify-between w-full'>
-                <h1 className='truncate text-[#57D1C2] mx-5 my-5 text-2xl font-semibold'>
-                    Meals ({filteredMeals?.length})
-                </h1>
-                <ButtonRound
-                    className='m-3 text-xl'
-                    onClick={() => navigate('/meals/create')}  >
-                    <MdAdd />
-                </ButtonRound>
-            </div>
+            </section>
 
             {
                 isList ? mealList() : mealCards()

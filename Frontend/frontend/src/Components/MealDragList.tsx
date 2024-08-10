@@ -38,7 +38,7 @@ function MealDragList({ listId, listType, meals }: Props) {
                                     {
                                         (dragProvided, snapshot) => {
                                             return (
-                                                <MealDragElement mealID={food.id + ""} dragProvided={dragProvided} snapshot={snapshot} index={index} />
+                                                <MealDragElement mealID={food.id} dragProvided={dragProvided} snapshot={snapshot} index={index} />
                                             )
                                         }
                                     }
