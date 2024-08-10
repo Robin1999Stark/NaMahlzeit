@@ -23,7 +23,6 @@ function IngredientListItem({ ingredient, deleteIngredient }: Props) {
                 setTags(response.tags)
             } catch (error) {
                 return;
-                console.error("error");
             }
         }
         fetchTags(ingredient.title);
@@ -32,27 +31,31 @@ function IngredientListItem({ ingredient, deleteIngredient }: Props) {
 
     return (
         <>
-            <Link
-                className='w-full flex flex-row ml-4 text-white text-lg font-semibold justify-start items-center'
-                to={`/ingredients/${ingredient.title}`}>
-                {ingredient.title}
-            </Link>
-            <div className='w-full hidden lg:flex flex-row flex-wrap justify-start items-center'>
-                {tags?.map((tag: string) => (
-                    <div className='my-1'>
-                        <Tag title={tag} />
-                    </div>
-                ))}
-            </div>
-            <div className='w-fit flex flex-row flex-shrink justify-end items-center'>
 
-                <button
-                    onClick={() => deleteIngredient(ingredient.title)}
-                    className='px-3 bg-red-400 py-3 rounded-md text-white text-base font-semibold flex flex-row items-center justify-center'>
-                    <MdDeleteForever />
+            <li
+                className='select-none w-full h-full py-3 flex flex-row justify-between items-center rounded-md border-l-[6px] border-[#046865] truncate bg-[#fff]'>
+                <article className='text-center  flex flex-row justify-start ml-3 items-center w-full whitespace-normal text-[#011413] text-base '>
 
+                    <Link className='text-[#011413] ml-2 underline' to={`/ingredients/${ingredient.title}`}>
+                        <h3 className='text-start'>
+                            {ingredient.title}
+                        </h3>
+                    </Link>
+                </article>
+                <ul className='w-full'>
+                    {tags?.map((tag: string) => (
+                        <li className='my-1'>
+                            <Tag title={tag} />
+                        </li>
+                    ))}
+                </ul>
+
+                <button className='mr-4' onClick={() => deleteIngredient(ingredient.title)}>
+                    Remove
                 </button>
-            </div>
+            </li>
+
+
         </>
     )
 }

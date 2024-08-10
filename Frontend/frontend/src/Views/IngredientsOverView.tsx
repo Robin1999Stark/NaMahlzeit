@@ -100,44 +100,47 @@ function IngredientsOverView() {
                     const firstChar = ingredient.title.charAt(0).toUpperCase();
 
                     if (index === 0) {
-                        prefix = <li className='p-2 font-semibold text-lg text-[#57D1C2]' key={prefix + firstChar}>
+                        prefix = <li className='p-2 font-semibold text-base text-[#7A8587]' key={prefix + firstChar}>
                             - {firstChar.toUpperCase()} -
 
                         </li>
                     } else if (index > 0) {
                         const lastElement = filteredIngredients[index - 1];
                         if (lastElement.title.charAt(0).toUpperCase() !== firstChar) {
-                            prefix = <li className='p-2 font-semibold text-lg text-[#57D1C2]' key={prefix + firstChar}>
+                            prefix = <li className='p-2 font-semibold text-base text-[#7A8587]' key={prefix + firstChar}>
                                 - {firstChar.toUpperCase()} -
                             </li>
                         }
 
                     }
-
                     return <>
                         {prefix}
                         <li
                             key={ingredient.title}
-                            className='py-4 px-2 my-4 flex flex-row justify-between overflow-hidden rounded-sm bg-white bg-opacity-10'>
+                            className='py-[0.2rem] px-2 flex flex-row justify-between overflow-hidden rounded-sm bg-white bg-opacity-10'>
                             <IngredientListItem ingredient={ingredient} deleteIngredient={deleteIngredient} />
                         </li>
                     </>
+
+
                 }
-                ) : <h1>Loading...</h1>}
+                ) : <></>}
             </ul>
         )
     }
 
     return (
         <>
-            <div className='w-full my-4 flex flex-row justify-center flex-grow'>
 
+            <section className='w-full my-4 px-7 flex flex-row items-center justify-between flex-grow'>
+                <h1 className='truncate text-[#011413] text-xl font-semibold flex-1'>
+                    Ingredients ({filteredIngredients?.length})
+                </h1>
                 <div className='flex flex-grow flex-row justify-center items-center'>
                     <input
                         type="text"
                         value={searchString}
                         onChange={(e) => {
-                            console.log(searchString)
                             setSearchString(e.target.value);
                             // debounced search - delays search
                             if (debounceTimeout) {
@@ -145,28 +148,26 @@ function IngredientsOverView() {
                             }
                         }}
                         autoFocus={true}
-                        className='bg-white opacity-95 w-full focus:ring-0 lg:w-2/3 py-3 text-center px-4 rounded-full my-3 ml-3 mr-2'
-                        placeholder='Search for Ingredients' />
-                    <ButtonRound
-                        className='my-3 mr-3 text-xl'
-                        onClick={() => searchForIngredients(searchString)}  >
+                        className='bg-white w-full focus:ring-0 py-2 text-start shadow-md px-6 rounded-full mr-2'
+                        placeholder='Search for Meals' />
+                    <button
+                        className='p-3 text-lg bg-[#046865] text-white rounded-full'
+                        onClick={() => searchForIngredients(searchString)} >
                         <LuFilter />
-                    </ButtonRound>
+                    </button>
                 </div>
 
+                <div className='flex-row flex-1 flex justify-end items-center w-full'>
+                    <button
+                        className='p-3 text-lg bg-[#046865] text-white rounded-full'
+                        onClick={() => navigate('/ingredients/create')}>
+                        <MdAdd />
+                    </button>
 
-            </div>
+                </div>
 
-            <div className='flex flex-row justify-between w-full'>
-                <h1 className='truncate text-[#57D1C2] mx-5 my-5 text-2xl font-semibold'>
-                    Ingredients ({filteredIngredients?.length})
-                </h1>
-                <ButtonRound
-                    className='m-3 text-xl'
-                    onClick={() => navigate('/ingredients/create')}>
-                    <MdAdd />
-                </ButtonRound>
-            </div>
+            </section>
+
             {ingredientList()}
 
         </>
