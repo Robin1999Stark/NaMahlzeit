@@ -4,6 +4,7 @@ import { Meal } from '../Datatypes/Meal';
 import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 import PlaceholderMealImage from './PlaceholderMealImage';
 import { CSSProperties } from 'react';
+import { Link } from 'react-router-dom';
 
 type Props = {
     mealID: number
@@ -79,9 +80,16 @@ function MealDragElement({ mealID, dragProvided, snapshot, customStyle, planerID
                 <figure className='w-7 h-7 rounded-full mr-3'>
                     <PlaceholderMealImage rounded />
                 </figure>
-                <h3 className='text-start'>
-                    {meal?.title}
-                </h3>
+                {
+                    meal !== undefined ? <a className='text-[#011413] underline' href={`/meals/${meal!.id}`}>
+                        <h1 className='text-start'>
+                            {meal?.title}
+                        </h1>
+                    </a> : <h1 className='text-start'>
+                        Undefined
+                    </h1>
+                }
+
             </article>
             {
                 planerID && <button onClick={() => handleRemoveMeal(planerID, mealID)}>

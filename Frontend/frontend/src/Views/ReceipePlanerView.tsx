@@ -159,6 +159,8 @@ function ReceipePlanerView() {
             <DragDropContext onDragEnd={handleDragEnd}>
                 <section className='flex-1 h-full flex flex-col pl-6 pr-4'>
                     <h1 className='mb-4 font-semibold text-[#011413] text-xl'>Foodplaner</h1>
+
+
                     <Calendar planer={planer} />
                     <ul className='h-full overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-[#046865] scrollbar-track-slate-100'>
                         {Object.entries(planer).slice(0, -1).map(([key, value]) => (
