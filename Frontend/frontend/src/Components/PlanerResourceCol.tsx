@@ -69,7 +69,6 @@ function PlanerResourceCol({ mealListID }: Props) {
     }
 
     function shuffle() {
-        console.log(meals)
         const shuffled = [...meals].sort(() => 0.5 - Math.random()).slice(0, 10);
         setMeals(shuffled);
     }

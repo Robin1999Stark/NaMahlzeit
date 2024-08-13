@@ -14,7 +14,6 @@ function CreateIngredient() {
             const response = await axios.get(
                 `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&exintro&explaintext&titles=${searchTerm}`
             );
-            console.log(response)
             const pageId = Object.keys(response.data.query.pages)[0];
             const extract = response.data.query.pages[pageId].extract;
 
@@ -116,7 +115,6 @@ function CreateIngredient() {
             <div className='mb-4 mx-6'>
                 <button className='p-2 bg-slate-500 text-white px-4 rounded-md text-lg' onClick={() => {
                     handleWikiSearch('Ajvar')
-                    console.log(wikiResult)
                 }}>Autofill with wikipedia</button>
             </div>
         </>

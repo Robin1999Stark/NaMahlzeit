@@ -93,9 +93,7 @@ export namespace TagService {
     export async function getMealTagsFromTagList(tags: TagDT[]): Promise<MealTags[]> {
         try {
             const tagString = tags.map(tag => tag.name).join(',')
-            console.log(tagString)
             const response = await instance.get(`/meals_by_tags/${tagString}/`)
-            console.log(response)
             const meals = response.data.meals.map((tag: any) => MealTags.fromJSON(tag))
             return meals;
         } catch (error) {
@@ -123,17 +121,14 @@ export namespace TagService {
 
     export async function createOrUpdateMealTags(mealTags: MealTags) {
         try {
-            console.log(mealTags)
             const existingMealTags = await getAllTagsFromMeal(mealTags.mealID);
 
             if (existingMealTags) {
                 const updatedMealTags = await updateMealTags(mealTags.mealID, mealTags);
-                console.log("update", updateIngredientTags)
                 return updatedMealTags;
             } else if (existingMealTags === null) {
                 try {
                     const newMealTags = await createMealTags(mealTags);
-                    console.log("create", newMealTags)
                     return newMealTags;
                 } catch (errorWhileCreating: any) {
                     throw new Error(errorWhileCreating);
@@ -200,9 +195,7 @@ export namespace TagService {
     export async function getIngredientTagsFromTagList(tags: TagDT[]): Promise<IngredientTags[]> {
         try {
             const tagString = tags.map(tag => tag.name).join(',')
-            console.log(tagString)
             const response = await instance.get(`/ingredients_by_tags/${tagString}/`)
-            console.log(response)
             const ingredients = response.data.ingredients.map((tag: any) => IngredientTags.fromJSON(tag))
             return ingredients;
         } catch (error) {
@@ -265,12 +258,10 @@ export namespace TagService {
 
             if (existingIngredientTags) {
                 const updatedIngredientTags = await updateIngredientTags(ingredientTags.ingredient, ingredientTags);
-                console.log("update", updateIngredientTags)
                 return updatedIngredientTags;
             } else if (existingIngredientTags === null) {
                 try {
                     const newIngredientTags = await createIngredientTags(ingredientTags);
-                    console.log("create", newIngredientTags)
                     return newIngredientTags;
                 } catch (errorWhileCreating: any) {
                     throw new Error(errorWhileCreating);

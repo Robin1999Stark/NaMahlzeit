@@ -36,7 +36,6 @@ export namespace MealService {
 
     async function getMealJSON(id: string): Promise<any> {
         try {
-            console.log("id", id)
             const response = await instance.get('/meals/' + id + '/');
             return response.data;
         } catch (error) {

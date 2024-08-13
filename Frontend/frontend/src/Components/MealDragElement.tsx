@@ -15,7 +15,7 @@ type Props = {
     snapshot: DraggableStateSnapshot
     customStyle?: React.CSSProperties
     date: Date
-    onRemoveMeal?: (planerId: string, mealId: number) => void;
+    onRemoveMeal?: (planerDate: Date, mealId: number) => void;
     onMoveMeal?: (from: Date, to: Date, mealId: number) => void;
     index?: number
 }
@@ -37,11 +37,11 @@ function MealDragElement({ mealID, dragProvided, snapshot, date, customStyle, pl
     }, [mealID]);
 
 
-    async function handleRemoveMeal(planerID: string | undefined, mealID: number) {
+    async function handleRemoveMeal(planerDate: Date | undefined, mealID: number) {
 
-        if (planerID === undefined) return;
+        if (planerDate === undefined) return;
         if (onRemoveMeal === undefined) return;
-        const result = await onRemoveMeal(planerID, mealID);
+        const result = await onRemoveMeal(planerDate, mealID);
     }
 
 
@@ -101,7 +101,7 @@ function MealDragElement({ mealID, dragProvided, snapshot, date, customStyle, pl
                 <MenuItem>Öffnen</MenuItem>
                 <MenuItem onClick={() => {
 
-                    handleRemoveMeal(planerID, mealID)
+                    handleRemoveMeal(date, mealID)
                 }}>Löschen</MenuItem>
                 <SubMenu label="Verschieben">
                     <MenuItem onClick={() => {

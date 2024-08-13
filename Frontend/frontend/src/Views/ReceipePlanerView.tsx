@@ -36,7 +36,6 @@ function ReceipePlanerView() {
     const handleMoveToPlanerItem = async (from: Date, to: Date, mealId: number) => {
         try {
             const response = await PlanerService.moveMealBetweenPlanerItemsByDate(mealId, from, to);
-            console.log(response)
             setPlaner(prevPlaner => {
                 // Create a copy of the previous state
                 const updatedPlaner = { ...prevPlaner };
@@ -72,30 +71,26 @@ function ReceipePlanerView() {
         }
     }
 
-    const handleRemoveMeal = async (planerId: string, mealId: number) => {
+    const handleRemoveMeal = async (planerDate: Date, mealId: number) => {
         try {
-            console.log("remove");
-            await PlanerService.removeMealFromPlaner(planerId, mealId);
+            await PlanerService.removeMealFromPlaner(planerDate, mealId);
 
-            // Update the local state to reflect the removal
+            const planerDateString = new Date(planerDate).toISOString().split('T')[0];
+
             setPlaner(prevPlaner => {
-                // Create a copy of the previous state
                 const updatedPlaner = { ...prevPlaner };
 
-                // Find the correct entry by planerId
-                for (const [key, value] of Object.entries(updatedPlaner)) {
-                    if (value.date.toString() === planerId) {
-                        // Remove the mealId from the meals array
-                        updatedPlaner[key] = {
-                            ...value,
-                            meals: value.meals.filter(id => id !== mealId),
-                        };
-                        break;  // Exit loop once the correct entry is found and updated
-                    }
+                if (updatedPlaner[planerDateString]) {
+
+                    updatedPlaner[planerDateString] = {
+                        ...updatedPlaner[planerDateString],
+                        meals: updatedPlaner[planerDateString].meals.filter(id => id !== mealId),
+                    };
                 }
 
                 return updatedPlaner;
             });
+
 
         } catch (error) {
             console.error('Error removing meal:', error);
@@ -152,7 +147,7 @@ function ReceipePlanerView() {
         function createFoodPlaner(items: FoodplanerItem[]): FoodPlaner {
             const foodPlaner: FoodPlaner = {};
             items.forEach((item) => {
-                foodPlaner[new Date(item.date).toISOString()] = item;
+                foodPlaner[new Date(item.date).toISOString().split('T')[0]] = item;
             })
             return foodPlaner;
         }
@@ -166,11 +161,9 @@ function ReceipePlanerView() {
             try {
                 const data: FoodplanerItem[] = await PlanerService.getAllPlanerItems();
                 const end = new Date(Date.now());
-                end.setDate(end.getDate() + 17);
+                end.setDate(end.getDate() + 14);
                 const [from, to] = await updateTimeSpan(new Date(Date.now()), end);
-                console.log(from, to)
                 const filledData: FoodplanerItem[] = await fillWithEmptyDays(data, from, to);
-                console.log(filledData)
                 const foodPlaner = createFoodPlaner(filledData);
                 await addMealList(foodPlaner)
                 setPlaner(foodPlaner);

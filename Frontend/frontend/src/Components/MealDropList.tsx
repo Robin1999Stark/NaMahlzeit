@@ -13,7 +13,7 @@ interface Props {
     listType?: string,
     internalScroll?: boolean,
     isCombinedEnabled?: boolean,
-    onRemoveMeal?: (planerId: string, mealId: number) => void;
+    onRemoveMeal?: (planerDate: Date, mealId: number) => void;
     onMoveMeal?: (from: Date, to: Date, mealId: number) => void;
 };
 
@@ -74,7 +74,7 @@ function MealDropList({ listId, listType, planerItem, onRemoveMeal, onMoveMeal }
                                                     onMoveMeal={onMoveMeal}
                                                     mealID={food}
                                                     date={planerItem.date}
-                                                    planerID={planerItem.id + ""}
+                                                    planerID={planerItem.date + ""}
                                                     dragProvided={dragProvided}
                                                     snapshot={snapshot}
                                                     index={index} />
