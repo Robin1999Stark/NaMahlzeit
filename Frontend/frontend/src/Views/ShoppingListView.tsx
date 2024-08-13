@@ -1,19 +1,30 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { InventoryItem } from '../Datatypes/Inventory';
 import { IngredientService } from '../Endpoints/IngredientService';
 import { ShoppingList, ShoppingListItem } from '../Datatypes/ShoppingList';
 import { ShoppingListService } from '../Endpoints/ShoppingListService';
-import MissingIngredientMealList from '../Components/MissingIngredientMealList';
 import { InventoryService } from '../Endpoints/InventoryService';
 import { Ingredient } from '../Datatypes/Ingredient';
+import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
+import { IoIosMore } from 'react-icons/io';
+import { MdAdd } from 'react-icons/md';
+import AutoCompleteInput from '../Components/AutoCompleteInput';
 
-function ShoppingListView() {
-    const [shoppingList, setShoppingList] = useState<ShoppingList>();
+type Props = {
+    shoppingList: ShoppingList | undefined;
+    setShoppingList: React.Dispatch<React.SetStateAction<ShoppingList | undefined>>
+}
+
+function ShoppingListView({ shoppingList, setShoppingList }: Props) {
     const [shoppingListItems, setShoppingListItems] = useState<ShoppingListItem[]>();
     const [ingredients, setIngredients] = useState<Ingredient[]>();
     const [loaded, setLoaded] = useState<boolean>(false);
+    const [itemAdded, setItemAdded] = useState<boolean>(false);
     const [selectedIngredient, _setSelectedIngredient] = useState<Ingredient>();
+    const [selectedIngredient2, _setSelectedIngredient2] = useState<Ingredient | string>("");
+
+    const bottomRef = useRef<HTMLDivElement>(null);
 
     const {
         register,
@@ -31,10 +42,6 @@ function ShoppingListView() {
     console.log(errors)
     const selectedIngredientID = watch('ingredient');
 
-    /*const { fields, append, remove } = useFieldArray<any>({
-        control,
-        name: "ingredients"
-    });*/
     async function fetchDataIngredients(): Promise<Ingredient[] | null> {
 
         try {
@@ -98,6 +105,13 @@ function ShoppingListView() {
         }
     }, [selectedIngredientID, setValue, loaded]);
 
+    useEffect(() => {
+        if (itemAdded && bottomRef.current) {
+            bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+            setItemAdded(false);
+        }
+    }, [shoppingListItems, itemAdded]);
+
     async function handleAddItemToShoppingList(data: InventoryItem | InventoryService.CreateInventoryItemInterface) {
         try {
             if (!shoppingList) {
@@ -111,6 +125,7 @@ function ShoppingListView() {
                     const newItems = shoppingListItems;
                     newItems?.push(item);
                     setShoppingListItems(newItems);
+                    setItemAdded(true);
                 }
             }
         } catch (error) {
@@ -129,85 +144,96 @@ function ShoppingListView() {
             console.log(error)
         }
     }
-
+    const handleIngredientSelect = (ingredient: Ingredient | string) => {
+        _setSelectedIngredient2(ingredient);
+        // You can also update other form states or perform actions here
+        console.log("Selected ingredient:", ingredient);
+    };
+    //<MissingIngredientMealList handleAddItemToShoppingList={handleAddItemToShoppingList} />
     if (loaded) {
         return (
             <>
-                <MissingIngredientMealList handleAddItemToShoppingList={handleAddItemToShoppingList} />
+                <h1 className='mb-4 font-semibold text-[#011413] text-xl'>Einkaufsliste</h1>
+                <ul className='overflow-y-scroll h-5/6 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-[#046865] scrollbar-track-slate-100'>
+                    {shoppingListItems ? shoppingListItems?.map(item => (
+                        item ?
+                            <li className='w-full flex flex-row justify-between items-center'>
 
-                <h1 className='truncate text-[#57D1C2] mx-5 my-5 text-2xl font-semibold'>
-                    Shopping list
-                </h1>
-                <div className='mx-4 w-full'>
-                    <form className='grid grid-cols-3 gap-2' onSubmit={handleSubmit(onSubmit)}>
-                        <select
-                            key={"select-ingredient"}
-                            {...register(`ingredient` as const, {
+                                <div key={item.ingredient + Math.random()} className='p-2 text-[#011413] flex flex-row font-semibold items-center'>
+                                    <input
+                                        type="checkbox"
+                                        className="h-5 w-5 mr-6 cursor-pointer rounded-full border border-gray-300 appearance-none checked:bg-[#046865] checked:border-transparent focus:ring-2 focus:ring-[#0f302f]"
+                                        id="checkbox"
+                                    />
+                                    {item.ingredient}
+                                </div>
+                                <div key={item.ingredient + Math.random() + "unit"} className='p-2 flex text-[#011413] font-semibold flex-row justify-between items-center'>
+                                    {item.amount + " " + item.unit}
+                                </div>
+                                <span className='flex flex-row justify-end pr-6'>
+                                    <Menu menuButton={<MenuButton><IoIosMore className='size-5 text-[#011413]' /></MenuButton>} transition>
+                                        <MenuItem >Löschen</MenuItem>
+                                    </Menu>
+                                </span>
+
+                            </li> : <>
+                                <h1 key={"loading1"}>Loading...</h1>
+                            </>
+                    )) : <h1>Loading...</h1>}
+                    <div ref={bottomRef}></div>
+
+                </ul>
+                <AutoCompleteInput onSelectIngredient={handleIngredientSelect} />
+                <form className='w-full h-fit py-4 flex flex-row justify-between items-center' onSubmit={handleSubmit(onSubmit)}>
+
+
+                    <select
+                        key={"select-ingredient"}
+                        {...register(`ingredient` as const, {
+                            required: true,
+                        })}
+                        defaultValue={ingredients ? ingredients[0]?.title : 0}
+                        className="bg-white h-12 mr-2 text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500"
+                    >
+                        <option key={"select-ingredient-empty"} value="">Select Ingredient</option>
+                        {ingredients ? ingredients.map((ingredient) => (
+                            <option
+                                key={ingredient.title}
+                                value={ingredient.title}>
+                                {ingredient.title}
+                            </option>
+                        )) : <></>}
+                    </select>
+                    <div className='flex h-12 flex-row'>
+                        <input
+                            key={'amount'}
+                            type='number'
+                            id='amount'
+                            step={0.1}
+                            {...register(`amount` as const, {
+                                valueAsNumber: true,
+                                min: 0,
+                                max: 50000,
                                 required: true,
                             })}
-                            defaultValue={ingredients ? ingredients[0]?.title : 0} // Ensure a valid initial value
-                            className="bg-white h-12 text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500"
-                        >
-                            <option key={"select-ingredient-empty"} value="">Select Ingredient</option>
-                            {ingredients ? ingredients.map((ingredient) => (
-                                <option
-                                    key={ingredient.title}
-                                    value={ingredient.title}>
-                                    {ingredient.title}
-                                </option>
-                            )) : <></>}
-                        </select>
-                        <div className='flex h-12 flex-row'>
-                            <input
-                                key={'amount'}
-                                type='number'
-                                id='amount'
-                                step={0.1}
-                                {...register(`amount` as const, {
-                                    valueAsNumber: true,
-                                    min: 0,
-                                    max: 50000,
-                                    required: true,
-                                })}
-                                defaultValue={1}
-                                className="border-slate-200 bg-white h-12 truncate text-base font-semibold align-middle mr-2 focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
-                            <input
-                                key={'unit'}
-                                type='text'
-                                id='unit'
-                                {...register(`unit` as const, {
-                                    required: true,
-                                })}
-                                defaultValue={selectedIngredient ? selectedIngredient?.preferedUnit : "kg"}
-                                className="border-slate-200 bg-white truncate h-12 text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
-                        </div>
-                        <div className='flex h-12 flex-row'>
-                            <button key={'add-item'} className='p-2 ml-4 bg-green-400 text-gray-900 px-4 truncate w-full rounded-md text-lg' type='submit'>+ Add</button>
-                        </div>
+                            defaultValue={1}
+                            className="border-slate-200 bg-white h-12 rounded-md truncate text-base font-semibold align-middle mr-2 focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
+                        <input
+                            key={'unit'}
+                            type='text'
+                            id='unit'
+                            {...register(`unit` as const, {
+                                required: true,
+                            })}
+                            defaultValue={selectedIngredient ? selectedIngredient?.preferedUnit : "kg"}
+                            className="border-slate-200 bg-white truncate rounded-md h-12 text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
+                    </div>
+                    <button
+                        className='bg-[#046865] ml-2 w-fit text-white p-3 rounded-full'>
+                        <MdAdd className='size-5' />
+                    </button>
+                </form>
 
-                        {shoppingListItems ? shoppingListItems?.map(item => (
-                            item ?
-                                <>
-                                    <div key={item.ingredient + Math.random()} className='p-2 text-white flex flex-row font-semibold items-center'>
-                                        {item.ingredient}
-                                    </div>
-                                    <div key={item.ingredient + Math.random() + "unit"} className='p-2 flex text-white font-semibold flex-row justify-between items-center'>
-                                        {item.amount + " " + item.unit}
-                                    </div>
-                                    <div key={item.ingredient + Math.random() + "delete-notes"} className='p-2 flex font-semibold flex-row justify-between items-center'>
-                                        <div key={item.ingredient + Math.random() + "notes"}>
-                                            {item.notes}
-                                        </div>
-                                        <button key={item.ingredient + Math.random() + "delete"} onClick={() => deleteShoppingListItem(item.id)} className='px-3 bg-red-400 py-1 rounded-md text-white text-base font-semibold flex flex-row items-center justify-center'>
-                                            x
-                                        </button>
-                                    </div>
-                                </> : <>
-                                    <h1 key={"loading1"}>Loading...</h1>
-                                </>
-                        )) : <h1>Loading...</h1>}
-                    </form>
-                </div>
 
             </>
         )

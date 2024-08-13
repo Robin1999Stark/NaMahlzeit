@@ -101,6 +101,21 @@ export namespace PlanerService {
         isPlanned: boolean;
         plannedDate: Date | null;
     }
+    export async function isPlanned(mealID: number): Promise<IsPlannedResponse | null> {
+        try {
+            const response = await axios.get(`${BASE_URL}/is-planned/${mealID}/`)
+            console.log(response)
+            const isPlannedResponse: IsPlannedResponse = {
+                isPlanned: response.data.is_planned,
+                plannedDate: new Date(response.data.planned_date)
+            }
+            return isPlannedResponse;
+        } catch (error) {
+            console.error(error)
+        }
+        return null;
+    }
+
     export async function moveMealBetweenPlanerItemsByDate(
         mealId: number,
         fromDate: Date,

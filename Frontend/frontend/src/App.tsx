@@ -17,6 +17,7 @@ import EditTag from "./Views/EditTag";
 import SetTagsMeal from "./Views/SetTagsMeal";
 import SetTagsIngredient from "./Views/SetTagsIngredient";
 import EditIngredient from "./Views/EditIngredient";
+import InventoryShoppingList from "./Views/InventoryShoppingList";
 
 export const mealListID = "meal-list";
 
@@ -40,8 +41,7 @@ function App() {
               <Route path="/ingredients/:ingredientID" element={<IngredientDetailView />} />
               <Route path="/ingredients/:ingredientID/edit" element={<EditIngredient />} />
               <Route path="/ingredients/:ingredientID/tags" element={<SetTagsIngredient />} />
-              <Route path="/inventory" element={<InventoryListView />} />
-              <Route path="/shoppinglist" element={<ShoppingListView />} />
+              <Route path="/inventory" element={<InventoryShoppingList />} />
               <Route path="/tags" element={<TagsOverView />} />
               <Route path="/tags/create" element={<CreateTag />} />
               <Route path="/tags/:tagID/edit" element={<EditTag />} />
