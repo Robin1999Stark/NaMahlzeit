@@ -4,19 +4,23 @@ import { Meal } from '../Datatypes/Meal';
 import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 import PlaceholderMealImage from './PlaceholderMealImage';
 import { CSSProperties } from 'react';
-import { Link } from 'react-router-dom';
-
+import { IoIosMore } from 'react-icons/io';
+import { Menu, MenuItem, MenuButton, SubMenu } from '@szhsin/react-menu';
+import '@szhsin/react-menu/dist/index.css';
+import '@szhsin/react-menu/dist/transitions/zoom.css';
 type Props = {
     mealID: number
     planerID?: string
     dragProvided: DraggableProvided
     snapshot: DraggableStateSnapshot
     customStyle?: React.CSSProperties
+    date: Date
     onRemoveMeal?: (planerId: string, mealId: number) => void;
+    onMoveMeal?: (from: Date, to: Date, mealId: number) => void;
     index?: number
 }
 
-function MealDragElement({ mealID, dragProvided, snapshot, customStyle, planerID, onRemoveMeal }: Props) {
+function MealDragElement({ mealID, dragProvided, snapshot, date, customStyle, planerID, onRemoveMeal, onMoveMeal }: Props) {
     const [meal, setMeal] = useState<Meal>();
     const [_error, setError] = useState<boolean>(false);
 
@@ -33,12 +37,12 @@ function MealDragElement({ mealID, dragProvided, snapshot, customStyle, planerID
     }, [mealID]);
 
 
-    async function handleRemoveMeal(planerID: string, mealID: number) {
+    async function handleRemoveMeal(planerID: string | undefined, mealID: number) {
 
+        if (planerID === undefined) return;
         if (onRemoveMeal === undefined) return;
         const result = await onRemoveMeal(planerID, mealID);
     }
-
 
 
 
@@ -73,7 +77,7 @@ function MealDragElement({ mealID, dragProvided, snapshot, customStyle, planerID
         <li
             {...dragProvided.dragHandleProps}
             {...dragProvided.draggableProps}
-            className='select-none h-full my-2 flex flex-row justify-between items-center rounded-md border-l-[6px] border-[#046865] truncate bg-[#fff]'
+            className='select-none h-full my-2 flex flex-row relative justify-between items-center rounded-md border-l-[6px] border-[#046865] truncate bg-[#fff]'
             style={style}
             ref={dragProvided.innerRef}>
             <article className='text-center  flex flex-row justify-start ml-3 items-center w-full whitespace-normal text-[#011413] text-base '>
@@ -91,12 +95,34 @@ function MealDragElement({ mealID, dragProvided, snapshot, customStyle, planerID
                 }
 
             </article>
-            {
-                planerID && <button onClick={() => handleRemoveMeal(planerID, mealID)}>
-                    Remove
-                </button>
-            }
 
+
+            <Menu menuButton={<MenuButton><IoIosMore className='size-5 text-[#011413] mr-3' /></MenuButton>} transition>
+                <MenuItem>Öffnen</MenuItem>
+                <MenuItem onClick={() => {
+
+                    handleRemoveMeal(planerID, mealID)
+                }}>Löschen</MenuItem>
+                <SubMenu label="Verschieben">
+                    <MenuItem onClick={() => {
+                        const to: Date = new Date(date);
+                        to.setDate(to.getDate() + 1);
+                        if (onMoveMeal !== undefined) {
+                            onMoveMeal(date, to, mealID);
+                        }
+
+                    }}>+1 Tag</MenuItem>
+                    <MenuItem onClick={() => {
+                        const to: Date = new Date(date);
+                        to.setDate(to.getDate() + 2);
+                        if (onMoveMeal !== undefined) {
+                            onMoveMeal(date, to, mealID);
+                        }
+
+                    }}>+2 Tage</MenuItem>
+                    <MenuItem>Anderer Tag</MenuItem>
+                </SubMenu>
+            </Menu>
         </li>
     )
 }

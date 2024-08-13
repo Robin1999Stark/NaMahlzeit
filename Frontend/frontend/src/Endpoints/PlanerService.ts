@@ -14,7 +14,7 @@ export namespace PlanerService {
             const response = await instance.get('/planer/');
             return response.data;
         } catch (error) {
-            throw new Error('Error fetching Planer: ' + error);
+            throw new Error('Error fetching Planer JSON: ' + error);
         }
     }
 
@@ -51,7 +51,8 @@ export namespace PlanerService {
         meals: number[];
     }
     export async function createPlanerItem({ date, meals }: CreatePlanerInterface): Promise<FoodplanerItem | null> {
-        const dateString: string = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
+        const dateString: string = date.toISOString().split('T')[0];
+
         const requestBody = {
             date: dateString,
             meals: meals,
@@ -69,16 +70,18 @@ export namespace PlanerService {
         }
     }
 
-    export async function updatePlanerItem(id: number, planer: FoodplanerItem) {
+    export async function updatePlanerItem(date: Date, planer: FoodplanerItem) {
+        const dateString: string = new Date(date).toISOString().split('T')[0];
+
         let json = JSON.stringify(planer)
         try {
-            await instance.put(`/planer/${id}/`, json, {
+            await instance.put(`/planer/${dateString}/`, json, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
         } catch (error) {
-            console.error('Error fetching planers:', error);
+            console.error('Error updating planers:', error);
         }
     }
     export async function removeMealFromPlaner(planerId: string, mealId: number): Promise<void> {
@@ -111,19 +114,21 @@ export namespace PlanerService {
         isPlanned: boolean;
         plannedDate: Date | null;
     }
-    export async function isPlanned(mealID: number): Promise<IsPlannedResponse | null> {
+    export async function moveMealBetweenPlanerItemsByDate(
+        mealId: number,
+        fromDate: Date,
+        toDate: Date
+    ) {
         try {
-            const response = await axios.get(`${BASE_URL}/is-planned/${mealID}/`)
-            console.log(response)
-            const isPlannedResponse: IsPlannedResponse = {
-                isPlanned: response.data.is_planned,
-                plannedDate: new Date(response.data.planned_date)
-            }
-            return isPlannedResponse;
-        } catch (error) {
-            console.error(error)
-        }
-        return null;
-    }
+            const fromDateString = new Date(fromDate).toISOString().split('T')[0];
+            const toDateString = new Date(toDate).toISOString().split('T')[0];
 
+            const url = `/planer/moveto/${toDateString}/${fromDateString}/${mealId}/`;
+            const response = await instance.get(url);
+            return response;
+
+        } catch (error) {
+            console.error('Error moving meal between planers:', error);
+        }
+    }
 }

@@ -79,7 +79,7 @@ class MealIngredient(models.Model):
 
 
 class FoodPlanerItem(models.Model):
-    date = models.DateField()
+    date = models.DateField(primary_key=True, unique=True)
     meals = models.ManyToManyField(Meal, blank=True)
 
 

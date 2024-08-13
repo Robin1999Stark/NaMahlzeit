@@ -14,9 +14,10 @@ interface Props {
     internalScroll?: boolean,
     isCombinedEnabled?: boolean,
     onRemoveMeal?: (planerId: string, mealId: number) => void;
+    onMoveMeal?: (from: Date, to: Date, mealId: number) => void;
 };
 
-function MealDropList({ listId, listType, planerItem, onRemoveMeal }: Props) {
+function MealDropList({ listId, listType, planerItem, onRemoveMeal, onMoveMeal }: Props) {
     const [isEmpty, setIsEmpty] = useState<boolean>(planerItem.meals.length === 0);
 
     useEffect(() => {
@@ -34,15 +35,14 @@ function MealDropList({ listId, listType, planerItem, onRemoveMeal }: Props) {
                     {", " + new Date(planerItem.date).getDate() + "." + (new Date(planerItem.date).getMonth() + 1) + "." + (new Date(planerItem.date).getFullYear())}
                 </h2>
             </span>
-
         )
     }
     const displayPlaceholder = () => {
         if (isEmpty)
             return <DropMealPlaceholder />;
         return null;
-
     }
+
     return (
         <span className={'flex w-full flex-col items-start justify-start'} >
 
@@ -71,7 +71,9 @@ function MealDropList({ listId, listType, planerItem, onRemoveMeal }: Props) {
                                             return (
                                                 <MealDragElement
                                                     onRemoveMeal={onRemoveMeal}
+                                                    onMoveMeal={onMoveMeal}
                                                     mealID={food}
+                                                    date={planerItem.date}
                                                     planerID={planerItem.id + ""}
                                                     dragProvided={dragProvided}
                                                     snapshot={snapshot}
@@ -82,15 +84,12 @@ function MealDropList({ listId, listType, planerItem, onRemoveMeal }: Props) {
                                 </Draggable>
                             ))}
                             {isEmpty && displayPlaceholder()}
-
-
                             {dropProvided.placeholder}
                         </ul>
                     )
                 }}
             </Droppable>
         </span>
-
     )
 }
 

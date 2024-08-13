@@ -33,6 +33,45 @@ function ReceipePlanerView() {
         }));
     };
 
+    const handleMoveToPlanerItem = async (from: Date, to: Date, mealId: number) => {
+        try {
+            const response = await PlanerService.moveMealBetweenPlanerItemsByDate(mealId, from, to);
+            console.log(response)
+            setPlaner(prevPlaner => {
+                // Create a copy of the previous state
+                const updatedPlaner = { ...prevPlaner };
+
+                // Find the source planner item
+                const fromKey = Object.keys(updatedPlaner).find(key =>
+                    new Date(updatedPlaner[key].date).getTime() === new Date(from).getTime()
+                );
+
+                // Find the target planner item
+                const toKey = Object.keys(updatedPlaner).find(key =>
+                    new Date(updatedPlaner[key].date).getTime() === new Date(to).getTime()
+                );
+
+                if (fromKey && toKey) {
+                    // Remove the meal from the source planner item
+                    updatedPlaner[fromKey] = {
+                        ...updatedPlaner[fromKey],
+                        meals: updatedPlaner[fromKey].meals.filter(id => id !== mealId),
+                    };
+
+                    // Add the meal to the target planner item
+                    updatedPlaner[toKey] = {
+                        ...updatedPlaner[toKey],
+                        meals: [...updatedPlaner[toKey].meals, mealId],
+                    };
+                }
+
+                return updatedPlaner;
+            });
+        } catch (error) {
+            console.error('Moving removing meal:', error);
+        }
+    }
+
     const handleRemoveMeal = async (planerId: string, mealId: number) => {
         try {
             console.log("remove");
@@ -45,7 +84,7 @@ function ReceipePlanerView() {
 
                 // Find the correct entry by planerId
                 for (const [key, value] of Object.entries(updatedPlaner)) {
-                    if (value.id.toString() === planerId) {
+                    if (value.date.toString() === planerId) {
                         // Remove the mealId from the meals array
                         updatedPlaner[key] = {
                             ...value,
@@ -120,7 +159,7 @@ function ReceipePlanerView() {
 
         async function addMealList(planer: FoodPlaner) {
             const foodList: number[] = (await MealService.getAllMeals()).map(meal => meal.id);
-            const mealList: FoodplanerItem = new FoodplanerItem(-1, new Date(Date.now()), foodList);
+            const mealList: FoodplanerItem = new FoodplanerItem(new Date(Date.now()), foodList);
             planer[mealListID] = mealList;
         }
         async function fetchData() {
@@ -145,7 +184,6 @@ function ReceipePlanerView() {
     const handleDragEnd = ({ destination, source }: { destination: any; source: any }) => {
         if (!destination)
             return;
-        console.log(meals)
         const mealList = meals.map((m) => m.id)
 
         setPlaner(prevPlaner => {
@@ -159,8 +197,6 @@ function ReceipePlanerView() {
             <DragDropContext onDragEnd={handleDragEnd}>
                 <section className='flex-1 h-full flex flex-col pl-6 pr-4'>
                     <h1 className='mb-4 font-semibold text-[#011413] text-xl'>Foodplaner</h1>
-
-
                     <Calendar planer={planer} />
                     <ul className='h-full overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-[#046865] scrollbar-track-slate-100'>
                         {Object.entries(planer).slice(0, -1).map(([key, value]) => (
@@ -170,6 +206,7 @@ function ReceipePlanerView() {
                                     listId={key}
                                     listType='LIST'
                                     onRemoveMeal={handleRemoveMeal}
+                                    onMoveMeal={handleMoveToPlanerItem}
                                     planerItem={planer[key]}
                                 />
                             </li>

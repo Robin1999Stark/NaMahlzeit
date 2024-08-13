@@ -82,16 +82,6 @@ class MealDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = MealSerializer
 
 
-class FoodPlanerItemView(viewsets.ModelViewSet):
-    serializer_class = FoodPlanerItemSerializer
-    queryset = FoodPlanerItem.objects.all()
-
-
-class FoodPlanerItemDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = FoodPlanerItem.objects.all()
-    serializer_class = FoodPlanerItemSerializer
-
-
 class IngredientListView(viewsets.ModelViewSet):
     serializer_class = IngredientSerializer
     queryset = Ingredient.objects.all()

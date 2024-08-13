@@ -59,7 +59,7 @@ export const reorderPlan = (
             meals: removeDoubles(nextFood)
         }
         if (destination.droppableId !== mealListID) {
-            PlanerService.updatePlanerItem(updatedDestinationItem.id, updatedDestinationItem);
+            PlanerService.updatePlanerItem(updatedDestinationItem.date, updatedDestinationItem);
         }
         return {
             ...plan,
@@ -88,11 +88,11 @@ export const reorderPlan = (
 
     // update Planer
     if (source.droppableId !== mealListID) {
-        PlanerService.updatePlanerItem(updatedSourceItem.id, updatedSourceItem);
+        PlanerService.updatePlanerItem(updatedSourceItem.date, updatedSourceItem);
 
     }
     if (destination.droppableId !== mealListID) {
-        PlanerService.updatePlanerItem(updatedDestinationItem.id, updatedDestinationItem);
+        PlanerService.updatePlanerItem(updatedDestinationItem.date, updatedDestinationItem);
     }
 
     return {

@@ -1,10 +1,8 @@
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-
 from foodplaner.allviews import (
     MealListView,
-    FoodPlanerItemView, FoodPlanerItemDetailView,
     IngredientListView, IngredientDetailView,
     MealIngredientListView, MealIngredientDetailView,
     MealIngredientListViewNormal,
@@ -13,6 +11,8 @@ from foodplaner.allviews import (
     get_all_mealingredients_from_planer, is_planned,
 )
 from foodplaner.views.tag_views import TagListView, MealTagsListView, IngredientTagsListView, ingredients_by_tags, meals_by_tags
+from foodplaner.views.planer_views import move_to_day, remove_meal_from_planer_item, FoodPlanerItemDetailView, FoodPlanerItemView
+
 
 router = routers.DefaultRouter()
 router.register(r'meals', MealListView, basename='meal')
@@ -29,12 +29,15 @@ router.register(r'meal-tags', MealTagsListView, basename='meal-tags')
 router.register(r'ingredient-tags', IngredientTagsListView,
                 basename='ingredient-tags')
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
     path('planer/<int:pk>/', FoodPlanerItemDetailView.as_view(),
          name='foodplaneritem-detail'),
+    path('planer/moveto/<str:to_planer>/<str:from_planer>/<int:meal_id>/', move_to_day,
+         name='moveto'),
+    path('planer/remove/<str:planer_date>/<int:meal_id>/', remove_meal_from_planer_item,
+         name='moveto'),
     path('get-all-meals-from-planer/', get_all_meals_on_planer,
          name='planer-get-all-meals'),
     path('is-planned/<int:meal_pk>/', is_planned, name='meal-is-planned'),
