@@ -15,24 +15,26 @@ function Calendar({ planer }: Props) {
 
         const date = new Date(day_str);
         const day = days[date.getDay()];
-        return <a href={'#' + day_str}>
-            <li className='text-[#7A8587] flex flex-col justify-start mt-2 text-base items-center mb-4'>
-                {isToday ? isEmpty ?
+        return <>
+            <a href={'#' + day_str}>
+                <li className='text-[#7A8587] flex flex-col justify-start mt-2 text-base items-center mb-4'>
+                    {isToday ? isEmpty ?
 
-                    <p className='mb-2 bg-[#F96E46] text-white font-semibold px-[0.3rem] rounded-full'>
+                        <p className='mb-2 bg-[#F96E46] text-white font-semibold px-[0.3rem] rounded-full'>
+                            {day}
+                        </p> : <p className='mb-2 bg-[#046865] text-white font-semibold px-[0.3rem] rounded-full'>
+                            {day}
+                        </p> : <p className='mb-2'>
                         {day}
-                    </p> : <p className='mb-2 bg-[#046865] text-white font-semibold px-[0.3rem] rounded-full'>
-                        {day}
-                    </p> : <p className='mb-2'>
-                    {day}
-                </p>}
+                    </p>}
 
-                {isEmpty ? <IoMdWarning title='Nothing planed for now' className='text-[#F96E46] w-[16px] h-[16px] ' /> : <FaCheckCircle className='text-[#046865] w-[16px] h-[16px] ' />}
-            </li>
+                    {isEmpty ? <IoMdWarning title='Nothing planed for now' className='text-[#F96E46] w-[16px] h-[16px] ' /> : <FaCheckCircle className='text-[#046865] w-[16px] h-[16px] ' />}
+                </li>
+            </a>
             {date.getDay() === 0 ? <li className='h-full w-[1px] bg-gray-200'>
 
             </li> : <></>}
-        </a>
+        </>
 
     }
 
