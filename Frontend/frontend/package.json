@@ -12,6 +12,7 @@
   "dependencies": {
     "@szhsin/react-menu": "^4.2.2",
     "axios": "^1.6.7",
+    "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
@@ -22,6 +23,7 @@
     "tailwind-scrollbar": "^3.1.0"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.6",
     "@types/lodash": "^4.14.202",
     "@types/react": "^18.2.43",
     "@types/react-beautiful-dnd": "^13.1.8",

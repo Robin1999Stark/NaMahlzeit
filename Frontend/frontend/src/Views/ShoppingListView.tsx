@@ -6,10 +6,11 @@ import { ShoppingList, ShoppingListItem } from '../Datatypes/ShoppingList';
 import { ShoppingListService } from '../Endpoints/ShoppingListService';
 import { InventoryService } from '../Endpoints/InventoryService';
 import { Ingredient } from '../Datatypes/Ingredient';
-import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
+import { Menu, MenuButton, MenuItem, SubMenu } from '@szhsin/react-menu';
 import { IoIosMore } from 'react-icons/io';
 import { MdAdd } from 'react-icons/md';
 import AutoCompleteInput from '../Components/AutoCompleteInput';
+import Cookies from 'js-cookie';
 
 type Props = {
     shoppingList: ShoppingList | undefined;
@@ -17,10 +18,12 @@ type Props = {
 }
 
 function ShoppingListView({ shoppingList, setShoppingList }: Props) {
+    const [shoppingLists, setShoppingLists] = useState<ShoppingList[]>([]);
     const [shoppingListItems, setShoppingListItems] = useState<ShoppingListItem[]>();
     const [ingredients, setIngredients] = useState<Ingredient[]>();
     const [loaded, setLoaded] = useState<boolean>(false);
     const [itemAdded, setItemAdded] = useState<boolean>(false);
+    const [showBought, setShowBought] = useState<boolean>(false);
     const [selectedIngredient, _setSelectedIngredient] = useState<Ingredient | string>("");
 
     const bottomRef = useRef<HTMLDivElement>(null);
@@ -38,7 +41,6 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
             },
             mode: 'all'
         });
-    console.log(errors)
     const selectedIngredientID = watch('ingredient');
     useEffect(() => {
         if (selectedIngredientID) {
@@ -46,7 +48,16 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
         }
     }, [selectedIngredientID]);
 
-    async function fetchDataIngredients(): Promise<Ingredient[] | null> {
+    async function fetchIngredient(id: string): Promise<Ingredient | null> {
+        try {
+            const ingredient = await IngredientService.getIngredient(id);
+            return ingredient;
+        } catch (error) {
+            console.log(error)
+        }
+        return null
+    }
+    async function fetchAllIngredients(): Promise<Ingredient[] | null> {
 
         try {
             const data = await IngredientService.getAllIngredients()
@@ -56,18 +67,15 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
         }
         return null;
     }
-    async function fetchDataShoppingList(): Promise<ShoppingList | null> {
-
+    async function fetchDataShoppingLists(): Promise<ShoppingList[]> {
         try {
             const data = await ShoppingListService.getAllShoppingLists();
-            const list = data.pop();
-            return list === undefined ? null : list
+            return data
         } catch (error) {
             console.log(error)
         }
-        return null;
+        return [];
     }
-
     async function fetchDataShoppingListItems(items: number[]): Promise<ShoppingListItem[] | null> {
         try {
             const data = await ShoppingListService.getAllShoppingListItems();
@@ -78,44 +86,63 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
         }
         return null;
     }
-    async function fetchPipeline() {
-        const list = await fetchDataShoppingList();
-        console.log(list)
-        list ? setShoppingList(list) : console.log("fehler")
-        const ingredients = await fetchDataIngredients();
-        ingredients ? setIngredients(ingredients) : setIngredients([])
-        const ids: number[] = list?.items ? list.items : []
-        const items = await fetchDataShoppingListItems(ids);
-        items ? setShoppingListItems(items) : setShoppingListItems([])
+    async function fetchPipeline(list?: ShoppingList) {
+        const lists = await fetchDataShoppingLists();
+        setShoppingLists(lists);
+
+        const savedListId = Cookies.get('selectedShoppingListId')
+        let selectedList = list;
+
+        if (!selectedList && savedListId) {
+            selectedList = lists.find((l) => l.id === parseInt(savedListId, 10));
+        }
+
+        selectedList = selectedList || lists[0];
+
+        if (selectedList) {
+            setShoppingList(selectedList);
+            Cookies.set('selectedShoppingListId', selectedList.id.toString());
+        } else {
+            console.log("No shopping list available");
+        }
+
+        const ingredients = await fetchAllIngredients();
+        setIngredients(ingredients || []);
+
+        const ids: number[] = selectedList?.items ? selectedList.items : [];
+        let items = await fetchDataShoppingListItems(ids);
+
+        const savedShowBought = Cookies.get('showBought')
+        const initialShowBought = savedShowBought === 'true';
+        setShowBought(initialShowBought)
+
+
+        if (!initialShowBought) {
+            items = items && items.filter(item => !item.bought)
+        }
+        setShoppingListItems(items ? sortItems(items) : []);
         setLoaded(true);
     }
-    async function fetchIngredient(id: string): Promise<Ingredient | null> {
-        try {
-            const ingredient = await IngredientService.getIngredient(id);
-            return ingredient;
-        } catch (error) {
-            console.log(error)
-        }
-        return null
+    function sortItems(items: ShoppingListItem[]): ShoppingListItem[] {
+
+        return items.sort((a, b) => {
+            if (a.bought !== b.bought) {
+                return a.bought ? -1 : 1;
+            }
+            return new Date(a.added).getTime() - new Date(b.added).getTime();
+        });
+    }
+    async function handleCreateShoppingList() {
+        const items: number[] = []
+        const list = await ShoppingListService.createShoppingList({ items });
+        if (list === null)
+            return;
+        fetchPipeline(list);
     }
     async function handleUnitChange() {
         const ingredient = await fetchIngredient(selectedIngredientID);
         ingredient ? setValue('unit', ingredient?.preferedUnit) : setValue('unit', 'kg')
     }
-    useEffect(() => {
-        fetchPipeline();
-        if (selectedIngredientID) {
-            handleUnitChange();
-        }
-    }, [selectedIngredientID, setValue, loaded]);
-
-    useEffect(() => {
-        if (itemAdded && bottomRef.current) {
-            bottomRef.current.scrollIntoView({ behavior: 'smooth' });
-            setItemAdded(false);
-        }
-    }, [shoppingListItems, itemAdded]);
-
     async function handleAddItemToShoppingList(data: InventoryItem | InventoryService.CreateInventoryItemInterface) {
         try {
             if (!shoppingList) {
@@ -139,16 +166,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
             console.log(error)
         }
     }
-
-    async function onSubmit(data: InventoryItem) {
-        console.log(data)
-        if (!data.ingredient || typeof data.ingredient !== 'string') {
-            console.log('Please select a valid ingredient.');
-            return;
-        }
-        await handleAddItemToShoppingList(data);
-    }
-    async function deleteShoppingListItem(id: number) {
+    async function handleDeleteShoppingListItem(id: number) {
         try {
             await ShoppingListService.deleteShoppingListItem(id);
             fetchPipeline();
@@ -169,42 +187,125 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
         try {
             const data = await IngredientService.getAllIngredients()
             const results: string[] = data.map((ingredient) => ingredient.title).filter((title) => title.toLowerCase().includes(query.toLowerCase()));
-            console.log(results)
             return results
 
         } catch (error) {
             return [];
         }
     }
+    async function handleDeleteShoppingList(id: number | undefined) {
+        if (!id)
+            return;
+        const result = await ShoppingListService.deleteShoppingList(id);
+        if (result) {
+            const updatedLists = await fetchDataShoppingLists();
+            setShoppingLists(updatedLists);
+            if (updatedLists.length > 0) {
+                setShoppingList(updatedLists[0]);
+            } else {
+                setShoppingList(undefined);
+                setShoppingListItems([]);
+            }
+
+        }
+    }
     async function handleCheckboxChange(item: ShoppingListItem) {
         try {
-            console.log(item)
             const updatedItem = { ...item, bought: !item.bought };
-            const list = shoppingList; // Assuming `shoppingList` is available here
+            const list = shoppingList;
+
             if (list) {
-                const result = await ShoppingListService.updateItemAndList(list, updatedItem);
-                if (result) {
-                    setShoppingListItems(prevItems =>
-                        prevItems && prevItems.map(existingItem =>
-                            existingItem.id === item.id ? result : existingItem
-                        )
-                    );
-                }
+                setShoppingListItems(prevItems => {
+                    if (prevItems) {
+                        const updatedItems = prevItems.map(existingItem =>
+                            existingItem.id === item.id ? updatedItem : existingItem
+                        );
+                        return sortItems(updatedItems);
+                    }
+                    return prevItems;
+                });
+
+                await ShoppingListService.updateItemAndList(list, updatedItem);
+
+                setTimeout(async () => {
+                    const ids: number[] = list.items ? list.items : [];
+                    const updatedItems = await fetchDataShoppingListItems(ids);
+                    if (updatedItems) {
+                        setShoppingListItems(sortItems(updatedItems));
+                    }
+                }, 500);
             }
         } catch (error) {
             console.log(error);
         }
     }
+
+    useEffect(() => {
+        fetchPipeline();
+        if (selectedIngredientID) {
+            handleUnitChange();
+        }
+    }, [selectedIngredientID, setValue, loaded]);
+    useEffect(() => {
+        if (itemAdded && bottomRef.current) {
+            bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+            setItemAdded(false);
+        }
+    }, [shoppingListItems, itemAdded]);
+
+
+    async function onSubmit(data: InventoryItem) {
+        if (!data.ingredient || typeof data.ingredient !== 'string') {
+            console.log('Please select a valid ingredient.');
+            return;
+        }
+        await handleAddItemToShoppingList(data);
+    }
     //<MissingIngredientMealList handleAddItemToShoppingList={handleAddItemToShoppingList} />
     if (loaded) {
         return (
             <>
-                <h1 className='mb-4 font-semibold text-[#011413] text-xl'>Einkaufsliste</h1>
+                <span className='flex flex-row justify-between items-center'>
+                    <h1 className='mb-4 font-semibold text-[#011413] text-xl'>
+                        Einkaufsliste ({shoppingList && shoppingList.created.toLocaleDateString() + " - " + shoppingList.created.getHours() + ":" + shoppingList.created.getMinutes()})
+                    </h1>
+
+                    <Menu menuButton={<MenuButton><IoIosMore className='size-5 mr-4 text-[#011413]' /></MenuButton>} transition>
+
+                        <MenuItem onClick={() => handleDeleteShoppingList(shoppingList?.id)}>Liste löschen</MenuItem>
+                        <SubMenu label='Listen'>
+                            {
+                                shoppingLists.map((list) => <MenuItem onClick={() => {
+                                    fetchPipeline(list);
+                                }}>
+                                    <p className={`${shoppingList?.id === list.id && 'font-bold underline-offset-1'}`}>
+                                        {list.created.toLocaleDateString() + " - " + list.created.getHours() + ":" + list.created.getMinutes()}
+                                    </p>
+                                </MenuItem>)
+                            }
+                            <MenuItem onClick={() => {
+                                handleCreateShoppingList();
+                            }}>
+                                <p>
+                                    + Neue Lists
+                                </p>
+                            </MenuItem>
+                        </SubMenu>
+                        <MenuItem type='checkbox' checked={showBought} onClick={(e) => {
+                            if (e.checked === undefined)
+                                return;
+                            setShowBought(e.checked);
+                            Cookies.set('showBought', e.checked.toString());
+                            fetchPipeline();
+                        }}>
+                            Gekauftes anzeigen
+                        </MenuItem>
+                    </Menu>
+                </span>
                 <ul className='overflow-y-scroll h-5/6 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-[#046865] scrollbar-track-slate-100'>
                     {shoppingListItems ? shoppingListItems?.map(item => (
                         item ?
                             <li className='w-full flex flex-row justify-between items-center'>
-
                                 <div key={item.id} className='p-2 text-[#011413] flex flex-row font-semibold items-center'>
                                     <input
                                         type="checkbox"
@@ -213,14 +314,18 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
                                         checked={item.bought}
                                         onChange={() => handleCheckboxChange(item)}
                                     />
-                                    {item.ingredient}
+                                    <p className={`${item.bought ? 'text-gray-400 line-through' : 'text-[#011413]'}`}>
+                                        {item.ingredient}
+                                    </p>
                                 </div>
                                 <div key={item.ingredient + Math.random() + "unit"} className='p-2 flex text-[#011413] font-semibold flex-row justify-between items-center'>
-                                    {item.amount + " " + item.unit}
+                                    <p className={`${item.bought ? 'text-gray-400 line-through' : 'text-[#011413]'}`}>
+                                        {item.amount + " " + item.unit}
+                                    </p>
                                 </div>
                                 <span className='flex flex-row justify-end pr-6'>
                                     <Menu menuButton={<MenuButton><IoIosMore className='size-5 text-[#011413]' /></MenuButton>} transition>
-                                        <MenuItem onClick={() => deleteShoppingListItem(item.id)}>Löschen</MenuItem>
+                                        <MenuItem onClick={() => handleDeleteShoppingListItem(item.id)}>Löschen</MenuItem>
                                     </Menu>
                                 </span>
 

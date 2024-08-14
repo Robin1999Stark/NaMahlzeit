@@ -58,10 +58,12 @@ export namespace ShoppingListService {
     export async function deleteShoppingList(id: number) {
         try {
             const response = await instance.delete(`/shopping-lists/${id}/`);
+            console.log(response)
             return response.data;
         } catch (error) {
             throw new Error('Error deleting ShoppingList: ' + error);
         }
+        return null;
     }
 
 
