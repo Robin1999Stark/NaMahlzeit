@@ -16,9 +16,9 @@ function NavBar() {
     const [_clickedOutside, setClickedOutside] = useState(false);
     const [open, setOpen] = useState<boolean>(false);
     const navItems = [
+        { link: "/planer", title: "Planer" },
         { link: "/ingredients", title: "Ingredients" },
         { link: "/meals", title: "Meals" },
-        { link: "/planer", title: "Planer" },
         { link: "/lists", title: "Shoppinglist" },
         { link: "/tags", title: "Tags" },
     ];
