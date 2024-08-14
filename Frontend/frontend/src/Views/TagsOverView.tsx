@@ -52,7 +52,7 @@ function TagsOverView() {
         <>
             <section className='w-full my-4 px-7 flex flex-row items-center justify-between flex-grow'>
                 <h1 className='truncate text-[#011413] text-xl font-semibold flex-1'>
-                    Meals ({filteredTags?.length})
+                    Tags ({filteredTags?.length})
                 </h1>
                 <div className='flex flex-grow flex-row justify-center items-center'>
                     <input type="text" value={searchString}

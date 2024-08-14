@@ -21,8 +21,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
     const [ingredients, setIngredients] = useState<Ingredient[]>();
     const [loaded, setLoaded] = useState<boolean>(false);
     const [itemAdded, setItemAdded] = useState<boolean>(false);
-    const [selectedIngredient, _setSelectedIngredient] = useState<Ingredient>();
-    const [selectedIngredient2, _setSelectedIngredient2] = useState<Ingredient | string>("");
+    const [selectedIngredient, _setSelectedIngredient] = useState<Ingredient | string>("");
 
     const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -41,6 +40,11 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
         });
     console.log(errors)
     const selectedIngredientID = watch('ingredient');
+    useEffect(() => {
+        if (selectedIngredientID) {
+            handleUnitChange();
+        }
+    }, [selectedIngredientID]);
 
     async function fetchDataIngredients(): Promise<Ingredient[] | null> {
 
@@ -115,16 +119,19 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
     async function handleAddItemToShoppingList(data: InventoryItem | InventoryService.CreateInventoryItemInterface) {
         try {
             if (!shoppingList) {
-                const list = await ShoppingListService.CreateShoppingList({ items: [] })
+                const list = await ShoppingListService.createShoppingList({ items: [] })
                 if (!list) return
                 setShoppingList(list)
             }
             if (shoppingList) {
-                const item = await ShoppingListService.createItemAndAddToShoppingList(shoppingList, { ingredient: data.ingredient, amount: data.amount, unit: data.unit, notes: "" })
+                const item = await ShoppingListService.createItemAndAddToShoppingList(shoppingList, {
+                    ingredient: data.ingredient,
+                    amount: data.amount,
+                    unit: data.unit,
+                    notes: "",
+                });
                 if (item) {
-                    const newItems = shoppingListItems;
-                    newItems?.push(item);
-                    setShoppingListItems(newItems);
+                    setShoppingListItems((prevItems) => [...(prevItems || []), item]);
                     setItemAdded(true);
                 }
             }
@@ -134,6 +141,11 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
     }
 
     async function onSubmit(data: InventoryItem) {
+        console.log(data)
+        if (!data.ingredient || typeof data.ingredient !== 'string') {
+            console.log('Please select a valid ingredient.');
+            return;
+        }
         await handleAddItemToShoppingList(data);
     }
     async function deleteShoppingListItem(id: number) {
@@ -145,10 +157,44 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
         }
     }
     const handleIngredientSelect = (ingredient: Ingredient | string) => {
-        _setSelectedIngredient2(ingredient);
-        // You can also update other form states or perform actions here
+        _setSelectedIngredient(ingredient);
+        if (typeof ingredient === 'string') {
+            setValue('ingredient', ingredient);
+        } else {
+            setValue('ingredient', ingredient.title);
+        }
         console.log("Selected ingredient:", ingredient);
     };
+    async function handleAutoCompleteSearch(query: string) {
+        try {
+            const data = await IngredientService.getAllIngredients()
+            const results: string[] = data.map((ingredient) => ingredient.title).filter((title) => title.toLowerCase().includes(query.toLowerCase()));
+            console.log(results)
+            return results
+
+        } catch (error) {
+            return [];
+        }
+    }
+    async function handleCheckboxChange(item: ShoppingListItem) {
+        try {
+            console.log(item)
+            const updatedItem = { ...item, bought: !item.bought };
+            const list = shoppingList; // Assuming `shoppingList` is available here
+            if (list) {
+                const result = await ShoppingListService.updateItemAndList(list, updatedItem);
+                if (result) {
+                    setShoppingListItems(prevItems =>
+                        prevItems && prevItems.map(existingItem =>
+                            existingItem.id === item.id ? result : existingItem
+                        )
+                    );
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
     //<MissingIngredientMealList handleAddItemToShoppingList={handleAddItemToShoppingList} />
     if (loaded) {
         return (
@@ -159,11 +205,13 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
                         item ?
                             <li className='w-full flex flex-row justify-between items-center'>
 
-                                <div key={item.ingredient + Math.random()} className='p-2 text-[#011413] flex flex-row font-semibold items-center'>
+                                <div key={item.id} className='p-2 text-[#011413] flex flex-row font-semibold items-center'>
                                     <input
                                         type="checkbox"
-                                        className="h-5 w-5 mr-6 cursor-pointer rounded-full border border-gray-300 appearance-none checked:bg-[#046865] checked:border-transparent focus:ring-2 focus:ring-[#0f302f]"
-                                        id="checkbox"
+                                        className="h-5 w-5 mr-6 cursor-pointer rounded-full border border-gray-300 appearance-none checked:bg-[#046865] checked:border-transparent"
+                                        id={`checkbox-${item.id}`}
+                                        checked={item.bought}
+                                        onChange={() => handleCheckboxChange(item)}
                                     />
                                     {item.ingredient}
                                 </div>
@@ -172,7 +220,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
                                 </div>
                                 <span className='flex flex-row justify-end pr-6'>
                                     <Menu menuButton={<MenuButton><IoIosMore className='size-5 text-[#011413]' /></MenuButton>} transition>
-                                        <MenuItem >Löschen</MenuItem>
+                                        <MenuItem onClick={() => deleteShoppingListItem(item.id)}>Löschen</MenuItem>
                                     </Menu>
                                 </span>
 
@@ -183,28 +231,11 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
                     <div ref={bottomRef}></div>
 
                 </ul>
-                <AutoCompleteInput onSelectIngredient={handleIngredientSelect} />
                 <form className='w-full h-fit py-4 flex flex-row justify-between items-center' onSubmit={handleSubmit(onSubmit)}>
-
-
-                    <select
-                        key={"select-ingredient"}
-                        {...register(`ingredient` as const, {
-                            required: true,
-                        })}
-                        defaultValue={ingredients ? ingredients[0]?.title : 0}
-                        className="bg-white h-12 mr-2 text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500"
-                    >
-                        <option key={"select-ingredient-empty"} value="">Select Ingredient</option>
-                        {ingredients ? ingredients.map((ingredient) => (
-                            <option
-                                key={ingredient.title}
-                                value={ingredient.title}>
-                                {ingredient.title}
-                            </option>
-                        )) : <></>}
-                    </select>
-                    <div className='flex h-12 flex-row'>
+                    <span className='w-3/5 mr-1'>
+                        <AutoCompleteInput search={handleAutoCompleteSearch} onSelect={handleIngredientSelect} />
+                    </span>
+                    <div className='flex w-2/5 flex-row'>
                         <input
                             key={'amount'}
                             type='number'
@@ -217,7 +248,8 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
                                 required: true,
                             })}
                             defaultValue={1}
-                            className="border-slate-200 bg-white h-12 rounded-md truncate text-base font-semibold align-middle mr-2 focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
+                            className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1'
+                        />
                         <input
                             key={'unit'}
                             type='text'
@@ -225,8 +257,9 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
                             {...register(`unit` as const, {
                                 required: true,
                             })}
-                            defaultValue={selectedIngredient ? selectedIngredient?.preferedUnit : "kg"}
-                            className="border-slate-200 bg-white truncate rounded-md h-12 text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
+                            defaultValue={selectedIngredient && typeof selectedIngredient !== 'string' ? selectedIngredient?.preferedUnit : "kg"}
+                            className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md'
+                        />
                     </div>
                     <button
                         className='bg-[#046865] ml-2 w-fit text-white p-3 rounded-full'>

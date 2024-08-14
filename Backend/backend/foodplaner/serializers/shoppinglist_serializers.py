@@ -9,7 +9,15 @@ class ShoppingListItemSerializer(serializers.ModelSerializer):
                   'ingredient', 'amount', 'unit', 'notes']
 
     def update(self, instance, validated_data):
-        return self.update
+        instance.bought = validated_data.get('bought', instance.bought)
+        instance.added = validated_data.get('added', instance.added)
+        instance.ingredient = validated_data.get(
+            'ingredient', instance.ingredient)
+        instance.amount = validated_data.get('amount', instance.amount)
+        instance.unit = validated_data.get('unit', instance.unit)
+        instance.notes = validated_data.get('notes', instance.notes)
+        instance.save()
+        return instance
 
 
 class ShoppingListSerializer(serializers.ModelSerializer):

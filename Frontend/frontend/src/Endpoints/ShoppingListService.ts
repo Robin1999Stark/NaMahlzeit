@@ -33,7 +33,7 @@ export namespace ShoppingListService {
     interface CreateShoppingList {
         items: number[],
     }
-    export async function CreateShoppingList({ items }: CreateShoppingList): Promise<ShoppingList | null> {
+    export async function createShoppingList({ items }: CreateShoppingList): Promise<ShoppingList | null> {
 
         const date = new Date(Date.now())
         const dateString = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate() + "T" + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + "." + date.getMilliseconds() + "Z";
@@ -85,8 +85,74 @@ export namespace ShoppingListService {
         }
         return shoppingListItems;
     }
+    interface UpdateShoppingList {
+        id: number;
+        created: Date;
+        items: number[];
+    }
+    export async function updateShoppingList({ id, created, items }: UpdateShoppingList): Promise<ShoppingList | null> {
+        const requestBody = {
+            created: new Date(created).toISOString(),
+            items: items,
+        };
+        try {
+            const response = await instance.put(`/shopping-lists/${id}/`, JSON.stringify(requestBody), {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            return ShoppingList.fromJSON(response.data);
+        } catch (error) {
+            console.error('Error updating Shopping List:', error);
+            return null;
+        }
+    }
 
-
+    interface UpdateShoppingListItem {
+        bought?: boolean;
+        amount?: number;
+        ingredient?: string;
+        unit?: string;
+        notes?: string;
+    }
+    export async function updateShoppingListItem(id: number, updateData: UpdateShoppingListItem): Promise<ShoppingListItem | null> {
+        const requestBody = {
+            ...updateData
+        };
+        try {
+            const response = await instance.put(`/shopping-list-items/${id}/`, JSON.stringify(requestBody), {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            return ShoppingListItem.fromJSON(response.data);
+        } catch (error) {
+            console.error('Error updating Shopping List Item:', error);
+            return null;
+        }
+    }
+    export async function updateItemAndList(list: ShoppingList, item: ShoppingListItem): Promise<ShoppingListItem | null> {
+        try {
+            const updatedItem = await updateShoppingListItem(item.id, {
+                bought: item.bought,
+                amount: item.amount,
+                ingredient: item.ingredient,
+                unit: item.unit,
+                notes: item.notes,
+            });
+            if (updatedItem) {
+                const updatedList = await updateShoppingList({
+                    id: list.id,
+                    created: list.created,
+                    items: list.items
+                });
+                return updatedItem;
+            }
+        } catch (error) {
+            console.error('Error updating Shopping List and Item:', error);
+        }
+        return null;
+    }
 
     interface CreateShoppingListItem {
         ingredient: string;
@@ -128,6 +194,8 @@ export namespace ShoppingListService {
     }
 
     export async function addItemToShoppingList(list: ShoppingList, itemID: number) {
+        console.log(list)
+        console.log(itemID)
         const date = new Date(list.created)
         const dateString = date.toISOString()
         const items = list.items
@@ -154,6 +222,7 @@ export namespace ShoppingListService {
     }
 
     export async function createItemAndAddToShoppingList(list: ShoppingList, item: CreateShoppingListItem): Promise<ShoppingListItem | null> {
+        console.log(item)
         try {
             const createdItem = await createShoppingListItem(item);
             if (createdItem) {

@@ -8,11 +8,6 @@ class IngredientSerializer(serializers.ModelSerializer):
         model = Ingredient
         fields = ['title', 'description', 'preferedUnit']
 
-    def get_attribute(self, instance):
-
-        value = super().get_attribute(instance)
-        return value
-
     def to_internal_value(self, data):
         data_copy = data.copy()
         prefered_unit = data_copy.get('preferedUnit', '').lower()
@@ -26,7 +21,3 @@ class IngredientSerializer(serializers.ModelSerializer):
                 f"Invalid preferedUnit: {prefered_unit}")
 
         return super().to_internal_value(data_copy)
-
-    def create(self, validated_data):
-        instance = super().create(validated_data)
-        return instance

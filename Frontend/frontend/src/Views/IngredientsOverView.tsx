@@ -66,8 +66,6 @@ function IngredientsOverView() {
         }
     }
 
-
-    // Debounce the searchForIngredients function with a delay before making the API call
     useEffect(() => {
         if (searchString !== "" && searchString !== undefined && searchString !== null) {
 
