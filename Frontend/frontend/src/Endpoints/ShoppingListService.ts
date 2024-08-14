@@ -58,7 +58,6 @@ export namespace ShoppingListService {
     export async function deleteShoppingList(id: number) {
         try {
             const response = await instance.delete(`/shopping-lists/${id}/`);
-            console.log(response)
             return response.data;
         } catch (error) {
             throw new Error('Error deleting ShoppingList: ' + error);
@@ -196,8 +195,6 @@ export namespace ShoppingListService {
     }
 
     export async function addItemToShoppingList(list: ShoppingList, itemID: number) {
-        console.log(list)
-        console.log(itemID)
         const date = new Date(list.created)
         const dateString = date.toISOString()
         const items = list.items
@@ -224,7 +221,6 @@ export namespace ShoppingListService {
     }
 
     export async function createItemAndAddToShoppingList(list: ShoppingList, item: CreateShoppingListItem): Promise<ShoppingListItem | null> {
-        console.log(item)
         try {
             const createdItem = await createShoppingListItem(item);
             if (createdItem) {

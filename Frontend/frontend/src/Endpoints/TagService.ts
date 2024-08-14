@@ -183,7 +183,6 @@ export namespace TagService {
     export async function getAllTagsFromIngredient(ingredient: string): Promise<IngredientTags | null> {
         try {
             const data = await getAllTagsFromIngredientJSON(ingredient);
-            if (data !== null) console.log(data)
             if (data === null)
                 return null;
             const tags = IngredientTags.fromJSON(data);

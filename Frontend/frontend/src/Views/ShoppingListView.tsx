@@ -181,7 +181,6 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
         } else {
             setValue('ingredient', ingredient.title);
         }
-        console.log("Selected ingredient:", ingredient);
     };
     async function handleAutoCompleteSearch(query: string) {
         try {
@@ -336,7 +335,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
                     <div ref={bottomRef}></div>
 
                 </ul>
-                <form className='w-full h-fit py-4 flex flex-row justify-between items-center' onSubmit={handleSubmit(onSubmit)}>
+                <form className='w-full h-fit py-4 flex flex-row justify-between items-center pr-1' onSubmit={handleSubmit(onSubmit)}>
                     <span className='w-3/5 mr-1'>
                         <AutoCompleteInput search={handleAutoCompleteSearch} onSelect={handleIngredientSelect} />
                     </span>

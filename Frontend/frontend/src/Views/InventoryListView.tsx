@@ -68,7 +68,6 @@ function InventoryListView() {
         } catch (error) {
             console.log(error)
         }
-        console.log('Form submitted', data)
     }
     async function deleteInventoryItem(id: number) {
         try {

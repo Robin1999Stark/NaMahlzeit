@@ -45,7 +45,6 @@ function IngredientsOverView() {
 
 
     async function searchForIngredients(search: string) {
-        console.log("search")
         if (search === undefined || search === null || search === "") {
             setFilteredIngredients(ingredients);
         } else {

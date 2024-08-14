@@ -48,14 +48,12 @@ function EditMeal() {
                 if (allIngredients !== null) setIngredients(allIngredients);
                 if (mealIngredients !== null) setMealIngredients(mealIngredients);
 
-                // Manually set default values
                 setValue('title', meal?.title || '');
                 setValue('description', meal?.description || '');
                 setValue('preparation', meal?.preparation || '');
                 setValue('duration', meal?.duration || 0);
                 setValue('ingredients', mealIngredients || []);
 
-                console.log("mi", mealIngredients)
             } catch (error) {
                 console.log(error);
             }
