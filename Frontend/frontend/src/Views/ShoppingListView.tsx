@@ -101,7 +101,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
 
         if (selectedList) {
             setShoppingList(selectedList);
-            Cookies.set('selectedShoppingListId', selectedList.id.toString());
+            Cookies.set('selectedShoppingListId', selectedList.id.toString(), { sameSite: 'strict' });
         } else {
             console.log("No shopping list available");
         }
@@ -295,7 +295,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
                             if (e.checked === undefined)
                                 return;
                             setShowBought(e.checked);
-                            Cookies.set('showBought', e.checked.toString());
+                            Cookies.set('showBought', e.checked.toString(), { sameSite: 'strict' });
                             fetchPipeline();
                         }}>
                             Gekauftes anzeigen
