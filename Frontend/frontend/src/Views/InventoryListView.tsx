@@ -5,15 +5,23 @@ import { useForm } from 'react-hook-form';
 import { IngredientService } from '../Endpoints/IngredientService';
 import { Ingredient } from '../Datatypes/Ingredient';
 import { IoRemove } from 'react-icons/io5';
+import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
+import { IoIosMore } from 'react-icons/io';
+import { MdAdd } from 'react-icons/md';
+import AutoCompleteInput from '../Components/AutoCompleteInput';
+import { FaMinus } from 'react-icons/fa';
 
 function InventoryListView() {
     const [ingredients, setIngredients] = useState<Ingredient[]>()
     const [inventory, setInventory] = useState<InventoryItem[]>();
     const [add, setAdd] = useState<boolean>(false);
+    const [selectedIngredient, setSelectedIngredient] = useState<Ingredient | string>("");
+
 
     const {
         register,
         handleSubmit,
+        setValue,
         formState: { errors } } = useForm<InventoryItem>({
             defaultValues: {
                 ingredient: "",
@@ -22,11 +30,7 @@ function InventoryListView() {
             },
             mode: 'all'
         });
-    console.log(errors)
-    /*const { fields, append, remove } = useFieldArray<any>({
-    control,
-    name: "ingredients"
-});*/
+
     async function fetchDataIngredients() {
         try {
             const data = await IngredientService.getAllIngredients()
@@ -35,6 +39,24 @@ function InventoryListView() {
             console.log(error)
         }
     }
+    async function handleAutoCompleteSearch(query: string) {
+        try {
+            const data = await IngredientService.getAllIngredients()
+            const results: string[] = data.map((ingredient) => ingredient.title).filter((title) => title.toLowerCase().includes(query.toLowerCase()));
+            return results
+
+        } catch (error) {
+            return [];
+        }
+    }
+    const handleIngredientSelect = (ingredient: Ingredient | string) => {
+        setSelectedIngredient(ingredient);
+        if (typeof ingredient === 'string') {
+            setValue('ingredient', ingredient);
+        } else {
+            setValue('ingredient', ingredient.title);
+        }
+    };
     async function fetchDataInventory() {
         try {
             const data = await InventoryService.getAllInventoryItems()
@@ -81,70 +103,76 @@ function InventoryListView() {
 
     return (
         <>
-            <h1 className='truncate text-[#57D1C2] mx-5 my-5 text-2xl font-semibold'>
-                Inventory
-            </h1>
-            <div className='mx-4 w-full'>
-                <form className='grid grid-cols-2 gap-2' onSubmit={handleSubmit(onSubmit)}>
-                    <select
-                        key={"select-ingredient"}
-                        {...register(`ingredient` as const, {
+            <span className='flex flex-row justify-between items-center'>
+                <h1 className='mb-4 font-semibold text-[#011413] text-xl'>
+                    Bestandsliste
+                </h1>
+                <Menu menuButton={<MenuButton><IoIosMore className='size-5 mr-4 text-[#011413]' /></MenuButton>} transition>
+                </Menu>
+            </span>
+            <ul className='overflow-y-scroll h-5/6 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-[#046865] scrollbar-track-slate-100'>
+                {inventory ? inventory?.map(inv => (
+                    <li className='w-full flex flex-row justify-between items-center'>
+                        <div key={inv.id} className='p-2 text-[#011413] flex flex-row font-semibold items-center'>
+
+                            <p>
+                                {inv.ingredient}
+                            </p>
+                        </div>
+                        <div key={inv.ingredient + "unit"} className='p-2 flex text-[#011413] font-semibold flex-row justify-between items-center'>
+                            {inv.amount + " " + inv.unit}
+                        </div>
+                        <span className='flex flex-row justify-end pr-6'>
+                            <Menu menuButton={<MenuButton><IoIosMore className='size-5 text-[#011413]' /></MenuButton>} transition>
+                                <MenuItem onClick={() => deleteInventoryItem(inv.id)}>Löschen</MenuItem>
+                            </Menu>
+                        </span>
+
+                    </li>
+
+                )) : <h1>Loading...</h1>}
+            </ul>
+            <form className='w-full h-fit py-4 flex flex-row justify-between items-center pr-1' onSubmit={handleSubmit(onSubmit)}>
+                <span className='w-3/5 mr-1'>
+                    <AutoCompleteInput search={handleAutoCompleteSearch} onSelect={handleIngredientSelect} />
+                </span>
+                <div className='flex w-2/5 flex-row'>
+                    <input
+                        key={'amount'}
+                        type='number'
+                        id='amount'
+                        step={0.1}
+                        {...register(`amount` as const, {
+                            valueAsNumber: true,
+                            min: 0,
+                            max: 50000,
                             required: true,
                         })}
-                        defaultValue={ingredients ? ingredients[0]?.title : 0} // Ensure a valid initial value
-                        className="bg-white h-12 text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500"
-                    >
-                        <option key={"select-ingredient-empty"} value="">Select Ingredient</option>
-                        {ingredients ? ingredients.map((ingredient) => (
-                            <option
-                                key={ingredient.title}
-                                value={ingredient.title}>
-                                {ingredient.title}
-                            </option>
-                        )) : <></>}
-                    </select>
-                    <div className='flex h-12 flex-row'>
-                        <input
-                            type='number'
-                            id='amount'
-                            step={0.1}
-                            {...register(`amount` as const, {
-                                valueAsNumber: true,
-                                min: 0,
-                                max: 50000,
-
-                                required: true,
-                            })}
-                            defaultValue={1}
-                            className="border-slate-200 bg-white h-12 truncate text-base font-semibold align-middle mr-2 focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
-                        <input
-                            type='text'
-                            id='unit'
-                            {...register(`unit` as const, {
-                                required: true,
-                            })}
-                            defaultValue={"kg"}
-                            className="border-slate-200 bg-white truncate h-12 text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
-
-                        <button onClick={() => setAdd(true)} className='p-2 ml-4 bg-green-400 text-gray-900 px-4 truncate w-full rounded-md text-lg' type='submit'>+ Add</button>
-                        <button onClick={() => setAdd(false)} className='p-2 ml-4 bg-red-400 text-white px-4 truncate w-full rounded-md text-lg' type='submit'>- Subtract</button>
-
-                    </div>
-                    {inventory ? inventory?.map(inv => (
-                        <>
-                            <div key={inv.ingredient + Math.random()} className='p-2 flex text-white flex-row font-semibold items-center'>
-                                {inv.ingredient}
-                            </div>
-                            <div className='p-2 flex font-semibold flex-row justify-between text-white items-center'>
-                                {inv.amount + " " + inv.unit}
-                                <button onClick={() => deleteInventoryItem(inv.id)} className='px-3 bg-red-400 py-3 rounded-md text-white text-base font-semibold flex flex-row items-center justify-center'>
-                                    <IoRemove />
-                                </button>
-                            </div>
-                        </>
-                    )) : <h1>Loading...</h1>}
-                </form>
-            </div>
+                        defaultValue={1}
+                        className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1'
+                    />
+                    <input
+                        key={'unit'}
+                        type='text'
+                        id='unit'
+                        {...register(`unit` as const, {
+                            required: true,
+                        })}
+                        defaultValue={"kg"}
+                        className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md'
+                    />
+                </div>
+                <button
+                    className='bg-[#046865] ml-2 w-fit text-white p-3 rounded-full'
+                    onClick={() => setAdd(true)}>
+                    <MdAdd className='size-5' />
+                </button>
+                <button
+                    className='bg-[#046865] ml-2 w-fit text-white p-3 rounded-full'
+                    onClick={() => setAdd(false)}>
+                    <FaMinus className='size-5' />
+                </button>
+            </form>
 
         </>
     )

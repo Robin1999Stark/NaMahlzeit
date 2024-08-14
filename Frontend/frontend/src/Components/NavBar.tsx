@@ -19,8 +19,7 @@ function NavBar() {
         { link: "/ingredients", title: "Ingredients" },
         { link: "/meals", title: "Meals" },
         { link: "/planer", title: "Planer" },
-        { link: "/inventory", title: "Inventory" },
-        { link: "/shoppinglist", title: "Shoppinglist" },
+        { link: "/lists", title: "Shoppinglist" },
         { link: "/tags", title: "Tags" },
     ];
 

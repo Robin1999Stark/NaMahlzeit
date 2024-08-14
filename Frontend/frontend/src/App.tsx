@@ -41,7 +41,7 @@ function App() {
               <Route path="/ingredients/:ingredientID" element={<IngredientDetailView />} />
               <Route path="/ingredients/:ingredientID/edit" element={<EditIngredient />} />
               <Route path="/ingredients/:ingredientID/tags" element={<SetTagsIngredient />} />
-              <Route path="/inventory" element={<InventoryShoppingList />} />
+              <Route path="/lists/" element={<InventoryShoppingList />} />
               <Route path="/tags" element={<TagsOverView />} />
               <Route path="/tags/create" element={<CreateTag />} />
               <Route path="/tags/:tagID/edit" element={<EditTag />} />
