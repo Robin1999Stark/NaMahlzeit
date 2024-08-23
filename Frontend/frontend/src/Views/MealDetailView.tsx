@@ -12,6 +12,8 @@ import { IngredientAmount } from '../Datatypes/Ingredient'
 import { Meal, MealTags } from '../Datatypes/Meal'
 import { TagService } from '../Endpoints/TagService'
 import Tag from '../Components/Tag'
+import { Menu, MenuButton, MenuItem, SubMenu } from '@szhsin/react-menu'
+import { IoIosMore } from 'react-icons/io'
 
 function MealDetailView() {
     const navigate = useNavigate();
@@ -85,84 +87,78 @@ function MealDetailView() {
 
     return (
         <>
-            <div className='flex flex-wrap mt-12 w-full rounded-sm min-w-[200px] bg-[#1E1E1E]'>
-                <div className="w-full md:w-1/2 lg:w-1/2 xl:w-1/2 p-4 flex flex-row justify-start items-start">
-                    <div className='w-full max-w-[42rem] '>
-                        <PlaceholderMealImage />
+            <section className='w-full absolute left-[50%] translate-x-[-50%] px-8 mt-12 max-w-[80rem]'>
+                <span className='flex flex-row justify-between items-center'>
+                    <span className='flex mb-4 flex-row justify-start items-center'>
+                        <h1 className='font-semibold text-[#011413] text-2xl mr-2'>
+                            {meal?.title}
+                        </h1>
+                        {displayIsPlanned()}
+                    </span>
+                    <Menu menuButton={<MenuButton><IoIosMore className='size-5 mr-4 text-[#011413]' /></MenuButton>} transition>
+                        <MenuItem onClick={() => navigate(`tags`)}>Tags Anpassen</MenuItem>
+                        <MenuItem onClick={() => navigate(`edit`)}>Gericht Anpassen</MenuItem>
+                    </Menu>
+                </span>
+                <section className='flex flex-wrap w-full'>
+                    <div className='w-full max-w-[26rem]'>
+                        <PlaceholderMealImage rounded border='lg' />
                     </div>
+                    <div className="w-full pl-10 flex-1 md:w-1/2 flex flex-col justify-between text-[#011413] h-full lg:w-1/2 xl:w-1/2 p-4 min-w-[200px]">
+                        <blockquote className='mb-6'>
+                            {meal?.description ?
+                                <URLify text={meal?.description} /> :
+                                <></>
+                            }
 
-                </div>
-                <div className="w-full md:w-1/2 flex flex-col justify-between h-full lg:w-1/2 xl:w-1/2 p-4 min-w-[200px]">
+                        </blockquote>
+                        <div className='py-3 min-w-[200px]'>
+                            <h2 className='truncate my-2 text-lg font-bold'>
+                                Zutaten:
+                            </h2>
+                            {
+                                mealIngredients ?
+                                    <ul className='h-full my-2'>
+                                        {mealIngredients?.map(ingredient => (
+                                            <li key={ingredient.ingredient + Math.random()} className='py-1 w-full flex flex-row text-base font-semibold justify-between'>
+                                                <Link to={`/ingredients/${ingredient.ingredient}`}>{ingredient.ingredient}</Link>
+                                                {ingredient.amount + " " + ingredient.unit + " "}
 
-                    <h1 className='truncate flex flex-row flex-wrap justify-between h-full items-center text-[#EBECF4] mx-5 my-3 text-2xl font-semibold'>
-                        {meal?.title}
-                        {
-                            displayIsPlanned()
-                        }
-                    </h1>
+                                            </li>))}
+                                    </ul> : <h2>Loading ...</h2>
+                            }
+                        </div>
 
-                    <blockquote className='mx-6 mb-6 text-base font-medium text-[#CED0E0]'>
-                        {meal?.description ?
-                            <URLify text={meal?.description} /> :
-                            <></>
-                        }
 
-                    </blockquote>
-                    <div className=' text-[#EBECF4] py-3 rounded-lg min-w-[200px]'>
-                        <h3 className='truncate mx-5 my-2 text-lg font-bold text-[#CED0E0]'>
-                            Ingredients:
-                        </h3>
-                        {
-                            mealIngredients ?
-                                <ul className='mx-5 h-full my-2 text-[#CED0E0]'>
-                                    {mealIngredients?.map(ingredient => (
-                                        <li key={ingredient.ingredient + Math.random()} className='px-3 py-1 w-full flex flex-row text-base font-semibold justify-between'>
-                                            <Link to={`/ingredients/${ingredient.ingredient}`}>{ingredient.ingredient}</Link>
-                                            {ingredient.amount + " " + ingredient.unit + " "}
-
-                                        </li>))}
-                                </ul> : <h2>Loading ...</h2>
-                        }
                     </div>
-
-
-                </div>
-            </div>
-            <div className='p-4 w-full flex flex-col justify-start items-center min-w-[200px]'>
-                <div className='w-full flex flex-row justify-start h-full flex-wrap items-center'>
-                    {tags?.tags.map(tag => (
-                        <Tag title={tag} />
-                    ))}
-                    <Tag title={'Edit Tags'} onClick={() => navigate('tags')} />
-                </div>
-                <div className='flex w-full text-[#3E4C62] py-3 flex-row justify-end'>
-                    <button
-                        className='p-2 bg-[#FF6B00] text-white rounded-md flex flex-row justify-between items-center'
-                        onClick={() => navigate(`edit`)}>
-                        <p className='mx-2'>
-                            Edit
+                </section>
+                <div className='p-4 w-full flex flex-col justify-start items-center min-w-[200px]'>
+                    <div className='w-full flex flex-row justify-start h-full flex-wrap items-center'>
+                        {tags?.tags.map(tag => (
+                            <Tag title={tag} />
+                        ))}
+                    </div>
+                    <div className='flex w-full text-[#011413] py-3 flex-row justify-end'>
+                        <div className='ml-5 flex flex-row  justify-end items-center'>
+                            <LuClock />
+                            <p className='ml-2 font-semibold'>
+                                {meal?.duration} Minuten
+                            </p>
+                        </div>
+                    </div>
+                    <article className='my-6 w-full'>
+                        <h2 className='truncate my-2 text-lg font-bold'>
+                            Zubereitung:
+                        </h2>
+                        <p className='text-base text-start font-medium text-[#011413] text'>
+                            {meal?.preparation ? <URLify text={meal.preparation} /> : "No Preparation found"}
                         </p>
-                        <CiEdit />
-                    </button>
-                    <div className='ml-5 flex flex-row text-white justify-end items-center'>
-                        <LuClock />
-                        <p className='ml-2 font-semibold'>
-                            {meal?.duration} min
+                    </article>
 
-                        </p>
-
-                    </div>
                 </div>
-                <article className='my-6 w-full'>
-                    <h2 className='text-xl mb-3 font-semibold text-[#57D1C2] text-start'>
-                        Preparation:
-                    </h2>
-                    <p className='text-base text-start font-medium text-white text'>
-                        {meal?.preparation ? <URLify text={meal.preparation} /> : "No Preparation found"}
-                    </p>
-                </article>
 
-            </div>
+            </section>
+
         </>
     )
 }

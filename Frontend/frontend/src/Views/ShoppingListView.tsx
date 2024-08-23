@@ -286,7 +286,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
                                 handleCreateShoppingList();
                             }}>
                                 <p>
-                                    + Neue Lists
+                                    + Neue Liste
                                 </p>
                             </MenuItem>
                         </SubMenu>
