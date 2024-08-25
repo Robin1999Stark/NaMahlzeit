@@ -5,6 +5,8 @@ import { TagDT } from '../Datatypes/Tag';
 import { TagService } from '../Endpoints/TagService';
 import { Ingredient, IngredientTags } from '../Datatypes/Ingredient';
 import { IngredientService } from '../Endpoints/IngredientService';
+import { MdAdd } from 'react-icons/md';
+import { LuMinus } from 'react-icons/lu';
 
 function SetTagsIngredient() {
     const navigate = useNavigate();
@@ -74,21 +76,35 @@ function SetTagsIngredient() {
     }
     return (
         <>
-            <h1 className='truncate mx-5 my-5 text-2xl font-semibold'>
-                Set Tags for {ingredient?.title}
-            </h1>
-            <form onSubmit={handleSubmit(onSubmit)}>
-
-                <div className='h-100 px-3'>
-                    <ul className='flex flex-col justify-center my-3 mx-1'>
-
-                        <li key={"tags-key"} className="flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3">
-                            <label htmlFor="tags" className="text-xs truncate text-left align-middle mb-3">
-                                Ingredient Titles:
-                            </label>
-                            <div>
+            <section className='w-full my-4 px-7 flex flex-col justify-start items-start flex-grow'>
+                <h1 className='truncate text-[#011413] text-xl font-semibold flex-1'>
+                    Tags für '{ingredient?.title}' verwalten
+                </h1>
+                <form className='w-full' onSubmit={handleSubmit(onSubmit)}>
+                    <ul className='flex flex-col justify-center my-3'>
+                        <li key={"tags-key"} className="flex flex-col flex-1 justify-between items-start mx-2 my-3">
+                            <span className='w-full mb-3 flex flex-row justify-between items-center'>
+                                <label
+                                    htmlFor="ingredients"
+                                    className={`text-sm text-[#011413] font-semibold truncate text-left align-middle `} >
+                                    Tags:
+                                </label>
+                                <span className='flex flex-row justify-end items-center'>
+                                    <label className='mr-2 text-base font-semibold' htmlFor='add_ingredient'>
+                                        Hinzufügen
+                                    </label>
+                                    <button
+                                        type='button'
+                                        key={'add_ingredient'}
+                                        className='bg-[#046865] p-2.5 w-fit text-white rounded-full'
+                                        onClick={() => append(0)}>
+                                        <MdAdd className='size-5' />
+                                    </button>
+                                </span>
+                            </span>
+                            <ul className='w-full'>
                                 {fields.map((field, index) => (
-                                    <div key={field.id} className="flex">
+                                    <li key={field.id} className="w-full flex flex-row justify-between mb-4 items-center">
                                         {/* Use a dropdown/select for ingredient titles */}
                                         <select
                                             key={"select-" + field.id}
@@ -96,8 +112,8 @@ function SetTagsIngredient() {
                                                 required: true,
                                             })}
                                             defaultValue={tags && tags.length > 0 ? tags[0].name : ""}
-                                            className="border-slate-200 text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500"
-                                        >
+                                            className='bg-white flex-1 w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-2' >
+
                                             <option key={"select-ingredient" + field.id} value="">Select Ingredient</option>
                                             {tags ? tags.map((tag) => (
                                                 <option
@@ -107,30 +123,29 @@ function SetTagsIngredient() {
                                                 </option>
                                             )) : <></>}
                                         </select>
-
-                                        <button key={'remove-' + field.id} type="button" onClick={() => remove(index)}>
-                                            Remove
+                                        <button
+                                            type='button'
+                                            className='bg-[#046865] p-2.5 w-fit text-white rounded-full'
+                                            onClick={() => remove(index)}>
+                                            <LuMinus className='size-5' />
                                         </button>
-                                    </div>
+                                    </li>
                                 ))}
-                                <button type="button" onClick={() => append(0)}>
-                                    Add Tag
-                                </button>
-                            </div>
+
+                            </ul>
                             {errors.tags && (
                                 <p className="text-red-500">Please enter ingredient IDs for all fields.</p>
                             )}
                         </li>
 
                     </ul>
-                </div>
-                <div className='w-100 my-4 flex flex-1 justify-center align-middle'>
-                    <div className='mb-4 mx-6'>
-                        <button className='p-2 bg-slate-500 text-white px-4 rounded-md text-lg' type='submit'>Save and Go Back</button>
-                    </div>
-                </div>
-            </form>
-
+                    <span className='w-full flex flex-row justify-end mb-6'>
+                        <button className='bg-[#046865] text-white font-semibold py-2.5 px-4 rounded-md text-base' type='submit'>
+                            Speichern und Zurück
+                        </button>
+                    </span>
+                </form>
+            </section>
         </>
     )
 }
