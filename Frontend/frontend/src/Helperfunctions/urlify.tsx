@@ -13,7 +13,7 @@ const URLify: React.FC<LinkifyProps> = ({ text }) => {
         });
     };
 
-    return <div dangerouslySetInnerHTML={{ __html: linkifyText(text) }} />;
+    return <span dangerouslySetInnerHTML={{ __html: linkifyText(text) }} />;
 };
 
 export default URLify;

@@ -10,8 +10,6 @@ function EditIngredient() {
 
     const [ingredientData, setIngredientData] = useState<Ingredient | null>(null);
 
-
-
     const {
         register,
         setValue,
@@ -24,7 +22,6 @@ function EditIngredient() {
             },
             mode: 'all'
         });
-    console.log(errors)
     useEffect(() => {
         async function fetchData() {
             if (!ingredientID) return;
@@ -47,7 +44,6 @@ function EditIngredient() {
         fetchData();
     }, [ingredientID, setValue]);
 
-
     const onSubmit = (data: Ingredient) => {
         try {
             IngredientService.updateIngredient(data)
@@ -57,36 +53,49 @@ function EditIngredient() {
     }
     return (
         <>
-            <h1 className='truncate mx-5 my-5 text-2xl font-semibold'>
-                Edit Ingredient
-            </h1>
-            <form onSubmit={handleSubmit(onSubmit)}>
-
-                <div className='h-100 px-3'>
-                    <ul className='flex flex-col justify-center my-3 mx-1'>
-                        <li className='ml-2 text-xl font-semibold'>
-                            {ingredientData?.title}
+            <section className='w-full my-4 px-7 flex flex-col justify-start items-start flex-grow'>
+                <h1 className='truncate text-[#011413] text-xl font-semibold flex-1'>
+                    Zutat '{ingredientData?.title}' anpassen
+                </h1>
+                <form className='w-full' onSubmit={handleSubmit(onSubmit)}>
+                    <ul className='flex flex-col justify-center my-3'>
+                        <li key={"li-title"} className='flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3'>
+                            <label
+                                htmlFor='title'
+                                className={`text-sm mb-2 text-[#011413] font-semibold truncate text-left align-middle`} >
+                                Titel:
+                            </label>
+                            <input
+                                type='text'
+                                title='Titel'
+                                id='title'
+                                autoFocus={true}
+                                {...register("title", {
+                                    required: true,
+                                })}
+                                defaultValue={"Gericht"}
+                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
                         </li>
                         <li key={"li-description"} className='flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3'>
                             <label
                                 htmlFor='description'
-                                className={`text-xs truncate text-left align-middle mb-3`} >
-                                Description:
+                                className={`text-sm mb-2 text-[#011413] font-semibold truncate text-left align-middle`} >
+                                Beschreibung:
                             </label>
-                            <input
-                                type='text'
+                            <textarea
+                                rows={7}
                                 id='description'
                                 {...register("description", {
                                     required: true,
                                 })}
                                 defaultValue={"Lorem Ipsum"}
-                                className="border-slate-200 truncate text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
+                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
                         </li>
-                        <li key={"li-preferedUnit"} className='flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3'>
+                        <li key={"li-pU"} className='flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3'>
                             <label
                                 htmlFor='preferedUnit'
-                                className={`text-xs truncate text-left align-middle mb-3`} >
-                                prefered Unit:
+                                className={`text-sm mb-2 text-[#011413] font-semibold truncate text-left align-middle`} >
+                                Bevorzugte Einheit:
                             </label>
                             <input
                                 type='text'
@@ -94,21 +103,20 @@ function EditIngredient() {
                                 {...register("preferedUnit", {
                                     required: true,
                                 })}
-                                defaultValue={"Lorem Ipsum"}
-                                className="border-slate-200 truncate text-base font-semibold align-middle focus:text-left p-2 w-full placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500" />
+                                defaultValue={"kg"}
+                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
                         </li>
-                    </ul>
-                </div>
-                <div className='w-100 my-4 flex flex-1 justify-center align-middle'>
 
-                    <div className='mb-4 mx-6'>
-                        <button className='p-2 bg-slate-500 text-white px-4 rounded-md text-lg' type='submit'>Save</button>
+
+                    </ul>
+                    <div className='w-full flex flex-row justify-end mb-6'>
+
+                        <button className='bg-[#046865] text-white font-semibold py-2.5 px-4 rounded-md text-base' type='submit'>
+                            Zutat Speichern
+                        </button>
                     </div>
-                </div>
-            </form>
-            <div className='mb-4 mx-6'>
-                <button className='p-2 bg-slate-500 text-white px-4 rounded-md text-lg' onClick={() => navigate(-1)}>Go Back</button>
-            </div>
+                </form>
+            </section>
         </>
     )
 }

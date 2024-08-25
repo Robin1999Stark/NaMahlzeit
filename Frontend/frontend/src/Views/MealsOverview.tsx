@@ -111,11 +111,11 @@ function MealsOverview() {
                     }
                     return <>
                         {prefix}
-                        <li
+                        <span
                             key={meal.id}
                             className='py-[0.2rem] px-2 flex flex-row justify-between overflow-hidden rounded-sm bg-white bg-opacity-10'>
                             <MealListItem meal={meal} deleteMeal={deleteMeal} />
-                        </li>
+                        </span>
                     </>
 
 

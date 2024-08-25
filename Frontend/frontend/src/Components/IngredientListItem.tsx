@@ -3,7 +3,6 @@ import { Ingredient } from '../Datatypes/Ingredient'
 import { Link } from 'react-router-dom'
 import { TagService } from '../Endpoints/TagService';
 import Tag from './Tag';
-import { MdDeleteForever } from 'react-icons/md';
 
 type Props = {
     ingredient: Ingredient,
@@ -28,11 +27,9 @@ function IngredientListItem({ ingredient, deleteIngredient }: Props) {
         fetchTags(ingredient.title);
     }, [])
 
-
     return (
         <>
-
-            <li
+            <span
                 className='select-none w-full h-full py-3 flex flex-row justify-between items-center rounded-md border-l-[6px] border-[#046865] truncate bg-[#fff]'>
                 <article className='text-center  flex flex-row justify-start ml-3 items-center w-full whitespace-normal text-[#011413] text-base '>
 
@@ -44,16 +41,15 @@ function IngredientListItem({ ingredient, deleteIngredient }: Props) {
                 </article>
                 <ul className='w-full'>
                     {tags?.map((tag: string) => (
-                        <li className='my-1'>
+                        <li key={`${ingredient.title}-${tag}`} className='my-1'>
                             <Tag title={tag} />
                         </li>
                     ))}
                 </ul>
-
                 <button className='mr-4' onClick={() => deleteIngredient(ingredient.title)}>
                     Remove
                 </button>
-            </li>
+            </span>
 
 
         </>

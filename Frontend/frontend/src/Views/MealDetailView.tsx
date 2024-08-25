@@ -7,12 +7,11 @@ import PlaceholderMealImage from '../Components/PlaceholderMealImage'
 import URLify from '../Helperfunctions/urlify'
 import { LuClock } from "react-icons/lu";
 import { PlanerService } from '../Endpoints/PlanerService'
-import { CiEdit } from "react-icons/ci";
 import { IngredientAmount } from '../Datatypes/Ingredient'
 import { Meal, MealTags } from '../Datatypes/Meal'
 import { TagService } from '../Endpoints/TagService'
 import Tag from '../Components/Tag'
-import { Menu, MenuButton, MenuItem, SubMenu } from '@szhsin/react-menu'
+import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu'
 import { IoIosMore } from 'react-icons/io'
 
 function MealDetailView() {
@@ -27,7 +26,7 @@ function MealDetailView() {
 
     function displayIsPlanned() {
         if (isPlanned && isPlanned.isPlanned) {
-            return <p aria-label='planned for' className='text-[#FFC200] mr-1 font-semibold p-1 ring-1 ring-[#FFC200] text-center text-sm w-24 rounded-full'>{new Date(isPlanned.plannedDate!).toLocaleDateString()}</p>
+            return <label aria-label='planned for' className='text-[#046865] font-bold text-sm'>{'geplant: ' + new Date(isPlanned.plannedDate!).toLocaleDateString()}</label>
         } else {
             return <></>
         }
@@ -87,28 +86,50 @@ function MealDetailView() {
 
     return (
         <>
-            <section className='w-full absolute left-[50%] translate-x-[-50%] px-8 mt-12 max-w-[80rem]'>
+            <section className='w-full absolute left-[50%] translate-x-[-50%] px-8 mt-8 max-w-[70rem]'>
                 <span className='flex flex-row justify-between items-center'>
-                    <span className='flex mb-4 flex-row justify-start items-center'>
-                        <h1 className='font-semibold text-[#011413] text-2xl mr-2'>
+                    <span className='flex flex-row justify-start items-center'>
+                        <h1 className='font-semibold text-[#011413] text-2xl mx-2'>
                             {meal?.title}
                         </h1>
-                        {displayIsPlanned()}
+                        <sup>
+                            {displayIsPlanned()}
+                        </sup>
                     </span>
+
                     <Menu menuButton={<MenuButton><IoIosMore className='size-5 mr-4 text-[#011413]' /></MenuButton>} transition>
                         <MenuItem onClick={() => navigate(`tags`)}>Tags Anpassen</MenuItem>
                         <MenuItem onClick={() => navigate(`edit`)}>Gericht Anpassen</MenuItem>
                     </Menu>
                 </span>
-                <section className='flex flex-wrap w-full'>
-                    <div className='w-full max-w-[26rem]'>
-                        <PlaceholderMealImage rounded border='lg' />
+                <hr className='my-4' />
+                <span className='w-full flex flex-row justify-between items-start'>
+                    <ul className='w-full flex flex-1 flex-row justify-start h-full flex-wrap items-center'>
+                        {tags?.tags.map(tag => (
+                            <li className='mr-1'>
+                                <Tag title={tag} />
+
+                            </li>
+                        ))}
+
+                    </ul>
+                    <div className='ml-5 flex flex-row truncate  justify-end items-center'>
+                        <LuClock className='size-4' />
+                        <p className='ml-2 font-semibold'>
+                            {meal?.duration} Minuten
+                        </p>
                     </div>
-                    <div className="w-full pl-10 flex-1 md:w-1/2 flex flex-col justify-between text-[#011413] h-full lg:w-1/2 xl:w-1/2 p-4 min-w-[200px]">
+                </span>
+
+                <hr className='mt-4 mb-8' />
+                <section className='flex flex-wrap w-full'>
+                    <span className='w-full max-w-[22rem]'>
+                        <PlaceholderMealImage rounded border='full' />
+                    </span>
+                    <div className="w-full pl-20 flex-1 md:w-1/2 flex flex-col justify-between text-[#011413] h-full lg:w-1/2 xl:w-1/2 p-4 min-w-[200px]">
                         <blockquote className='mb-6'>
-                            {meal?.description ?
-                                <URLify text={meal?.description} /> :
-                                <></>
+                            {meal?.description &&
+                                <URLify text={meal?.description} />
                             }
 
                         </blockquote>
@@ -128,34 +149,18 @@ function MealDetailView() {
                                     </ul> : <h2>Loading ...</h2>
                             }
                         </div>
+                        <article className='my-6 w-full'>
+                            <h2 className='truncate my-2 text-lg font-bold'>
+                                Zubereitung:
+                            </h2>
+                            <p className='text-base text-start font-medium text-[#011413] text'>
+                                {meal?.preparation ? <URLify text={meal.preparation} /> : "No Preparation found"}
+                            </p>
+                        </article>
 
 
                     </div>
                 </section>
-                <div className='p-4 w-full flex flex-col justify-start items-center min-w-[200px]'>
-                    <div className='w-full flex flex-row justify-start h-full flex-wrap items-center'>
-                        {tags?.tags.map(tag => (
-                            <Tag title={tag} />
-                        ))}
-                    </div>
-                    <div className='flex w-full text-[#011413] py-3 flex-row justify-end'>
-                        <div className='ml-5 flex flex-row  justify-end items-center'>
-                            <LuClock />
-                            <p className='ml-2 font-semibold'>
-                                {meal?.duration} Minuten
-                            </p>
-                        </div>
-                    </div>
-                    <article className='my-6 w-full'>
-                        <h2 className='truncate my-2 text-lg font-bold'>
-                            Zubereitung:
-                        </h2>
-                        <p className='text-base text-start font-medium text-[#011413] text'>
-                            {meal?.preparation ? <URLify text={meal.preparation} /> : "No Preparation found"}
-                        </p>
-                    </article>
-
-                </div>
 
             </section>
 

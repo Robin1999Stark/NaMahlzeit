@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import { IngredientService } from '../Endpoints/IngredientService'
 import { Ingredient } from '../Datatypes/Ingredient'
 import { LuFilter } from 'react-icons/lu'
-import ButtonRound from '../Components/ButtonRound'
 import { MdAdd } from 'react-icons/md'
 import IngredientListItem from '../Components/IngredientListItem'
 import { TagDT } from '../Datatypes/Tag'
@@ -97,14 +96,14 @@ function IngredientsOverView() {
                     const firstChar = ingredient.title.charAt(0).toUpperCase();
 
                     if (index === 0) {
-                        prefix = <li className='p-2 font-semibold text-base text-[#7A8587]' key={prefix + firstChar}>
+                        prefix = <li className='p-2 font-semibold text-base text-[#7A8587]' key={`prefix-${index}`}>
                             - {firstChar.toUpperCase()} -
 
                         </li>
                     } else if (index > 0) {
                         const lastElement = filteredIngredients[index - 1];
                         if (lastElement.title.charAt(0).toUpperCase() !== firstChar) {
-                            prefix = <li className='p-2 font-semibold text-base text-[#7A8587]' key={prefix + firstChar}>
+                            prefix = <li className='p-2 font-semibold text-base text-[#7A8587]' key={`prefix-${index}`}>
                                 - {firstChar.toUpperCase()} -
                             </li>
                         }
@@ -113,13 +112,11 @@ function IngredientsOverView() {
                     return <>
                         {prefix}
                         <li
-                            key={ingredient.title}
+                            key={`prefix-${ingredient.title}-${index}`}
                             className='py-[0.2rem] px-2 flex flex-row justify-between overflow-hidden rounded-sm bg-white bg-opacity-10'>
                             <IngredientListItem ingredient={ingredient} deleteIngredient={deleteIngredient} />
                         </li>
                     </>
-
-
                 }
                 ) : <></>}
             </ul>
@@ -128,7 +125,6 @@ function IngredientsOverView() {
 
     return (
         <>
-
             <section className='w-full my-4 px-7 flex flex-row items-center justify-between flex-grow'>
                 <h1 className='truncate text-[#011413] text-xl font-semibold flex-1'>
                     Ingredients ({filteredIngredients?.length})

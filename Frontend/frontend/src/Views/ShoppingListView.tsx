@@ -370,8 +370,6 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
                         <MdAdd className='size-5' />
                     </button>
                 </form>
-
-
             </>
         )
     } else {

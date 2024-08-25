@@ -4,19 +4,17 @@ import { InventoryService } from '../Endpoints/InventoryService'
 import { useForm } from 'react-hook-form';
 import { IngredientService } from '../Endpoints/IngredientService';
 import { Ingredient } from '../Datatypes/Ingredient';
-import { IoRemove } from 'react-icons/io5';
 import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
 import { IoIosMore } from 'react-icons/io';
 import { MdAdd } from 'react-icons/md';
+import { LuMinus } from "react-icons/lu";
 import AutoCompleteInput from '../Components/AutoCompleteInput';
-import { FaMinus } from 'react-icons/fa';
 
 function InventoryListView() {
     const [ingredients, setIngredients] = useState<Ingredient[]>()
     const [inventory, setInventory] = useState<InventoryItem[]>();
     const [add, setAdd] = useState<boolean>(false);
     const [selectedIngredient, setSelectedIngredient] = useState<Ingredient | string>("");
-
 
     const {
         register,
@@ -170,7 +168,7 @@ function InventoryListView() {
                 <button
                     className='bg-[#046865] ml-2 w-fit text-white p-3 rounded-full'
                     onClick={() => setAdd(false)}>
-                    <FaMinus className='size-5' />
+                    <LuMinus className='size-5' />
                 </button>
             </form>
 

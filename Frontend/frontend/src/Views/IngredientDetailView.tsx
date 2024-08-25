@@ -5,6 +5,8 @@ import URLify from '../Helperfunctions/urlify'
 import { Ingredient } from '../Datatypes/Ingredient';
 import { TagService } from '../Endpoints/TagService';
 import Tag from '../Components/Tag';
+import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
+import { IoIosMore } from 'react-icons/io';
 
 function IngredientDetailView() {
     const navigate = useNavigate();
@@ -49,31 +51,45 @@ function IngredientDetailView() {
 
     return (
         <>
-            <div className='w-full h-full flex flex-col justify-start items-start'>
+            <section className='w-full absolute left-[50%] translate-x-[-50%] px-8 mt-8 max-w-[70rem]'>
+                <span className='flex flex-row justify-between items-center'>
+                    <span className='flex flex-row justify-start items-center'>
+                        <h1 className='font-semibold text-[#011413] text-2xl mx-2'>
+                            Zutat: {ingredient?.title}
+                        </h1>
 
-                <h1 className='truncate mx-5 my-5 text-2xl font-semibold'>
-                    {ingredient?.title}
-                </h1>
-                <div className='w-full flex flex-row justify-start mx-5 mb-4 flex-wrap items-center'>
-                    {tags?.map(tag => (
-                        <Tag key={tag} title={tag} />
-                    ))}
-                    <Tag key={'edit'} title={'Edit Tags'} onClick={() => navigate('tags')} />
+                    </span>
 
-                </div>
-                <blockquote className='mx-5 mb-4'>
+                    <Menu menuButton={<MenuButton><IoIosMore className='size-5 mr-4 text-[#011413]' /></MenuButton>} transition>
+                        <MenuItem onClick={() => navigate(`tags`)}>Tags Anpassen</MenuItem>
+                        <MenuItem onClick={() => navigate(`edit`)}>Zutat Anpassen</MenuItem>
+                    </Menu>
+                </span>
+                <hr className='my-4' />
+                <span className='w-full flex px-3 flex-row justify-between items-start'>
+                    {
+                        tags !== undefined && tags?.length > 0 ? <ul className='w-full flex flex-1 flex-row justify-start h-full flex-wrap items-center'>
+                            {tags?.map(tag => (
+                                <li className='mr-1' key={tag}>
+                                    <Tag title={tag} />
+                                </li>
+                            ))}
+                        </ul> : <p className='text-base'>
+                            Noch keine Tags
+                        </p>
+                    }
+
+                    <blockquote className='font-semibold'>
+                        Bevorzugte Einheit:
+                        {" " + ingredient?.preferedUnit}
+                    </blockquote>
+                </span>
+                <hr className='my-4' />
+                <blockquote className='mx-3 mb-4'>
                     {ingredient?.description ? <URLify text={ingredient?.description} /> : <></>}
                 </blockquote>
-                <blockquote className='mx-5 mb-4 font-semibold'>
-                    prefered Unit:
-                    {" " + ingredient?.preferedUnit}
-                </blockquote>
-                <div className='w-full flex flex-row justify-start py-3 items-center'>
-                    <div className='mb-4 mx-6'>
-                        <button className='p-2 bg-slate-500 text-white px-4 rounded-md text-lg' onClick={() => navigate(-1)}>Go Back</button>
-                    </div>
-                </div>
-            </div>
+            </section>
+
         </>
     )
 }
