@@ -9,6 +9,7 @@ import MealListItem from '../Components/MealListItem';
 import { MdAdd } from 'react-icons/md';
 import { LuFilter, LuList, LuSquareStack } from 'react-icons/lu';
 import MealCard from '../Components/MealCard';
+import { PlanerService } from '../Endpoints/PlanerService';
 
 function MealsOverview() {
     const navigate = useNavigate();
@@ -18,6 +19,17 @@ function MealsOverview() {
     const [debounceTimeout, setDebounceTimeout] = useState<number | null>(null);
     const [isList, setIsList] = useState<boolean>(true);
 
+    const handleAddMeal = async (to: Date, mealId: number) => {
+        try {
+            const addedPlanerItem = await PlanerService.addMealToPlaner(to, mealId);
+            if (!addedPlanerItem) {
+                console.error('Failed to add meal to planner.');
+                return;
+            }
+        } catch (error) {
+            console.error('Error adding meal to planner:', error);
+        }
+    }
     async function fetchData() {
         try {
             const data = await MealService.getAllMeals()
@@ -107,20 +119,19 @@ function MealsOverview() {
                                 - {firstChar.toUpperCase()} -
                             </li>
                         }
-
                     }
                     return <>
                         {prefix}
                         <span
                             key={meal.id}
                             className='py-[0.2rem] px-2 flex flex-row justify-between overflow-hidden rounded-sm bg-white bg-opacity-10'>
-                            <MealListItem meal={meal} deleteMeal={deleteMeal} />
+                            <MealListItem
+                                meal={meal}
+                                addMealToPlaner={handleAddMeal}
+                                deleteMeal={deleteMeal} />
                         </span>
                     </>
-
-
-                }
-                ) : <></>}
+                }) : <></>}
             </ul>
         )
     }
@@ -140,9 +151,21 @@ function MealsOverview() {
 
     return (
         <>
-            <section className='w-full my-4 px-7 flex flex-row items-center justify-between flex-grow'>
+            {/* Only visible in mobile version */}
+            <section className='w-full my-4 px-7 md:hidden flex flex-row items-center justify-between flex-grow '>
                 <h1 className='truncate text-[#011413] text-xl font-semibold flex-1'>
-                    Meals ({filteredMeals?.length})
+                    Rezepte ({filteredMeals?.length})
+                </h1>
+                <button
+                    className='p-3 text-lg bg-[#046865] text-white rounded-full'
+                    onClick={() => navigate('/meals/create')}  >
+                    <MdAdd />
+                </button>
+            </section >
+
+            <section className='w-full my-4 px-7 flex flex-row items-center justify-between flex-grow'>
+                <h1 className='truncate text-[#011413] hidden md:block text-xl font-semibold flex-1'>
+                    Rezepte ({filteredMeals?.length})
                 </h1>
                 <div className='flex flex-grow flex-row justify-center items-center'>
                     <input
@@ -157,19 +180,22 @@ function MealsOverview() {
                         }}
                         autoFocus={true}
                         className='bg-white w-full focus:ring-0 py-2 text-start shadow-md px-6 rounded-full mr-2'
-                        placeholder='Search for Meals' />
+                        placeholder='Nach Rezepten Suchen ...' />
                     <button
                         className='p-3 text-lg bg-[#046865] text-white rounded-full'
                         onClick={() => searchForMeals(searchString)} >
                         <LuFilter />
                     </button>
                 </div>
-
-                <div className='flex-row flex-1 flex justify-end items-center w-full'>
-                    <button className={isList ? ' text-[#FF6B00] border-[#FF6B00] border-2 rounded-full p-2.5 mr-3 text-lg' : 'text-[#046865] border-[#046865] border-2 rounded-full p-2.5 mr-3 text-lg'} onClick={() => setIsList(true)} >
+                <div className='flex-row flex-1 hidden md:flex justify-end items-center w-full '>
+                    <button
+                        className={`${isList ? 'text-[#FF6B00] border-[#FF6B00]' : 'text-[#046865] border-[#046865]'} invisible lg:visible border-2 rounded-full p-2.5 mr-3 text-lg`}
+                        onClick={() => setIsList(true)} >
                         <LuList />
                     </button>
-                    <button className={!isList ? ' text-[#FF6B00] border-[#FF6B00] border-2 rounded-full p-2.5 mr-3 text-lg' : 'text-[#046865] border-[#046865] border-2 rounded-full p-2.5 mr-3 text-lg'} onClick={() => setIsList(false)} >
+                    <button
+                        className={`${!isList ? 'text-[#FF6B00] border-[#FF6B00]' : 'text-[#046865] border-[#046865]'} invisible lg:visible border-2 rounded-full p-2.5 mr-3 text-lg`}
+                        onClick={() => setIsList(false)} >
                         <LuSquareStack />
                     </button>
                     <button
@@ -177,9 +203,7 @@ function MealsOverview() {
                         onClick={() => navigate('/meals/create')}  >
                         <MdAdd />
                     </button>
-
                 </div>
-
             </section>
 
             {

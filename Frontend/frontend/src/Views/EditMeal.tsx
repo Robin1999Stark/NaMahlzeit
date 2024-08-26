@@ -86,7 +86,7 @@ function EditMeal() {
                 </h1>
                 <form className='w-full' onSubmit={handleSubmit(onSubmit)}>
                     <ul className='flex flex-col justify-center my-3'>
-                        <li key={"li-title"} className='flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3'>
+                        <li key={"li-title"} className='flex w-100 flex-col flex-1 justify-between items-start my-3'>
                             <label
                                 htmlFor='title'
                                 className={`text-sm mb-2 text-[#011413] font-semibold truncate text-left align-middle`} >
@@ -101,9 +101,9 @@ function EditMeal() {
                                     required: true,
                                 })}
                                 defaultValue={"Gericht"}
-                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
+                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md mr-1' />
                         </li>
-                        <li key={"li-description"} className='flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3'>
+                        <li key={"li-description"} className='flex w-100 flex-col flex-1 justify-between items-start my-3'>
                             <label
                                 htmlFor='description'
                                 className={`text-sm mb-2 text-[#011413] font-semibold truncate text-left align-middle`} >
@@ -116,9 +116,9 @@ function EditMeal() {
                                     required: true,
                                 })}
                                 defaultValue={"Lorem Ipsum"}
-                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
+                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md mr-1' />
                         </li>
-                        <li key={"ingredients-key"} className="flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3">
+                        <li key={"ingredients-key"} className="flex w-100 flex-col flex-1 justify-between items-start my-3">
                             <span className='w-full mb-3 flex flex-row justify-between items-center'>
                                 <label
                                     htmlFor="ingredients"
@@ -126,7 +126,7 @@ function EditMeal() {
                                     Zutaten:
                                 </label>
                                 <span className='flex flex-row justify-end items-center'>
-                                    <label className='mr-2 text-base font-semibold' htmlFor='add_ingredient'>
+                                    <label className='mr-2 text-sm font-semibold' htmlFor='add_ingredient'>
                                         Hinzufügen
                                     </label>
                                     <button
@@ -196,7 +196,7 @@ function EditMeal() {
                                 <p className="text-red-500">Please enter ingredient IDs for all fields.</p>
                             )}
                         </li>
-                        <li key={"li-prep"} className='flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3'>
+                        <li key={"li-prep"} className='flex w-100 flex-col flex-1 justify-between items-start my-3'>
                             <label
                                 htmlFor='preparation'
                                 className={`text-sm mb-2 text-[#011413] font-semibold truncate text-left align-middle`} >
@@ -211,7 +211,7 @@ function EditMeal() {
                                 defaultValue={"Step 1"}
                                 className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
                         </li>
-                        <li key={"li-duration"} className='flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3'>
+                        <li key={"li-duration"} className='flex w-100 flex-col flex-1 justify-between items-start my-3'>
                             <label
                                 htmlFor='duration'
                                 className={`text-sm mb-2 text-[#011413] font-semibold truncate text-left align-middle`} >

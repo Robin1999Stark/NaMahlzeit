@@ -118,7 +118,6 @@ function NavBar() {
                                     setOpen(!open)
                                 }}>
                                 <MdClose />
-
                             </button>
                             :
                             <button

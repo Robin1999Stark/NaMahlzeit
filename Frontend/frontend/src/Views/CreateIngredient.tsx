@@ -55,7 +55,7 @@ function CreateIngredient() {
                 </h1>
                 <form className='w-full' onSubmit={handleSubmit(onSubmit)}>
                     <ul className='flex flex-col justify-center my-3'>
-                        <li key={"li-title"} className='flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3'>
+                        <li key={"li-title"} className='flex w-100 flex-col flex-1 justify-between items-start my-3'>
                             <label
                                 htmlFor='title'
                                 className={`text-sm mb-2 text-[#011413] font-semibold truncate text-left align-middle`} >
@@ -72,7 +72,7 @@ function CreateIngredient() {
                                 defaultValue={"Gericht"}
                                 className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
                         </li>
-                        <li key={"li-description"} className='flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3'>
+                        <li key={"li-description"} className='flex w-100 flex-col flex-1 justify-between items-start my-3'>
                             <label
                                 htmlFor='description'
                                 className={`text-sm mb-2 text-[#011413] font-semibold truncate text-left align-middle`} >
@@ -87,7 +87,7 @@ function CreateIngredient() {
                                 defaultValue={"Lorem Ipsum"}
                                 className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
                         </li>
-                        <li key={"li-pU"} className='flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3'>
+                        <li key={"li-pU"} className='flex w-100 flex-col flex-1 justify-between items-start my-3'>
                             <label
                                 htmlFor='preferedUnit'
                                 className={`text-sm mb-2 text-[#011413] font-semibold truncate text-left align-middle`} >
@@ -103,14 +103,14 @@ function CreateIngredient() {
                                 className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
                         </li>
                     </ul>
-                    <div className='w-full flex flex-row justify-end mb-6'>
-                        <button className='py-2.5 bg-slate-200 text-[#011413] px-4 rounded-md text-base mr-2' onClick={() => {
+                    <div className='w-full flex flex-col-reverse justify-end mb-6 sm:flex-row'>
+                        <button className='py-2.5 bg-slate-200 text-[#011413] px-4 rounded-md text-base mt-2 sm:mt-0 mr-0 sm:mr-2' onClick={() => {
                             handleWikiSearch('Ajvar')
                         }}>Autofill with wikipedia</button>
                         <button
                             className='bg-[#046865] text-white font-semibold py-2.5 px-4 rounded-md text-base'
                             type='submit'>
-                            Gericht erstellen
+                            Zutat erstellen
                         </button>
                     </div>
                 </form>

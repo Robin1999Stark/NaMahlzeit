@@ -265,7 +265,7 @@ function ReceipePlanerView() {
                                         className={`w-full flex flex-col py-1 mx-4 cursor-pointer justify-start ${tooglePlaner ? 'bg-[#004A41] text-white font-bold' : 'bg-white text-[#011413]'} rounded-full items-center`}>
                                         <FaRegCalendarAlt className='size-5' />
                                         <p className='text-sm'>
-                                            Planer
+                                            Speiseplan
                                         </p>
                                     </li>
                                     <li
@@ -303,7 +303,7 @@ function ReceipePlanerView() {
                                         className={`w-full flex flex-col py-1 mx-4 cursor-pointer justify-start ${tooglePlaner ? 'bg-[#004A41] text-white font-bold' : 'bg-white text-[#011413]'} rounded-full items-center`}>
                                         <FaRegCalendarAlt className='size-5' />
                                         <p className='text-sm'>
-                                            Planer
+                                            Speiseplan
                                         </p>
                                     </li>
                                     <li

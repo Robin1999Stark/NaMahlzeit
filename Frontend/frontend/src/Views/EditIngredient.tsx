@@ -59,7 +59,7 @@ function EditIngredient() {
                 </h1>
                 <form className='w-full' onSubmit={handleSubmit(onSubmit)}>
                     <ul className='flex flex-col justify-center my-3'>
-                        <li key={"li-title"} className='flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3'>
+                        <li key={"li-title"} className='flex w-100 flex-col flex-1 justify-between items-start my-3'>
                             <label
                                 htmlFor='title'
                                 className={`text-sm mb-2 text-[#011413] font-semibold truncate text-left align-middle`} >
@@ -76,7 +76,7 @@ function EditIngredient() {
                                 defaultValue={"Gericht"}
                                 className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
                         </li>
-                        <li key={"li-description"} className='flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3'>
+                        <li key={"li-description"} className='flex w-100 flex-col flex-1 justify-between items-start my-3'>
                             <label
                                 htmlFor='description'
                                 className={`text-sm mb-2 text-[#011413] font-semibold truncate text-left align-middle`} >
@@ -89,9 +89,9 @@ function EditIngredient() {
                                     required: true,
                                 })}
                                 defaultValue={"Lorem Ipsum"}
-                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
+                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md mr-1' />
                         </li>
-                        <li key={"li-pU"} className='flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3'>
+                        <li key={"li-pU"} className='flex w-100 flex-col flex-1 justify-between items-start my-3'>
                             <label
                                 htmlFor='preferedUnit'
                                 className={`text-sm mb-2 text-[#011413] font-semibold truncate text-left align-middle`} >
@@ -104,7 +104,7 @@ function EditIngredient() {
                                     required: true,
                                 })}
                                 defaultValue={"kg"}
-                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
+                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md mr-1' />
                         </li>
                     </ul>
                     <div className='w-full flex flex-row justify-end mb-6'>

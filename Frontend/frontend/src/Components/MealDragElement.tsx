@@ -9,7 +9,6 @@ import { Menu, MenuItem, MenuButton, SubMenu, FocusableItem } from '@szhsin/reac
 import '@szhsin/react-menu/dist/index.css';
 import '@szhsin/react-menu/dist/transitions/zoom.css';
 import { MdAdd } from 'react-icons/md';
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import CustomDatePicker from './CustomDatePicker';
 
@@ -31,7 +30,6 @@ function MealDragElement({ mealID, dragProvided, snapshot, date, customStyle, pl
     const [meal, setMeal] = useState<Meal>();
     const [_error, setError] = useState<boolean>(false);
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-    const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
 
     useEffect(() => {
         async function fetchMeal() {
@@ -153,7 +151,6 @@ function MealDragElement({ mealID, dragProvided, snapshot, date, customStyle, pl
                             Morgen
                         </MenuItem>
                         <SubMenu label="Anderer Tag">
-
                             <FocusableItem title='Anderer Tag'>
                                 {({ ref }) => (
                                     <CustomDatePicker

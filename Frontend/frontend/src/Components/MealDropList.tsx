@@ -29,9 +29,8 @@ function MealDropList({ listId, listType, planerItem, onRemoveMeal, onMoveMeal, 
         const isToday = new Date(Date.now()).getDate() === new Date(planerItem.date).getDate()
         return (
             <span className='flex select-none flex-row justify-start items-center w-full rounded-md my-4'>
-                {isEmpty ? <IoMdWarning title='Nothing planed for now' className='size-4 text-[#F96E46] mr-2' /> : <FaCheckCircle className='size-4 text-[#046865] mr-2' />}
-
-                <h2 className={isToday ? isEmpty ? 'text-[#F96E46] text-sm font-bold' : 'text-[#046865] text-sm font-bold' : 'text-[#7A8587] text-sm font-bold'}>
+                <FaCheckCircle className={`${isEmpty ? 'text-slate-200' : 'text-[#046865]'} size-4 mr-2`} />
+                <h2 className={isToday ? isEmpty ? 'text-[#F96E46] text-sm font-bold' : 'text-[#046865] text-sm font-bold' : 'text-[#011413] text-sm font-semibold'}>
                     {planerItem.date instanceof Date ? Weekday[planerItem.date.getDay()] : Weekday[new Date(planerItem.date).getDay()]}
                     {", " + new Date(planerItem.date).getDate() + "." + (new Date(planerItem.date).getMonth() + 1) + "." + (new Date(planerItem.date).getFullYear())}
                 </h2>

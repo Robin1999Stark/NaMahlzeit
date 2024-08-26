@@ -50,8 +50,19 @@ function TagsOverView() {
 
     return (
         <>
-            <section className='w-full my-4 px-7 flex flex-row items-center justify-between flex-grow'>
+            {/* Only visible in mobile version */}
+            <section className='w-full my-4 px-7 md:hidden flex flex-row items-center justify-between flex-grow '>
                 <h1 className='truncate text-[#011413] text-xl font-semibold flex-1'>
+                    Tags ({filteredTags?.length})
+                </h1>
+                <button
+                    className='p-3 text-lg bg-[#046865] text-white rounded-full'
+                    onClick={() => navigate('/tags/create')}  >
+                    <MdAdd />
+                </button>
+            </section >
+            <section className='w-full my-4 px-7 flex flex-row items-center justify-between flex-grow'>
+                <h1 className='truncate text-[#011413] hidden md:block text-xl font-semibold flex-1'>
                     Tags ({filteredTags?.length})
                 </h1>
                 <div className='flex flex-grow flex-row justify-center items-center'>
@@ -62,7 +73,7 @@ function TagsOverView() {
                         }}
                         autoFocus={true}
                         className='bg-white w-full focus:ring-0 py-2 text-start shadow-md px-6 rounded-full mr-2'
-                        placeholder='Search for Tags' />
+                        placeholder='Nach Tags Suchen ...' />
 
                     <button
                         className='p-3 text-lg bg-[#046865] text-white rounded-full'
@@ -71,7 +82,7 @@ function TagsOverView() {
                     </button>
                 </div>
 
-                <div className='flex-row flex-1 flex justify-end items-center w-full'>
+                <div className='flex-row flex-1 hidden md:flex justify-end items-center w-full '>
                     <button
                         className='p-3 text-lg bg-[#046865] text-white rounded-full'
                         onClick={() => navigate('/tags/create')}>

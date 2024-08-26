@@ -35,7 +35,7 @@ function CreateTag() {
                 </h1>
                 <form className='w-full' onSubmit={handleSubmit(onSubmit)}>
                     <ul className='flex flex-col justify-center my-3'>
-                        <li key={"li-name"} className='flex w-100 flex-col flex-1 justify-between items-start mx-2 my-3'>
+                        <li key={"li-name"} className='flex w-100 flex-col flex-1 justify-between items-start my-3'>
                             <label
                                 htmlFor='name'
                                 className={`text-sm mb-2 text-[#011413] font-semibold truncate text-left align-middle`} >
@@ -55,7 +55,7 @@ function CreateTag() {
                     </ul>
                     <span className='w-full flex flex-row justify-end mb-6'>
                         <button
-                            className='bg-[#046865] text-white font-semibold py-2.5 px-4 rounded-md text-base'
+                            className='bg-[#046865] text-white sm:w-fit w-full font-semibold py-2.5 px-4 rounded-md text-base'
                             type='submit'>
                             Tag erstellen
                         </button>

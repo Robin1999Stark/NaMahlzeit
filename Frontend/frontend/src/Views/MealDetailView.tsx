@@ -106,9 +106,8 @@ function MealDetailView() {
                 <span className='w-full flex flex-row justify-between items-start'>
                     <ul className='w-full flex flex-1 flex-row justify-start h-full flex-wrap items-center'>
                         {tags?.tags.map(tag => (
-                            <li className='mr-1'>
+                            <li className='mr-1 mb-2'>
                                 <Tag title={tag} />
-
                             </li>
                         ))}
 
@@ -122,11 +121,11 @@ function MealDetailView() {
                 </span>
 
                 <hr className='mt-4 mb-8' />
-                <section className='flex flex-wrap w-full'>
+                <section className='flex flex-col md:flex-row w-full'>
                     <span className='w-full max-w-[22rem]'>
                         <PlaceholderMealImage rounded border='full' />
                     </span>
-                    <div className="w-full pl-20 flex-1 md:w-1/2 flex flex-col justify-between text-[#011413] h-full lg:w-1/2 xl:w-1/2 p-4 min-w-[200px]">
+                    <div className="w-full pl-0 md:pl-20 mt-10 md:mt-0 flex-1 md:w-1/2 flex flex-col justify-between text-[#011413] h-full lg:w-1/2 xl:w-1/2 p-4 min-w-[200px]">
                         <blockquote className='mb-6'>
                             {meal?.description &&
                                 <URLify text={meal?.description} />
@@ -144,7 +143,6 @@ function MealDetailView() {
                                             <li key={ingredient.ingredient + Math.random()} className='py-1 w-full flex flex-row text-base font-semibold justify-between'>
                                                 <Link to={`/ingredients/${ingredient.ingredient}`}>{ingredient.ingredient}</Link>
                                                 {ingredient.amount + " " + ingredient.unit + " "}
-
                                             </li>))}
                                     </ul> : <h2>Loading ...</h2>
                             }
@@ -157,11 +155,8 @@ function MealDetailView() {
                                 {meal?.preparation ? <URLify text={meal.preparation} /> : "No Preparation found"}
                             </p>
                         </article>
-
-
                     </div>
                 </section>
-
             </section>
 
         </>

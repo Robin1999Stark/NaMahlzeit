@@ -1,7 +1,6 @@
 import React from 'react';
 import { FoodPlaner, FoodplanerItem } from '../Datatypes/FoodPlaner'
 import { FaCheckCircle } from 'react-icons/fa';
-import { IoMdWarning } from 'react-icons/io';
 
 type Props = {
     planer: FoodPlaner;
@@ -21,7 +20,7 @@ function Calendar({ planer, maxEntries = 10 }: Props) {
         return (
             <React.Fragment key={day_str}>
                 <a href={'#' + day_str}>
-                    <li className='text-[#7A8587] flex flex-col justify-start mt-2 text-base items-center mb-4'>
+                    <li className='text-[#011413] flex flex-col justify-start mt-2 text-base items-center mb-4'>
                         {isToday ? isEmpty ?
                             <p className='mb-2 bg-[#F96E46] text-white px-[0.3rem] rounded-full'>
                                 {day}
@@ -32,9 +31,7 @@ function Calendar({ planer, maxEntries = 10 }: Props) {
                             <p className='mb-2 px-[0.3rem]'>
                                 {day}
                             </p>}
-                        {isEmpty ?
-                            <IoMdWarning title='Nothing planned for now' className='text-[#F96E46] w-[16px] h-[16px]' /> :
-                            <FaCheckCircle className='text-[#046865] w-[16px] h-[16px]' />}
+                        <FaCheckCircle className={`${isEmpty ? 'text-slate-200' : 'text-[#046865]'} size-4`} />
                     </li>
                 </a>
                 {date.getDay() === 0 &&
