@@ -53,11 +53,13 @@ function CreateTag() {
                         </li>
 
                     </ul>
-                    <div className='w-full flex flex-row justify-end mb-6'>
-                        <button className='bg-[#046865] text-white font-semibold py-2.5 px-4 rounded-md text-base' type='submit'>
+                    <span className='w-full flex flex-row justify-end mb-6'>
+                        <button
+                            className='bg-[#046865] text-white font-semibold py-2.5 px-4 rounded-md text-base'
+                            type='submit'>
                             Tag erstellen
                         </button>
-                    </div>
+                    </span>
                 </form>
             </section>
         </>

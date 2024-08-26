@@ -137,9 +137,7 @@ function EditMeal() {
                                         <MdAdd className='size-5' />
                                     </button>
                                 </span>
-
                             </span>
-
                             <ul className='w-full'>
                                 {fields.map((field, index) => (
                                     <li key={field.id} className="flex w-full mb-4">
@@ -150,7 +148,6 @@ function EditMeal() {
                                             })}
                                             defaultValue={ingredients ? ingredients[0].title : 0} // Ensure a valid initial value
                                             className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' >
-
                                             <option key={"select-ingredient"} value="">Select Ingredient</option>
                                             {ingredients ? ingredients.map((ingredient) => (
                                                 <option
@@ -173,7 +170,6 @@ function EditMeal() {
                                                 })}
                                                 defaultValue={1}
                                                 className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
-
                                         </span>
                                         <span className='flex flex-col justify-start'>
                                             <input
@@ -236,7 +232,9 @@ function EditMeal() {
                         </li>
                     </ul>
                     <div className='w-full flex flex-row justify-end mb-6'>
-                        <button className='bg-[#046865] text-white font-semibold py-2.5 px-4 rounded-md text-base' type='submit'>
+                        <button
+                            className='bg-[#046865] text-white font-semibold py-2.5 px-4 rounded-md text-base'
+                            type='submit'>
                             Gericht Speichern
                         </button>
                     </div>

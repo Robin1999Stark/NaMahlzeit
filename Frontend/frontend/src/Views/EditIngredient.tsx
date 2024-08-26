@@ -106,12 +106,11 @@ function EditIngredient() {
                                 defaultValue={"kg"}
                                 className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
                         </li>
-
-
                     </ul>
                     <div className='w-full flex flex-row justify-end mb-6'>
-
-                        <button className='bg-[#046865] text-white font-semibold py-2.5 px-4 rounded-md text-base' type='submit'>
+                        <button
+                            className='bg-[#046865] text-white font-semibold py-2.5 px-4 rounded-md text-base'
+                            type='submit'>
                             Zutat Speichern
                         </button>
                     </div>

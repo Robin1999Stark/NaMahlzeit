@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { Ingredient } from '../Datatypes/Ingredient';
+import { Ingredient, IngredientTags } from '../Datatypes/Ingredient';
+import { TagService } from './TagService';
 
 const BASE_URL = 'http://localhost:8000';
 
@@ -62,11 +63,13 @@ export namespace IngredientService {
             preferedUnit: preferedUnit,
         }
         try {
-            let response = await instance.post('/ingredients/', JSON.stringify(requestBody), {
+            const response = await instance.post('/ingredients/', JSON.stringify(requestBody), {
                 headers: {
                     'Content-Type': 'application/json'
                 }
-            })
+            });
+            const tags: IngredientTags = new IngredientTags(title, []);
+            await TagService.createIngredientTags(tags)
             return Ingredient.fromJSON(response.data);
         } catch (error) {
             console.error('Error creating Ingredient:', error);

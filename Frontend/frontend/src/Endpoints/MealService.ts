@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { MealIngredientService } from './MealIngredientService';
 import { IngredientAmount, IngredientAmountWithMeal } from '../Datatypes/Ingredient';
-import { Meal, MealWithIngredientAmountMIID } from '../Datatypes/Meal';
+import { Meal, MealTags, MealWithIngredientAmountMIID } from '../Datatypes/Meal';
+import { TagService } from './TagService';
 
 
 const BASE_URL = 'http://localhost:8000';
@@ -102,8 +103,6 @@ export namespace MealService {
             preparation: preparation,
         }
         const requestJSON = JSON.stringify(requestBody)
-        console.debug(requestJSON)
-
         try {
             let response = await instance.post('/meals/', requestJSON, {
                 headers: {
@@ -118,7 +117,8 @@ export namespace MealService {
                 })
             )
             if (results === null) return null;
-
+            const tags = new MealTags(response.data.id, []);
+            await TagService.createMealTags(tags);
             return meal;
         } catch (error) {
             console.error('Error creating Meal:', error);

@@ -218,7 +218,9 @@ function CreateMeal() {
                         </li>
                     </ul>
                     <span className='w-full flex flex-row justify-end mb-6'>
-                        <button className='bg-[#046865] text-white font-semibold py-2.5 px-4 rounded-md text-base' type='submit'>
+                        <button
+                            className='bg-[#046865] text-white font-semibold py-2.5 px-4 rounded-md text-base'
+                            type='submit'>
                             Gericht erstellen
                         </button>
                     </span>

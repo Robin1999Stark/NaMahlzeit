@@ -366,6 +366,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
                         />
                     </div>
                     <button
+                        type='submit'
                         className='bg-[#046865] ml-2 w-fit text-white p-3 rounded-full'>
                         <MdAdd className='size-5' />
                     </button>

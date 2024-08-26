@@ -13,7 +13,6 @@ type Props = {
 function MealListItem({ meal, deleteMeal }: Props) {
     const [tags, setTags] = useState<MealTags>();
     useEffect(() => {
-
         async function fetchTags(id: number) {
             try {
                 const response = await TagService.getAllTagsFromMeal(id);
@@ -27,7 +26,6 @@ function MealListItem({ meal, deleteMeal }: Props) {
 
     return (
         <>
-
             <li
                 className='select-none w-full h-full py-3 flex flex-row justify-between items-center rounded-md border-l-[6px] border-[#046865] truncate bg-[#fff]'>
                 <article className='text-center  flex flex-row justify-start ml-3 items-center w-full whitespace-normal text-[#011413] text-base '>
@@ -40,14 +38,13 @@ function MealListItem({ meal, deleteMeal }: Props) {
                         </h3>
                     </Link>
                 </article>
-                <ul className='w-full'>
+                <ul className='w-full flex flex-row justify-start items-start flex-wrap'>
                     {tags?.tags.map(tag => (
-                        <li className='my-1'>
+                        <li className='my-1 mr-1' key={`${meal.id}-${tag}`}>
                             <Tag title={tag} />
                         </li>
                     ))}
                 </ul>
-
                 <button className='mr-4' onClick={() => deleteMeal(meal.id)}>
                     Remove
                 </button>
