@@ -9,6 +9,7 @@ import { IoIosMore } from 'react-icons/io';
 import { MdAdd } from 'react-icons/md';
 import { LuMinus } from "react-icons/lu";
 import AutoCompleteInput from '../Components/AutoCompleteInput';
+import LoadingSpinner from '../Components/LoadingSpinner';
 
 function InventoryListView() {
     const [ingredients, setIngredients] = useState<Ingredient[]>()
@@ -128,7 +129,7 @@ function InventoryListView() {
 
                     </li>
 
-                )) : <h1>Loading...</h1>}
+                )) : <LoadingSpinner />}
             </ul>
             <form className='w-full h-fit py-4 flex flex-row justify-between items-center pr-0 sm:pr-1' onSubmit={handleSubmit(onSubmit)}>
                 <span className='w-3/5 mr-1'>

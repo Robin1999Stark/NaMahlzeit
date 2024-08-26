@@ -12,6 +12,7 @@ import { MdAdd } from 'react-icons/md';
 import AutoCompleteInput from '../Components/AutoCompleteInput';
 import Cookies from 'js-cookie';
 import MissingIngredientMealList from '../Components/MissingIngredientMealList';
+import LoadingSpinner from '../Components/LoadingSpinner';
 
 type Props = {
     shoppingList: ShoppingList | undefined;
@@ -329,9 +330,9 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
                                 </span>
 
                             </li> : <>
-                                <h1 key={"loading1"}>Loading...</h1>
+                                <LoadingSpinner />
                             </>
-                    )) : <h1>Loading...</h1>}
+                    )) : <LoadingSpinner />}
                     <div ref={bottomRef}></div>
 
                 </ul>
@@ -374,10 +375,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
             </>
         )
     } else {
-        return (<div>
-            loading
-        </div>
-        )
+        return (<LoadingSpinner />)
     }
 
 }

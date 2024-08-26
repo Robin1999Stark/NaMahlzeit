@@ -13,6 +13,7 @@ import { TagService } from '../Endpoints/TagService'
 import Tag from '../Components/Tag'
 import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu'
 import { IoIosMore } from 'react-icons/io'
+import LoadingSpinner from '../Components/LoadingSpinner'
 
 function MealDetailView() {
     const navigate = useNavigate();
@@ -144,7 +145,7 @@ function MealDetailView() {
                                                 <Link to={`/ingredients/${ingredient.ingredient}`}>{ingredient.ingredient}</Link>
                                                 {ingredient.amount + " " + ingredient.unit + " "}
                                             </li>))}
-                                    </ul> : <h2>Loading ...</h2>
+                                    </ul> : <LoadingSpinner />
                             }
                         </div>
                         <article className='my-6 w-full'>
