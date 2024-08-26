@@ -16,6 +16,7 @@ export namespace MealService {
     async function getAllMealsJSON(): Promise<any> {
         try {
             const response = await instance.get('/meals/');
+            console.log(response)
             return response.data;
         } catch (error) {
             throw new Error('Error fetching Meals: ' + error);
@@ -56,30 +57,6 @@ export namespace MealService {
 
     }
 
-    /*
-        interface CreateMealInterface {
-            title: string;
-            description: string;
-            ingredients: string[];
-        }
-        async function createMeal({ title, description, ingredients }: CreateMealInterface): Promise<Meal | null> {
-            const requestBody = {
-                title: title,
-                description: description,
-                ingredients: ingredients,
-            }
-            try {
-                let response = await instance.post('/meals/', JSON.stringify(requestBody), {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                return Meal.fromJSON(response.data);
-            } catch (error) {
-                console.error('Error creating Meal:', error);
-                return null;
-            }
-        }*/
     interface CreateMealAmountInterface {
         title: string;
         description: string;

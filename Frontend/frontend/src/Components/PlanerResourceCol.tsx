@@ -8,16 +8,17 @@ import { MealContext } from './MealContext';
 
 type Props = {
     mealListID: string;
+    onAddMeal?: (to: Date, mealId: number) => void;
+
 }
 
-function PlanerResourceCol({ mealListID }: Props) {
-
+function PlanerResourceCol({ mealListID, onAddMeal }: Props) {
+    console.log("addmeal", onAddMeal)
     const context = useContext(MealContext);
 
     if (!context) {
         throw new Error('PlanerResourceCol must be used within a MealProvider');
     }
-
 
     const { meals, setMeals } = context;
     const [filteredMeals, setFilteredMeals] = useState<Meal[]>([]);
@@ -75,7 +76,7 @@ function PlanerResourceCol({ mealListID }: Props) {
 
 
     return (
-        <section className='flex-1 h-full flex flex-col pr-6 pl-4'>
+        <section className='flex-1 h-full flex flex-col sm:pr-6 sm:pl-4'>
             <span className='w-full flex flex-row justify-start mb-3'>
                 <input
                     type="search"
@@ -100,6 +101,7 @@ function PlanerResourceCol({ mealListID }: Props) {
                 <li className='w-full h-full flex flex-col justify-start'>
                     {
                         filteredMeals.length > 0 ? <MealDragList
+                            onAddMeal={onAddMeal}
                             meals={filteredMeals}
                             setMeals={setFilteredMeals}
                             internalScroll

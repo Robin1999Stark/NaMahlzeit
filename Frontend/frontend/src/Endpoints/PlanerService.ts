@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { IngredientAmountWithMeal } from '../Datatypes/Ingredient';
 import { FoodplanerItem } from '../Datatypes/FoodPlaner';
 
@@ -72,14 +72,16 @@ export namespace PlanerService {
 
     export async function updatePlanerItem(date: Date, planer: FoodplanerItem) {
         const dateString: string = new Date(date).toISOString().split('T')[0];
+        console.log("test")
 
         let json = JSON.stringify(planer)
         try {
-            await instance.put(`/planer/${dateString}/`, json, {
+            const response = await instance.put(`/planer/${dateString}/`, json, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
+            console.log(response)
         } catch (error) {
             console.error('Error updating planers:', error);
         }
@@ -93,6 +95,47 @@ export namespace PlanerService {
             return response;
         } catch (error) {
             console.error('Error removing meal from planer:', error);
+        }
+    }
+
+    export async function addMealToPlaner(date: Date, mealId: number) {
+        const dateString: string = date.toISOString().split('T')[0];
+
+        try {
+            let planerItem: FoodplanerItem | null = null;
+            try {
+                const response = await instance.get(`/planer/${dateString}/`);
+                planerItem = FoodplanerItem.fromJSON(response.data);
+            } catch (error) {
+                if (axios.isAxiosError(error)) {
+                    if (error.response && error.response.status === 404) {
+                        planerItem = null;
+                    } else {
+                        console.error('Error fetching planner item:', error);
+                        return null;
+                    }
+                } else {
+                    console.error('Unexpected error fetching planner item:', error);
+                    return null;
+                }
+            }
+            if (!planerItem) {
+                planerItem = await createPlanerItem({ date, meals: [mealId] });
+                return planerItem;
+            }
+
+            if (planerItem.meals.includes(mealId)) {
+                return planerItem;
+            }
+
+            planerItem.meals.push(mealId);
+
+            await updatePlanerItem(new Date(planerItem.date), planerItem);
+
+            return planerItem;
+        } catch (error) {
+            console.error('Error adding meal to planner:', error);
+            return null;
         }
     }
 

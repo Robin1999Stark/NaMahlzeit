@@ -5,24 +5,33 @@ import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 import PlaceholderMealImage from './PlaceholderMealImage';
 import { CSSProperties } from 'react';
 import { IoIosMore } from 'react-icons/io';
-import { Menu, MenuItem, MenuButton, SubMenu } from '@szhsin/react-menu';
+import { Menu, MenuItem, MenuButton, SubMenu, FocusableItem } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
 import '@szhsin/react-menu/dist/transitions/zoom.css';
+import { MdAdd } from 'react-icons/md';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import CustomDatePicker from './CustomDatePicker';
+
 type Props = {
     mealID: number
     planerID?: string
     dragProvided: DraggableProvided
     snapshot: DraggableStateSnapshot
     customStyle?: React.CSSProperties
+    showMore?: boolean
     date: Date
     onRemoveMeal?: (planerDate: Date, mealId: number) => void;
     onMoveMeal?: (from: Date, to: Date, mealId: number) => void;
-    index?: number
+    onAddMeal?: (to: Date, mealId: number) => void;
+    index?: number;
 }
 
-function MealDragElement({ mealID, dragProvided, snapshot, date, customStyle, planerID, onRemoveMeal, onMoveMeal }: Props) {
+function MealDragElement({ mealID, dragProvided, snapshot, date, customStyle, planerID, onAddMeal, onRemoveMeal, onMoveMeal, showMore = true }: Props) {
     const [meal, setMeal] = useState<Meal>();
     const [_error, setError] = useState<boolean>(false);
+    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+    const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
 
     useEffect(() => {
         async function fetchMeal() {
@@ -73,7 +82,6 @@ function MealDragElement({ mealID, dragProvided, snapshot, date, customStyle, pl
 
     const style = getDraggableStyle(snapshot, dragProvided);
     return (
-
         <li
             {...dragProvided.dragHandleProps}
             {...dragProvided.draggableProps}
@@ -93,36 +101,75 @@ function MealDragElement({ mealID, dragProvided, snapshot, date, customStyle, pl
                         Undefined
                     </h1>
                 }
-
             </article>
+            {
+                showMore ?
+                    <Menu menuButton={<MenuButton><IoIosMore className='size-5 text-[#011413] mr-3' /></MenuButton>} transition>
+                        <MenuItem>Öffnen</MenuItem>
+                        <MenuItem onClick={() => {
 
+                            handleRemoveMeal(date, mealID)
+                        }}>Löschen</MenuItem>
+                        <SubMenu label="Verschieben">
+                            <MenuItem onClick={() => {
+                                const to: Date = new Date(date);
+                                to.setDate(to.getDate() + 1);
+                                if (onMoveMeal !== undefined) {
+                                    onMoveMeal(date, to, mealID);
+                                }
 
-            <Menu menuButton={<MenuButton><IoIosMore className='size-5 text-[#011413] mr-3' /></MenuButton>} transition>
-                <MenuItem>Öffnen</MenuItem>
-                <MenuItem onClick={() => {
+                            }}>+1 Tag</MenuItem>
+                            <MenuItem onClick={() => {
+                                const to: Date = new Date(date);
+                                to.setDate(to.getDate() + 2);
+                                if (onMoveMeal !== undefined) {
+                                    onMoveMeal(date, to, mealID);
+                                }
 
-                    handleRemoveMeal(date, mealID)
-                }}>Löschen</MenuItem>
-                <SubMenu label="Verschieben">
-                    <MenuItem onClick={() => {
-                        const to: Date = new Date(date);
-                        to.setDate(to.getDate() + 1);
-                        if (onMoveMeal !== undefined) {
-                            onMoveMeal(date, to, mealID);
-                        }
+                            }}>+2 Tage</MenuItem>
+                            <MenuItem>Anderer Tag</MenuItem>
+                        </SubMenu>
+                    </Menu> :
+                    <Menu menuButton={<MenuButton><MdAdd className='size-5 text-[#011413] mr-3' /></MenuButton>} transition>
+                        <MenuItem onClick={() => {
+                            const today = new Date(Date.now())
+                            const to: Date = new Date(today);
+                            to.setDate(to.getDate());
+                            console.log(onAddMeal)
+                            if (onAddMeal !== undefined) {
+                                onAddMeal(to, mealID);
+                            }
+                        }}>
+                            Heute
+                        </MenuItem>
+                        <MenuItem onClick={() => {
+                            const today = new Date(Date.now())
+                            const to: Date = new Date(today);
+                            to.setDate(to.getDate() + 1);
+                            if (onAddMeal !== undefined) {
+                                onAddMeal(to, mealID);
+                            }
+                        }}>
+                            Morgen
+                        </MenuItem>
+                        <SubMenu label="Anderer Tag">
 
-                    }}>+1 Tag</MenuItem>
-                    <MenuItem onClick={() => {
-                        const to: Date = new Date(date);
-                        to.setDate(to.getDate() + 2);
-                        if (onMoveMeal !== undefined) {
-                            onMoveMeal(date, to, mealID);
-                        }
-
-                    }}>+2 Tage</MenuItem>
-                    <MenuItem>Anderer Tag</MenuItem>
-                </SubMenu>
-            </Menu>
+                            <FocusableItem title='Anderer Tag'>
+                                {({ ref }) => (
+                                    <CustomDatePicker
+                                        selected={selectedDate}
+                                        onChange={(date) => {
+                                            setSelectedDate(date);
+                                            if (date && onAddMeal) {
+                                                onAddMeal(date, mealID);
+                                            }
+                                        }}
+                                    />
+                                )}
+                            </FocusableItem>
+                        </SubMenu>
+                    </Menu>
+            }
         </li>
     )
 }

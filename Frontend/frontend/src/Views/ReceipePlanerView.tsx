@@ -9,16 +9,24 @@ import PlanerResourceCol from '../Components/PlanerResourceCol'
 import { FoodPlaner, FoodplanerItem } from '../Datatypes/FoodPlaner'
 import { MealContext } from '../Components/MealContext'
 import Calendar from '../Components/Calendar'
-
+import { FaRegCalendarAlt } from 'react-icons/fa'
+import { VscLibrary } from "react-icons/vsc";
 
 function ReceipePlanerView() {
+    const SIZE_MOBILE = 700;
+    const MAX_CALENDAR_ENTRIES = 14
 
+    const [windowSize, setWindowSize] = useState({
+        width: window.innerWidth,
+        height: window.innerHeight,
+    })
     const context = useContext(MealContext);
 
     if (!context) {
         throw new Error('PlanerResourceCol must be used within a MealProvider');
     }
     const { meals, setMeals } = context;
+    const [tooglePlaner, setTogglePlaner] = useState<boolean>(true);
 
     const [planer, setPlaner] = useState<FoodPlaner>({})
     const [_timeSpan, setTimeSpan] = useState<{ start: Date, end: Date }>({
@@ -33,6 +41,33 @@ function ReceipePlanerView() {
         }));
     };
 
+    const handleAddMeal = async (to: Date, mealId: number) => {
+        try {
+            const addedPlanerItem = await PlanerService.addMealToPlaner(to, mealId);
+            if (!addedPlanerItem) {
+                console.error('Failed to add meal to planner.');
+                return;
+            }
+            const toKey = new Date(to).toISOString().split('T')[0];
+            setPlaner(prevPlaner => {
+                const updatedPlaner = { ...prevPlaner };
+
+                if (updatedPlaner[toKey]) {
+                    updatedPlaner[toKey] = {
+                        ...updatedPlaner[toKey],
+                        meals: [...updatedPlaner[toKey].meals, mealId],
+                    };
+                } else {
+                    // If the planner item for the date doesn't exist, create a new one
+                    updatedPlaner[toKey] = addedPlanerItem;
+                }
+
+                return updatedPlaner;
+            });
+        } catch (error) {
+            console.error('Error adding meal to planner:', error);
+        }
+    }
     const handleMoveToPlanerItem = async (from: Date, to: Date, mealId: number) => {
         try {
             const response = await PlanerService.moveMealBetweenPlanerItemsByDate(mealId, from, to);
@@ -119,10 +154,8 @@ function ReceipePlanerView() {
             }
 
             for (const date of dates) {
-                // Normalize date to remove time components
                 const normalizedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
-                // Find the planer item that matches the normalized date
                 const existingItem = planer.find(item => {
                     const itemDate = new Date(item.date);
                     const normalizedItemDate = new Date(itemDate.getFullYear(), itemDate.getMonth(), itemDate.getDate());
@@ -139,8 +172,6 @@ function ReceipePlanerView() {
                     }
                 }
             }
-
-
             return newPlaner
         }
 
@@ -161,7 +192,7 @@ function ReceipePlanerView() {
             try {
                 const data: FoodplanerItem[] = await PlanerService.getAllPlanerItems();
                 const end = new Date(Date.now());
-                end.setDate(end.getDate() + 14);
+                end.setDate(end.getDate() + MAX_CALENDAR_ENTRIES);
                 const [from, to] = await updateTimeSpan(new Date(Date.now()), end);
                 const filledData: FoodplanerItem[] = await fillWithEmptyDays(data, from, to);
                 const foodPlaner = createFoodPlaner(filledData);
@@ -174,6 +205,7 @@ function ReceipePlanerView() {
         }
         fetchData()
     }, [meals]);
+
     const handleDragEnd = ({ destination, source }: { destination: any; source: any }) => {
         if (!destination)
             return;
@@ -184,33 +216,147 @@ function ReceipePlanerView() {
             return updatedPlaner;
         });
     };
+    const handleResize = () => {
+        setWindowSize({
+            width: window.innerWidth,
+            height: window.innerHeight,
+        });
+    }
+    useEffect(() => {
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
-    return (
-        <section className='flex flex-row pt-4 h-full justify-start items-start'>
-            <DragDropContext onDragEnd={handleDragEnd}>
-                <section className='flex-1 h-full flex flex-col pl-6 pr-4'>
-                    <h1 className='mb-4 font-semibold text-[#011413] text-xl'>Foodplaner</h1>
-                    <Calendar planer={planer} />
-                    <ul className='h-full overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-[#046865] scrollbar-track-slate-100'>
-                        {Object.entries(planer).slice(0, -1).map(([key, value]) => (
-                            <li id={key} className='w-full pr-4' key={key}>
-                                <MealDropList
-                                    internalScroll
-                                    listId={key}
-                                    listType='LIST'
-                                    onRemoveMeal={handleRemoveMeal}
-                                    onMoveMeal={handleMoveToPlanerItem}
-                                    planerItem={planer[key]}
-                                />
-                            </li>
-                        ))}
-                    </ul>
+    const mobileView = () => {
+
+        if (tooglePlaner) {
+            return (
+                <section className='flex flex-row pt-4 h-full justify-start items-start'>
+                    <DragDropContext onDragEnd={handleDragEnd}>
+                        <section className='flex-1 h-full flex flex-col pl-6 pr-4'>
+                            <span className='w-full mb-4 flex flex-row justify-between items-center'>
+                                <h1 className='font-semibold text-[#011413] text-xl'>Speiseplan</h1>
+
+                            </span>
+                            <Calendar planer={planer} />
+                            <ul className='h-full overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-[#046865] scrollbar-track-slate-100'>
+                                {Object.entries(planer).slice(0, -1).map(([key, value]) => (
+                                    <li id={key} className='w-full pr-4' key={key}>
+                                        <MealDropList
+                                            internalScroll
+                                            listId={key}
+                                            listType='LIST'
+                                            onRemoveMeal={handleRemoveMeal}
+                                            onMoveMeal={handleMoveToPlanerItem}
+                                            onAddMeal={handleAddMeal}
+                                            planerItem={planer[key]}
+                                        />
+                                    </li>
+                                ))}
+                            </ul>
+                            <span className='py-6 h-8'>
+                            </span>
+                            <span className='absolute left-0 right-0 py-1 bottom-0 bg-white'>
+                                <ul className='flex flex-row justify-between items-center'>
+                                    <li
+                                        onClick={() => setTogglePlaner(true)}
+                                        className={`w-full flex flex-col py-1 mx-4 cursor-pointer justify-start ${tooglePlaner ? 'bg-[#004A41] text-white font-bold' : 'bg-white text-[#011413]'} rounded-full items-center`}>
+                                        <FaRegCalendarAlt className='size-5' />
+                                        <p className='text-sm'>
+                                            Planer
+                                        </p>
+                                    </li>
+                                    <li
+                                        onClick={() => setTogglePlaner(false)}
+                                        className={`w-full flex flex-col py-1 mx-4 cursor-pointer justify-start ${!tooglePlaner ? 'bg-[#004A41] text-white font-bold' : 'bg-white text-[#011413]'} rounded-full items-center`}>
+                                        <VscLibrary className='size-5' />
+                                        <p className='text-sm'>
+                                            Rezepte
+                                        </p>
+                                    </li>
+                                </ul>
+                            </span>
+                        </section>
+                    </DragDropContext>
                 </section>
-                <PlanerResourceCol mealListID={mealListID} />
-            </DragDropContext>
-        </section>
+            )
+        } else {
+            return (
+                <section className='flex flex-row pt-4 h-full justify-start items-start'>
+                    <DragDropContext onDragEnd={handleDragEnd}>
+                        <section className='flex-1 h-full flex flex-col pl-6 pr-4'>
+                            <span className='w-full mb-4 flex flex-row justify-between items-center'>
+                                <h1 className='font-semibold text-[#011413] text-xl'>Rezept hinzufügen</h1>
 
-    );
+                            </span>
+                            <PlanerResourceCol
+                                mealListID={mealListID}
+                                onAddMeal={handleAddMeal} />
+                            <span className='py-6 h-8'>
+                            </span>
+                            <span className='absolute left-0 right-0 py-1 bottom-0 bg-white'>
+                                <ul className='flex flex-row justify-between items-center'>
+                                    <li
+                                        onClick={() => setTogglePlaner(true)}
+                                        className={`w-full flex flex-col py-1 mx-4 cursor-pointer justify-start ${tooglePlaner ? 'bg-[#004A41] text-white font-bold' : 'bg-white text-[#011413]'} rounded-full items-center`}>
+                                        <FaRegCalendarAlt className='size-5' />
+                                        <p className='text-sm'>
+                                            Planer
+                                        </p>
+                                    </li>
+                                    <li
+                                        onClick={() => setTogglePlaner(false)}
+                                        className={`w-full flex flex-col py-1 mx-4 cursor-pointer justify-start ${!tooglePlaner ? 'bg-[#004A41] text-white font-bold' : 'bg-white text-[#011413]'} rounded-full items-center`}>
+                                        <VscLibrary className='size-5' />
+                                        <p className='text-sm'>
+                                            Rezepte
+                                        </p>
+                                    </li>
+                                </ul>
+                            </span>
+                        </section>
+                    </DragDropContext>
+                </section>
+            )
+
+        }
+    }
+
+
+    if (windowSize.width > SIZE_MOBILE) {
+        return (
+            <section className='flex flex-row pt-4 h-full justify-start items-start'>
+                <DragDropContext onDragEnd={handleDragEnd}>
+                    <section className='flex-1 h-full flex flex-col pl-6 pr-4'>
+                        <h1 className='mb-4 font-semibold text-[#011413] text-xl'>Foodplaner</h1>
+                        <Calendar planer={planer} />
+                        <ul className='h-full overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-[#046865] scrollbar-track-slate-100'>
+                            {Object.entries(planer).slice(0, -1).map(([key, value]) => (
+                                <li id={key} className='w-full pr-4' key={key}>
+                                    <MealDropList
+                                        internalScroll
+                                        listId={key}
+                                        listType='LIST'
+                                        onRemoveMeal={handleRemoveMeal}
+                                        onMoveMeal={handleMoveToPlanerItem}
+                                        planerItem={planer[key]}
+                                    />
+                                </li>
+                            ))}
+                        </ul>
+                    </section>
+                    <PlanerResourceCol mealListID={mealListID} />
+                </DragDropContext>
+            </section>
+
+        );
+    } else {
+        return mobileView();
+    }
+
+
 }
 
 

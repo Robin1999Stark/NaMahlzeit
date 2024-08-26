@@ -54,11 +54,8 @@ def move_to_day(request, to_planer, from_planer, meal_id):
         return HttpResponseBadRequest("Invalid date format for 'from_planer' or 'to_planer'. Expected format: YYYY-MM-DD.")
 
     meal = get_object_or_404(Meal, id=meal_id)
-    print(meal)
     from_planer_item = FoodPlanerItem.objects.filter(
         date=from_planer_date).first()
-    print(from_planer_item)
-    print(from_planer_item.meals)
     if not from_planer_item:
         return HttpResponseBadRequest("No planner item found for the 'from_planer' date.")
 
@@ -66,7 +63,6 @@ def move_to_day(request, to_planer, from_planer, meal_id):
         return HttpResponseBadRequest("Meal not found in the 'from_planer' date.")
 
     to_planer_item = FoodPlanerItem.objects.filter(date=to_planer_date).first()
-    print(to_planer_item)
     if not to_planer_item:
         to_planer_item = FoodPlanerItem(date=to_planer_date)
         to_planer_item.save()

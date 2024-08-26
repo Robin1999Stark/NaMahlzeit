@@ -1,5 +1,4 @@
 import React from 'react'
-import DropMealPlaceholder from './DropMealPlaceholder';
 import MealDragElement from './MealDragElement';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { Meal } from '../Datatypes/Meal';
@@ -12,9 +11,10 @@ interface Props {
     isMealList?: boolean,
     meals: Meal[],
     setMeals: React.Dispatch<React.SetStateAction<Meal[]>>,
+    onAddMeal?: (to: Date, mealId: number) => void,
 };
 
-function MealDragList({ listId, listType, meals }: Props) {
+function MealDragList({ listId, listType, meals, onAddMeal }: Props) {
     return (
         <section className='flex w-full flex-col items-center justify-start'>
             <Droppable
@@ -22,8 +22,7 @@ function MealDragList({ listId, listType, meals }: Props) {
                 isDropDisabled={true}
                 type={listType}
                 direction="vertical"
-                isCombineEnabled={false}
-            >
+                isCombineEnabled={false}>
                 {dropProvided => {
                     return (
                         <ul
@@ -38,7 +37,14 @@ function MealDragList({ listId, listType, meals }: Props) {
                                     {
                                         (dragProvided, snapshot) => {
                                             return (
-                                                <MealDragElement mealID={food.id} dragProvided={dragProvided} snapshot={snapshot} index={index} />
+                                                <MealDragElement
+                                                    mealID={food.id}
+                                                    dragProvided={dragProvided}
+                                                    snapshot={snapshot}
+                                                    index={index}
+                                                    onAddMeal={onAddMeal}
+                                                    date={new Date(Date.now())}
+                                                    showMore={false} />
                                             )
                                         }
                                     }

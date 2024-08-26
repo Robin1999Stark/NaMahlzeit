@@ -15,9 +15,10 @@ interface Props {
     isCombinedEnabled?: boolean,
     onRemoveMeal?: (planerDate: Date, mealId: number) => void;
     onMoveMeal?: (from: Date, to: Date, mealId: number) => void;
+    onAddMeal?: (to: Date, mealId: number) => void;
 };
 
-function MealDropList({ listId, listType, planerItem, onRemoveMeal, onMoveMeal }: Props) {
+function MealDropList({ listId, listType, planerItem, onRemoveMeal, onMoveMeal, onAddMeal }: Props) {
     const [isEmpty, setIsEmpty] = useState<boolean>(planerItem.meals.length === 0);
 
     useEffect(() => {
