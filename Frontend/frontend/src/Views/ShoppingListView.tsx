@@ -11,6 +11,7 @@ import { IoIosMore } from 'react-icons/io';
 import { MdAdd } from 'react-icons/md';
 import AutoCompleteInput from '../Components/AutoCompleteInput';
 import Cookies from 'js-cookie';
+import MissingIngredientMealList from '../Components/MissingIngredientMealList';
 
 type Props = {
     shoppingList: ShoppingList | undefined;
@@ -260,17 +261,16 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
         }
         await handleAddItemToShoppingList(data);
     }
-    //<MissingIngredientMealList handleAddItemToShoppingList={handleAddItemToShoppingList} />
+    <MissingIngredientMealList handleAddItemToShoppingList={handleAddItemToShoppingList} />
     if (loaded) {
         return (
             <>
                 <span className='flex flex-row justify-between items-center'>
-                    <h1 className='mb-4 font-semibold text-[#011413] text-xl'>
+                    <h1 className='mb-4 font-semibold truncate text-[#011413] text-xl'>
                         Einkaufsliste ({shoppingList && shoppingList.created.toLocaleDateString() + " - " + shoppingList.created.getHours() + ":" + shoppingList.created.getMinutes()})
                     </h1>
 
                     <Menu menuButton={<MenuButton><IoIosMore className='size-5 mr-4 text-[#011413]' /></MenuButton>} transition>
-
                         <MenuItem onClick={() => handleDeleteShoppingList(shoppingList?.id)}>Liste löschen</MenuItem>
                         <SubMenu label='Listen'>
                             {
@@ -305,10 +305,10 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
                     {shoppingListItems ? shoppingListItems?.map(item => (
                         item ?
                             <li className='w-full flex flex-row justify-between items-center'>
-                                <div key={item.id} className='p-2 text-[#011413] flex flex-row font-semibold items-center'>
+                                <div key={item.id} className='text-[#011413] flex flex-row font-semibold items-center'>
                                     <input
                                         type="checkbox"
-                                        className="h-5 w-5 mr-6 cursor-pointer rounded-full border border-gray-300 appearance-none checked:bg-[#046865] checked:border-transparent"
+                                        className="h-5 w-5 mr-4 cursor-pointer rounded-full border border-gray-300 appearance-none checked:bg-[#046865] checked:border-transparent"
                                         id={`checkbox-${item.id}`}
                                         checked={item.bought}
                                         onChange={() => handleCheckboxChange(item)}
@@ -322,7 +322,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
                                         {item.amount + " " + item.unit}
                                     </p>
                                 </div>
-                                <span className='flex flex-row justify-end pr-6'>
+                                <span className='flex flex-row justify-end pr-4 sm:pr-6'>
                                     <Menu menuButton={<MenuButton><IoIosMore className='size-5 text-[#011413]' /></MenuButton>} transition>
                                         <MenuItem onClick={() => handleDeleteShoppingListItem(item.id)}>Löschen</MenuItem>
                                     </Menu>
@@ -335,7 +335,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
                     <div ref={bottomRef}></div>
 
                 </ul>
-                <form className='w-full h-fit py-4 flex flex-row justify-between items-center pr-1' onSubmit={handleSubmit(onSubmit)}>
+                <form className='w-full h-fit py-4 flex flex-row justify-between items-center pr-0 sm:pr-1' onSubmit={handleSubmit(onSubmit)}>
                     <span className='w-3/5 mr-1'>
                         <AutoCompleteInput search={handleAutoCompleteSearch} onSelect={handleIngredientSelect} />
                     </span>

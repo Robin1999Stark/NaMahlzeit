@@ -111,7 +111,7 @@ function InventoryListView() {
             <ul className='overflow-y-scroll h-5/6 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-[#046865] scrollbar-track-slate-100'>
                 {inventory ? inventory?.map(inv => (
                     <li className='w-full flex flex-row justify-between items-center'>
-                        <div key={inv.id} className='p-2 text-[#011413] flex flex-row font-semibold items-center'>
+                        <div key={inv.id} className='px-1 text-[#011413] flex flex-row font-semibold items-center'>
 
                             <p>
                                 {inv.ingredient}
@@ -120,7 +120,7 @@ function InventoryListView() {
                         <div key={inv.ingredient + "unit"} className='p-2 flex text-[#011413] font-semibold flex-row justify-between items-center'>
                             {inv.amount + " " + inv.unit}
                         </div>
-                        <span className='flex flex-row justify-end pr-6'>
+                        <span className='flex flex-row justify-end pr-4 sm:pr-6'>
                             <Menu menuButton={<MenuButton><IoIosMore className='size-5 text-[#011413]' /></MenuButton>} transition>
                                 <MenuItem onClick={() => deleteInventoryItem(inv.id)}>Löschen</MenuItem>
                             </Menu>
@@ -130,7 +130,7 @@ function InventoryListView() {
 
                 )) : <h1>Loading...</h1>}
             </ul>
-            <form className='w-full h-fit py-4 flex flex-row justify-between items-center pr-1' onSubmit={handleSubmit(onSubmit)}>
+            <form className='w-full h-fit py-4 flex flex-row justify-between items-center pr-0 sm:pr-1' onSubmit={handleSubmit(onSubmit)}>
                 <span className='w-3/5 mr-1'>
                     <AutoCompleteInput search={handleAutoCompleteSearch} onSelect={handleIngredientSelect} />
                 </span>
@@ -147,7 +147,7 @@ function InventoryListView() {
                             required: true,
                         })}
                         defaultValue={1}
-                        className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1'
+                        className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md mr-1'
                     />
                     <input
                         key={'unit'}
