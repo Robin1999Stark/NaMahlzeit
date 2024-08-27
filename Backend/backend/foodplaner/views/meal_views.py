@@ -1,15 +1,22 @@
-from ..models import InventoryItem, ShoppingList, ShoppingListItem, Meal, FoodPlanerItem, Ingredient, MealIngredient
+from ..models import Meal, FoodPlanerItem, MealIngredient
 from rest_framework import viewsets, generics
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from datetime import date, datetime
 from django.shortcuts import get_object_or_404
-from ..serializers.ingredient_serializers import Ingredient, IngredientSerializer
 from ..serializers.meal_serializers import MealIngredientSerializer, MealListSerializer, MealIngredientSerializerWithMeal, MealSerializerNoAmounts, MealSerializer
-from ..serializers.planer_serializers import FoodPlanerItem, FoodPlanerItemSerializer
-from ..serializers.inventory_serializers import InventoryItem, InventoryItemSerializer
-from ..serializers.shoppinglist_serializers import ShoppingListItemSerializer, ShoppingListSerializer
+from ..serializers.planer_serializers import FoodPlanerItem
+from rest_framework.decorators import api_view
+import json
+
+
+@api_view(['GET'])
+def export_meals(request):
+    meals = Meal.objects.all()
+    serializer = MealSerializer(meals, many=True)
+    response_data = json.dumps(serializer.data, indent=4)
+    return HttpResponse(response_data, content_type='application/json', headers={'Content-Disposition': 'attachment; filename="meals.json"'})
 
 
 def is_planned(request, meal_pk):

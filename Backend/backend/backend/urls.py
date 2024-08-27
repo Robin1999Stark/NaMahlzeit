@@ -2,10 +2,10 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 
-from foodplaner.views.tag_views import TagListView, MealTagsListView, IngredientTagsListView, ingredients_by_tags, meals_by_tags
+from foodplaner.views.tag_views import TagListView, MealTagsListView, IngredientTagsListView, export_tags, ingredients_by_tags, meals_by_tags
 from foodplaner.views.planer_views import move_to_day, remove_meal_from_planer_item, FoodPlanerItemDetailView, FoodPlanerItemView
-from foodplaner.views.meal_views import get_all_meals_on_planer, get_all_mealingredients_from_planer, is_planned, MealListView, MealIngredientListView, MealIngredientDetailView, MealIngredientListViewNormal
-from foodplaner.views.ingredient_views import IngredientDetailView, IngredientListView
+from foodplaner.views.meal_views import get_all_meals_on_planer, export_meals, get_all_mealingredients_from_planer, is_planned, MealListView, MealIngredientListView, MealIngredientDetailView, MealIngredientListViewNormal
+from foodplaner.views.ingredient_views import IngredientDetailView, IngredientListView, export_ingredients
 from foodplaner.views.shoppinglist_views import ShoppingListItemView, ShoppingListView
 from foodplaner.views.inventory_views import InventoryItemView
 
@@ -38,10 +38,9 @@ urlpatterns = [
     path('is-planned/<int:meal_pk>/', is_planned, name='meal-is-planned'),
     path('get-all-ingredients-from-planer/<str:start>/<str:end>/', get_all_mealingredients_from_planer,
          name='planer-get-all-ingredients_meal'),
-
     path('ingredients/<int:pk>/', IngredientDetailView.as_view(),
          name='ingredients-detail'),
-    # Additional URLs for nested serialization
+
     path('meals/<int:meal_pk>/ingredients/',
          MealIngredientListView.as_view(), name='meals-ingredients-list'),
     path('meals/<int:meal_pk>/ingredients/<int:pk>/',
@@ -49,5 +48,9 @@ urlpatterns = [
     path('meals_by_tags/<str:tags>/', meals_by_tags, name='meals_by_tags'),
     path('ingredients_by_tags/<str:tags>/',
          ingredients_by_tags, name='ingredients_by_tags'),
+
+    path('export/ingredients/', export_ingredients, name='export_ingredients'),
+    path('export/meals/', export_meals, name='export_meals'),
+    path('export/tags/', export_tags, name='export_tags'),
 
 ]

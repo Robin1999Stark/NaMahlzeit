@@ -1,7 +1,16 @@
-from django.http import HttpResponseBadRequest, JsonResponse
+from django.http import HttpResponseBadRequest, HttpResponse
 from ..models import MealTags, IngredientTags, Tag
 from ..serializers.tags_serializers import TagSerializer, MealTagsSerializer, IngredientTagsSerializer
 from rest_framework import viewsets
+from rest_framework.decorators import api_view
+import json
+
+
+def export_tags(request):
+    tags = Tag.objects.all()
+    serializer = TagSerializer(tags, many=True)
+    response_data = json.dumps(serializer.data, indent=4)
+    return HttpResponse(response_data, content_type='application/json', headers={'Content-Disposition': 'attachment; filename="tags.json"'})
 
 
 def meals_by_tags(request, tags):
