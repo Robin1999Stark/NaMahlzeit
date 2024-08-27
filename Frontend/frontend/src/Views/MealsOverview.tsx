@@ -21,7 +21,9 @@ function MealsOverview() {
 
     const handleAddMeal = async (to: Date, mealId: number) => {
         try {
+            console.log(to)
             const addedPlanerItem = await PlanerService.addMealToPlaner(to, mealId);
+            console.log(addedPlanerItem)
             if (!addedPlanerItem) {
                 console.error('Failed to add meal to planner.');
                 return;

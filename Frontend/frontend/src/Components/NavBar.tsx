@@ -1,14 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'
-import { RxHamburgerMenu } from "react-icons/rx";
-import { MdClose } from "react-icons/md";
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { MdOutlinePerson3 } from "react-icons/md";
 import { Menu, MenuItem } from '@szhsin/react-menu';
+import { LuLibrary } from "react-icons/lu";
+import { RxCalendar } from "react-icons/rx";
+import { RiShoppingCartLine } from 'react-icons/ri';
 
 function NavBar() {
 
     const SIZE_MOBILE = 700;
 
     const navigate = useNavigate();
+    const location = useLocation();
 
     const componentRef = useRef<HTMLUListElement>(null);
     const [windowSize, setWindowSize] = useState({
@@ -16,47 +19,21 @@ function NavBar() {
         height: window.innerHeight,
     })
 
-    const [_clickedOutside, setClickedOutside] = useState(false);
-    const [open, setOpen] = useState<boolean>(false);
-    const navItems = [
-        { link: "/planer", title: "Planer" },
-        { link: "/ingredients", title: "Ingredients" },
-        { link: "/meals", title: "Meals" },
-        { link: "/lists", title: "Shoppinglist" },
-        { link: "/tags", title: "Tags" },
-    ];
-
     const handleResize = () => {
         setWindowSize({
             width: window.innerWidth,
             height: window.innerHeight,
         });
-    }
-
-    const handleClickOutside = (event: MouseEvent) => {
-        if (componentRef.current && !componentRef.current.contains(event.target as Node)) {
-            setClickedOutside(true);
-            setOpen(false)
-        }
     };
-
     useEffect(() => {
-        // Add a click event listener when the component mounts
-        document.addEventListener('click', handleClickOutside);
-
         window.addEventListener('resize', handleResize);
-
-        // Clean up the event listener when the component unmounts
         return () => {
-            document.removeEventListener('click', handleClickOutside);
             window.removeEventListener('resize', handleResize);
         };
     }, []);
 
-    // Reset the clickedOutside state when the component is clicked
-    const handleComponentClick = () => {
-        setClickedOutside(false);
-    };
+    const isActive = (path: string) => location.pathname.startsWith(path);
+
     if (windowSize.width > SIZE_MOBILE) {
         return (
             <nav className='flex col-span-2 flex-row h-16 relative bg-[#004A41] z-10 items-center justify-between w-full'>
@@ -64,7 +41,7 @@ function NavBar() {
                     <li key={'nav-planer'}>
                         <Link to={'/planer'}>
                             <p className='h-full cursor-pointer text-lg px-4 py-2 font-medium text-white rounded-md hover:bg-[#007A6B]'>
-                                Planer
+                                Speiseplan
                             </p>
                         </Link>
                     </li>
@@ -104,57 +81,82 @@ function NavBar() {
             </nav>
         )
     } else {
-
         return (
-
             <>
-                <nav className='flex flex-row fixed top-0 left-0 right-0 h-16 bg-[#004A41] z-10 justify-between shadow-md w-full rounded-br-full'>
-                    {
-                        open ?
-                            <button
-                                className='text-3xl hover:fill-[#FFC200] bg-[#004A41] text-[#EBECF4] p-2 m-2'
-                                onClick={(event) => {
-                                    event.stopPropagation();
-                                    setOpen(!open)
-                                }}>
-                                <MdClose />
-                            </button>
-                            :
-                            <button
-                                className='text-3xl bg-[#004A41] text-[#EBECF4] p-2 m-2'
-                                onClick={(event) => {
-                                    event.stopPropagation();
-                                    setOpen(!open)
-                                }}>
-                                <RxHamburgerMenu />
-                            </button>
-                    }
-
-                    {
-                        open ?
-                            <ul
-                                ref={componentRef}
-                                onClick={handleComponentClick}
-                                className='bg-[#004A41] absolute z-10 top-16 h-screen w-2/3 shadow-md'>
-                                <li>
-
-                                </li>
-                                {
-                                    navItems.map((item) => (
-                                        <Link to={item.link}>
-                                            <div className='px-6 py-2 m-3 text-lg font-normal text-white rounded-md hover:bg-[#181818] hover:text-[#57D1C2]' key={item.title}>
-                                                {item.title}
-                                            </div>
+                <nav className='flex flex-row fixed bottom-0 left-0 right-0 z-10 justify-between shadow-md w-full rounded-br-full'>
+                    <ul
+                        ref={componentRef}
+                        className='bg-white w-full flex flex-row px-4 pb-6 pt-4 justify-around items-center'>
+                        {
+                            (() => {
+                                const showActive = isActive('/meals') || isActive('/ingredients') || isActive('/tags')
+                                return (
+                                    <li>
+                                        <Link
+                                            className={`${showActive ? 'text-[#004A41]' : 'text-[#7D8698]'} flex flex-col justify-start items-center`}
+                                            to={'/meals'}>
+                                            <LuLibrary className='size-6' />
+                                            <p className={`${showActive ? 'block' : 'hidden'} text-sm font-semibold`}>
+                                                Bibliothek
+                                            </p>
                                         </Link>
-                                    ))
-                                }
-                            </ul> : <></>
-                    }
-
+                                    </li>
+                                );
+                            })()
+                        }
+                        {
+                            (() => {
+                                const showActive = isActive('/planer')
+                                return (
+                                    <li>
+                                        <Link
+                                            className={`${showActive ? 'text-[#004A41]' : 'text-[#7D8698]'} flex flex-col justify-start items-center`}
+                                            to={'/planer'}>
+                                            <RxCalendar className='size-6' />
+                                            <p className={`${showActive ? 'block' : 'hidden'} text-sm font-semibold`}>
+                                                Speiseplan
+                                            </p>
+                                        </Link>
+                                    </li>
+                                );
+                            })()
+                        }
+                        {
+                            (() => {
+                                const showActive = isActive('/lists')
+                                return (
+                                    <li>
+                                        <Link
+                                            className={`${showActive ? 'text-[#004A41]' : 'text-[#7D8698]'} flex flex-col justify-start items-center`}
+                                            to={'/lists'}>
+                                            <RiShoppingCartLine className='size-6' />
+                                            <p className={`${showActive ? 'block' : 'hidden'} text-sm font-semibold`}>
+                                                Einkausliste
+                                            </p>
+                                        </Link>
+                                    </li>
+                                );
+                            })()
+                        }
+                        {
+                            (() => {
+                                const showActive = isActive('/profile')
+                                return (
+                                    <li>
+                                        <Link
+                                            className={`${showActive ? 'text-[#004A41]' : 'text-[#7D8698]'} flex flex-col justify-start items-center`}
+                                            to={'/profile'}>
+                                            <MdOutlinePerson3 className='size-6' />
+                                            <p className={`${showActive ? 'block' : 'hidden'} text-sm font-semibold`}>
+                                                Profil
+                                            </p>
+                                        </Link>
+                                    </li>
+                                );
+                            })()
+                        }
+                    </ul>
                 </nav>
-                <div className='h-16'>
-
-                </div>
             </>
         )
     }

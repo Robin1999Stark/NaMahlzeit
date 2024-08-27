@@ -1,15 +1,13 @@
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 import ReceipePlanerView from "./Views/ReceipePlanerView";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import CreateMeal from "./Views/CreateMeal";
 import CreateIngredient from "./Views/CreateIngredient";
 import IngredientsOverView from "./Views/IngredientsOverView";
 import MealsOverview from "./Views/MealsOverview";
 import MealDetailView from "./Views/MealDetailView";
 import IngredientDetailView from "./Views/IngredientDetailView";
-import InventoryListView from "./Views/InventoryListView";
 import NavBar from "./Components/NavBar";
-import ShoppingListView from "./Views/ShoppingListView";
 import EditMeal from "./Views/EditMeal";
 import TagsOverView from "./Views/TagsOverView";
 import CreateTag from "./Views/CreateTag";
@@ -18,14 +16,44 @@ import SetTagsMeal from "./Views/SetTagsMeal";
 import SetTagsIngredient from "./Views/SetTagsIngredient";
 import EditIngredient from "./Views/EditIngredient";
 import InventoryShoppingList from "./Views/InventoryShoppingList";
+import MealIngredientTagNavigation from "./Components/MealIngredientTagNavigation";
 
 export const mealListID = "meal-list";
 
 function App() {
+  const SIZE_MOBILE = 700;
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  })
+
+  const handleResize = () => {
+    setWindowSize({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+  };
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  const location = useLocation();
+  const isActive = (path: string) => location.pathname.startsWith(path);
+  const showMITNav = isActive('/meals') || isActive('/ingredients') || isActive('/tags')
+
   return (
     <>
       <span className="h-screen flex flex-col">
         <NavBar />
+        {/* Placeholder for mobile */}
+        <span className={`${windowSize.width > SIZE_MOBILE} ? 'hidden' : 'block' h-4`}>
+        </span>
+        <span className={`${windowSize.width <= SIZE_MOBILE && showMITNav ? 'block' : 'hidden'}`}>
+          <MealIngredientTagNavigation />
+        </span>
         <main className="flex-1 overflow-y-auto">
           <Suspense fallback={<div>Loading ...</div>}>
             <Routes>
@@ -48,6 +76,12 @@ function App() {
             </Routes>
           </Suspense>
         </main>
+        {/* Placeholder for mobile bottom nav bar */}
+        <span className={`${windowSize.width > SIZE_MOBILE ? 'hidden' : 'block'} h-[4.2rem]`}>
+        </span>
+        {/* Placeholder for mobile bottom nav bar */}
+        <span className={`${windowSize.width <= SIZE_MOBILE && showMITNav ? 'block' : 'hidden'} h-[4.2rem]`}>
+        </span>
       </span>
 
     </>

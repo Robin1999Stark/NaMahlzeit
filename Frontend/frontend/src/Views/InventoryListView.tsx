@@ -99,7 +99,6 @@ function InventoryListView() {
         }
     }
 
-
     return (
         <>
             <span className='flex flex-row justify-between items-center'>

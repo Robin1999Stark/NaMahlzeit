@@ -99,7 +99,8 @@ export namespace PlanerService {
     }
 
     export async function addMealToPlaner(date: Date, mealId: number) {
-        const dateString: string = date.toISOString().split('T')[0];
+        const dateString: string = date.toLocaleDateString('en-CA');
+        console.log(dateString)
 
         try {
             let planerItem: FoodplanerItem | null = null;

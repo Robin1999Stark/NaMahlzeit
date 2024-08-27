@@ -9,8 +9,8 @@ import PlanerResourceCol from '../Components/PlanerResourceCol'
 import { FoodPlaner, FoodplanerItem } from '../Datatypes/FoodPlaner'
 import { MealContext } from '../Components/MealContext'
 import Calendar from '../Components/Calendar'
-import { FaRegCalendarAlt } from 'react-icons/fa'
-import { VscLibrary } from "react-icons/vsc";
+import { RxCalendar } from 'react-icons/rx'
+import { LuLibrary } from 'react-icons/lu'
 
 function ReceipePlanerView() {
     const SIZE_MOBILE = 700;
@@ -26,7 +26,7 @@ function ReceipePlanerView() {
         throw new Error('PlanerResourceCol must be used within a MealProvider');
     }
     const { meals, setMeals } = context;
-    const [tooglePlaner, setTogglePlaner] = useState<boolean>(true);
+    const [togglePlaner, setTogglePlaner] = useState<boolean>(true);
 
     const [planer, setPlaner] = useState<FoodPlaner>({})
     const [_timeSpan, setTimeSpan] = useState<{ start: Date, end: Date }>({
@@ -231,7 +231,7 @@ function ReceipePlanerView() {
 
     const mobileView = () => {
 
-        if (tooglePlaner) {
+        if (togglePlaner) {
             return (
                 <section className='flex flex-row pt-4 h-full justify-start items-start'>
                     <DragDropContext onDragEnd={handleDragEnd}>
@@ -258,20 +258,20 @@ function ReceipePlanerView() {
                             </ul>
                             <span className='py-6 h-8'>
                             </span>
-                            <span className='absolute left-0 right-0 py-1 bottom-0 bg-white'>
-                                <ul className='flex flex-row justify-between items-center'>
+                            <span className='absolute left-0 right-0 py-1 bottom-20 bg-white'>
+                                <ul className='flex flex-row justify-between mx-4 items-center bg-[#E8E9EB] rounded-full p-1'>
                                     <li
                                         onClick={() => setTogglePlaner(true)}
-                                        className={`w-full flex flex-col py-1 mx-4 cursor-pointer justify-start ${tooglePlaner ? 'bg-[#004A41] text-white font-bold' : 'bg-white text-[#011413]'} rounded-full items-center`}>
-                                        <FaRegCalendarAlt className='size-5' />
+                                        className={`w-full flex flex-row py-1 cursor-pointer justify-center items-center ${togglePlaner ? 'bg-[#004A41] text-white font-bold' : 'text-[#011413]'} rounded-full items-center`}>
+                                        <RxCalendar className='size-5 mr-2' />
                                         <p className='text-sm'>
                                             Speiseplan
                                         </p>
                                     </li>
                                     <li
                                         onClick={() => setTogglePlaner(false)}
-                                        className={`w-full flex flex-col py-1 mx-4 cursor-pointer justify-start ${!tooglePlaner ? 'bg-[#004A41] text-white font-bold' : 'bg-white text-[#011413]'} rounded-full items-center`}>
-                                        <VscLibrary className='size-5' />
+                                        className={`w-full flex flex-row py-1 cursor-pointer justify-center items-center ${!togglePlaner ? 'bg-[#004A41] text-white font-bold' : 'text-[#011413]'} rounded-full items-center`}>
+                                        <LuLibrary className='size-5 mr-2' />
                                         <p className='text-sm'>
                                             Rezepte
                                         </p>
@@ -296,26 +296,27 @@ function ReceipePlanerView() {
                                 onAddMeal={handleAddMeal} />
                             <span className='py-6 h-8'>
                             </span>
-                            <span className='absolute left-0 right-0 py-1 bottom-0 bg-white'>
-                                <ul className='flex flex-row justify-between items-center'>
+                            <span className='absolute left-0 right-0 py-1 bottom-20 bg-white'>
+                                <ul className='flex flex-row justify-between mx-4 items-center bg-[#E8E9EB] rounded-full p-1'>
                                     <li
                                         onClick={() => setTogglePlaner(true)}
-                                        className={`w-full flex flex-col py-1 mx-4 cursor-pointer justify-start ${tooglePlaner ? 'bg-[#004A41] text-white font-bold' : 'bg-white text-[#011413]'} rounded-full items-center`}>
-                                        <FaRegCalendarAlt className='size-5' />
+                                        className={`w-full flex flex-row py-1 cursor-pointer justify-center items-center ${togglePlaner ? 'bg-[#004A41] text-white font-bold' : 'text-[#011413]'} rounded-full items-center`}>
+                                        <RxCalendar className='size-5 mr-2' />
                                         <p className='text-sm'>
                                             Speiseplan
                                         </p>
                                     </li>
                                     <li
                                         onClick={() => setTogglePlaner(false)}
-                                        className={`w-full flex flex-col py-1 mx-4 cursor-pointer justify-start ${!tooglePlaner ? 'bg-[#004A41] text-white font-bold' : 'bg-white text-[#011413]'} rounded-full items-center`}>
-                                        <VscLibrary className='size-5' />
+                                        className={`w-full flex flex-row py-1 cursor-pointer justify-center items-center ${!togglePlaner ? 'bg-[#004A41] text-white font-bold' : 'text-[#011413]'} rounded-full items-center`}>
+                                        <LuLibrary className='size-5 mr-2' />
                                         <p className='text-sm'>
                                             Rezepte
                                         </p>
                                     </li>
                                 </ul>
                             </span>
+
                         </section>
                     </DragDropContext>
                 </section>
@@ -330,7 +331,7 @@ function ReceipePlanerView() {
             <section className='flex flex-row pt-4 h-full justify-start items-start'>
                 <DragDropContext onDragEnd={handleDragEnd}>
                     <section className='flex-1 h-full flex flex-col pl-6 pr-4'>
-                        <h1 className='mb-4 font-semibold text-[#011413] text-xl'>Foodplaner</h1>
+                        <h1 className='mb-4 font-semibold text-[#011413] text-xl'>Speiseplan</h1>
                         <Calendar planer={planer} />
                         <ul className='h-full overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-[#046865] scrollbar-track-slate-100'>
                             {Object.entries(planer).slice(0, -1).map(([key, value]) => (

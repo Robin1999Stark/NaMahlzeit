@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom'
 import { Meal, MealTags } from '../Datatypes/Meal'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { TagService } from '../Endpoints/TagService';
 import Tag from './Tag';
 import PlaceholderMealImage from './PlaceholderMealImage';
-import { FocusableItem, Menu, MenuButton, MenuItem, SubMenu } from '@szhsin/react-menu';
+import { Menu, MenuButton, MenuItem, SubMenu } from '@szhsin/react-menu';
 import { IoIosMore } from 'react-icons/io';
 import CustomDatePicker from './CustomDatePicker';
 
@@ -15,9 +15,16 @@ type Props = {
 }
 
 function MealListItem({ meal, deleteMeal, addMealToPlaner }: Props) {
+    const SIZE_MOBILE = 700;
+    const [windowSize, setWindowSize] = useState({
+        width: window.innerWidth,
+        height: window.innerHeight,
+    });
+
     const [tags, setTags] = useState<MealTags>();
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
+    const datePickerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         async function fetchTags(id: number) {
@@ -35,9 +42,40 @@ function MealListItem({ meal, deleteMeal, addMealToPlaner }: Props) {
         setSelectedDate(date);
         setShowDatePicker(false);
         if (date && addMealToPlaner) {
+
             addMealToPlaner(date, meal.id);
         }
     };
+
+    const handleClickOutside = (event: MouseEvent) => {
+        if (datePickerRef.current && !datePickerRef.current.contains(event.target as Node)) {
+            setShowDatePicker(false);
+        }
+    };
+
+    useEffect(() => {
+        if (showDatePicker) {
+            document.addEventListener('mousedown', handleClickOutside);
+        } else {
+            document.removeEventListener('mousedown', handleClickOutside);
+        }
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [showDatePicker]);
+
+    const handleResize = () => {
+        setWindowSize({
+            width: window.innerWidth,
+            height: window.innerHeight,
+        });
+    }
+    useEffect(() => {
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     return (
         <>
@@ -53,7 +91,7 @@ function MealListItem({ meal, deleteMeal, addMealToPlaner }: Props) {
                         </h3>
                     </Link>
                 </article>
-                <ul className='w-full flex flex-row justify-start items-start flex-wrap'>
+                <ul className='w-full hidden sm:flex flex-row justify-start items-start flex-wrap'>
                     {tags?.tags.map(tag => (
                         <li className='my-1 mr-1' key={`${meal.id}-${tag}`}>
                             <Tag title={tag} />
@@ -91,16 +129,27 @@ function MealListItem({ meal, deleteMeal, addMealToPlaner }: Props) {
                         <MenuItem onClick={() => setShowDatePicker(true)}>
                             Anderer Tag
                         </MenuItem>
-
                     </SubMenu>
                 </Menu>
+                {
+                    showDatePicker && (windowSize.width > SIZE_MOBILE) && <div className="absolute right-24 flex justify-center items-center z-50">
+                        <div ref={datePickerRef}>
+                            <CustomDatePicker
+                                selected={selectedDate}
+                                onChange={handleDateChange}
+                            />
+                        </div>
+                    </div>
+                }
             </li>
-            {showDatePicker && (
+            {showDatePicker && ((windowSize.width <= SIZE_MOBILE) &&
                 <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center z-50">
-                    <CustomDatePicker
-                        selected={selectedDate}
-                        onChange={handleDateChange}
-                    />
+                    <div ref={datePickerRef}>
+                        <CustomDatePicker
+                            selected={selectedDate}
+                            onChange={handleDateChange}
+                        />
+                    </div>
                 </div>
             )}
 
