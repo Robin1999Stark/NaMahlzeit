@@ -3,6 +3,8 @@ import { Ingredient } from '../Datatypes/Ingredient'
 import { Link } from 'react-router-dom'
 import { TagService } from '../Endpoints/TagService';
 import Tag from './Tag';
+import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
+import { IoIosMore } from 'react-icons/io';
 
 type Props = {
     ingredient: Ingredient,
@@ -38,16 +40,21 @@ function IngredientListItem({ ingredient, deleteIngredient }: Props) {
                         </h3>
                     </Link>
                 </article>
-                <ul className='w-full flex flex-row justify-start items-start flex-wrap'>
+                <ul className='w-full hidden sm:flex flex-row justify-start items-start flex-wrap'>
                     {tags?.map((tag: string) => (
                         <li key={`${ingredient.title}-${tag}`} className='my-1 mr-1'>
                             <Tag title={tag} />
                         </li>
                     ))}
                 </ul>
-                <button className='mr-4' onClick={() => deleteIngredient(ingredient.title)}>
-                    Remove
-                </button>
+                <Menu menuButton={<MenuButton><IoIosMore className='size-5 text-[#011413] mr-3' /></MenuButton>} transition>
+                    <MenuItem onClick={() => {
+                        deleteIngredient(ingredient.title)
+                    }}>
+                        Löschen
+                    </MenuItem>
+                </Menu>
+
             </span>
 
 

@@ -5,6 +5,8 @@ import { TagService } from '../Endpoints/TagService';
 import { LuFilter } from 'react-icons/lu';
 import ButtonRound from '../Components/ButtonRound';
 import { MdAdd, MdDeleteForever } from 'react-icons/md';
+import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
+import { IoIosMore } from 'react-icons/io';
 
 function TagsOverView() {
     const navigate = useNavigate();
@@ -88,11 +90,8 @@ function TagsOverView() {
                         onClick={() => navigate('/tags/create')}>
                         <MdAdd />
                     </button>
-
                 </div>
-
             </section>
-
             <ul className='mx-5'>
                 {filteredTags ? filteredTags?.map((tag, index) => {
                     let prefix = <></>;
@@ -110,7 +109,6 @@ function TagsOverView() {
                                 - {firstChar.toUpperCase()} -
                             </li>
                         }
-
                     }
                     return <>
                         {prefix}
@@ -120,10 +118,11 @@ function TagsOverView() {
                             <h1 className='text-start ml-3 text-base'>
                                 {tag.name}
                             </h1>
-                            <button className='mr-4 underline' onClick={() => deleteTag(tag.name)}>
-                                Remove
-                            </button>
-
+                            <Menu menuButton={<MenuButton><IoIosMore className='size-5 text-[#011413] mr-3' /></MenuButton>} transition>
+                                <MenuItem onClick={() => deleteTag(tag.name)}>
+                                    Löschen
+                                </MenuItem>
+                            </Menu>
                         </li>
                     </>
 

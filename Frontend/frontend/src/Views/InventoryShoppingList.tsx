@@ -27,6 +27,12 @@ function InventoryShoppingList() {
         };
     }, []);
 
+    const activeIndex = toggleShoppingList ? 0 : 1;
+    const positions = [
+        { transform: 'translateX(0%)' },
+        { transform: 'translateX(91%)' }
+    ];
+
     if (windowSize.width > SIZE_MOBILE) {
         return (
             <>
@@ -54,10 +60,15 @@ function InventoryShoppingList() {
                     }
                 </section>
                 <span className='absolute left-0 right-0 py-1 bottom-20 bg-white'>
-                    <ul className='flex flex-row justify-between mx-4 items-center bg-[#E8E9EB] rounded-full p-1'>
+                    <ul className='relative flex flex-row justify-between mx-4 items-center bg-[#E8E9EB] rounded-full p-1'>
+                        {/* Sliding background */}
+                        <span
+                            className='absolute top-1 bottom-1 left-1 w-1/2 bg-[#004A41] rounded-full transition-transform duration-300 ease-in-out'
+                            style={positions[activeIndex]}>
+                        </span>
                         <li
                             onClick={() => setToggleShoppingList(true)}
-                            className={`w-full flex flex-row py-1 cursor-pointer justify-center items-center ${toggleShoppingList ? 'bg-[#004A41] text-white font-bold' : 'text-[#011413]'} rounded-full items-center`}>
+                            className={`w-full flex flex-row py-1 z-10 cursor-pointer justify-center items-center ${toggleShoppingList ? 'text-white font-bold' : 'text-[#011413]'} rounded-full items-center`}>
                             <RiShoppingCartLine className='size-5 mr-2' />
                             <p className='text-sm'>
                                 Einkaufsliste
@@ -65,10 +76,10 @@ function InventoryShoppingList() {
                         </li>
                         <li
                             onClick={() => setToggleShoppingList(false)}
-                            className={`w-full flex flex-row py-1 cursor-pointer justify-center items-center ${!toggleShoppingList ? 'bg-[#004A41] text-white font-bold' : 'text-[#011413]'} rounded-full items-center`}>
+                            className={`w-full flex flex-row py-1 z-10 cursor-pointer justify-center items-center ${!toggleShoppingList ? 'text-white font-bold' : 'text-[#011413]'} rounded-full items-center`}>
                             <PiWarehouseDuotone className='size-5 mr-2' />
                             <p className='text-sm'>
-                                Bestandsliste
+                                Bestand
                             </p>
                         </li>
                     </ul>

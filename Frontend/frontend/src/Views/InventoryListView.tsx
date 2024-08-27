@@ -98,12 +98,11 @@ function InventoryListView() {
             console.log(error)
         }
     }
-
     return (
         <>
             <span className='flex flex-row justify-between items-center'>
                 <h1 className='mb-4 font-semibold text-[#011413] text-xl'>
-                    Bestandsliste
+                    Bestand
                 </h1>
                 <Menu menuButton={<MenuButton><IoIosMore className='size-5 mr-4 text-[#011413]' /></MenuButton>} transition>
                 </Menu>

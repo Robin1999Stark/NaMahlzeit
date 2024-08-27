@@ -5,6 +5,8 @@ import { Menu, MenuItem } from '@szhsin/react-menu';
 import { LuLibrary } from "react-icons/lu";
 import { RxCalendar } from "react-icons/rx";
 import { RiShoppingCartLine } from 'react-icons/ri';
+import { PiBowlFood, PiCarrot } from 'react-icons/pi';
+import { TbTag } from 'react-icons/tb';
 
 function NavBar() {
 
@@ -39,39 +41,57 @@ function NavBar() {
             <nav className='flex col-span-2 flex-row h-16 relative bg-[#004A41] z-10 items-center justify-between w-full'>
                 <ul className='w-full flex flex-row justify-end items-center mr-6'>
                     <li key={'nav-planer'}>
-                        <Link to={'/planer'}>
-                            <p className='h-full cursor-pointer text-lg px-4 py-2 font-medium text-white rounded-md hover:bg-[#007A6B]'>
+                        <Link
+                            className='flex flex-row justify-start text-white items-center px-4 hover:bg-[#007A6B] rounded-md'
+                            to={'/planer'}>
+                            <RxCalendar className='size-5 mr-2' />
+                            <p className='h-full cursor-pointer text-lg py-2 font-medium'>
                                 Speiseplan
                             </p>
                         </Link>
                     </li>
                     <li key={'nav-library'}>
                         <Menu
-                            menuClassName={'bg-[#004A41] text-white absolute left-0 right-0 mt-4'}
+                            menuClassName={'bg-[#004A41] px-0 text-white absolute left-0 right-0 mt-4'}
                             className={'absolute left-0 right-0'}
-                            menuButton={<p className='h-full cursor-pointer text-lg px-4 py-2 font-medium text-white rounded-md hover:bg-[#007A6B]'>
-                                Bibliothek
-                            </p>}>
+                            menuButton={<span className='flex flex-row justify-start px-4 items-center text-white rounded-md hover:bg-[#007A6B]'>
+                                <LuLibrary className='size-5 mr-2' />
+                                <p className='h-full cursor-pointer text-lg py-2 font-medium '>
+                                    Bibliothek
+                                </p>
+                            </span>}>
                             <MenuItem
-                                className={'hover:bg-[#007A6B] text-white text-lg'}
+                                className={'hover:bg-[#007A6B] text-white text-lg flex flex-row justify-start items-center'}
                                 onClick={() => navigate("/meals")}>
-                                Gerichte
+                                <PiBowlFood className='size-5 mr-2' />
+                                <p>
+                                    Rezepte
+                                </p>
                             </MenuItem>
                             <MenuItem
-                                className={'hover:bg-[#007A6B] text-white text-lg'}
+                                className={'hover:bg-[#007A6B] text-white text-lg flex flex-row justify-start items-center'}
                                 onClick={() => navigate("/ingredients")}>
-                                Zutaten
+                                <PiCarrot className='size-5 mr-2' />
+                                <p>
+                                    Zutaten
+                                </p>
                             </MenuItem>
                             <MenuItem
-                                className={'hover:bg-[#007A6B] text-white text-lg'}
+                                className={'hover:bg-[#007A6B] text-white text-lg flex flex-row justify-start items-center'}
                                 onClick={() => navigate("/tags")}>
-                                Tags
+                                <TbTag className='size-5 mr-2' />
+                                <p>
+                                    Tags
+                                </p>
                             </MenuItem>
                         </Menu>
                     </li>
                     <li key={'nav-lists'}>
-                        <Link to={'/lists'}>
-                            <p className='h-full cursor-pointer text-lg px-4 py-2 font-medium text-white rounded-md hover:bg-[#007A6B]'>
+                        <Link
+                            className='flex flex-row justify-start text-white items-center px-4 hover:bg-[#007A6B] rounded-md'
+                            to={'/lists'}>
+                            <RiShoppingCartLine className='size-5 mr-2' />
+                            <p className='h-full cursor-pointer text-lg py-2 font-medium'>
                                 Listen
                             </p>
                         </Link>

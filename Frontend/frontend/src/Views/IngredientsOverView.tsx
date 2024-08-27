@@ -107,7 +107,6 @@ function IngredientsOverView() {
                                 - {firstChar.toUpperCase()} -
                             </li>
                         }
-
                     }
                     return <>
                         {prefix}

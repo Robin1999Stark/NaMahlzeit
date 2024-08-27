@@ -229,100 +229,80 @@ function ReceipePlanerView() {
         };
     }, []);
 
+    const activeIndex = togglePlaner ? 0 : 1;
+    const positions = [
+        { transform: 'translateX(0%)' },
+        { transform: 'translateX(96%)' }
+    ];
+
+
     const mobileView = () => {
-
-        if (togglePlaner) {
-            return (
-                <section className='flex flex-row pt-4 h-full justify-start items-start'>
-                    <DragDropContext onDragEnd={handleDragEnd}>
-                        <section className='flex-1 h-full flex flex-col pl-6 pr-4'>
-                            <span className='w-full mb-4 flex flex-row justify-between items-center'>
-                                <h1 className='font-semibold text-[#011413] text-xl'>Speiseplan</h1>
-
-                            </span>
-                            <Calendar planer={planer} />
-                            <ul className='h-full overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-[#046865] scrollbar-track-slate-100'>
-                                {Object.entries(planer).slice(0, -1).map(([key, value]) => (
-                                    <li id={key} className='w-full pr-4' key={key}>
-                                        <MealDropList
-                                            internalScroll
-                                            listId={key}
-                                            listType='LIST'
-                                            onRemoveMeal={handleRemoveMeal}
-                                            onMoveMeal={handleMoveToPlanerItem}
-                                            onAddMeal={handleAddMeal}
-                                            planerItem={planer[key]}
-                                        />
-                                    </li>
-                                ))}
+        return (
+            <section className='flex flex-row pt-4 h-full justify-start items-start'>
+                <DragDropContext onDragEnd={handleDragEnd}>
+                    <section className='flex-1 h-full flex flex-col pl-6 pr-4'>
+                        {
+                            togglePlaner ? <>
+                                <span className='w-full mb-4 flex flex-row justify-between items-center'>
+                                    <h1 className='font-semibold text-[#011413] text-xl'>Speiseplan</h1>
+                                </span>
+                                <Calendar planer={planer} />
+                                <ul className='h-full overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-[#046865] scrollbar-track-slate-100'>
+                                    {Object.entries(planer).slice(0, -1).map(([key, value]) => (
+                                        <li id={key} className='w-full pr-4' key={key}>
+                                            <MealDropList
+                                                internalScroll
+                                                listId={key}
+                                                listType='LIST'
+                                                onRemoveMeal={handleRemoveMeal}
+                                                onMoveMeal={handleMoveToPlanerItem}
+                                                onAddMeal={handleAddMeal}
+                                                planerItem={planer[key]}
+                                            />
+                                        </li>
+                                    ))}
+                                </ul>
+                            </> : <>
+                                <span className='w-full mb-4 flex flex-row justify-between items-center'>
+                                    <h1 className='font-semibold text-[#011413] text-xl'>Rezept hinzufügen</h1>
+                                </span>
+                                <PlanerResourceCol
+                                    mealListID={mealListID}
+                                    onAddMeal={handleAddMeal} />
+                                <span className='py-6 h-8'>
+                                </span>
+                            </>
+                        }
+                        <span className='py-6 h-8'>
+                        </span>
+                        <span className='absolute left-0 right-0 py-1 bottom-20 bg-white'>
+                            <ul className='relative flex flex-row justify-between mx-4 items-center bg-[#E8E9EB] rounded-full p-1'>
+                                <span
+                                    className='absolute top-1 bottom-1 left-1 w-1/2 bg-[#004A41] rounded-full transition-transform duration-300 ease-in-out'
+                                    style={positions[activeIndex]}>
+                                </span>
+                                <li
+                                    onClick={() => setTogglePlaner(true)}
+                                    className={`w-full flex flex-row py-1 z-10 cursor-pointer justify-center items-center ${togglePlaner ? 'text-white font-bold' : 'text-[#011413]'} rounded-full items-center`}>
+                                    <RxCalendar className='size-5 mr-2' />
+                                    <p className='text-sm'>
+                                        Speiseplan
+                                    </p>
+                                </li>
+                                <li
+                                    onClick={() => setTogglePlaner(false)}
+                                    className={`w-full flex flex-row py-1 z-10 cursor-pointer justify-center items-center ${!togglePlaner ? 'text-white font-bold' : 'text-[#011413]'} rounded-full items-center`}>
+                                    <LuLibrary className='size-5 mr-2' />
+                                    <p className='text-sm'>
+                                        Rezepte
+                                    </p>
+                                </li>
                             </ul>
-                            <span className='py-6 h-8'>
-                            </span>
-                            <span className='absolute left-0 right-0 py-1 bottom-20 bg-white'>
-                                <ul className='flex flex-row justify-between mx-4 items-center bg-[#E8E9EB] rounded-full p-1'>
-                                    <li
-                                        onClick={() => setTogglePlaner(true)}
-                                        className={`w-full flex flex-row py-1 cursor-pointer justify-center items-center ${togglePlaner ? 'bg-[#004A41] text-white font-bold' : 'text-[#011413]'} rounded-full items-center`}>
-                                        <RxCalendar className='size-5 mr-2' />
-                                        <p className='text-sm'>
-                                            Speiseplan
-                                        </p>
-                                    </li>
-                                    <li
-                                        onClick={() => setTogglePlaner(false)}
-                                        className={`w-full flex flex-row py-1 cursor-pointer justify-center items-center ${!togglePlaner ? 'bg-[#004A41] text-white font-bold' : 'text-[#011413]'} rounded-full items-center`}>
-                                        <LuLibrary className='size-5 mr-2' />
-                                        <p className='text-sm'>
-                                            Rezepte
-                                        </p>
-                                    </li>
-                                </ul>
-                            </span>
-                        </section>
-                    </DragDropContext>
-                </section>
-            )
-        } else {
-            return (
-                <section className='flex flex-row pt-4 h-full justify-start items-start'>
-                    <DragDropContext onDragEnd={handleDragEnd}>
-                        <section className='flex-1 h-full flex flex-col pl-6 pr-4'>
-                            <span className='w-full mb-4 flex flex-row justify-between items-center'>
-                                <h1 className='font-semibold text-[#011413] text-xl'>Rezept hinzufügen</h1>
-
-                            </span>
-                            <PlanerResourceCol
-                                mealListID={mealListID}
-                                onAddMeal={handleAddMeal} />
-                            <span className='py-6 h-8'>
-                            </span>
-                            <span className='absolute left-0 right-0 py-1 bottom-20 bg-white'>
-                                <ul className='flex flex-row justify-between mx-4 items-center bg-[#E8E9EB] rounded-full p-1'>
-                                    <li
-                                        onClick={() => setTogglePlaner(true)}
-                                        className={`w-full flex flex-row py-1 cursor-pointer justify-center items-center ${togglePlaner ? 'bg-[#004A41] text-white font-bold' : 'text-[#011413]'} rounded-full items-center`}>
-                                        <RxCalendar className='size-5 mr-2' />
-                                        <p className='text-sm'>
-                                            Speiseplan
-                                        </p>
-                                    </li>
-                                    <li
-                                        onClick={() => setTogglePlaner(false)}
-                                        className={`w-full flex flex-row py-1 cursor-pointer justify-center items-center ${!togglePlaner ? 'bg-[#004A41] text-white font-bold' : 'text-[#011413]'} rounded-full items-center`}>
-                                        <LuLibrary className='size-5 mr-2' />
-                                        <p className='text-sm'>
-                                            Rezepte
-                                        </p>
-                                    </li>
-                                </ul>
-                            </span>
-
-                        </section>
-                    </DragDropContext>
-                </section>
-            )
-
-        }
+                        </span>
+                    </section>
+                </DragDropContext>
+            </section>
+        )
     }
 
 
