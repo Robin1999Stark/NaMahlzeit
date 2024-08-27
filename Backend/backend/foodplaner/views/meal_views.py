@@ -1,15 +1,15 @@
-from .models import InventoryItem, ShoppingList, ShoppingListItem, Meal, FoodPlanerItem, Ingredient, MealIngredient
+from ..models import InventoryItem, ShoppingList, ShoppingListItem, Meal, FoodPlanerItem, Ingredient, MealIngredient
 from rest_framework import viewsets, generics
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.http import JsonResponse
 from datetime import date
 from django.shortcuts import get_object_or_404
-from .serializers.ingredient_serializers import Ingredient, IngredientSerializer
-from .serializers.meal_serializers import MealIngredientSerializer, MealListSerializer, MealIngredientSerializerWithMeal, MealSerializerNoAmounts, MealSerializer
-from .serializers.planer_serializers import FoodPlanerItem, FoodPlanerItemSerializer
-from .serializers.inventory_serializers import InventoryItem, InventoryItemSerializer
-from .serializers.shoppinglist_serializers import ShoppingListItemSerializer, ShoppingListSerializer
+from ..serializers.ingredient_serializers import Ingredient, IngredientSerializer
+from ..serializers.meal_serializers import MealIngredientSerializer, MealListSerializer, MealIngredientSerializerWithMeal, MealSerializerNoAmounts, MealSerializer
+from ..serializers.planer_serializers import FoodPlanerItem, FoodPlanerItemSerializer
+from ..serializers.inventory_serializers import InventoryItem, InventoryItemSerializer
+from ..serializers.shoppinglist_serializers import ShoppingListItemSerializer, ShoppingListSerializer
 
 
 def is_planned(request, meal_pk):
@@ -26,6 +26,11 @@ def is_planned(request, meal_pk):
 
     # Return a JSON response indicating whether the meal is planned and its date
     return JsonResponse(response_data)
+
+
+def get_all_mealingredients_from_meals(request):
+
+    pass
 
 
 def get_all_mealingredients_from_planer(request):
@@ -48,11 +53,6 @@ def get_all_mealingredients_from_planer(request):
         all_meal_ingredients, many=True).data
     data = {'meals': serialized_meal_ingredients}
     return JsonResponse(data)
-
-
-def get_all_mealingredients_from_meals(request):
-
-    pass
 
 
 def get_all_meals_on_planer(request):
@@ -82,18 +82,6 @@ class MealDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = MealSerializer
 
 
-class IngredientListView(viewsets.ModelViewSet):
-    serializer_class = IngredientSerializer
-    queryset = Ingredient.objects.all()
-
-
-class IngredientDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Ingredient.objects.all()
-    serializer_class = IngredientSerializer
-
-
-# Additional Views for Nested Serialization
-
 class MealIngredientListView(generics.ListCreateAPIView):
     queryset = MealIngredient.objects.all()
     serializer_class = MealIngredientSerializer
@@ -113,18 +101,3 @@ class MealIngredientDetailView(generics.RetrieveUpdateDestroyAPIView):
 class MealIngredientListViewNormal(viewsets.ModelViewSet):
     queryset = MealIngredient.objects.all()
     serializer_class = MealIngredientSerializerWithMeal
-
-
-class InventoryItemView(viewsets.ModelViewSet):
-    serializer_class = InventoryItemSerializer
-    queryset = InventoryItem.objects.all()
-
-
-class ShoppingListView(viewsets.ModelViewSet):
-    serializer_class = ShoppingListSerializer
-    queryset = ShoppingList.objects.all()
-
-
-class ShoppingListItemView(viewsets.ModelViewSet):
-    serializer_class = ShoppingListItemSerializer
-    queryset = ShoppingListItem.objects.all()

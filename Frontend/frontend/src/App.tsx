@@ -17,6 +17,7 @@ import SetTagsIngredient from "./Views/SetTagsIngredient";
 import EditIngredient from "./Views/EditIngredient";
 import InventoryShoppingList from "./Views/InventoryShoppingList";
 import MealIngredientTagNavigation from "./Components/MealIngredientTagNavigation";
+import Profile from "./Views/Profile";
 
 export const mealListID = "meal-list";
 
@@ -73,6 +74,7 @@ function App() {
               <Route path="/tags" element={<TagsOverView />} />
               <Route path="/tags/create" element={<CreateTag />} />
               <Route path="/tags/:tagID/edit" element={<EditTag />} />
+              <Route path="/profile" element={<Profile />} />
             </Routes>
           </Suspense>
         </main>

@@ -1,18 +1,13 @@
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from foodplaner.allviews import (
-    MealListView,
-    IngredientListView, IngredientDetailView,
-    MealIngredientListView, MealIngredientDetailView,
-    MealIngredientListViewNormal,
-    InventoryItemView, ShoppingListItemView,
-    ShoppingListView, get_all_meals_on_planer,
-    get_all_mealingredients_from_planer, is_planned,
-)
+
 from foodplaner.views.tag_views import TagListView, MealTagsListView, IngredientTagsListView, ingredients_by_tags, meals_by_tags
 from foodplaner.views.planer_views import move_to_day, remove_meal_from_planer_item, FoodPlanerItemDetailView, FoodPlanerItemView
-
+from foodplaner.views.meal_views import get_all_meals_on_planer, get_all_mealingredients_from_planer, is_planned, MealListView, MealIngredientListView, MealIngredientDetailView, MealIngredientListViewNormal
+from foodplaner.views.ingredient_views import IngredientDetailView, IngredientListView
+from foodplaner.views.shoppinglist_views import ShoppingListItemView, ShoppingListView
+from foodplaner.views.inventory_views import InventoryItemView
 
 router = routers.DefaultRouter()
 router.register(r'meals', MealListView, basename='meal')

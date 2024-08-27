@@ -2,7 +2,6 @@ from django.http import HttpResponseBadRequest, JsonResponse
 from ..models import MealTags, IngredientTags, Tag
 from ..serializers.tags_serializers import TagSerializer, MealTagsSerializer, IngredientTagsSerializer
 from rest_framework import viewsets
-from django.core.serializers import serialize
 
 
 def meals_by_tags(request, tags):

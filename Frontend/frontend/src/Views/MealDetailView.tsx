@@ -87,10 +87,10 @@ function MealDetailView() {
 
     return (
         <>
-            <section className='w-full absolute left-[50%] translate-x-[-50%] px-8 mt-8 max-w-[70rem]'>
+            <section className='w-full relative h-full left-[50%] translate-x-[-50%] px-8 mt-8 max-w-[70rem]'>
                 <span className='flex flex-row justify-between items-center'>
                     <span className='flex flex-row justify-start items-center'>
-                        <h1 className='font-semibold text-[#011413] text-2xl mx-2'>
+                        <h1 className='font-semibold text-[#011413] text-2xl'>
                             {meal?.title}
                         </h1>
                         <sup>
@@ -120,10 +120,9 @@ function MealDetailView() {
                         </p>
                     </div>
                 </span>
-
                 <hr className='mt-4 mb-8' />
                 <section className='flex flex-col md:flex-row w-full'>
-                    <span className='w-full max-w-[22rem]'>
+                    <span className='w-full max-w-[24rem]'>
                         <PlaceholderMealImage rounded border='full' />
                     </span>
                     <div className="w-full pl-0 md:pl-20 mt-10 md:mt-0 flex-1 md:w-1/2 flex flex-col justify-between text-[#011413] h-full lg:w-1/2 xl:w-1/2 p-4 min-w-[200px]">
@@ -131,7 +130,6 @@ function MealDetailView() {
                             {meal?.description &&
                                 <URLify text={meal?.description} />
                             }
-
                         </blockquote>
                         <div className='py-3 min-w-[200px]'>
                             <h2 className='truncate my-2 text-lg font-bold'>

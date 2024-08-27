@@ -197,17 +197,28 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
     async function handleDeleteShoppingList(id: number | undefined) {
         if (!id)
             return;
-        const result = await ShoppingListService.deleteShoppingList(id);
-        if (result) {
-            const updatedLists = await fetchDataShoppingLists();
-            setShoppingLists(updatedLists);
-            if (updatedLists.length > 0) {
-                setShoppingList(updatedLists[0]);
-            } else {
-                setShoppingList(undefined);
-                setShoppingListItems([]);
-            }
+        try {
+            const result = await ShoppingListService.deleteShoppingList(id);
 
+            if (result) {
+                const updatedLists = await fetchDataShoppingLists();
+
+                if (updatedLists.length > 0) {
+                    const lastList = updatedLists[updatedLists.length - 1];
+
+                    setShoppingLists(updatedLists);
+                    setShoppingList(lastList);
+
+                    const updatedItems = await fetchDataShoppingListItems(lastList.items);
+                    setShoppingListItems(updatedItems ? sortItems(updatedItems) : []);
+                } else {
+                    setShoppingLists([]);
+                    setShoppingList(undefined);
+                    setShoppingListItems([]);
+                }
+            }
+        } catch (error) {
+            console.error("Error deleting the shopping list:", error);
         }
     }
     async function handleCheckboxChange(item: ShoppingListItem) {

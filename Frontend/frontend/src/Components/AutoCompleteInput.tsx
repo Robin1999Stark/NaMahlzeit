@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Ingredient } from '../Datatypes/Ingredient';
 
 type Props = {
-    onSelect: (ingredient: Ingredient | string) => void;
+    onSelect: (ingredient: Ingredient | string) => void | ((ingredient: Ingredient, index: number) => void);
     search: (query: string) => Promise<string[]>;
 }
 

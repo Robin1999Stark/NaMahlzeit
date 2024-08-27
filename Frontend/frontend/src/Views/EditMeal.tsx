@@ -157,19 +157,19 @@ function EditMeal() {
                                                 </option>
                                             )) : <></>}
                                         </select>
-                                        <span className='flex flex-col mr-4 justify-start'>
+                                        <span className='flex flex-col mr-1 justify-start'>
                                             <input
                                                 type='number'
                                                 id='amount'
-                                                step={0.01}
+                                                step={1}
                                                 {...register(`ingredients.${index}.amount` as const, {
                                                     valueAsNumber: true,
                                                     min: 0,
-                                                    max: 50000,
+                                                    max: 5000,
                                                     required: true,
                                                 })}
                                                 defaultValue={1}
-                                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
+                                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md mr-1' />
                                         </span>
                                         <span className='flex flex-col justify-start'>
                                             <input
@@ -227,13 +227,13 @@ function EditMeal() {
                                     min: 0,
                                     max: 1000,
                                 })}
-                                defaultValue={10}
+                                defaultValue={60}
                                 className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
                         </li>
                     </ul>
                     <div className='w-full flex flex-row justify-end mb-6'>
                         <button
-                            className='bg-[#046865] text-white font-semibold py-2.5 px-4 rounded-md text-base'
+                            className='bg-[#046865] text-white font-semibold sm:w-fit w-full py-2.5 px-4 rounded-md text-base'
                             type='submit'>
                             Gericht Speichern
                         </button>

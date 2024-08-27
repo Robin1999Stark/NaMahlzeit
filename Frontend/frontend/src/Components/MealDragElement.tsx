@@ -161,16 +161,18 @@ function MealDragElement({ mealID, dragProvided, snapshot, date, customStyle, pl
                                     if (onMoveMeal !== undefined) {
                                         onMoveMeal(date, to, mealID);
                                     }
-
-                                }}>+1 Tag</MenuItem>
+                                }}>
+                                    +1 Tag
+                                </MenuItem>
                                 <MenuItem onClick={() => {
                                     const to: Date = new Date(date);
                                     to.setDate(to.getDate() + 2);
                                     if (onMoveMeal !== undefined) {
                                         onMoveMeal(date, to, mealID);
                                     }
-
-                                }}>+2 Tage</MenuItem>
+                                }}>
+                                    +2 Tage
+                                </MenuItem>
                                 <MenuItem>Anderer Tag</MenuItem>
                             </SubMenu>
                         </Menu> :
