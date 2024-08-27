@@ -1,4 +1,4 @@
-from django.http import HttpResponseBadRequest, HttpResponse
+from django.http import HttpResponseBadRequest, HttpResponse, JsonResponse
 from ..models import MealTags, IngredientTags, Tag
 from ..serializers.tags_serializers import TagSerializer, MealTagsSerializer, IngredientTagsSerializer
 from rest_framework import viewsets
