@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
-import { DragDropContext } from 'react-beautiful-dnd'
+import { DragDropContext, DropResult } from 'react-beautiful-dnd'
 import { mealListID } from '../App'
 import MealDropList from '../Components/MealDropList'
 import { reorderPlan } from '../reorder'
@@ -29,7 +29,7 @@ function ReceipePlanerView() {
     const [togglePlaner, setTogglePlaner] = useState<boolean>(true);
 
     const [planer, setPlaner] = useState<FoodPlaner>({})
-    const [_timeSpan, setTimeSpan] = useState<{ start: Date, end: Date }>({
+    const [, setTimeSpan] = useState<{ start: Date, end: Date }>({
         start: new Date(Date.now()),
         end: new Date(Date.now())
     });
@@ -200,10 +200,21 @@ function ReceipePlanerView() {
         fetchData()
     }, [meals]);
 
-    const handleDragEnd = ({ destination, source }: { destination: any; source: any }) => {
-        if (!destination)
+    function isDropResult(value: unknown): value is DropResult {
+        return (value as DropResult).destination !== undefined && (value as DropResult).source !== undefined;
+    }
+
+    const handleDragEnd = (result: unknown) => {
+        if (!isDropResult(result)) {
+            console.warn('Invalid result object');
             return;
-        const mealList = meals.map((m) => m.id)
+        }
+
+        const { destination, source } = result;
+
+        if (!destination) return;
+
+        const mealList = meals.map((m) => m.id);
 
         setPlaner(prevPlaner => {
             const updatedPlaner = reorderPlan(prevPlaner, source, mealList, destination);

@@ -21,7 +21,7 @@ function InventoryListView() {
         register,
         handleSubmit,
         setValue,
-        formState: { } } = useForm<InventoryItem>({
+        formState: { errors } } = useForm<InventoryItem>({
             defaultValues: {
                 ingredient: "",
                 amount: 0,
@@ -29,6 +29,7 @@ function InventoryListView() {
             },
             mode: 'all'
         });
+    console.log(errors)
 
     async function fetchDataIngredients() {
         try {

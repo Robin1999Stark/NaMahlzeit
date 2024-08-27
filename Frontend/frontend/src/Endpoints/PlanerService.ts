@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { IngredientAmountWithMeal } from '../Datatypes/Ingredient';
 import { FoodplanerItem } from '../Datatypes/FoodPlaner';
 
@@ -8,7 +8,8 @@ const instance = axios.create({
     baseURL: BASE_URL,
     withCredentials: true,
 })
-async function getAllPlanerItemJSON(): Promise<any> {
+
+async function getAllPlanerItemJSON(): Promise<unknown> {
     try {
         const response = await instance.get('/planer/');
         return response.data;
@@ -18,36 +19,44 @@ async function getAllPlanerItemJSON(): Promise<any> {
 }
 
 export async function getAllPlanerItems(): Promise<FoodplanerItem[]> {
-    let planer: FoodplanerItem[] = [];
     try {
         const data = await getAllPlanerItemJSON();
-        planer = data.map((planerItem: any) => FoodplanerItem.fromJSON(planerItem));
-        return planer;
+        if (Array.isArray(data)) {
+            return data.map((planerItem: unknown) => {
+                if (typeof planerItem === 'object' && planerItem !== null) {
+                    return FoodplanerItem.fromJSON(planerItem as { id: number; date: string; meals: number[] });
+                }
+                throw new Error('Invalid planer item data format');
+            });
+        }
+        return [];
     } catch (error) {
         console.error('Error fetching Planer: ', error);
+        return [];
     }
-    return planer;
 }
 
 export async function getAllIngredientsFromPlanerInTimeRange(start: Date, end: Date): Promise<IngredientAmountWithMeal[] | null> {
     try {
         const startDate: string = start.toLocaleDateString('en-CA');
         const endDate: string = end.toLocaleDateString('en-CA');
-        console.log(startDate, endDate)
 
         const response = await instance.get(`/get-all-ingredients-from-planer/${startDate}/${endDate}/`);
-        console.log(response)
-        const meals: any[] = response.data.meals;
-        const ingredients: IngredientAmountWithMeal[] = []
-        meals.forEach((ingredient: any) => {
-            const ingr = IngredientAmountWithMeal.fromJSON(ingredient)
-            ingredients.push(ingr)
-        });
-        return ingredients
+        const meals: unknown[] = response.data.meals;
+
+        if (Array.isArray(meals)) {
+            return meals.map((ingredient: unknown) => {
+                if (typeof ingredient === 'object' && ingredient !== null) {
+                    return IngredientAmountWithMeal.fromJSON(ingredient as { amount: number; ingredient: string; meal: string });
+                }
+                throw new Error('Invalid ingredient data format');
+            });
+        }
+        return null;
     } catch (error) {
-        console.error(error)
+        console.error('Error fetching ingredients from planer in time range:', error);
+        return null;
     }
-    return null;
 }
 
 interface CreatePlanerInterface {
@@ -60,51 +69,51 @@ export async function createPlanerItem({ date, meals }: CreatePlanerInterface): 
     const requestBody = {
         date: dateString,
         meals: meals,
-    }
+    };
+
     try {
-        let response = await instance.post('/planer/', JSON.stringify(requestBody), {
+        const response = await instance.post('/planer/', JSON.stringify(requestBody), {
             headers: {
                 'Content-Type': 'application/json'
             }
-        })
+        });
         return FoodplanerItem.fromJSON(response.data);
     } catch (error) {
-        console.error('Error fetching planers:', error);
+        console.error('Error creating planer item:', error);
         return null;
     }
 }
 
-export async function updatePlanerItem(date: Date, planer: FoodplanerItem) {
+export async function updatePlanerItem(date: Date, planer: FoodplanerItem): Promise<AxiosResponse> {
     const dateString: string = date.toLocaleDateString('en-CA');
     const json = {
         date: dateString,
-        meals: planer.meals
-    }
+        meals: planer.meals,
+    };
+
     try {
-        const response = await instance.put(`/planer/${dateString}/`, json, {
+        const response = await instance.put(`/planer/${dateString}/`, JSON.stringify(json), {
             headers: {
                 'Content-Type': 'application/json'
             }
-        })
+        });
         return response;
     } catch (error) {
-        console.error('Error updating planers:', error);
-        return null;
+        throw new Error('Error updating planer item:' + error)
     }
 }
-export async function removeMealFromPlaner(planerDate: Date, mealId: number) {
-    try {
-        // Fetch the current planner item
-        const dateString: string = new Date(planerDate).toISOString().split('T')[0];
 
+export async function removeMealFromPlaner(planerDate: Date, mealId: number): Promise<AxiosResponse> {
+    try {
+        const dateString: string = new Date(planerDate).toISOString().split('T')[0];
         const response = await instance.get(`/planer/remove/${dateString}/${mealId}/`);
         return response;
     } catch (error) {
-        console.error('Error removing meal from planer:', error);
+        throw new Error('Error removing meal from planer:' + error)
     }
 }
 
-export async function addMealToPlaner(date: Date, mealId: number) {
+export async function addMealToPlaner(date: Date, mealId: number): Promise<FoodplanerItem | null> {
     const dateString: string = date.toLocaleDateString('en-CA');
 
     try {
@@ -117,14 +126,15 @@ export async function addMealToPlaner(date: Date, mealId: number) {
                 if (error.response && error.response.status === 404) {
                     planerItem = null;
                 } else {
-                    console.error('Error fetching planner item:', error);
+                    console.error('Error fetching planer item:', error);
                     return null;
                 }
             } else {
-                console.error('Unexpected error fetching planner item:', error);
+                console.error('Unexpected error fetching planer item:', error);
                 return null;
             }
         }
+
         if (!planerItem) {
             planerItem = await createPlanerItem({ date, meals: [mealId] });
             return planerItem;
@@ -140,44 +150,44 @@ export async function addMealToPlaner(date: Date, mealId: number) {
 
         return planerItem;
     } catch (error) {
-        console.error('Error adding meal to planner:', error);
+        console.error('Error adding meal to planer:', error);
         return null;
     }
 }
-
 
 export interface IsPlannedResponse {
     isPlanned: boolean;
     plannedDate: Date | null;
 }
+
 export async function isPlanned(mealID: number): Promise<IsPlannedResponse | null> {
     try {
-        const response = await axios.get(`${BASE_URL}/is-planned/${mealID}/`)
-        const isPlannedResponse: IsPlannedResponse = {
-            isPlanned: response.data.is_planned,
-            plannedDate: new Date(response.data.planned_date)
-        }
-        return isPlannedResponse;
-    } catch (error) {
-        console.error(error)
-    }
-    return null;
-}
+        const response = await axios.get(`${BASE_URL}/is-planned/${mealID}/`);
+        const data = response.data;
 
+        if (typeof data.is_planned === 'boolean' && typeof data.planned_date === 'string') {
+            return {
+                isPlanned: data.is_planned,
+                plannedDate: new Date(data.planned_date)
+            };
+        }
+        throw new Error('Invalid isPlanned response format');
+    } catch (error) {
+        console.error('Error checking if meal is planned:', error);
+        return null;
+    }
+}
 export async function moveMealBetweenPlanerItemsByDate(
     mealId: number,
     fromDate: Date,
     toDate: Date
-) {
+): Promise<void> {
     try {
         const fromDateString = new Date(fromDate).toISOString().split('T')[0];
         const toDateString = new Date(toDate).toISOString().split('T')[0];
 
-        const url = `/planer/moveto/${toDateString}/${fromDateString}/${mealId}/`;
-        const response = await instance.get(url);
-        return response;
-
+        await instance.get(`/planer/moveto/${toDateString}/${fromDateString}/${mealId}/`);
     } catch (error) {
-        console.error('Error moving meal between planers:', error);
+        console.error('Error moving meal between planners:', error);
     }
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { TagDT } from '../Datatypes/Tag';
-import { useNavigate, useParams } from 'react-router-dom';
+import { ErrorResponse, useNavigate, useParams } from 'react-router-dom';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { Meal, MealTags } from '../Datatypes/Meal';
 import { LuMinus } from 'react-icons/lu';
@@ -8,11 +8,11 @@ import { MdAdd } from 'react-icons/md';
 import { getMeal } from '../Endpoints/MealService';
 import { getAllTags, getAllTagsFromMeal, createOrUpdateMealTags } from '../Endpoints/TagService';
 
+
 function SetTagsMeal() {
     const navigate = useNavigate();
     const { mealID } = useParams();
     const [tags, setTags] = useState<TagDT[]>();
-    const [_mealTags, _setMealTags] = useState<MealTags>();
     const [meal, setMeal] = useState<Meal>();
     const {
         register,
@@ -37,18 +37,21 @@ function SetTagsMeal() {
 
                 try {
                     mealTags = await getAllTagsFromMeal(Number(mealID));
-                } catch (error: any) {
-                    // Handle 404 or other errors for mealTags
-                    if (error.response && error.response.status === 404) {
+                } catch (error: unknown) {
+                    const axiosError = error as ErrorResponse;
+                    if (axiosError.status === 404) {
                         console.log('MealTags not found (404)');
                     } else {
                         console.error('Error fetching MealTags:', error);
                     }
                 }
 
-                // Set states based on the retrieved data
-                if (tags !== null) setTags(tags.sort((a, b) => a.name.localeCompare(b.name)));
-                if (meal !== null) setMeal(meal);
+                if (tags !== null) {
+                    setTags(tags.sort((a, b) => a.name.localeCompare(b.name)));
+                }
+                if (meal !== null) {
+                    setMeal(meal);
+                }
 
                 // Set mealTags in the form
                 setValue('tags', mealTags ? mealTags.tags : []);

@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useForm, useFieldArray } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router-dom';
+import { ErrorResponse, useNavigate, useParams } from 'react-router-dom';
 import { TagDT } from '../Datatypes/Tag';
 import { Ingredient, IngredientTags } from '../Datatypes/Ingredient';
 import { MdAdd } from 'react-icons/md';
 import { LuMinus } from 'react-icons/lu';
 import { getIngredient } from '../Endpoints/IngredientService';
 import { getAllTags, getAllTagsFromIngredient, createOrUpdateIngredientTags } from '../Endpoints/TagService';
+
 
 function SetTagsIngredient() {
     const navigate = useNavigate();
@@ -36,9 +37,9 @@ function SetTagsIngredient() {
 
                 try {
                     ingredientTags = await getAllTagsFromIngredient(ingredientID);
-                } catch (error: any) {
-                    // Handle 404 or other errors for ingredientTags
-                    if (error.response && error.response.status === 404) {
+                } catch (error: unknown) {
+                    const axiosError = error as ErrorResponse;
+                    if (axiosError.status === 404) {
                         console.log('MealTags not found (404)');
                     } else {
                         console.error('Error fetching MealTags:', error);

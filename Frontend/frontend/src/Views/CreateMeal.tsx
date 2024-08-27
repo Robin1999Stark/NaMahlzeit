@@ -11,8 +11,6 @@ import { createMealWithAmounts } from '../Endpoints/MealService';
 function CreateMeal() {
     const navigate = useNavigate();
     const [ingredients, setIngredients] = useState<Ingredient[]>()
-    const [_selectedIngredient, _setSelectedIngredient] = useState<Ingredient>();
-
 
     useEffect(() => {
         async function fetchData() {

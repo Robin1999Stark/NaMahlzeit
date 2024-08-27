@@ -13,7 +13,7 @@ function IngredientDetailView() {
     const { ingredientID } = useParams();
 
     const [ingredient, setIngredient] = useState<Ingredient>()
-    const [_error, setError] = useState<string>("")
+    const [, setError] = useState<string>("")
     const [tags, setTags] = useState<string[]>();
 
     useEffect(() => {

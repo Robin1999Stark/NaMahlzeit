@@ -6,12 +6,12 @@ const instance = axios.create({
     baseURL: BASE_URL,
     withCredentials: true,
 })
-async function getAllMealIngredientsJSON(mealID: number): Promise<any> {
+async function getAllMealIngredientsJSON(mealID: number): Promise<unknown> {
     try {
         const response = await instance.get(`/meals/${mealID}/ingredients/`);
         return response.data;
     } catch (error) {
-        throw new Error('Error fetching Meal Ingredients: ' + error);
+        throw new Error('Error fetching Meal Ingredients: ' + (error as Error).message);
     }
 }
 
@@ -19,10 +19,14 @@ export async function getAllMealIngredients(mealID: number): Promise<IngredientA
     let ingredientAmounts: IngredientAmountWithMeal[] = [];
     try {
         const data = await getAllMealIngredientsJSON(mealID);
-        ingredientAmounts = data.map((ingredient: any) => IngredientAmountWithMeal.fromJSON(ingredient));
+        if (Array.isArray(data)) {
+            ingredientAmounts = data.map((ingredient: unknown) => IngredientAmountWithMeal.fromJSON(ingredient));
+        } else {
+            console.error('Unexpected data format:', data);
+        }
         return ingredientAmounts;
     } catch (error) {
-        console.error('Error fetching Meal Ingredients: ', error);
+        console.error('Error fetching Meal Ingredients: ', (error as Error).message);
     }
     return ingredientAmounts;
 }
@@ -56,9 +60,9 @@ export async function createMealIngredient(ingredient: CreateMealngredientInterf
 }
 
 export async function updateMealIngredient(miID: number, mealIngredient: IngredientAmountWithMeal): Promise<IngredientAmountWithMeal | null> {
-    let json = JSON.stringify(mealIngredient)
+    const json = JSON.stringify(mealIngredient)
     try {
-        let response = await instance.post(`/meal-ingredients/${miID}/`, json, {
+        const response = await instance.post(`/meal-ingredients/${miID}/`, json, {
             headers: {
                 'Content-Type': 'application/json'
             }

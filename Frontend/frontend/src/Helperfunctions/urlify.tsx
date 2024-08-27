@@ -5,7 +5,7 @@ interface LinkifyProps {
 const URLify: React.FC<LinkifyProps> = ({ text }) => {
     const linkifyText = (inputText: string): string => {
         // Regular expression to match URLs
-        var urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+        const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/ig;
 
         return inputText.replace(urlRegex, (url) => {
             // If the URL starts with 'http://' or 'https://', return it as a clickable link

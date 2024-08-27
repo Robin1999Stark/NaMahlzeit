@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { TagDT } from "../Datatypes/Tag";
 import { MealTags } from "../Datatypes/Meal";
 import { IngredientTags } from "../Datatypes/Ingredient";
@@ -10,7 +10,7 @@ const instance = axios.create({
     withCredentials: true,
 })
 
-async function getAllTagsJSON(): Promise<any> {
+async function getAllTagsJSON(): Promise<unknown> {
     try {
         const response = await instance.get(`/tags/`);
         return response.data;
@@ -22,14 +22,13 @@ async function getAllTagsJSON(): Promise<any> {
 export async function getAllTags(): Promise<TagDT[] | null> {
     try {
         const data = await getAllTagsJSON();
-
-        // If data is null, it means there was an error, and the calling function can handle it
-        if (data === null) {
-            return null;
-        }
-        const tags: TagDT[] = [];
-        data.map((tag: any) => tags.push(TagDT.fromJSON(tag)));
-        return tags;
+        if (data === null || !Array.isArray(data)) return null;
+        return data.map((tag: unknown) => {
+            if (typeof tag === 'object' && tag !== null && 'name' in tag) {
+                return TagDT.fromJSON(tag as { name: string });
+            }
+            throw new Error('Invalid tag data format');
+        });
     } catch (error) {
         console.error('Error fetching Tags: ', error);
         return null;
@@ -41,17 +40,11 @@ interface CreateTagInterface {
 }
 
 export async function createTag({ name }: CreateTagInterface): Promise<TagDT | null> {
-
-
-    const requestBody = {
-        name: name,
-    }
+    const requestBody = { name };
     try {
-        let response = await instance.post('/tags/', JSON.stringify(requestBody), {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
+        const response = await instance.post('/tags/', JSON.stringify(requestBody), {
+            headers: { 'Content-Type': 'application/json' }
+        });
         return TagDT.fromJSON(response.data);
     } catch (error) {
         console.error('Error creating Tag:', error);
@@ -59,90 +52,99 @@ export async function createTag({ name }: CreateTagInterface): Promise<TagDT | n
     }
 }
 
-export async function deleteTag(tag: string) {
+export async function deleteTag(tag: string): Promise<AxiosResponse> {
     try {
         const response = await instance.delete(`/tags/${tag}/`);
-        return response.data;
+        return response;
     } catch (error) {
         throw new Error('Error deleting Tag: ' + error);
     }
 }
 
 
-async function getAllTagsFromMealJSON(meal: number): Promise<any> {
+async function getAllTagsFromMealJSON(meal: number): Promise<unknown> {
     try {
         const response = await instance.get(`/meal-tags/${meal}/`);
         return response.data;
-    } catch (error: any) {
+    } catch (error) {
         return null;
     }
 }
 
+
 export async function getAllTagsFromMeal(meal: number): Promise<MealTags | null> {
     try {
         const data = await getAllTagsFromMealJSON(meal);
-        if (data === null)
-            return null;
-        return MealTags.fromJSON(data);
-    } catch (error: any) {
-        return null
+        if (data === null || typeof data !== 'object' || data === null) return null;
+        return MealTags.fromJSON(data as { mealID: number; tags: string[] });
+    } catch (error) {
+        return null;
     }
 }
 
 export async function getMealTagsFromTagList(tags: TagDT[]): Promise<MealTags[]> {
     try {
-        const tagString = tags.map(tag => tag.name).join(',')
-        const response = await instance.get(`/meals_by_tags/${tagString}/`)
-        const meals = response.data.meals.map((tag: any) => MealTags.fromJSON(tag))
-        return meals;
+        const tagString = tags.map(tag => tag.name).join(',');
+        const response = await instance.get(`/meals_by_tags/${tagString}/`);
+        if (response.data.meals && Array.isArray(response.data.meals)) {
+            return response.data.meals.map((tag: unknown) => {
+                if (typeof tag === 'object' && tag !== null && 'mealID' in tag) {
+                    return MealTags.fromJSON(tag as { mealID: number; tags: string[] });
+                }
+                throw new Error('Invalid meal tags data format');
+            });
+        }
+        return [];
     } catch (error) {
         throw new Error('Error finding Meals: ' + error);
     }
-
 }
+
 
 export async function createMealTags(mealTags: MealTags): Promise<MealTags> {
     const requestBody = {
         meal: mealTags.mealID,
-        tags: mealTags.tags,
-    }
-    console.log(mealTags)
+        tags: mealTags.tags
+    };
     try {
-        let response = await instance.post('/meal-tags/', JSON.stringify(requestBody), {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        console.log(response)
+        const response = await instance.post('/meal-tags/', JSON.stringify(requestBody), {
+            headers: { 'Content-Type': 'application/json' }
+        });
         return MealTags.fromJSON(response.data);
     } catch (error) {
-        throw new Error("Error while creating Meal Tag");
+        throw new Error("Error while creating Meal Tag: " + error);
     }
 }
 
-export async function createOrUpdateMealTags(mealTags: MealTags) {
+
+export async function updateMealTags(meal: number, tags: MealTags): Promise<void> {
+    const requestBody = {
+        meal,
+        tags: tags.tags
+    };
+    try {
+        await instance.put(`/meal-tags/${meal}/`, JSON.stringify(requestBody), {
+            headers: { 'Content-Type': 'application/json' }
+        });
+    } catch (error) {
+        throw new Error('Error while updating Meal Tags: ' + error);
+    }
+}
+
+
+export async function createOrUpdateMealTags(mealTags: MealTags): Promise<MealTags | null> {
     try {
         const existingMealTags = await getAllTagsFromMeal(mealTags.mealID);
-
         if (existingMealTags) {
-            const updatedMealTags = await updateMealTags(mealTags.mealID, mealTags);
-            return updatedMealTags;
-        } else if (existingMealTags === null) {
-            try {
-                const newMealTags = await createMealTags(mealTags);
-                return newMealTags;
-            } catch (errorWhileCreating: any) {
-                throw new Error(errorWhileCreating);
-            }
+            await updateMealTags(mealTags.mealID, mealTags);
+            return mealTags;
         } else {
-            throw new Error("Meal Tags does not Exist")
-
+            return await createMealTags(mealTags);
         }
-    } catch (error: any) {
+    } catch (error) {
         return null;
     }
 }
-
 
 export async function deleteMealTags(meal: number) {
     try {
@@ -154,25 +156,7 @@ export async function deleteMealTags(meal: number) {
 }
 
 
-
-export async function updateMealTags(meal: number, tags: MealTags) {
-    let requestBody = {
-        meal: meal,
-        tags: tags.tags,
-    }
-
-    try {
-        await instance.put(`/meal-tags/${meal}/`, JSON.stringify(requestBody), {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-    } catch (error) {
-        throw new Error('Error while deleting Meal Tags occured: ' + error);
-    }
-}
-
-async function getAllTagsFromIngredientJSON(ingredient: string): Promise<any> {
+async function getAllTagsFromIngredientJSON(ingredient: string): Promise<unknown> {
     try {
         const response = await instance.get(`/ingredient-tags/${ingredient}/`);
         return response.data;
@@ -184,36 +168,41 @@ async function getAllTagsFromIngredientJSON(ingredient: string): Promise<any> {
 export async function getAllTagsFromIngredient(ingredient: string): Promise<IngredientTags | null> {
     try {
         const data = await getAllTagsFromIngredientJSON(ingredient);
-        if (data === null)
-            return null;
-        const tags = IngredientTags.fromJSON(data);
-        return tags;
+        if (data === null || typeof data !== 'object' || data === null) return null;
+        return IngredientTags.fromJSON(data as { ingredient: string; tags: string[] });
     } catch (error) {
         return null;
     }
 }
+
 export async function getIngredientTagsFromTagList(tags: TagDT[]): Promise<IngredientTags[]> {
     try {
-        const tagString = tags.map(tag => tag.name).join(',')
-        const response = await instance.get(`/ingredients_by_tags/${tagString}/`)
-        const ingredients = response.data.ingredients.map((tag: any) => IngredientTags.fromJSON(tag))
-        return ingredients;
+        const tagString = tags.map(tag => tag.name).join(',');
+        const response = await instance.get(`/ingredients_by_tags/${tagString}/`);
+        if (response.data.ingredients && Array.isArray(response.data.ingredients)) {
+            return response.data.ingredients.map((tag: unknown) => {
+                if (typeof tag === 'object' && tag !== null && 'ingredient' in tag) {
+                    return IngredientTags.fromJSON(tag as { ingredient: string; tags: string[] });
+                }
+                throw new Error('Invalid ingredient tags data format');
+            });
+        }
+        return [];
     } catch (error) {
         throw new Error('Error finding Ingredients: ' + error);
     }
-
 }
+
+
 export async function createIngredientTags(ingredientTags: IngredientTags): Promise<IngredientTags> {
     const requestBody = {
         ingredient: ingredientTags.ingredient,
-        tags: ingredientTags.tags,
-    }
+        tags: ingredientTags.tags
+    };
     try {
-        let response = await instance.post('/ingredient-tags/', JSON.stringify(requestBody), {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
+        const response = await instance.post('/ingredient-tags/', JSON.stringify(requestBody), {
+            headers: { 'Content-Type': 'application/json' }
+        });
         return IngredientTags.fromJSON(response.data);
     } catch (error) {
         throw new Error('Error while creating Tags from Ingredient: ' + error);
@@ -221,54 +210,36 @@ export async function createIngredientTags(ingredientTags: IngredientTags): Prom
 }
 
 
-export async function deleteIngredientTags(ingredient: string) {
+export async function deleteIngredientTags(ingredient: string): Promise<void> {
     try {
-        const response = await instance.delete(`/ingredient-tags/${ingredient}/`);
-        return response.data;
+        await instance.delete(`/ingredient-tags/${ingredient}/`);
     } catch (error) {
         throw new Error('Error while deleting Ingredient Tags: ' + error);
     }
 }
 
-
-
-
-
-export async function updateIngredientTags(ingredient: string, tags: IngredientTags) {
-    let requestBody = {
-        ingredient: ingredient,
-        tags: tags.tags,
-    }
-
+export async function updateIngredientTags(ingredient: string, tags: IngredientTags): Promise<void> {
+    const requestBody = {
+        ingredient,
+        tags: tags.tags
+    };
     try {
         await instance.put(`/ingredient-tags/${ingredient}/`, JSON.stringify(requestBody), {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
+            headers: { 'Content-Type': 'application/json' }
+        });
     } catch (error) {
-        throw new Error('Error while updating Ingredient Tags occured: ' + error);
+        throw new Error('Error while updating Ingredient Tags: ' + error);
     }
 }
 
-
-export async function createOrUpdateIngredientTags(ingredientTags: IngredientTags) {
+export async function createOrUpdateIngredientTags(ingredientTags: IngredientTags): Promise<IngredientTags | null> {
     try {
         const existingIngredientTags = await getAllTagsFromIngredient(ingredientTags.ingredient);
-
         if (existingIngredientTags) {
-            const updatedIngredientTags = await updateIngredientTags(ingredientTags.ingredient, ingredientTags);
-            return updatedIngredientTags;
-        } else if (existingIngredientTags === null) {
-            try {
-                const newIngredientTags = await createIngredientTags(ingredientTags);
-                return newIngredientTags;
-            } catch (errorWhileCreating: any) {
-                throw new Error(errorWhileCreating);
-            }
+            await updateIngredientTags(ingredientTags.ingredient, ingredientTags);
+            return ingredientTags;
         } else {
-            throw new Error("Ingredient Tags does not Exist")
-
+            return await createIngredientTags(ingredientTags);
         }
     } catch (error) {
         return null;

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { InventoryItem } from '../Datatypes/Inventory';
 import { ShoppingList, ShoppingListItem } from '../Datatypes/ShoppingList';
@@ -8,7 +8,6 @@ import { IoIosMore } from 'react-icons/io';
 import { MdAdd } from 'react-icons/md';
 import AutoCompleteInput from '../Components/AutoCompleteInput';
 import Cookies from 'js-cookie';
-import MissingIngredientMealList from '../Components/MissingIngredientMealList';
 import LoadingSpinner from '../Components/LoadingSpinner';
 import { getIngredient, getAllIngredients } from '../Endpoints/IngredientService';
 import { getAllShoppingLists, getAllShoppingListItems, createShoppingList, createItemAndAddToShoppingList, deleteShoppingListItem, deleteShoppingList, updateItemAndList } from '../Endpoints/ShoppingListService';
@@ -36,7 +35,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
         handleSubmit,
         watch,
         setValue,
-        formState: { } } = useForm<ShoppingListItem>({
+        formState: { errors } } = useForm<ShoppingListItem>({
             defaultValues: {
                 ingredient: "",
                 amount: 0,
@@ -44,56 +43,55 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
             },
             mode: 'all'
         });
+    console.log(errors);
     const selectedIngredientID = watch('ingredient');
-    useEffect(() => {
-        if (selectedIngredientID) {
-            handleUnitChange();
-        }
-    }, [selectedIngredientID]);
 
-    async function fetchIngredient(id: string): Promise<Ingredient | null> {
+    const fetchIngredient = useCallback(async (id: string): Promise<Ingredient | null> => {
         try {
             const ingredient = await getIngredient(id);
             return ingredient;
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-        return null
-    }
-    async function fetchAllIngredients(): Promise<Ingredient[] | null> {
+        return null;
+    }, []);
 
+    const fetchAllIngredients = useCallback(async (): Promise<Ingredient[] | null> => {
         try {
-            const data = await getAllIngredients()
+            const data = await getAllIngredients();
             return data === undefined ? null : data;
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
         return null;
-    }
-    async function fetchDataShoppingLists(): Promise<ShoppingList[]> {
+    }, []);
+
+    const fetchDataShoppingLists = useCallback(async (): Promise<ShoppingList[]> => {
         try {
             const data = await getAllShoppingLists();
-            return data
+            return data;
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
         return [];
-    }
-    async function fetchDataShoppingListItems(items: number[]): Promise<ShoppingListItem[] | null> {
+    }, []);
+
+    const fetchDataShoppingListItems = useCallback(async (items: number[]): Promise<ShoppingListItem[] | null> => {
         try {
             const data = await getAllShoppingListItems();
-            const actualItems = data.filter(item => items?.includes(item.id))
+            const actualItems = data.filter(item => items?.includes(item.id));
             return actualItems === undefined ? null : actualItems;
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
         return null;
-    }
-    async function fetchPipeline(list?: ShoppingList) {
+    }, []);
+
+    const fetchPipeline = useCallback(async (list?: ShoppingList) => {
         const lists = await fetchDataShoppingLists();
         setShoppingLists(lists);
 
-        const savedListId = Cookies.get('selectedShoppingListId')
+        const savedListId = Cookies.get('selectedShoppingListId');
         let selectedList = list;
 
         if (!selectedList && savedListId) {
@@ -115,43 +113,28 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
         const ids: number[] = selectedList?.items ? selectedList.items : [];
         let items = await fetchDataShoppingListItems(ids);
 
-        const savedShowBought = Cookies.get('showBought')
+        const savedShowBought = Cookies.get('showBought');
         const initialShowBought = savedShowBought === 'true';
-        setShowBought(initialShowBought)
-
+        setShowBought(initialShowBought);
 
         if (!initialShowBought) {
-            items = items && items.filter(item => !item.bought)
+            items = items && items.filter(item => !item.bought);
         }
         setShoppingListItems(items ? sortItems(items) : []);
         setLoaded(true);
-    }
-    function sortItems(items: ShoppingListItem[]): ShoppingListItem[] {
+    }, [fetchDataShoppingLists, fetchAllIngredients, fetchDataShoppingListItems, setShoppingList]);
 
-        return items.sort((a, b) => {
-            if (a.bought !== b.bought) {
-                return a.bought ? -1 : 1;
-            }
-            return new Date(a.added).getTime() - new Date(b.added).getTime();
-        });
-    }
-    async function handleCreateShoppingList() {
-        const items: number[] = []
-        const list = await createShoppingList({ items });
-        if (list === null)
-            return;
-        fetchPipeline(list);
-    }
-    async function handleUnitChange() {
+    const handleUnitChange = useCallback(async () => {
         const ingredient = await fetchIngredient(selectedIngredientID);
-        ingredient ? setValue('unit', ingredient?.preferedUnit) : setValue('unit', 'kg')
-    }
-    async function handleAddItemToShoppingList(data: InventoryItem | CreateInventoryItemInterface) {
+        ingredient ? setValue('unit', ingredient?.preferedUnit) : setValue('unit', 'kg');
+    }, [fetchIngredient, selectedIngredientID, setValue]);
+
+    const handleAddItemToShoppingList = useCallback(async (data: InventoryItem | CreateInventoryItemInterface) => {
         try {
             if (!shoppingList) {
-                const list = await createShoppingList({ items: [] })
-                if (!list) return
-                setShoppingList(list)
+                const list = await createShoppingList({ items: [] });
+                if (!list) return;
+                setShoppingList(list);
             }
             if (shoppingList) {
                 const item = await createItemAndAddToShoppingList(shoppingList, {
@@ -166,10 +149,11 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
                 }
             }
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-    }
-    async function handleAddPlannedIngredients() {
+    }, [shoppingList, setShoppingList]);
+
+    const handleAddPlannedIngredients = useCallback(async () => {
         const today = new Date();
         const futureDate = new Date(today);
         futureDate.setDate(today.getDate() + 14);
@@ -189,16 +173,42 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
         } catch (error) {
             console.error('Error adding planned ingredients:', error);
         }
-    }
+    }, [handleAddItemToShoppingList]);
 
-    async function handleDeleteShoppingListItem(id: number) {
+    const handleDeleteShoppingListItem = useCallback(async (id: number) => {
         try {
             await deleteShoppingListItem(id);
             fetchPipeline();
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
+    }, [fetchPipeline]);
+
+
+    useEffect(() => {
+        if (selectedIngredientID) {
+            handleUnitChange();
+        }
+    }, [selectedIngredientID]);
+
+
+    function sortItems(items: ShoppingListItem[]): ShoppingListItem[] {
+
+        return items.sort((a, b) => {
+            if (a.bought !== b.bought) {
+                return a.bought ? -1 : 1;
+            }
+            return new Date(a.added).getTime() - new Date(b.added).getTime();
+        });
     }
+    async function handleCreateShoppingList() {
+        const items: number[] = []
+        const list = await createShoppingList({ items });
+        if (list === null)
+            return;
+        fetchPipeline(list);
+    }
+
     const handleIngredientSelect = (ingredient: Ingredient | string) => {
         _setSelectedIngredient(ingredient);
         if (typeof ingredient === 'string') {
@@ -207,28 +217,25 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
             setValue('ingredient', ingredient.title);
         }
     };
-    async function handleAutoCompleteSearch(query: string) {
-        try {
-            const data = await getAllIngredients()
-            const results: string[] = data.map((ingredient) => ingredient.title).filter((title) => title.toLowerCase().includes(query.toLowerCase()));
-            return results
 
+    const handleAutoCompleteSearch = useCallback(async (query: string) => {
+        try {
+            const data = await getAllIngredients();
+            const results: string[] = data.map((ingredient) => ingredient.title).filter((title) => title.toLowerCase().includes(query.toLowerCase()));
+            return results;
         } catch (error) {
             return [];
         }
-    }
-    async function handleDeleteShoppingList(id: number | undefined) {
-        if (!id)
-            return;
+    }, []);
+
+    const handleDeleteShoppingList = useCallback(async (id: number | undefined) => {
+        if (!id) return;
         try {
             const result = await deleteShoppingList(id);
-
             if (result) {
                 const updatedLists = await fetchDataShoppingLists();
-
                 if (updatedLists.length > 0) {
                     const lastList = updatedLists[updatedLists.length - 1];
-
                     setShoppingLists(updatedLists);
                     setShoppingList(lastList);
 
@@ -243,8 +250,9 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
         } catch (error) {
             console.error("Error deleting the shopping list:", error);
         }
-    }
-    async function handleCheckboxChange(item: ShoppingListItem) {
+    }, [fetchDataShoppingLists, fetchDataShoppingListItems, setShoppingList]);
+
+    const handleCheckboxChange = useCallback(async (item: ShoppingListItem) => {
         try {
             const updatedItem = { ...item, bought: !item.bought };
             const list = shoppingList;
@@ -273,14 +281,13 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
         } catch (error) {
             console.log(error);
         }
-    }
+    }, [shoppingList, fetchDataShoppingListItems]);
 
     useEffect(() => {
         fetchPipeline();
-        if (selectedIngredientID) {
-            handleUnitChange();
-        }
-    }, [selectedIngredientID, setValue, loaded]);
+    }, [fetchPipeline]);
+
+
     useEffect(() => {
         if (itemAdded && bottomRef.current) {
             bottomRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -288,6 +295,11 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
         }
     }, [shoppingListItems, itemAdded]);
 
+    useEffect(() => {
+        if (selectedIngredientID) {
+            handleUnitChange();
+        }
+    }, [selectedIngredientID, handleUnitChange]);
 
     async function onSubmit(data: InventoryItem) {
         if (!data.ingredient || typeof data.ingredient !== 'string') {
@@ -296,6 +308,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
         }
         await handleAddItemToShoppingList(data);
     }
+
     if (loaded) {
         return (
             <>

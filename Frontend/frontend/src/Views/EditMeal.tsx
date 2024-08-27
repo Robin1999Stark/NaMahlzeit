@@ -14,10 +14,7 @@ function EditMeal() {
 
     const [mealData, setMealData] = useState<Meal | null>(null);
     const [mealIngredients, setMealIngredients] = useState<IngredientAmountWithMeal[]>([])
-
     const [ingredients, setIngredients] = useState<Ingredient[]>()
-    const [_selectedIngredient, _setSelectedIngredient] = useState<Ingredient>();
-
 
     const {
         register,

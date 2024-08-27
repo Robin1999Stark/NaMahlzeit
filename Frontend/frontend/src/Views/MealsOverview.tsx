@@ -8,7 +8,7 @@ import { MdAdd } from 'react-icons/md';
 import { LuFilter, LuList, LuSquareStack } from 'react-icons/lu';
 import MealCard from '../Components/MealCard';
 import { addMealToPlaner } from '../Endpoints/PlanerService';
-import { getAllMeals } from '../Endpoints/MealService';
+import { deleteMeal, getAllMeals } from '../Endpoints/MealService';
 import { getMealTagsFromTagList } from '../Endpoints/TagService';
 
 function MealsOverview() {
@@ -44,7 +44,7 @@ function MealsOverview() {
         fetchData();
     }, [])
 
-    async function deleteMeal(id: number) {
+    async function handleDeleteMeal(id: number) {
         try {
             await deleteMeal(id);
             fetchData();
@@ -128,7 +128,7 @@ function MealsOverview() {
                             <MealListItem
                                 meal={meal}
                                 addMealToPlaner={handleAddMeal}
-                                deleteMeal={deleteMeal} />
+                                deleteMeal={handleDeleteMeal} />
                         </span>
                     </>
                 }) : <></>}
@@ -139,9 +139,9 @@ function MealsOverview() {
     const mealCards = () => {
         return (
             <ul className='w-full h-full flex px-7 py-4 flex-row flex-wrap flex-grow'>
-                {filteredMeals ? filteredMeals?.map((meal, _index) => {
+                {filteredMeals ? filteredMeals?.map((meal,) => {
                     return <li className='mr-2'>
-                        <MealCard meal={meal} deleteMeal={deleteMeal} />
+                        <MealCard meal={meal} deleteMeal={handleDeleteMeal} />
                     </li>
                 }
                 ) : <></>}

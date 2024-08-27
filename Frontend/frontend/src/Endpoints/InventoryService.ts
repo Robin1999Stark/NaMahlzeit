@@ -7,12 +7,12 @@ const instance = axios.create({
     baseURL: BASE_URL,
     withCredentials: true,
 })
-export async function getAllInventoryItemsJSON(): Promise<any> {
+export async function getAllInventoryItemsJSON(): Promise<unknown> {
     try {
-        const response = await instance.get(`/inventory/`);
+        const response = await instance.get('/inventory/');
         return response.data;
     } catch (error) {
-        throw new Error('Error fetching inventory: ' + error);
+        throw new Error('Error fetching inventory: ' + (error as Error).message);
     }
 }
 
@@ -20,15 +20,17 @@ export async function getAllInventoryItems(): Promise<InventoryItem[]> {
     let inventory: InventoryItem[] = [];
     try {
         const data = await getAllInventoryItemsJSON();
-        inventory = data.map((inv: any) => InventoryItem.fromJSON(inv));
+        if (Array.isArray(data)) {
+            inventory = data.map((inv: unknown) => InventoryItem.fromJSON(inv));
+        } else {
+            console.error('Unexpected data format:', data);
+        }
         return inventory;
     } catch (error) {
-        console.error('Error fetching inventory: ', error);
+        console.error('Error fetching inventory: ', (error as Error).message);
     }
     return inventory;
 }
-
-
 
 export interface CreateInventoryItemInterface {
     ingredient: string;
@@ -42,7 +44,7 @@ export async function createInventoryItem({ ingredient, amount, unit }: CreateIn
         unit: unit
     }
     try {
-        let response = await instance.post('/inventory/', JSON.stringify(requestBody), {
+        const response = await instance.post('/inventory/', JSON.stringify(requestBody), {
             headers: {
                 'Content-Type': 'application/json'
             }

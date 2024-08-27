@@ -20,7 +20,7 @@ function MealDetailView() {
     const { mealID } = useParams();
 
     const [meal, setMeal] = useState<Meal>()
-    const [_error, setError] = useState<string>("")
+    const [, setError] = useState<string>("")
     const [mealIngredients, setMealIngredients] = useState<IngredientAmount[]>([])
     const [planned, setPlanned] = useState<IsPlannedResponse>();
     const [tags, setTags] = useState<MealTags>();
@@ -89,7 +89,7 @@ function MealDetailView() {
             <section className='w-full relative h-full left-[50%] translate-x-[-50%] px-8 mt-8 max-w-[70rem]'>
                 <span className='flex flex-row justify-between items-center'>
                     <span className='flex flex-row justify-start items-center'>
-                        <h1 className='font-semibold text-[#011413] text-2xl'>
+                        <h1 className='font-semibold text-[#011413] text-2xl mr-2'>
                             {meal?.title}
                         </h1>
                         <sup>
