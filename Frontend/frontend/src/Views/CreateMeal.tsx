@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form';
-import { MealService } from '../Endpoints/MealService';
-import { IngredientService } from '../Endpoints/IngredientService';
 import { useNavigate } from 'react-router-dom';
 import { Ingredient } from '../Datatypes/Ingredient';
 import { MealWithIngredientAmount } from '../Datatypes/Meal';
 import { LuMinus } from 'react-icons/lu';
 import { MdAdd } from 'react-icons/md';
+import { getAllIngredients } from '../Endpoints/IngredientService';
+import { createMealWithAmounts } from '../Endpoints/MealService';
 
 function CreateMeal() {
     const navigate = useNavigate();
@@ -17,7 +17,7 @@ function CreateMeal() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const data = await IngredientService.getAllIngredients()
+                const data = await getAllIngredients()
                 setIngredients(data)
             } catch (error) {
                 console.log(error)
@@ -47,7 +47,7 @@ function CreateMeal() {
 
     async function onSubmit(data: MealWithIngredientAmount) {
         try {
-            const meal = await MealService.createMealWithAmounts({
+            const meal = await createMealWithAmounts({
                 title: data.title,
                 description: data.description,
                 ingredients: data.ingredients,

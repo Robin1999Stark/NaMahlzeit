@@ -1,65 +1,37 @@
-import { useContext, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import MealDragList from './MealDragList';
 import { Meal } from '../Datatypes/Meal';
 import { BiShuffle } from 'react-icons/bi';
 import { TagDT } from '../Datatypes/Tag';
-import { TagService } from '../Endpoints/TagService';
 import { MealContext } from './MealContext';
+import { getMealTagsFromTagList } from '../Endpoints/TagService';
 
 type Props = {
     mealListID: string;
     onAddMeal?: (to: Date, mealId: number) => void;
-
 }
 
 function PlanerResourceCol({ mealListID, onAddMeal }: Props) {
-    console.log("addmeal", onAddMeal)
     const context = useContext(MealContext);
 
     if (!context) {
         throw new Error('PlanerResourceCol must be used within a MealProvider');
     }
-
     const { meals, setMeals } = context;
     const [filteredMeals, setFilteredMeals] = useState<Meal[]>([]);
     const [searchString, setSearchString] = useState<string>("");
-    const [debounceTimeout, setDebounceTimeout] = useState<number | null>(null);
-    const [shuffleFkt, _setShuffleFkt] = useState<(meals: Meal[], numberOfResults: number) => Meal[]>();
-
+    const debounceTimeoutRef = useRef<number | null>(null);
     useEffect(() => {
         setFilteredMeals(meals);
     }, [meals]);
 
-    useEffect(() => {
-        if (searchString) {
-            if (debounceTimeout) {
-                clearTimeout(debounceTimeout);
-            }
-
-            const timeoutId = window.setTimeout(() => {
-                searchForMeals(searchString.trim());
-            }, 500);
-
-            setDebounceTimeout(timeoutId);
-
-            return () => {
-                if (debounceTimeout) {
-                    clearTimeout(debounceTimeout);
-                }
-            };
-        } else {
-            setFilteredMeals(meals);
-        }
-    }, [searchString, meals]);
-
-
-    async function searchForMeals(search: string) {
+    const searchForMeals = useCallback(async (search: string) => {
         if (search === "") {
             setFilteredMeals(meals);
         } else {
             const lowerCaseSearch = search.toLowerCase();
             const mealsFromTags = await Promise.all(
-                (await TagService.getMealTagsFromTagList([new TagDT(lowerCaseSearch)])).map((tag) => tag.mealID)
+                (await getMealTagsFromTagList([new TagDT(lowerCaseSearch)])).map((tag) => tag.mealID)
             );
 
             const filtered = meals.filter((meal) =>
@@ -67,7 +39,28 @@ function PlanerResourceCol({ mealListID, onAddMeal }: Props) {
             );
             setFilteredMeals(filtered);
         }
-    }
+    }, [meals]);
+
+    useEffect(() => {
+        if (searchString) {
+            if (debounceTimeoutRef.current) {
+                clearTimeout(debounceTimeoutRef.current);
+            }
+
+            debounceTimeoutRef.current = window.setTimeout(() => {
+                searchForMeals(searchString.trim());
+            }, 500);
+
+            return () => {
+                if (debounceTimeoutRef.current) {
+                    clearTimeout(debounceTimeoutRef.current);
+                }
+            };
+        } else {
+            setFilteredMeals(meals);
+        }
+    }, [searchString, meals, searchForMeals]);
+
 
     function shuffle() {
         const shuffled = [...meals].sort(() => 0.5 - Math.random()).slice(0, 10);
@@ -81,13 +74,7 @@ function PlanerResourceCol({ mealListID, onAddMeal }: Props) {
                 <input
                     type="search"
                     value={searchString}
-                    onChange={(e) => {
-                        setSearchString(e.target.value);
-                        // debounced search - delays search
-                        if (debounceTimeout) {
-                            clearTimeout(debounceTimeout);
-                        }
-                    }}
+                    onChange={(e) => setSearchString(e.target.value)}
                     autoFocus={true}
                     className='bg-white w-full focus:ring-0 py-2 text-start shadow-md px-6 rounded-full mr-2'
                     placeholder='Nach Rezepten suchen ...' />

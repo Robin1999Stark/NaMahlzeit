@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react'
 import { useForm, useFieldArray } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { TagDT } from '../Datatypes/Tag';
-import { TagService } from '../Endpoints/TagService';
 import { Ingredient, IngredientTags } from '../Datatypes/Ingredient';
-import { IngredientService } from '../Endpoints/IngredientService';
 import { MdAdd } from 'react-icons/md';
 import { LuMinus } from 'react-icons/lu';
+import { getIngredient } from '../Endpoints/IngredientService';
+import { getAllTags, getAllTagsFromIngredient, createOrUpdateIngredientTags } from '../Endpoints/TagService';
 
 function SetTagsIngredient() {
     const navigate = useNavigate();
@@ -30,12 +30,12 @@ function SetTagsIngredient() {
         async function fetchData() {
             if (!ingredientID) return;
             try {
-                const tags = await TagService.getAllTags();
-                const ingredient = await IngredientService.getIngredient(ingredientID);
+                const tags = await getAllTags();
+                const ingredient = await getIngredient(ingredientID);
                 let ingredientTags = null;
 
                 try {
-                    ingredientTags = await TagService.getAllTagsFromIngredient(ingredientID);
+                    ingredientTags = await getAllTagsFromIngredient(ingredientID);
                 } catch (error: any) {
                     // Handle 404 or other errors for ingredientTags
                     if (error.response && error.response.status === 404) {
@@ -67,8 +67,7 @@ function SetTagsIngredient() {
 
     const onSubmit = async (data: IngredientTags) => {
         try {
-            console.log(data)
-            await TagService.createOrUpdateIngredientTags(data);
+            await createOrUpdateIngredientTags(data);
             navigate(-1);
         } catch (error) {
             console.log(error)

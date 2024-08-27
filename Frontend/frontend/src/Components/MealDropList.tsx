@@ -5,7 +5,6 @@ import { Weekday } from '../Datatypes/Weekday';
 import DropMealPlaceholder from './DropMealPlaceholder';
 import { FoodplanerItem } from '../Datatypes/FoodPlaner';
 import { FaCheckCircle } from 'react-icons/fa';
-import { IoMdWarning } from "react-icons/io";
 
 interface Props {
     planerItem: FoodplanerItem,
@@ -16,9 +15,9 @@ interface Props {
     onRemoveMeal?: (planerDate: Date, mealId: number) => void;
     onMoveMeal?: (from: Date, to: Date, mealId: number) => void;
     onAddMeal?: (to: Date, mealId: number) => void;
-};
+}
 
-function MealDropList({ listId, listType, planerItem, onRemoveMeal, onMoveMeal, onAddMeal }: Props) {
+function MealDropList({ listId, listType, planerItem, onRemoveMeal, onMoveMeal }: Props) {
     const [isEmpty, setIsEmpty] = useState<boolean>(planerItem.meals.length === 0);
 
     useEffect(() => {
@@ -74,7 +73,6 @@ function MealDropList({ listId, listType, planerItem, onRemoveMeal, onMoveMeal, 
                                                     onMoveMeal={onMoveMeal}
                                                     mealID={food}
                                                     date={planerItem.date}
-                                                    planerID={planerItem.date + ""}
                                                     dragProvided={dragProvided}
                                                     snapshot={snapshot}
                                                     index={index} />

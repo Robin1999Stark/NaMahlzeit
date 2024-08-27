@@ -10,13 +10,13 @@ type Props = {
 
 function PlanerResourceColSearchOptions({ setShuffleFkt }: Props) {
 
-    function shuffleFromAll(meals: Meal[], _numberOfResults: number): Meal[] {
-        const shuffled = meals.sort((_a, _b) => 0.5 - Math.random());
+    function shuffleFromAll(meals: Meal[]): Meal[] {
+        const shuffled = meals.sort(() => 0.5 - Math.random());
         return shuffled;
     }
 
-    function shuffleFromLibrary(meals: Meal[], _numberOfResults: number): Meal[] {
-        const shuffled = meals.sort((_a, _b) => 0.5 - Math.random());
+    function shuffleFromLibrary(meals: Meal[]): Meal[] {
+        const shuffled = meals.sort(() => 0.5 - Math.random());
         return shuffled;
     }
 

@@ -1,9 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
-import { PlanerService } from '../Endpoints/PlanerService'
 import { DragDropContext } from 'react-beautiful-dnd'
 import { mealListID } from '../App'
 import MealDropList from '../Components/MealDropList'
-import { MealService } from '../Endpoints/MealService'
 import { reorderPlan } from '../reorder'
 import PlanerResourceCol from '../Components/PlanerResourceCol'
 import { FoodPlaner, FoodplanerItem } from '../Datatypes/FoodPlaner'
@@ -11,6 +9,8 @@ import { MealContext } from '../Components/MealContext'
 import Calendar from '../Components/Calendar'
 import { RxCalendar } from 'react-icons/rx'
 import { LuLibrary } from 'react-icons/lu'
+import { addMealToPlaner, moveMealBetweenPlanerItemsByDate, removeMealFromPlaner, createPlanerItem, getAllPlanerItems } from '../Endpoints/PlanerService'
+import { getAllMeals } from '../Endpoints/MealService'
 
 function ReceipePlanerView() {
     const SIZE_MOBILE = 700;
@@ -25,7 +25,7 @@ function ReceipePlanerView() {
     if (!context) {
         throw new Error('PlanerResourceCol must be used within a MealProvider');
     }
-    const { meals, setMeals } = context;
+    const { meals, } = context;
     const [togglePlaner, setTogglePlaner] = useState<boolean>(true);
 
     const [planer, setPlaner] = useState<FoodPlaner>({})
@@ -34,21 +34,15 @@ function ReceipePlanerView() {
         end: new Date(Date.now())
     });
 
-    const updatePlanerItem = (id: string, updatedItem: FoodplanerItem) => {
-        setPlaner(prevPlaner => ({
-            ...prevPlaner,
-            [id]: updatedItem
-        }));
-    };
-
     const handleAddMeal = async (to: Date, mealId: number) => {
         try {
-            const addedPlanerItem = await PlanerService.addMealToPlaner(to, mealId);
+            const addedPlanerItem = await addMealToPlaner(to, mealId);
             if (!addedPlanerItem) {
                 console.error('Failed to add meal to planner.');
                 return;
             }
-            const toKey = new Date(to).toISOString().split('T')[0];
+            const toKey: string = new Date(to).toLocaleDateString('en-CA');
+
             setPlaner(prevPlaner => {
                 const updatedPlaner = { ...prevPlaner };
 
@@ -70,7 +64,7 @@ function ReceipePlanerView() {
     }
     const handleMoveToPlanerItem = async (from: Date, to: Date, mealId: number) => {
         try {
-            const response = await PlanerService.moveMealBetweenPlanerItemsByDate(mealId, from, to);
+            await moveMealBetweenPlanerItemsByDate(mealId, from, to);
             setPlaner(prevPlaner => {
                 // Create a copy of the previous state
                 const updatedPlaner = { ...prevPlaner };
@@ -108,7 +102,7 @@ function ReceipePlanerView() {
 
     const handleRemoveMeal = async (planerDate: Date, mealId: number) => {
         try {
-            await PlanerService.removeMealFromPlaner(planerDate, mealId);
+            await removeMealFromPlaner(planerDate, mealId);
 
             const planerDateString = new Date(planerDate).toISOString().split('T')[0];
 
@@ -166,7 +160,7 @@ function ReceipePlanerView() {
                     newPlaner.push(existingItem);
                 } else {
                     // Only create a new item if it doesn't already exist
-                    const newItem = await PlanerService.createPlanerItem({ date: normalizedDate, meals: [] });
+                    const newItem = await createPlanerItem({ date: normalizedDate, meals: [] });
                     if (newItem) {
                         newPlaner.push(newItem);
                     }
@@ -184,13 +178,13 @@ function ReceipePlanerView() {
         }
 
         async function addMealList(planer: FoodPlaner) {
-            const foodList: number[] = (await MealService.getAllMeals()).map(meal => meal.id);
+            const foodList: number[] = (await getAllMeals()).map(meal => meal.id);
             const mealList: FoodplanerItem = new FoodplanerItem(new Date(Date.now()), foodList);
             planer[mealListID] = mealList;
         }
         async function fetchData() {
             try {
-                const data: FoodplanerItem[] = await PlanerService.getAllPlanerItems();
+                const data: FoodplanerItem[] = await getAllPlanerItems();
                 const end = new Date(Date.now());
                 end.setDate(end.getDate() + MAX_CALENDAR_ENTRIES);
                 const [from, to] = await updateTimeSpan(new Date(Date.now()), end);
@@ -235,7 +229,6 @@ function ReceipePlanerView() {
         { transform: 'translateX(96%)' }
     ];
 
-
     const mobileView = () => {
         return (
             <section className='flex flex-row pt-4 h-full justify-start items-start'>
@@ -248,7 +241,7 @@ function ReceipePlanerView() {
                                 </span>
                                 <Calendar planer={planer} />
                                 <ul className='h-full overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-[#046865] scrollbar-track-slate-100'>
-                                    {Object.entries(planer).slice(0, -1).map(([key, value]) => (
+                                    {Object.entries(planer).slice(0, -1).map(([key,]) => (
                                         <li id={key} className='w-full pr-4' key={key}>
                                             <MealDropList
                                                 internalScroll
@@ -314,7 +307,7 @@ function ReceipePlanerView() {
                         <h1 className='mb-4 font-semibold text-[#011413] text-xl'>Speiseplan</h1>
                         <Calendar planer={planer} />
                         <ul className='h-full overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-[#046865] scrollbar-track-slate-100'>
-                            {Object.entries(planer).slice(0, -1).map(([key, value]) => (
+                            {Object.entries(planer).slice(0, -1).map(([key,]) => (
                                 <li id={key} className='w-full pr-4' key={key}>
                                     <MealDropList
                                         internalScroll
@@ -328,7 +321,9 @@ function ReceipePlanerView() {
                             ))}
                         </ul>
                     </section>
-                    <PlanerResourceCol mealListID={mealListID} />
+                    <PlanerResourceCol
+                        mealListID={mealListID}
+                        onAddMeal={handleAddMeal} />
                 </DragDropContext>
             </section>
 

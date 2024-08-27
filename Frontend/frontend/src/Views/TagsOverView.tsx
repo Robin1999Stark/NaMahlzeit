@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { TagDT } from '../Datatypes/Tag';
-import { TagService } from '../Endpoints/TagService';
 import { LuFilter } from 'react-icons/lu';
-import ButtonRound from '../Components/ButtonRound';
-import { MdAdd, MdDeleteForever } from 'react-icons/md';
+import { MdAdd } from 'react-icons/md';
 import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
 import { IoIosMore } from 'react-icons/io';
+import { getAllTags } from '../Endpoints/TagService';
 
 function TagsOverView() {
     const navigate = useNavigate();
@@ -16,7 +15,7 @@ function TagsOverView() {
     const [searchString, setSearchString] = useState<string>("");
     async function fetchData() {
         try {
-            const data = await TagService.getAllTags()
+            const data = await getAllTags()
             if (data !== null) {
                 const sortedTagsByName = data.sort((a, b) => a.name.localeCompare(b.name))
                 setTags(sortedTagsByName);
@@ -33,7 +32,7 @@ function TagsOverView() {
     }, [])
     async function deleteTag(tag: string) {
         try {
-            await TagService.deleteTag(tag);
+            await deleteTag(tag);
             fetchData();
         } catch (error) {
             console.log(error)

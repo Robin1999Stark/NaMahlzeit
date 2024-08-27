@@ -1,6 +1,6 @@
 import React, { createContext, useState, ReactNode, useEffect } from 'react';
 import { Meal } from '../Datatypes/Meal';
-import { MealService } from '../Endpoints/MealService';
+import { getAllMeals } from '../Endpoints/MealService';
 
 interface MealContextType {
     meals: Meal[];
@@ -16,7 +16,7 @@ const MealProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     useEffect(() => {
         async function fetchMeals() {
             try {
-                const fetchedMeals = await MealService.getAllMeals();
+                const fetchedMeals = await getAllMeals();
                 setMeals(fetchedMeals);
             } catch (error) {
                 console.error('Error fetching meals:', error);

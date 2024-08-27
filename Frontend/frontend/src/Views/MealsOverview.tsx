@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react'
-import { MealService } from '../Endpoints/MealService'
 import { useNavigate } from 'react-router-dom'
 import { Meal } from '../Datatypes/Meal';
-import { TagService } from '../Endpoints/TagService';
 import { TagDT } from '../Datatypes/Tag';
 import debounce from 'lodash/debounce';
 import MealListItem from '../Components/MealListItem';
 import { MdAdd } from 'react-icons/md';
 import { LuFilter, LuList, LuSquareStack } from 'react-icons/lu';
 import MealCard from '../Components/MealCard';
-import { PlanerService } from '../Endpoints/PlanerService';
+import { addMealToPlaner } from '../Endpoints/PlanerService';
+import { getAllMeals } from '../Endpoints/MealService';
+import { getMealTagsFromTagList } from '../Endpoints/TagService';
 
 function MealsOverview() {
     const navigate = useNavigate();
@@ -21,9 +21,7 @@ function MealsOverview() {
 
     const handleAddMeal = async (to: Date, mealId: number) => {
         try {
-            console.log(to)
-            const addedPlanerItem = await PlanerService.addMealToPlaner(to, mealId);
-            console.log(addedPlanerItem)
+            const addedPlanerItem = await addMealToPlaner(to, mealId);
             if (!addedPlanerItem) {
                 console.error('Failed to add meal to planner.');
                 return;
@@ -34,7 +32,7 @@ function MealsOverview() {
     }
     async function fetchData() {
         try {
-            const data = await MealService.getAllMeals()
+            const data = await getAllMeals()
             const sortedMealsByTitle = data.sort((a, b) => a.title.localeCompare(b.title))
             setMeals(sortedMealsByTitle);
             setFilteredMeals(sortedMealsByTitle);
@@ -48,7 +46,7 @@ function MealsOverview() {
 
     async function deleteMeal(id: number) {
         try {
-            await MealService.deleteMeal(id);
+            await deleteMeal(id);
             fetchData();
         } catch (error) {
             console.log(error)
@@ -64,7 +62,7 @@ function MealsOverview() {
             let filteredMeals = meals;
             const lowerCaseSearch = search.toLowerCase();
             const mealsFromTags = await Promise.all(
-                (await TagService.getMealTagsFromTagList([new TagDT(lowerCaseSearch)])).map((tag) => tag.mealID)
+                (await getMealTagsFromTagList([new TagDT(lowerCaseSearch)])).map((tag) => tag.mealID)
             );
 
             filteredMeals = filteredMeals?.filter((meal) => {

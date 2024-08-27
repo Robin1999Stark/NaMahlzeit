@@ -7,8 +7,12 @@ export class FoodplanerItem {
         this.meals = food;
     }
 
-    static fromJSON(json: any): FoodplanerItem {
-        return new FoodplanerItem(json.date, json.meals)
+    static fromJSON(json: unknown): FoodplanerItem {
+        const obj = json as { date: string | Date; meals: number[] };
+
+        const date = typeof obj.date === 'string' ? new Date(obj.date) : obj.date;
+
+        return new FoodplanerItem(date, obj.meals)
     }
 }
 

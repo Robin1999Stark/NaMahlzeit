@@ -1,13 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 interface Props {
     debounceTimeout: number | null
     searchString: string
-    setDebounceTimeout: React.Dispatch<React.SetStateAction<number | null>>
     setSearchString: React.Dispatch<React.SetStateAction<string>>
 }
 
-function Searchbar({ debounceTimeout, searchString, setDebounceTimeout, setSearchString }: Props) {
+function Searchbar({ debounceTimeout, searchString, setSearchString }: Props) {
 
     return (
         <input

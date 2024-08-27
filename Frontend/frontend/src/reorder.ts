@@ -1,7 +1,7 @@
 import { DraggableLocation } from "react-beautiful-dnd";
-import { PlanerService } from "./Endpoints/PlanerService";
 import { mealListID } from "./App";
 import { FoodPlaner, FoodplanerItem } from "./Datatypes/FoodPlaner";
+import { updatePlanerItem } from "./Endpoints/PlanerService";
 
 export const reorder = (
     list: any[],
@@ -59,7 +59,7 @@ export const reorderPlan = (
             meals: removeDoubles(nextFood)
         }
         if (destination.droppableId !== mealListID) {
-            PlanerService.updatePlanerItem(updatedDestinationItem.date, updatedDestinationItem);
+            updatePlanerItem(updatedDestinationItem.date, updatedDestinationItem);
         }
         return {
             ...plan,
@@ -88,11 +88,11 @@ export const reorderPlan = (
 
     // update Planer
     if (source.droppableId !== mealListID) {
-        PlanerService.updatePlanerItem(updatedSourceItem.date, updatedSourceItem);
+        updatePlanerItem(updatedSourceItem.date, updatedSourceItem);
 
     }
     if (destination.droppableId !== mealListID) {
-        PlanerService.updatePlanerItem(updatedDestinationItem.date, updatedDestinationItem);
+        updatePlanerItem(updatedDestinationItem.date, updatedDestinationItem);
     }
 
     return {

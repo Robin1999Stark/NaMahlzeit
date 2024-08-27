@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { TagDT } from '../Datatypes/Tag';
-import { TagService } from '../Endpoints/TagService';
+import { createTag } from '../Endpoints/TagService';
 
 function CreateTag() {
 
@@ -19,7 +19,7 @@ function CreateTag() {
 
     const onSubmit = (data: TagDT) => {
         try {
-            TagService.createTag({
+            createTag({
                 name: data.name
             })
             navigate(-1);

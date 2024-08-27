@@ -1,17 +1,15 @@
 import { useEffect, useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form';
-import { MealService } from '../Endpoints/MealService';
-import { IngredientService } from '../Endpoints/IngredientService';
-import { useNavigate, useParams } from 'react-router-dom';
-import { MealIngredientService } from '../Endpoints/MealIngredientService';
+import { useParams } from 'react-router-dom';
 import { IngredientAmountWithMeal, Ingredient } from '../Datatypes/Ingredient';
 import { Meal, MealWithIngredientAmountMIID } from '../Datatypes/Meal';
-import { IoRemove } from 'react-icons/io5';
 import { LuMinus } from 'react-icons/lu';
 import { MdAdd } from 'react-icons/md';
+import { getAllIngredients } from '../Endpoints/IngredientService';
+import { getAllMealIngredients } from '../Endpoints/MealIngredientService';
+import { getMeal, updateMeal } from '../Endpoints/MealService';
 
 function EditMeal() {
-    const navigate = useNavigate();
     const { mealID } = useParams();
 
     const [mealData, setMealData] = useState<Meal | null>(null);
@@ -42,9 +40,9 @@ function EditMeal() {
             if (!mealID) return;
             try {
                 const [meal, allIngredients, mealIngredients] = await Promise.all([
-                    MealService.getMeal(mealID),
-                    IngredientService.getAllIngredients(),
-                    MealIngredientService.getAllMealIngredients(Number(mealID))
+                    getMeal(mealID),
+                    getAllIngredients(),
+                    getAllMealIngredients(Number(mealID))
                 ]);
                 if (meal !== null) setMealData(meal);
                 if (allIngredients !== null) setIngredients(allIngredients);
@@ -73,7 +71,7 @@ function EditMeal() {
 
     const onSubmit = (data: MealWithIngredientAmountMIID) => {
         try {
-            MealService.updateMeal(Number(mealID), data)
+            updateMeal(Number(mealID), data)
         } catch (error) {
             console.log(error)
         }

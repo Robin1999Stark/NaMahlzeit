@@ -36,7 +36,7 @@ function AutoCompleteInput({ onSelect, search }: Props) {
         return () => {
             debouncedSearch.cancel();
         };
-    }, [searchString]);
+    }, [searchString, debouncedSearch]);
 
     const handleSuggestionClick = (item: string) => {
         onSelect(item);

@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { MealService } from '../Endpoints/MealService';
 import { Meal } from '../Datatypes/Meal';
 import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 import PlaceholderMealImage from './PlaceholderMealImage';
@@ -12,10 +11,10 @@ import { MdAdd } from 'react-icons/md';
 import 'react-datepicker/dist/react-datepicker.css';
 import CustomDatePicker from './CustomDatePicker';
 import LoadingSpinner from './LoadingSpinner';
+import { getMeal } from '../Endpoints/MealService';
 
 type Props = {
     mealID: number
-    planerID?: string
     dragProvided: DraggableProvided
     snapshot: DraggableStateSnapshot
     customStyle?: React.CSSProperties
@@ -27,14 +26,14 @@ type Props = {
     index?: number;
 }
 
-function MealDragElement({ mealID, dragProvided, snapshot, date, customStyle, planerID, onAddMeal, onRemoveMeal, onMoveMeal, showMore = true }: Props) {
+function MealDragElement({ mealID, dragProvided, snapshot, date, customStyle, onAddMeal, onRemoveMeal, onMoveMeal, showMore = true }: Props) {
     const SIZE_MOBILE = 700;
     const [windowSize, setWindowSize] = useState({
         width: window.innerWidth,
         height: window.innerHeight,
     });
     const [meal, setMeal] = useState<Meal>();
-    const [_error, setError] = useState<boolean>(false);
+    const [, setError] = useState<boolean>(false);
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
     const datePickerRef = useRef<HTMLDivElement>(null);
@@ -42,7 +41,7 @@ function MealDragElement({ mealID, dragProvided, snapshot, date, customStyle, pl
     useEffect(() => {
         async function fetchMeal() {
             try {
-                const response = await MealService.getMeal(mealID + "")
+                const response = await getMeal(mealID + "")
                 response ? setMeal(response) : setError(true)
             } catch (e) {
                 console.log(e)
@@ -53,10 +52,9 @@ function MealDragElement({ mealID, dragProvided, snapshot, date, customStyle, pl
 
 
     async function handleRemoveMeal(planerDate: Date | undefined, mealID: number) {
-
         if (planerDate === undefined) return;
         if (onRemoveMeal === undefined) return;
-        const result = await onRemoveMeal(planerDate, mealID);
+        await onRemoveMeal(planerDate, mealID);
     }
 
 
@@ -82,8 +80,6 @@ function MealDragElement({ mealID, dragProvided, snapshot, date, customStyle, pl
             ...customStyle,
         };
         return style;
-
-
     };
 
     const style = getDraggableStyle(snapshot, dragProvided);
@@ -153,7 +149,9 @@ function MealDragElement({ mealID, dragProvided, snapshot, date, customStyle, pl
                             <MenuItem onClick={() => {
 
                                 handleRemoveMeal(date, mealID)
-                            }}>Löschen</MenuItem>
+                            }}>
+                                Löschen
+                            </MenuItem>
                             <SubMenu label="Verschieben">
                                 <MenuItem onClick={() => {
                                     const to: Date = new Date(date);
@@ -173,15 +171,15 @@ function MealDragElement({ mealID, dragProvided, snapshot, date, customStyle, pl
                                 }}>
                                     +2 Tage
                                 </MenuItem>
-                                <MenuItem>Anderer Tag</MenuItem>
                             </SubMenu>
                         </Menu> :
-                        <Menu menuButton={<MenuButton><MdAdd className='size-5 text-[#011413] mr-3' /></MenuButton>} transition>
+                        <Menu menuButton={<MenuButton>
+                            <MdAdd className='size-5 text-[#011413] mr-3' />
+                        </MenuButton>} transition>
                             <MenuItem onClick={() => {
                                 const today = new Date(Date.now())
                                 const to: Date = new Date(today);
                                 to.setDate(to.getDate());
-                                console.log(onAddMeal)
                                 if (onAddMeal !== undefined) {
                                     onAddMeal(to, mealID);
                                 }

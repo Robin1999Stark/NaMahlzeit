@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { Ingredient, IngredientTags } from '../Datatypes/Ingredient';
-import { TagService } from './TagService';
+import { createIngredientTags } from './TagService';
 
 const BASE_URL = 'http://localhost:8000';
 
@@ -8,101 +8,124 @@ const instance = axios.create({
     baseURL: BASE_URL,
     withCredentials: true,
 })
-export namespace IngredientService {
-    async function getAllIngredientsJSON(): Promise<any> {
-        try {
-            const response = await instance.get('/ingredients/');
-            return response.data;
-        } catch (error) {
-            throw new Error('Error fetching Ingredients: ' + error);
-        }
+
+// Fetch all ingredients in JSON format
+async function getAllIngredientsJSON(): Promise<unknown> {
+    try {
+        const response = await instance.get('/ingredients/');
+        return response.data;
+    } catch (error) {
+        throw new Error(`Error fetching Ingredients: ${error}`);
     }
+}
 
-    export async function getAllIngredients(): Promise<Ingredient[]> {
-        let ingredients: Ingredient[] = [];
-        try {
-            const data = await getAllIngredientsJSON();
-            ingredients = data.map((ingredient: any) => Ingredient.fromJSON(ingredient));
-            return ingredients;
-        } catch (error) {
-            console.error('Error fetching Ingredients: ', error);
-        }
-        return ingredients;
-    }
+// Convert JSON data to Ingredient objects
+export async function getAllIngredients(): Promise<Ingredient[]> {
+    try {
+        const data = await getAllIngredientsJSON();
 
-
-    async function getIngredientJSON(id: string): Promise<any> {
-        try {
-            const response = await instance.get('/ingredients/' + id + '/');
-            return response.data;
-        } catch (error) {
-            throw new Error('Error fetching Ingredient: ' + error);
-        }
-    }
-
-    export async function getIngredient(id: string): Promise<Ingredient> {
-        try {
-            const response = await getIngredientJSON(id);
-            return Ingredient.fromJSON(response);
-
-        } catch (error) {
-            throw new Error("Error occured while getting Ingredient")
-        }
-    }
-
-
-    interface CreateIngredientInterface {
-        title: string;
-        description: string;
-        preferedUnit: string;
-    }
-    export async function createIngredient({ title, description, preferedUnit }: CreateIngredientInterface): Promise<Ingredient | null> {
-        const requestBody = {
-            title: title,
-            description: description,
-            preferedUnit: preferedUnit,
-        }
-        try {
-            const response = await instance.post('/ingredients/', JSON.stringify(requestBody), {
-                headers: {
-                    'Content-Type': 'application/json'
+        if (Array.isArray(data)) {
+            return data.map((ingredient) => {
+                if (typeof ingredient === 'object' && ingredient !== null) {
+                    return Ingredient.fromJSON(ingredient);
+                } else {
+                    throw new Error('Invalid data format');
                 }
             });
-            const tags: IngredientTags = new IngredientTags(title, []);
-            await TagService.createIngredientTags(tags)
-            return Ingredient.fromJSON(response.data);
-        } catch (error) {
-            console.error('Error creating Ingredient:', error);
-            return null;
+        } else {
+            throw new Error('Expected an array of ingredients');
         }
+    } catch (error) {
+        console.error('Error fetching Ingredients:', error);
+        return [];
     }
-
-
-    export async function updateIngredient(ingredient: Ingredient) {
-        let requestBody = {
-            title: ingredient.title,
-            description: ingredient.description,
-            preferedUnit: ingredient.preferedUnit,
-        }
-
-        try {
-            await instance.put(`/ingredients/${ingredient.title}/`, JSON.stringify(requestBody), {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-        } catch (error) {
-            throw new Error('Error while updating Ingredient occured: ' + error);
-        }
-    }
-
-    export async function deleteIngredient(ingredient: string) {
-        try {
-            const response = await instance.delete(`/ingredients/${ingredient}/`);
-            return response.data;
-        } catch (error) {
-            throw new Error('Error deleting Ingredient: ' + error);
-        }
-    }
-
 }
+
+// Fetch a single ingredient in JSON format
+async function getIngredientJSON(id: string): Promise<unknown> {
+    try {
+        const response = await instance.get(`/ingredients/${id}/`);
+        return response.data;
+    } catch (error) {
+        throw new Error(`Error fetching Ingredient with ID ${id}: ${error}`);
+    }
+}
+
+// Convert JSON data to a single Ingredient object
+export async function getIngredient(id: string): Promise<Ingredient> {
+    try {
+        const data = await getIngredientJSON(id);
+
+        if (typeof data === 'object' && data !== null) {
+            return Ingredient.fromJSON(data);
+        } else {
+            throw new Error('Invalid data format');
+        }
+    } catch (error) {
+        throw new Error(`Error occurred while getting Ingredient with ID ${id}: ${error}`);
+    }
+}
+
+
+interface CreateIngredientInterface {
+    title: string;
+    description: string;
+    preferedUnit: string;
+}
+// Create a new ingredient
+export async function createIngredient({ title, description, preferedUnit }: CreateIngredientInterface): Promise<Ingredient | null> {
+    const requestBody = {
+        title,
+        description,
+        preferedUnit,
+    };
+
+    try {
+        const response = await instance.post('/ingredients/', JSON.stringify(requestBody), {
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        const tags = new IngredientTags(title, []);
+        await createIngredientTags(tags);
+
+        const data = response.data;
+        if (typeof data === 'object' && data !== null) {
+            return Ingredient.fromJSON(data);
+        } else {
+            throw new Error('Invalid data format');
+        }
+    } catch (error) {
+        console.error('Error creating Ingredient:', error);
+        return null;
+    }
+}
+
+
+// Update an existing ingredient
+export async function updateIngredient(ingredient: Ingredient): Promise<AxiosResponse> {
+    const requestBody = {
+        title: ingredient.title,
+        description: ingredient.description,
+        preferedUnit: ingredient.preferedUnit,
+    };
+
+    try {
+        const response = await instance.put(`/ingredients/${ingredient.title}/`, JSON.stringify(requestBody), {
+            headers: { 'Content-Type': 'application/json' }
+        });
+        return response;
+    } catch (error) {
+        throw new Error(`Error while updating Ingredient with title ${ingredient.title}: ${error}`);
+    }
+}
+
+
+export async function deleteIngredient(ingredient: string) {
+    try {
+        const response = await instance.delete(`/ingredients/${ingredient}/`);
+        return response.data;
+    } catch (error) {
+        throw new Error('Error deleting Ingredient: ' + error);
+    }
+}
+

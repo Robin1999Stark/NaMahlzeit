@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react'
 import { InventoryItem } from '../Datatypes/Inventory'
-import { InventoryService } from '../Endpoints/InventoryService'
 import { useForm } from 'react-hook-form';
-import { IngredientService } from '../Endpoints/IngredientService';
 import { Ingredient } from '../Datatypes/Ingredient';
 import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
 import { IoIosMore } from 'react-icons/io';
@@ -10,18 +8,20 @@ import { MdAdd } from 'react-icons/md';
 import { LuMinus } from "react-icons/lu";
 import AutoCompleteInput from '../Components/AutoCompleteInput';
 import LoadingSpinner from '../Components/LoadingSpinner';
+import { getAllIngredients } from '../Endpoints/IngredientService';
+import { createInventoryItem, getAllInventoryItems } from '../Endpoints/InventoryService';
 
 function InventoryListView() {
-    const [ingredients, setIngredients] = useState<Ingredient[]>()
+    const [, setIngredients] = useState<Ingredient[]>()
     const [inventory, setInventory] = useState<InventoryItem[]>();
     const [add, setAdd] = useState<boolean>(false);
-    const [selectedIngredient, setSelectedIngredient] = useState<Ingredient | string>("");
+    const [, setSelectedIngredient] = useState<Ingredient | string>("");
 
     const {
         register,
         handleSubmit,
         setValue,
-        formState: { errors } } = useForm<InventoryItem>({
+        formState: { } } = useForm<InventoryItem>({
             defaultValues: {
                 ingredient: "",
                 amount: 0,
@@ -32,7 +32,7 @@ function InventoryListView() {
 
     async function fetchDataIngredients() {
         try {
-            const data = await IngredientService.getAllIngredients()
+            const data = await getAllIngredients()
             setIngredients(data)
         } catch (error) {
             console.log(error)
@@ -40,7 +40,7 @@ function InventoryListView() {
     }
     async function handleAutoCompleteSearch(query: string) {
         try {
-            const data = await IngredientService.getAllIngredients()
+            const data = await getAllIngredients()
             const results: string[] = data.map((ingredient) => ingredient.title).filter((title) => title.toLowerCase().includes(query.toLowerCase()));
             return results
 
@@ -58,7 +58,7 @@ function InventoryListView() {
     };
     async function fetchDataInventory() {
         try {
-            const data = await InventoryService.getAllInventoryItems()
+            const data = await getAllInventoryItems()
             //const sorted = data.sort((a, b) => a.ingredient.localeCompare(b.ingredient))
             setInventory(data)
         } catch (error) {
@@ -77,11 +77,11 @@ function InventoryListView() {
     const onSubmit = (data: InventoryItem) => {
         try {
             if (add) {
-                InventoryService.createInventoryItem({ ingredient: data.ingredient, amount: data.amount, unit: data.unit })
+                createInventoryItem({ ingredient: data.ingredient, amount: data.amount, unit: data.unit })
                 fetchPipeline();
 
             } else {
-                InventoryService.createInventoryItem({ ingredient: data.ingredient, amount: -data.amount, unit: data.unit })
+                createInventoryItem({ ingredient: data.ingredient, amount: -data.amount, unit: data.unit })
                 fetchPipeline();
 
             }
@@ -92,7 +92,7 @@ function InventoryListView() {
     }
     async function deleteInventoryItem(id: number) {
         try {
-            await InventoryService.deleteInventoryItem(id);
+            await deleteInventoryItem(id);
             fetchPipeline();
         } catch (error) {
             console.log(error)

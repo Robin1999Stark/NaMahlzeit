@@ -18,10 +18,49 @@ export class ShoppingListItem {
         this.notes = notes;
     }
 
-    static fromJSON(json: any): ShoppingListItem {
-        return new ShoppingListItem(json.id, json.bought, json.added, json.notes, json.ingredient, json.amount, json.unit);
+    static fromJSON(json: unknown): ShoppingListItem {
+
+        if (typeof json !== 'object' || json === null) {
+            throw new Error("Invalid JSON format for ShoppingListItem");
+        }
+
+        const obj = json as {
+            id?: unknown;
+            bought?: unknown;
+            ingredient?: unknown;
+            added?: unknown;
+            amount?: unknown;
+            unit?: unknown;
+            notes?: unknown;
+        };
+
+        const id = typeof obj.id === 'number' ? obj.id : NaN;
+        const bought = typeof obj.bought === 'boolean' ? obj.bought : false;
+        const ingredient = typeof obj.ingredient === 'string' ? obj.ingredient : '';
+        const added = isValidDate(obj.added) ? new Date(obj.added as string) : new Date();
+        const amount = typeof obj.amount === 'number' ? obj.amount : parseFloat(obj.amount as string);
+        const unit = typeof obj.unit === 'string' ? obj.unit : '';
+        const notes = typeof obj.notes === 'string' ? obj.notes : '';
+
+        if (isNaN(id) || isNaN(amount)) {
+            throw new Error("Invalid JSON format for ShoppingListItem");
+        }
+
+        return new ShoppingListItem(
+            id,
+            bought,
+            added,
+            notes,
+            ingredient,
+            amount,
+            unit
+        );
     }
 
+}
+function isValidDate(date: unknown): date is string {
+    const t = typeof date === 'string' && !isNaN(Date.parse(date));
+    return t
 }
 
 
@@ -36,8 +75,23 @@ export class ShoppingList {
         this.items = items;
     }
 
-    static fromJSON(json: any): ShoppingList {
-        return new ShoppingList(json.id, new Date(json.created), json.items);
+    static fromJSON(json: unknown): ShoppingList {
+        if (typeof json !== 'object' || json === null) {
+            throw new Error("Invalid JSON format for ShoppingListItem");
+        }
+
+        const obj = json as {
+            id?: unknown;
+            created?: unknown;
+            items?: unknown;
+        };
+        const id = typeof obj.id === 'number' ? obj.id : NaN;
+        const created = isValidDate(obj.created) ? new Date(obj.created as string) : new Date();
+        const items = Array.isArray(obj.items) && obj.items.every(item => typeof item === 'number')
+            ? obj.items
+            : [];
+
+        return new ShoppingList(id, created, items);
     }
 
 }

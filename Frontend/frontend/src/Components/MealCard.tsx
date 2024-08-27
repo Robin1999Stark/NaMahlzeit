@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Meal, MealTags } from '../Datatypes/Meal'
 import PlaceholderMealImage from './PlaceholderMealImage'
-import { TagService } from '../Endpoints/TagService';
 import Tag from './Tag';
 import { Link } from 'react-router-dom';
+import { getAllTagsFromMeal } from '../Endpoints/TagService';
 
 
 type Props = {
@@ -19,14 +19,14 @@ function MealCard({ meal }: Props) {
 
         async function fetchTags(id: number) {
             try {
-                const response = await TagService.getAllTagsFromMeal(id);
+                const response = await getAllTagsFromMeal(id);
                 response ? setTags(response) : console.log("Error")
             } catch (error) {
                 console.error("error");
             }
         }
         fetchTags(meal.id);
-    }, [])
+    }, [meal])
 
     return (
         <section className='min-w-[8rem] max-w-[12rem] flex-grow flex-1 pb-4 rounded-md h-fit flex flex-col items-center justify-start bg-white p-2'>

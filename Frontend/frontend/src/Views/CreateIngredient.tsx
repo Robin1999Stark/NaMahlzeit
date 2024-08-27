@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { IngredientService } from '../Endpoints/IngredientService'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { Ingredient } from '../Datatypes/Ingredient'
+import { createIngredient } from '../Endpoints/IngredientService'
 
 function CreateIngredient() {
     const navigate = useNavigate();
-    const [wikiResult, setWikiResult] = useState<string>('');
+    const [, setWikiResult] = useState<string>('');
 
     async function handleWikiSearch(searchTerm: string) {
         try {
@@ -40,7 +40,7 @@ function CreateIngredient() {
 
     async function onSubmit(data: Ingredient) {
         try {
-            await IngredientService.createIngredient({ title: data.title, description: data.description, preferedUnit: data.preferedUnit })
+            await createIngredient({ title: data.title, description: data.description, preferedUnit: data.preferedUnit })
             navigate('/ingredients')
         } catch (error) {
             console.log(error)

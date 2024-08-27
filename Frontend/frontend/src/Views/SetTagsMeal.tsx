@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { TagDT } from '../Datatypes/Tag';
 import { useNavigate, useParams } from 'react-router-dom';
-import { TagService } from '../Endpoints/TagService';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { Meal, MealTags } from '../Datatypes/Meal';
-import { MealService } from '../Endpoints/MealService';
 import { LuMinus } from 'react-icons/lu';
 import { MdAdd } from 'react-icons/md';
+import { getMeal } from '../Endpoints/MealService';
+import { getAllTags, getAllTagsFromMeal, createOrUpdateMealTags } from '../Endpoints/TagService';
 
 function SetTagsMeal() {
     const navigate = useNavigate();
@@ -31,12 +31,12 @@ function SetTagsMeal() {
         async function fetchData() {
             if (!mealID) return;
             try {
-                const tags = await TagService.getAllTags();
-                const meal = await MealService.getMeal(mealID);
+                const tags = await getAllTags();
+                const meal = await getMeal(mealID);
                 let mealTags = null;
 
                 try {
-                    mealTags = await TagService.getAllTagsFromMeal(Number(mealID));
+                    mealTags = await getAllTagsFromMeal(Number(mealID));
                 } catch (error: any) {
                     // Handle 404 or other errors for mealTags
                     if (error.response && error.response.status === 404) {
@@ -68,8 +68,7 @@ function SetTagsMeal() {
 
     const onSubmit = async (data: MealTags) => {
         try {
-            console.log(data)
-            await TagService.createOrUpdateMealTags(data);
+            await createOrUpdateMealTags(data);
             navigate(-1);
         } catch (error) {
             console.log(error)

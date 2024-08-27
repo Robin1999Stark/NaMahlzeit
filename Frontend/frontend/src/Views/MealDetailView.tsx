@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { MealService } from '../Endpoints/MealService'
 import { Link } from 'react-router-dom'
-import { MealIngredientService } from '../Endpoints/MealIngredientService'
 import PlaceholderMealImage from '../Components/PlaceholderMealImage'
 import URLify from '../Helperfunctions/urlify'
 import { LuClock } from "react-icons/lu";
-import { PlanerService } from '../Endpoints/PlanerService'
 import { IngredientAmount } from '../Datatypes/Ingredient'
 import { Meal, MealTags } from '../Datatypes/Meal'
-import { TagService } from '../Endpoints/TagService'
 import Tag from '../Components/Tag'
 import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu'
 import { IoIosMore } from 'react-icons/io'
 import LoadingSpinner from '../Components/LoadingSpinner'
+import { isPlanned, IsPlannedResponse } from '../Endpoints/PlanerService'
+import { getAllMealIngredients } from '../Endpoints/MealIngredientService'
+import { getMeal } from '../Endpoints/MealService'
+import { getAllTagsFromMeal } from '../Endpoints/TagService'
 
 function MealDetailView() {
     const navigate = useNavigate();
@@ -22,12 +22,12 @@ function MealDetailView() {
     const [meal, setMeal] = useState<Meal>()
     const [_error, setError] = useState<string>("")
     const [mealIngredients, setMealIngredients] = useState<IngredientAmount[]>([])
-    const [isPlanned, setIsPlanned] = useState<PlanerService.IsPlannedResponse>();
+    const [planned, setPlanned] = useState<IsPlannedResponse>();
     const [tags, setTags] = useState<MealTags>();
 
     function displayIsPlanned() {
-        if (isPlanned && isPlanned.isPlanned) {
-            return <label aria-label='planned for' className='text-[#046865] font-bold text-sm'>{'geplant: ' + new Date(isPlanned.plannedDate!).toLocaleDateString()}</label>
+        if (planned && planned.isPlanned) {
+            return <label aria-label='planned for' className='text-[#046865] font-bold text-sm'>{'geplant: ' + new Date(planned.plannedDate!).toLocaleDateString()}</label>
         } else {
             return <></>
         }
@@ -36,7 +36,7 @@ function MealDetailView() {
 
         async function fetchTags(id: string) {
             try {
-                const response = await TagService.getAllTagsFromMeal(Number(id));
+                const response = await getAllTagsFromMeal(Number(id));
                 response ? setTags(response) : setError("No Meal Found");
             } catch (error) {
                 setError("Error while fetching Tags occured");
@@ -45,7 +45,7 @@ function MealDetailView() {
 
         async function fetchMeal() {
             try {
-                const response = await MealService.getMeal(mealID!)
+                const response = await getMeal(mealID!)
                 response ? setMeal(response) : setError("Error occured while fetching Meal")
             } catch (e) {
                 console.log(e)
@@ -55,9 +55,8 @@ function MealDetailView() {
 
         async function fetchMealIngredients() {
             try {
-                const response = await MealIngredientService.getAllMealIngredients(Number(mealID!))
+                const response = await getAllMealIngredients(Number(mealID!))
                 response ? setMealIngredients(response) : setMealIngredients([])
-                console.log(mealIngredients)
             } catch (e) {
                 console.log(e)
             }
@@ -65,7 +64,7 @@ function MealDetailView() {
 
         async function checkIsPlanned(mealId: string) {
             try {
-                const response = await PlanerService.isPlanned(Number(mealId));
+                const response = await isPlanned(Number(mealId));
                 return response;
             } catch (error) {
                 console.error(error)
@@ -79,7 +78,7 @@ function MealDetailView() {
             fetchMealIngredients();
             const planned = await checkIsPlanned(mealID!);
             if (!planned) return;
-            setIsPlanned(planned);
+            setPlanned(planned);
         }
         fetchAllData()
 

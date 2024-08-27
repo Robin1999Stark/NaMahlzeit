@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom'
 import { Meal, MealTags } from '../Datatypes/Meal'
 import { useEffect, useRef, useState } from 'react'
-import { TagService } from '../Endpoints/TagService';
 import Tag from './Tag';
 import PlaceholderMealImage from './PlaceholderMealImage';
 import { Menu, MenuButton, MenuItem, SubMenu } from '@szhsin/react-menu';
 import { IoIosMore } from 'react-icons/io';
 import CustomDatePicker from './CustomDatePicker';
+import { getAllTagsFromMeal } from '../Endpoints/TagService';
 
 type Props = {
     meal: Meal,
@@ -29,14 +29,14 @@ function MealListItem({ meal, deleteMeal, addMealToPlaner }: Props) {
     useEffect(() => {
         async function fetchTags(id: number) {
             try {
-                const response = await TagService.getAllTagsFromMeal(id);
+                const response = await getAllTagsFromMeal(id);
                 response ? setTags(response) : console.log("Error")
             } catch (error) {
                 console.error("error");
             }
         }
         fetchTags(meal.id);
-    }, []);
+    }, [meal]);
 
     const handleDateChange = (date: Date | null) => {
         setSelectedDate(date);

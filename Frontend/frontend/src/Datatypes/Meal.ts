@@ -17,8 +17,26 @@ export class Meal {
         this.preparation = preparation;
     }
 
-    static fromJSON(json: any): Meal {
-        return new Meal(json.id, json.title, json.description, json.ingredients, json.duration, json.preparation);
+    static fromJSON(json: unknown): Meal {
+        const obj = json as {
+            id: unknown;
+            title: unknown;
+            description: unknown;
+            ingredients: unknown;
+            duration: unknown;
+            preparation: unknown;
+        };
+
+        if (typeof obj.id !== 'number' ||
+            typeof obj.title !== 'string' ||
+            typeof obj.description !== 'string' ||
+            !Array.isArray(obj.ingredients) || !obj.ingredients.every(i => typeof i === 'string') ||
+            typeof obj.duration !== 'number' ||
+            typeof obj.preparation !== 'string') {
+            throw new Error("Invalid JSON format");
+        }
+
+        return new Meal(obj.id, obj.title, obj.description, obj.ingredients, obj.duration, obj.preparation);
     }
 
 }
@@ -40,8 +58,33 @@ export class MealWithIngredientAmount {
         this.preparation = preparation;
     }
 
-    static fromJSON(json: any): MealWithIngredientAmount {
-        return new MealWithIngredientAmount(json.id, json.title, json.description, json.ingredients, json.duration, json.preparation);
+    static fromJSON(json: unknown): MealWithIngredientAmount {
+        const obj = json as {
+            id: unknown;
+            title: unknown;
+            description: unknown;
+            ingredients: unknown;
+            duration: unknown;
+            preparation: unknown;
+        };
+
+        if (typeof obj.id !== 'number' ||
+            typeof obj.title !== 'string' ||
+            typeof obj.description !== 'string' ||
+            !Array.isArray(obj.ingredients) || !obj.ingredients.every(i => i instanceof Object) ||
+            typeof obj.duration !== 'number' ||
+            typeof obj.preparation !== 'string') {
+            throw new Error("Invalid JSON format");
+        }
+
+        const ingredients = obj.ingredients.map((ingredient: unknown) => {
+            if (typeof ingredient !== 'object') {
+                throw new Error("Invalid ingredient format");
+            }
+            return IngredientAmount.fromJSON(ingredient);
+        });
+
+        return new MealWithIngredientAmount(obj.id, obj.title, obj.description, ingredients, obj.duration, obj.preparation);
     }
 
 }
@@ -64,8 +107,33 @@ export class MealWithIngredientAmountMIID {
         this.preparation = preparation;
     }
 
-    static fromJSON(json: any): MealWithIngredientAmountMIID {
-        return new MealWithIngredientAmountMIID(json.id, json.title, json.description, json.ingredients, json.duration, json.preparation);
+    static fromJSON(json: unknown): MealWithIngredientAmountMIID {
+        const obj = json as {
+            id: unknown;
+            title: unknown;
+            description: unknown;
+            ingredients: unknown;
+            duration: unknown;
+            preparation: unknown;
+        };
+
+        if (typeof obj.id !== 'number' ||
+            typeof obj.title !== 'string' ||
+            typeof obj.description !== 'string' ||
+            !Array.isArray(obj.ingredients) || !obj.ingredients.every(i => typeof i === 'object') ||
+            typeof obj.duration !== 'number' ||
+            typeof obj.preparation !== 'string') {
+            throw new Error("Invalid JSON format");
+        }
+
+        const ingredients = obj.ingredients.map((ingredient: unknown) => {
+            if (typeof ingredient !== 'object') {
+                throw new Error("Invalid ingredient format");
+            }
+            return IngredientAmountWithMeal.fromJSON(ingredient);
+        });
+
+        return new MealWithIngredientAmountMIID(obj.id, obj.title, obj.description, ingredients, obj.duration, obj.preparation);
     }
 
 }
@@ -79,8 +147,18 @@ export class MealTags {
         this.tags = tags;
     }
 
-    static fromJSON(json: any): MealTags {
-        return new MealTags(json.meal, json.tags);
+    static fromJSON(json: unknown): MealTags {
+        const obj = json as {
+            meal: unknown;
+            tags: unknown;
+        };
+
+        if (typeof obj.meal !== 'number' ||
+            !Array.isArray(obj.tags) || !obj.tags.every(tag => typeof tag === 'string')) {
+            throw new Error("Invalid JSON format for MealTags");
+        }
+
+        return new MealTags(obj.meal, obj.tags);
     }
 }
 

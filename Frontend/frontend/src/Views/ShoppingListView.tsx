@@ -1,10 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { InventoryItem } from '../Datatypes/Inventory';
-import { IngredientService } from '../Endpoints/IngredientService';
 import { ShoppingList, ShoppingListItem } from '../Datatypes/ShoppingList';
-import { ShoppingListService } from '../Endpoints/ShoppingListService';
-import { InventoryService } from '../Endpoints/InventoryService';
 import { Ingredient } from '../Datatypes/Ingredient';
 import { Menu, MenuButton, MenuItem, SubMenu } from '@szhsin/react-menu';
 import { IoIosMore } from 'react-icons/io';
@@ -13,6 +10,10 @@ import AutoCompleteInput from '../Components/AutoCompleteInput';
 import Cookies from 'js-cookie';
 import MissingIngredientMealList from '../Components/MissingIngredientMealList';
 import LoadingSpinner from '../Components/LoadingSpinner';
+import { getIngredient, getAllIngredients } from '../Endpoints/IngredientService';
+import { getAllShoppingLists, getAllShoppingListItems, createShoppingList, createItemAndAddToShoppingList, deleteShoppingListItem, deleteShoppingList, updateItemAndList } from '../Endpoints/ShoppingListService';
+import { CreateInventoryItemInterface } from '../Endpoints/InventoryService';
+import { getAllIngredientsFromPlanerInTimeRange } from '../Endpoints/PlanerService';
 
 type Props = {
     shoppingList: ShoppingList | undefined;
@@ -22,7 +23,7 @@ type Props = {
 function ShoppingListView({ shoppingList, setShoppingList }: Props) {
     const [shoppingLists, setShoppingLists] = useState<ShoppingList[]>([]);
     const [shoppingListItems, setShoppingListItems] = useState<ShoppingListItem[]>();
-    const [ingredients, setIngredients] = useState<Ingredient[]>();
+    const [, setIngredients] = useState<Ingredient[]>();
     const [loaded, setLoaded] = useState<boolean>(false);
     const [itemAdded, setItemAdded] = useState<boolean>(false);
     const [showBought, setShowBought] = useState<boolean>(false);
@@ -35,7 +36,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
         handleSubmit,
         watch,
         setValue,
-        formState: { errors } } = useForm<ShoppingListItem>({
+        formState: { } } = useForm<ShoppingListItem>({
             defaultValues: {
                 ingredient: "",
                 amount: 0,
@@ -52,7 +53,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
 
     async function fetchIngredient(id: string): Promise<Ingredient | null> {
         try {
-            const ingredient = await IngredientService.getIngredient(id);
+            const ingredient = await getIngredient(id);
             return ingredient;
         } catch (error) {
             console.log(error)
@@ -62,7 +63,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
     async function fetchAllIngredients(): Promise<Ingredient[] | null> {
 
         try {
-            const data = await IngredientService.getAllIngredients()
+            const data = await getAllIngredients()
             return data === undefined ? null : data;
         } catch (error) {
             console.log(error)
@@ -71,7 +72,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
     }
     async function fetchDataShoppingLists(): Promise<ShoppingList[]> {
         try {
-            const data = await ShoppingListService.getAllShoppingLists();
+            const data = await getAllShoppingLists();
             return data
         } catch (error) {
             console.log(error)
@@ -80,7 +81,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
     }
     async function fetchDataShoppingListItems(items: number[]): Promise<ShoppingListItem[] | null> {
         try {
-            const data = await ShoppingListService.getAllShoppingListItems();
+            const data = await getAllShoppingListItems();
             const actualItems = data.filter(item => items?.includes(item.id))
             return actualItems === undefined ? null : actualItems;
         } catch (error) {
@@ -136,7 +137,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
     }
     async function handleCreateShoppingList() {
         const items: number[] = []
-        const list = await ShoppingListService.createShoppingList({ items });
+        const list = await createShoppingList({ items });
         if (list === null)
             return;
         fetchPipeline(list);
@@ -145,15 +146,15 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
         const ingredient = await fetchIngredient(selectedIngredientID);
         ingredient ? setValue('unit', ingredient?.preferedUnit) : setValue('unit', 'kg')
     }
-    async function handleAddItemToShoppingList(data: InventoryItem | InventoryService.CreateInventoryItemInterface) {
+    async function handleAddItemToShoppingList(data: InventoryItem | CreateInventoryItemInterface) {
         try {
             if (!shoppingList) {
-                const list = await ShoppingListService.createShoppingList({ items: [] })
+                const list = await createShoppingList({ items: [] })
                 if (!list) return
                 setShoppingList(list)
             }
             if (shoppingList) {
-                const item = await ShoppingListService.createItemAndAddToShoppingList(shoppingList, {
+                const item = await createItemAndAddToShoppingList(shoppingList, {
                     ingredient: data.ingredient,
                     amount: data.amount,
                     unit: data.unit,
@@ -168,9 +169,31 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
             console.log(error)
         }
     }
+    async function handleAddPlannedIngredients() {
+        const today = new Date();
+        const futureDate = new Date(today);
+        futureDate.setDate(today.getDate() + 14);
+        try {
+            const ingredients = await getAllIngredientsFromPlanerInTimeRange(today, futureDate);
+            if (!ingredients) return;
+
+            for (const ingredient of ingredients) {
+                const invItem: CreateInventoryItemInterface = {
+                    ingredient: ingredient.ingredient,
+                    amount: ingredient.amount,
+                    unit: ingredient.unit
+                };
+                await handleAddItemToShoppingList(invItem);
+            }
+
+        } catch (error) {
+            console.error('Error adding planned ingredients:', error);
+        }
+    }
+
     async function handleDeleteShoppingListItem(id: number) {
         try {
-            await ShoppingListService.deleteShoppingListItem(id);
+            await deleteShoppingListItem(id);
             fetchPipeline();
         } catch (error) {
             console.log(error)
@@ -186,7 +209,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
     };
     async function handleAutoCompleteSearch(query: string) {
         try {
-            const data = await IngredientService.getAllIngredients()
+            const data = await getAllIngredients()
             const results: string[] = data.map((ingredient) => ingredient.title).filter((title) => title.toLowerCase().includes(query.toLowerCase()));
             return results
 
@@ -198,7 +221,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
         if (!id)
             return;
         try {
-            const result = await ShoppingListService.deleteShoppingList(id);
+            const result = await deleteShoppingList(id);
 
             if (result) {
                 const updatedLists = await fetchDataShoppingLists();
@@ -237,7 +260,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
                     return prevItems;
                 });
 
-                await ShoppingListService.updateItemAndList(list, updatedItem);
+                await updateItemAndList(list, updatedItem);
 
                 setTimeout(async () => {
                     const ids: number[] = list.items ? list.items : [];
@@ -273,7 +296,6 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
         }
         await handleAddItemToShoppingList(data);
     }
-    <MissingIngredientMealList handleAddItemToShoppingList={handleAddItemToShoppingList} />
     if (loaded) {
         return (
             <>
@@ -281,9 +303,10 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
                     <h1 className='mb-4 font-semibold truncate text-[#011413] text-xl'>
                         Einkaufsliste ({shoppingList && shoppingList.created.toLocaleDateString() + " - " + shoppingList.created.getHours() + ":" + shoppingList.created.getMinutes()})
                     </h1>
-
                     <Menu menuButton={<MenuButton><IoIosMore className='size-5 mr-4 text-[#011413]' /></MenuButton>} transition>
-                        <MenuItem onClick={() => handleDeleteShoppingList(shoppingList?.id)}>Liste löschen</MenuItem>
+                        <MenuItem onClick={() => handleAddPlannedIngredients()}>
+                            Geplantes Hinzufügen
+                        </MenuItem>
                         <SubMenu label='Listen'>
                             {
                                 shoppingLists.map((list) => <MenuItem onClick={() => {
@@ -302,6 +325,8 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
                                 </p>
                             </MenuItem>
                         </SubMenu>
+                        <MenuItem onClick={() => handleDeleteShoppingList(shoppingList?.id)}>Liste löschen</MenuItem>
+
                         <MenuItem type='checkbox' checked={showBought} onClick={(e) => {
                             if (e.checked === undefined)
                                 return;

@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { IngredientService } from '../Endpoints/IngredientService'
 import URLify from '../Helperfunctions/urlify'
 import { Ingredient } from '../Datatypes/Ingredient';
-import { TagService } from '../Endpoints/TagService';
 import Tag from '../Components/Tag';
 import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
 import { IoIosMore } from 'react-icons/io';
+import { getAllTagsFromIngredient } from '../Endpoints/TagService';
+import { getIngredient } from '../Endpoints/IngredientService';
 
 function IngredientDetailView() {
     const navigate = useNavigate();
@@ -19,7 +19,7 @@ function IngredientDetailView() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const ingredientResponse = await IngredientService.getIngredient(ingredientID!);
+                const ingredientResponse = await getIngredient(ingredientID!);
                 if (ingredientResponse) {
                     setIngredient(ingredientResponse);
                 } else {
@@ -32,7 +32,7 @@ function IngredientDetailView() {
             }
 
             try {
-                const tagsResponse = await TagService.getAllTagsFromIngredient(ingredientID!);
+                const tagsResponse = await getAllTagsFromIngredient(ingredientID!);
                 if (tagsResponse && tagsResponse.tags) {
                     setTags(tagsResponse.tags);
                 } else {

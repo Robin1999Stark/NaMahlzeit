@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Ingredient } from '../Datatypes/Ingredient'
 import { Link } from 'react-router-dom'
-import { TagService } from '../Endpoints/TagService';
 import Tag from './Tag';
 import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
 import { IoIosMore } from 'react-icons/io';
+import { getAllTagsFromIngredient } from '../Endpoints/TagService';
 
 type Props = {
     ingredient: Ingredient,
@@ -16,10 +16,9 @@ function IngredientListItem({ ingredient, deleteIngredient }: Props) {
     const [tags, setTags] = useState<string[]>();
 
     useEffect(() => {
-
         async function fetchTags(ingredient: string) {
             try {
-                const response = await TagService.getAllTagsFromIngredient(ingredient);
+                const response = await getAllTagsFromIngredient(ingredient);
                 if (response === null || response === undefined) return;
                 setTags(response.tags)
             } catch (error) {
@@ -27,7 +26,7 @@ function IngredientListItem({ ingredient, deleteIngredient }: Props) {
             }
         }
         fetchTags(ingredient.title);
-    }, [])
+    }, [ingredient])
 
     return (
         <>

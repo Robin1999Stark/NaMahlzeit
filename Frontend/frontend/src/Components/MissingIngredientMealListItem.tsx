@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Meal } from '../Datatypes/Meal'
-import { MealService } from '../Endpoints/MealService';
 import { IngredientAmountWithMeal } from '../Datatypes/Ingredient';
+import { getMeal } from '../Endpoints/MealService';
 
 interface Props {
     ingredient: IngredientAmountWithMeal
@@ -12,7 +12,7 @@ function MissingIngredientMealListItem({ ingredient }: Props) {
     useEffect(() => {
         async function fetchMeal(mealID: number): Promise<Meal | null> {
             try {
-                const data = MealService.getMeal(mealID + "");
+                const data = getMeal(mealID + "");
                 return data;
             } catch (error) {
                 console.log(error)
@@ -25,7 +25,7 @@ function MissingIngredientMealListItem({ ingredient }: Props) {
             setMeal(meal);
         }
         handleMealFetching();
-    }, []);
+    }, [ingredient.meal]);
 
     return (
         <>

@@ -3,7 +3,7 @@ import '../Styles/datepicker.css'
 
 type Props = {
     onChange: (date: Date | null) => void;
-    selected: any;
+    selected: Date | null;
 }
 
 function CustomDatePicker({ onChange, selected }: Props) {

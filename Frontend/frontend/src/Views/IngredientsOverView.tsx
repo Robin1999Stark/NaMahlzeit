@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { IngredientService } from '../Endpoints/IngredientService'
 import { Ingredient } from '../Datatypes/Ingredient'
 import { LuFilter } from 'react-icons/lu'
 import { MdAdd } from 'react-icons/md'
 import IngredientListItem from '../Components/IngredientListItem'
 import { TagDT } from '../Datatypes/Tag'
-import { TagService } from '../Endpoints/TagService'
 import { debounce } from 'lodash'
+import { getAllIngredients } from '../Endpoints/IngredientService'
+import { getIngredientTagsFromTagList } from '../Endpoints/TagService'
 
 function IngredientsOverView() {
     const [ingredients, setIngredients] = useState<Ingredient[]>()
@@ -18,7 +18,7 @@ function IngredientsOverView() {
     const navigate = useNavigate();
     async function fetchData() {
         try {
-            const data = await IngredientService.getAllIngredients()
+            const data = await getAllIngredients()
             const sortedIngredientsByTitle = data.sort((a, b) => a.title.localeCompare(b.title))
             setIngredients(sortedIngredientsByTitle)
             setFilteredIngredients(sortedIngredientsByTitle);
@@ -33,7 +33,7 @@ function IngredientsOverView() {
 
     async function deleteIngredient(ingredient: string) {
         try {
-            await IngredientService.deleteIngredient(ingredient);
+            await deleteIngredient(ingredient);
             fetchData();
 
         } catch (error) {
@@ -51,7 +51,7 @@ function IngredientsOverView() {
             const lowerCaseSearch = search.toLowerCase();
 
             const ingredientsFromTags = await Promise.all(
-                (await TagService.getIngredientTagsFromTagList([new TagDT(lowerCaseSearch)])).map((tag) => tag.ingredient)
+                (await getIngredientTagsFromTagList([new TagDT(lowerCaseSearch)])).map((tag) => tag.ingredient)
             );
             filteredIngredients = filteredIngredients?.filter((ingredient) => {
 

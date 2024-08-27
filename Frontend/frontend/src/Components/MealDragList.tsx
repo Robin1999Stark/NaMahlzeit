@@ -12,7 +12,7 @@ interface Props {
     meals: Meal[],
     setMeals: React.Dispatch<React.SetStateAction<Meal[]>>,
     onAddMeal?: (to: Date, mealId: number) => void,
-};
+}
 
 function MealDragList({ listId, listType, meals, onAddMeal }: Props) {
     return (

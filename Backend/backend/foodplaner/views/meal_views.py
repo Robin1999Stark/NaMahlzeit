@@ -3,7 +3,7 @@ from rest_framework import viewsets, generics
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.http import JsonResponse
-from datetime import date
+from datetime import date, datetime
 from django.shortcuts import get_object_or_404
 from ..serializers.ingredient_serializers import Ingredient, IngredientSerializer
 from ..serializers.meal_serializers import MealIngredientSerializer, MealListSerializer, MealIngredientSerializerWithMeal, MealSerializerNoAmounts, MealSerializer
@@ -33,13 +33,13 @@ def get_all_mealingredients_from_meals(request):
     pass
 
 
-def get_all_mealingredients_from_planer(request):
+def get_all_mealingredients_from_planer(request, start, end):
 
-    start = date(2023, 12, 5)
-    end = date(2023, 12, 10)
+    start_date = datetime.strptime(start, '%Y-%m-%d').date()
+    end_date = datetime.strptime(end, '%Y-%m-%d').date()
 
     planer_in_timeslot = FoodPlanerItem.objects.filter(date__range=[
-                                                       start, end])
+                                                       start_date, end_date])
     all_meals = []
     for planer in planer_in_timeslot:
         all_meals.extend(planer.meals.all())
@@ -55,13 +55,12 @@ def get_all_mealingredients_from_planer(request):
     return JsonResponse(data)
 
 
-def get_all_meals_on_planer(request):
+def get_all_meals_on_planer(request, start, end):
 
-    start = date(2023, 12, 5)
-    end = date(2023, 12, 24)
-
+    start_date = datetime.strptime(start, '%Y-%m-%d').date()
+    end_date = datetime.strptime(end, '%Y-%m-%d').date()
     planer_in_timeslot = FoodPlanerItem.objects.filter(date__range=[
-                                                       start, end])
+                                                       start_date, end_date])
     all_meals = []
     for planer in planer_in_timeslot:
         all_meals.extend(planer.meals.all())
