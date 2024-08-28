@@ -245,3 +245,14 @@ export async function createOrUpdateIngredientTags(ingredientTags: IngredientTag
         return null;
     }
 }
+
+export async function exportTags(): Promise<AxiosResponse> {
+    try {
+        const response = await instance.get('/export/tags/');
+        return response.data;
+    } catch (error) {
+        throw new Error('Error exporting Tags: ' + error);
+    }
+}
+
+

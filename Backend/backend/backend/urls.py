@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-
+from django.conf import settings
+from django.conf.urls.static import static
 from foodplaner.views.tag_views import TagListView, MealTagsListView, IngredientTagsListView, export_tags, ingredients_by_tags, meals_by_tags
 from foodplaner.views.planer_views import move_to_day, remove_meal_from_planer_item, FoodPlanerItemDetailView, FoodPlanerItemView
 from foodplaner.views.meal_views import get_all_meals_on_planer, export_meals, get_all_mealingredients_from_planer, is_planned, MealListView, MealIngredientListView, MealIngredientDetailView, MealIngredientListViewNormal
@@ -53,4 +54,4 @@ urlpatterns = [
     path('export/meals/', export_meals, name='export_meals'),
     path('export/tags/', export_tags, name='export_tags'),
 
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

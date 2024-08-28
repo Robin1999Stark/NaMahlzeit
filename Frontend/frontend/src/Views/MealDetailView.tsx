@@ -25,6 +25,8 @@ function MealDetailView() {
     const [planned, setPlanned] = useState<IsPlannedResponse>();
     const [tags, setTags] = useState<MealTags>();
 
+    console.log("pic", meal?.picture);
+
     function displayIsPlanned() {
         if (planned && planned.isPlanned) {
             return <label aria-label='planned for' className='text-[#046865] font-bold text-sm'>{'geplant: ' + new Date(planned.plannedDate!).toLocaleDateString()}</label>
@@ -122,7 +124,11 @@ function MealDetailView() {
                 <hr className='mt-4 mb-8' />
                 <section className='flex flex-col md:flex-row w-full'>
                     <span className='w-full max-w-[24rem]'>
-                        <PlaceholderMealImage rounded border='full' />
+                        {meal?.picture ? (
+                            <img src={meal.picture} alt="Meal" className='w-full h-auto rounded-md border' />
+                        ) : (
+                            <PlaceholderMealImage rounded border='full' />
+                        )}
                     </span>
                     <div className="w-full pl-0 md:pl-20 mt-10 md:mt-0 flex-1 md:w-1/2 flex flex-col justify-between text-[#011413] h-full lg:w-1/2 xl:w-1/2 p-4 min-w-[200px]">
                         <blockquote className='mb-6'>

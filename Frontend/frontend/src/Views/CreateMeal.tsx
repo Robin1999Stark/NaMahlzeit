@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Ingredient } from '../Datatypes/Ingredient';
@@ -11,6 +11,7 @@ import { createMealWithAmounts } from '../Endpoints/MealService';
 function CreateMeal() {
     const navigate = useNavigate();
     const [ingredients, setIngredients] = useState<Ingredient[]>()
+    const [picture, setPicture] = useState<File | null>(null); // Use File type for picture
 
     useEffect(() => {
         async function fetchData() {
@@ -28,46 +29,68 @@ function CreateMeal() {
         register,
         control,
         handleSubmit,
+        setValue,
         formState: { errors } } = useForm<MealWithIngredientAmount>({
             defaultValues: {
                 title: "",
                 description: "",
                 ingredients: [],
+                portion_size: 4,
+                picture: null,
             },
             mode: 'all'
         });
-    //const selectedIngredientID = watch('ingredients');
 
-    const { fields, append, remove } = useFieldArray<any>({
+    const { fields, append, remove } = useFieldArray({
         control,
         name: "ingredients"
     });
 
-    async function onSubmit(data: MealWithIngredientAmount) {
-        try {
-            const meal = await createMealWithAmounts({
-                title: data.title,
-                description: data.description,
-                ingredients: data.ingredients,
-                preparation: data.preparation,
-                duration: data.duration,
-            })
-            if (meal) {
-                navigate(-1);
-            } else {
-                console.log("Error when creating a meal")
-            }
-        } catch (error) {
-            console.log(error)
+    function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
+        const file = event.target.files?.[0];
+        if (file) {
+            setPicture(file); // Store the file object directly
         }
     }
+
+    async function onSubmit(data: MealWithIngredientAmount) {
+        try {
+            const formData = new FormData();
+
+            formData.append('title', data.title);
+            formData.append('description', data.description);
+            formData.append('preparation', data.preparation || "");
+            formData.append('duration', data.duration.toString());
+            formData.append('portion_size', data.portion_size.toString());
+
+            data.ingredients.forEach((ingredient, index) => {
+                formData.append(`ingredients[${index}].ingredient`, ingredient.ingredient);
+                formData.append(`ingredients[${index}].amount`, ingredient.amount.toString());
+                formData.append(`ingredients[${index}].unit`, ingredient.unit);
+            });
+
+            if (picture) {
+                formData.append('picture', picture); // Append the File object directly
+            }
+
+            const response = await createMealWithAmounts(formData);
+            if (response) {
+                navigate(-1);
+            } else {
+                console.log("Error when creating a meal");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <>
             <section className='w-full my-4 px-7 flex flex-col justify-start items-start flex-grow'>
                 <h1 className='truncate text-[#011413] text-xl font-semibold flex-1'>
                     Neues Gericht erstellen
                 </h1>
-                <form className='w-full' onSubmit={handleSubmit(onSubmit)}>
+                <form className='w-full' onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
                     <ul className='flex flex-col justify-center my-3'>
                         <li key={"li-title"} className='flex w-100 flex-col flex-1 justify-between items-start my-3'>
                             <label
@@ -103,9 +126,7 @@ function CreateMeal() {
                         </li>
                         <li key={"ingredients-key"} className="flex w-100 flex-col flex-1 justify-between items-start my-3">
                             <span className='w-full mb-3 flex flex-row justify-between items-center'>
-                                <label
-                                    htmlFor="ingredients"
-                                    className={`text-sm text-[#011413] font-semibold truncate text-left align-middle `} >
+                                <label htmlFor="ingredients" className={`text-sm text-[#011413] font-semibold truncate text-left align-middle `} >
                                     Zutaten:
                                 </label>
                                 <span className='flex flex-row justify-end items-center'>
@@ -116,7 +137,7 @@ function CreateMeal() {
                                         type='button'
                                         key={'add_ingredient'}
                                         className='bg-[#046865] p-2.5 w-fit text-white rounded-full'
-                                        onClick={() => append(0)}>
+                                        onClick={() => append({ ingredient: "", amount: 1, unit: "g" })}>
                                         <MdAdd className='size-5' />
                                     </button>
                                 </span>
@@ -213,6 +234,39 @@ function CreateMeal() {
                                 })}
                                 defaultValue={10}
                                 className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
+                        </li>
+                        <li key={"li-portion-size"} className='flex w-100 flex-col flex-1 justify-between items-start my-3'>
+                            <label htmlFor='portion_size' className={`text-sm mb-2 text-[#011413] font-semibold truncate text-left align-middle`} >
+                                Portionsgröße:
+                            </label>
+                            <input
+                                type='number'
+                                id='portion_size'
+                                step={1}
+                                {...register("portion_size", {
+                                    required: true,
+                                    valueAsNumber: true,
+                                    min: 1,
+                                    max: 1000,
+                                })}
+                                defaultValue={4}
+                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md mr-1' />
+                        </li>
+                        <li key={"li-picture"} className='flex w-100 flex-col flex-1 justify-between items-start my-3'>
+                            <label htmlFor='picture' className={`text-sm mb-2 text-[#011413] font-semibold truncate text-left align-middle`} >
+                                Bild:
+                            </label>
+                            <input
+                                type='file'
+                                id='picture'
+                                accept="image/*"
+                                onChange={handleFileChange}
+                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md mr-1' />
+                            {picture && (
+                                <img src={URL.createObjectURL(picture)} alt="Selected" className='mt-2 max-w-xs' />
+                            )}{picture && (
+                                <img src={URL.createObjectURL(picture)} alt="Selected" className='mt-2 max-w-xs' />
+                            )}
                         </li>
                     </ul>
                     <span className='w-full flex flex-row justify-end mb-6'>

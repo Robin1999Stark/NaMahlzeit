@@ -19,22 +19,22 @@ class MealIngredientSerializer(serializers.ModelSerializer):
 class MealSerializerNoAmounts(serializers.ModelSerializer):
     class Meta:
         model = Meal
-        fields = ['id', 'title', 'description',
-                  'ingredients', 'duration', 'preparation']
+        fields = ['id', 'title', 'description', 'ingredients',
+                  'duration', 'preparation', 'portion_size', 'picture']
 
 
 class MealSerializer(serializers.ModelSerializer):
-    Ingredients = IngredientSerializer(
-        Ingredient.objects.all(), many=True, read_only=True)
+    ingredients = MealIngredientSerializer(
+        source='meal_to_ingredient', many=True, read_only=True)
 
     class Meta:
         model = Meal
-        fields = ['id', 'title', 'description',
-                  'ingredients', 'duration', 'preparation']
+        fields = ['id', 'title', 'description', 'ingredients',
+                  'duration', 'preparation', 'portion_size', 'picture']
 
 
 class MealListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Meal
-        fields = ['id', 'title', 'description',
-                  'ingredients', 'duration', 'preparation']
+        fields = ['id', 'title', 'description', 'ingredients',
+                  'duration', 'preparation', 'portion_size', 'picture']

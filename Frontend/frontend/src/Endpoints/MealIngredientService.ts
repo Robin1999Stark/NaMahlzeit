@@ -52,7 +52,7 @@ export async function createMealIngredient(ingredient: CreateMealngredientInterf
                 'Content-Type': 'application/json'
             }
         })
-        return IngredientAmountWithMeal.fromJSON(response);
+        return IngredientAmountWithMeal.fromJSON(response.data);
     } catch (error) {
         console.error(error)
     }

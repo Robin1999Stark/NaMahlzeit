@@ -54,6 +54,10 @@ class Meal(models.Model):
         Ingredient, blank=True, through='MealIngredient')
     duration = models.PositiveSmallIntegerField(default=0)
     preparation = models.TextField(null=True, blank=True)
+    portion_size = models.PositiveIntegerField(
+        default=4, help_text="Portion size (number of servings)")
+    picture = models.ImageField(upload_to='meal_pictures/', null=True,
+                                blank=True, help_text="Upload a picture of the meal")
 
 
 class MealTags(models.Model):

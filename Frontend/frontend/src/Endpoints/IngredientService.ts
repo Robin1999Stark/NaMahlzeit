@@ -119,7 +119,6 @@ export async function updateIngredient(ingredient: Ingredient): Promise<AxiosRes
     }
 }
 
-
 export async function deleteIngredient(ingredient: string) {
     try {
         const response = await instance.delete(`/ingredients/${ingredient}/`);
@@ -128,4 +127,15 @@ export async function deleteIngredient(ingredient: string) {
         throw new Error('Error deleting Ingredient: ' + error);
     }
 }
+
+export async function exportIngredients(): Promise<AxiosResponse> {
+    try {
+        const response = await instance.get('/export/ingredients/');
+        return response.data;
+    } catch (error) {
+        throw new Error('Error exporting Ingredients: ' + error);
+    }
+}
+
+
 

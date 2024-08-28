@@ -1,5 +1,4 @@
 import { IngredientAmount, IngredientAmountWithMeal } from "./Ingredient";
-
 export class Meal {
     id: number;
     title: string;
@@ -7,14 +6,18 @@ export class Meal {
     ingredients: string[];
     duration: number;
     preparation: string;
+    portion_size: number;
+    picture: string | null;
 
-    constructor(id: number, title: string, description: string, ingredients: string[], duration: number, preparation: string) {
+    constructor(id: number, title: string, description: string, ingredients: string[], duration: number, preparation: string, picture: string | null = null, portion_size: number = 4) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.ingredients = ingredients;
         this.duration = duration;
         this.preparation = preparation;
+        this.portion_size = portion_size;
+        this.picture = picture;
     }
 
     static fromJSON(json: unknown): Meal {
@@ -25,6 +28,8 @@ export class Meal {
             ingredients: unknown;
             duration: unknown;
             preparation: unknown;
+            portion_size: unknown;
+            picture: unknown;
         };
 
         if (typeof obj.id !== 'number' ||
@@ -32,13 +37,14 @@ export class Meal {
             typeof obj.description !== 'string' ||
             !Array.isArray(obj.ingredients) || !obj.ingredients.every(i => typeof i === 'string') ||
             typeof obj.duration !== 'number' ||
-            typeof obj.preparation !== 'string') {
+            typeof obj.preparation !== 'string' ||
+            typeof obj.portion_size !== 'number' ||
+            (typeof obj.picture !== 'string' && obj.picture !== null)) {
             throw new Error("Invalid JSON format");
         }
 
-        return new Meal(obj.id, obj.title, obj.description, obj.ingredients, obj.duration, obj.preparation);
+        return new Meal(obj.id, obj.title, obj.description, obj.ingredients, obj.duration, obj.preparation, obj.picture, obj.portion_size);
     }
-
 }
 
 export class MealWithIngredientAmount {
@@ -48,14 +54,27 @@ export class MealWithIngredientAmount {
     ingredients: IngredientAmount[];
     duration: number;
     preparation: string;
+    portion_size: number;
+    picture: string | null;
 
-    constructor(id: number, title: string, description: string, ingredients: IngredientAmount[], duration: number, preparation: string) {
+    constructor(
+        id: number,
+        title: string,
+        description: string,
+        ingredients: IngredientAmount[],
+        duration: number,
+        preparation: string,
+        picture: string | null = null,
+        portion_size: number = 4
+    ) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.ingredients = ingredients;
         this.duration = duration;
         this.preparation = preparation;
+        this.portion_size = portion_size;
+        this.picture = picture;
     }
 
     static fromJSON(json: unknown): MealWithIngredientAmount {
@@ -66,14 +85,18 @@ export class MealWithIngredientAmount {
             ingredients: unknown;
             duration: unknown;
             preparation: unknown;
+            portion_size: unknown;
+            picture: unknown;
         };
 
         if (typeof obj.id !== 'number' ||
             typeof obj.title !== 'string' ||
             typeof obj.description !== 'string' ||
-            !Array.isArray(obj.ingredients) || !obj.ingredients.every(i => i instanceof Object) ||
+            !Array.isArray(obj.ingredients) || !obj.ingredients.every(i => typeof i === 'object') ||
             typeof obj.duration !== 'number' ||
-            typeof obj.preparation !== 'string') {
+            typeof obj.preparation !== 'string' ||
+            typeof obj.portion_size !== 'number' ||
+            (typeof obj.picture !== 'string' && obj.picture !== null)) {
             throw new Error("Invalid JSON format");
         }
 
@@ -84,9 +107,17 @@ export class MealWithIngredientAmount {
             return IngredientAmount.fromJSON(ingredient);
         });
 
-        return new MealWithIngredientAmount(obj.id, obj.title, obj.description, ingredients, obj.duration, obj.preparation);
+        return new MealWithIngredientAmount(
+            obj.id,
+            obj.title,
+            obj.description,
+            ingredients,
+            obj.duration,
+            obj.preparation,
+            obj.picture,
+            obj.portion_size
+        );
     }
-
 }
 
 
@@ -97,14 +128,27 @@ export class MealWithIngredientAmountMIID {
     ingredients: IngredientAmountWithMeal[];
     duration: number;
     preparation: string;
+    portion_size: number;
+    picture: string | null;
 
-    constructor(id: number, title: string, description: string, ingredients: IngredientAmountWithMeal[], duration: number, preparation: string) {
+    constructor(
+        id: number,
+        title: string,
+        description: string,
+        ingredients: IngredientAmountWithMeal[],
+        duration: number,
+        preparation: string,
+        picture: string | null = null,
+        portion_size: number = 4
+    ) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.ingredients = ingredients;
         this.duration = duration;
         this.preparation = preparation;
+        this.portion_size = portion_size;
+        this.picture = picture;
     }
 
     static fromJSON(json: unknown): MealWithIngredientAmountMIID {
@@ -115,6 +159,8 @@ export class MealWithIngredientAmountMIID {
             ingredients: unknown;
             duration: unknown;
             preparation: unknown;
+            portion_size: unknown;
+            picture: unknown;
         };
 
         if (typeof obj.id !== 'number' ||
@@ -122,7 +168,9 @@ export class MealWithIngredientAmountMIID {
             typeof obj.description !== 'string' ||
             !Array.isArray(obj.ingredients) || !obj.ingredients.every(i => typeof i === 'object') ||
             typeof obj.duration !== 'number' ||
-            typeof obj.preparation !== 'string') {
+            typeof obj.preparation !== 'string' ||
+            typeof obj.portion_size !== 'number' ||
+            (typeof obj.picture !== 'string' && obj.picture !== null)) {
             throw new Error("Invalid JSON format");
         }
 
@@ -133,9 +181,17 @@ export class MealWithIngredientAmountMIID {
             return IngredientAmountWithMeal.fromJSON(ingredient);
         });
 
-        return new MealWithIngredientAmountMIID(obj.id, obj.title, obj.description, ingredients, obj.duration, obj.preparation);
+        return new MealWithIngredientAmountMIID(
+            obj.id,
+            obj.title,
+            obj.description,
+            ingredients,
+            obj.duration,
+            obj.preparation,
+            obj.picture,
+            obj.portion_size
+        );
     }
-
 }
 
 export class MealTags {

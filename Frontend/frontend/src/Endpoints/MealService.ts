@@ -25,7 +25,7 @@ export async function getAllMeals(): Promise<Meal[]> {
     let meals: Meal[] = [];
     try {
         const data = await getAllMealsJSON();
-        meals = (data as unknown[]).map((meal1: unknown) => Meal.fromJSON(meal1 as object));
+        meals = (data as unknown[]).map((meal: unknown) => Meal.fromJSON(meal as object));
         return meals;
     } catch (error) {
         console.error('Error fetching Meals: ', error);
@@ -60,15 +60,19 @@ interface CreateMealAmountInterface {
     ingredients: IngredientAmount[];
     preparation: string;
     duration: number;
+    portion_size: number;
+    picture: string | null;
 }
 
 
-export async function createMealWithAmounts({
+export async function createMealWithAmounts2({
     title,
     description,
     ingredients,
     preparation,
     duration,
+    portion_size,
+    picture,
 }: CreateMealAmountInterface): Promise<Meal | null> {
     const requestBody = {
         title,
@@ -80,6 +84,8 @@ export async function createMealWithAmounts({
         })),
         duration,
         preparation,
+        portion_size,
+        picture,
     };
     const requestJSON = JSON.stringify(requestBody);
     try {
@@ -103,6 +109,42 @@ export async function createMealWithAmounts({
 
         const tags = new MealTags(response.data.id, []);
         await createMealTags(tags);
+        return meal;
+    } catch (error) {
+        console.error('Error creating Meal:', error);
+        return null;
+    }
+}
+
+
+export async function createMealWithAmounts(formData: FormData): Promise<Meal | null> {
+    console.log("fd", formData)
+    try {
+        // Make the API request using FormData
+        const response = await instance.post('/meals/', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+
+        // Assuming Meal.fromJSON exists and parses the response into a Meal object
+        const meal = Meal.fromJSON(response.data);
+
+        // Process ingredients and tags as needed
+        await Promise.all(
+            formData.getAll('ingredients').map(async (ingredient: any) => {
+                return createMealIngredient({
+                    ingredient: ingredient.ingredient,
+                    meal: meal.id,
+                    amount: ingredient.amount,
+                    unit: ingredient.unit,
+                });
+            })
+        );
+
+        const tags = new MealTags(response.data.id, []);
+        await createMealTags(tags);
+
         return meal;
     } catch (error) {
         console.error('Error creating Meal:', error);
@@ -180,6 +222,15 @@ export async function deleteMeal(mealID: number): Promise<AxiosResponse> {
         return response;
     } catch (error) {
         throw new Error('Error deleting Meal: ' + error);
+    }
+}
+
+export async function exportMeals(): Promise<AxiosResponse> {
+    try {
+        const response = await instance.get('/export/meals/');
+        return response.data;
+    } catch (error) {
+        throw new Error('Error exporting Meals: ' + error);
     }
 }
 
