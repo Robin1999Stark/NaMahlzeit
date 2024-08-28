@@ -108,7 +108,7 @@ function AutoCompleteInput({ onSelect, search }: Props) {
                 onKeyDown={handleKeyDown}
                 ref={inputRef}
                 className='bg-white w-full py-2 text-start shadow-sm focus:shadow-lg px-6 rounded-md mr-2'
-                placeholder='Nach Zutaten Suchen'
+                placeholder='Zutaten Suchen'
             />
         </div>
 

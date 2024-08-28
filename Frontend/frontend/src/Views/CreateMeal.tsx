@@ -47,12 +47,6 @@ function CreateMeal() {
         name: "ingredients"
     });
 
-    function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
-        const file = event.target.files?.[0];
-        if (file) {
-            setPicture(file);
-        }
-    }
     function handlePictureChange(e: React.ChangeEvent<HTMLInputElement>) {
         const file = e.target.files?.[0] || null;
         setPicture(file);

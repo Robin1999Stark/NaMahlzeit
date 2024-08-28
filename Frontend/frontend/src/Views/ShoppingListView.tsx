@@ -312,115 +312,120 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
     if (loaded) {
         return (
             <>
-                <span className='flex mb-4 flex-row justify-between items-center'>
-                    <h1 className='font-semibold truncate text-[#011413] text-xl'>
-                        Einkaufsliste ({shoppingList && shoppingList.created.toLocaleDateString() + " - " + shoppingList.created.getHours() + ":" + shoppingList.created.getMinutes()})
-                    </h1>
-                    <Menu menuButton={<MenuButton><IoIosMore className='size-5 mr-4 text-[#011413]' /></MenuButton>} transition>
-                        <MenuItem onClick={() => handleAddPlannedIngredients()}>
-                            Geplantes Hinzufügen
-                        </MenuItem>
-                        <SubMenu label='Listen'>
-                            {
-                                shoppingLists.map((list) => <MenuItem onClick={() => {
-                                    fetchPipeline(list);
+                <div className='flex flex-col h-full'>
+                    <div className='flex-grow'>
+                        <span className='flex mb-4 flex-row justify-between items-center'>
+                            <h1 className='font-semibold truncate text-[#011413] text-xl'>
+                                Einkaufsliste ({shoppingList && shoppingList.created.toLocaleDateString() + " - " + shoppingList.created.getHours() + ":" + shoppingList.created.getMinutes()})
+                            </h1>
+                            <Menu menuButton={<MenuButton><IoIosMore className='size-5 mr-4 text-[#011413]' /></MenuButton>} transition>
+                                <MenuItem onClick={() => handleAddPlannedIngredients()}>
+                                    Geplantes Hinzufügen
+                                </MenuItem>
+                                <SubMenu label='Listen'>
+                                    {
+                                        shoppingLists.map((list) => <MenuItem onClick={() => {
+                                            fetchPipeline(list);
+                                        }}>
+                                            <p className={`${shoppingList?.id === list.id && 'font-bold underline-offset-1'}`}>
+                                                {list.created.toLocaleDateString() + " - " + list.created.getHours() + ":" + list.created.getMinutes()}
+                                            </p>
+                                        </MenuItem>)
+                                    }
+                                    <MenuItem onClick={() => {
+                                        handleCreateShoppingList();
+                                    }}>
+                                        <p>
+                                            + Neue Liste
+                                        </p>
+                                    </MenuItem>
+                                </SubMenu>
+                                <MenuItem onClick={() => handleDeleteShoppingList(shoppingList?.id)}>Liste löschen</MenuItem>
+
+                                <MenuItem type='checkbox' checked={showBought} onClick={(e) => {
+                                    if (e.checked === undefined)
+                                        return;
+                                    setShowBought(e.checked);
+                                    Cookies.set('showBought', e.checked.toString(), { sameSite: 'strict' });
+                                    fetchPipeline();
                                 }}>
-                                    <p className={`${shoppingList?.id === list.id && 'font-bold underline-offset-1'}`}>
-                                        {list.created.toLocaleDateString() + " - " + list.created.getHours() + ":" + list.created.getMinutes()}
-                                    </p>
-                                </MenuItem>)
-                            }
-                            <MenuItem onClick={() => {
-                                handleCreateShoppingList();
-                            }}>
-                                <p>
-                                    + Neue Liste
-                                </p>
-                            </MenuItem>
-                        </SubMenu>
-                        <MenuItem onClick={() => handleDeleteShoppingList(shoppingList?.id)}>Liste löschen</MenuItem>
+                                    Gekauftes anzeigen
+                                </MenuItem>
+                            </Menu>
+                        </span>
+                        <ul className='overflow-y-scroll h-5/6 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-[#046865] scrollbar-track-slate-100'>
+                            {shoppingListItems ? shoppingListItems?.map(item => (
+                                item ?
+                                    <li className='w-full flex flex-row justify-between items-center'>
+                                        <div key={item.id} className='text-[#011413] flex flex-row font-semibold items-center'>
+                                            <input
+                                                type="checkbox"
+                                                className="h-5 w-5 mr-4 cursor-pointer rounded-full border border-gray-300 appearance-none checked:bg-[#046865] checked:border-transparent"
+                                                id={`checkbox-${item.id}`}
+                                                checked={item.bought}
+                                                onChange={() => handleCheckboxChange(item)}
+                                            />
+                                            <p className={`${item.bought ? 'text-gray-400 line-through' : 'text-[#011413]'}`}>
+                                                {item.ingredient}
+                                            </p>
+                                        </div>
+                                        <div key={item.ingredient + Math.random() + "unit"} className='p-2 flex text-[#011413] font-semibold flex-row justify-between items-center'>
+                                            <p className={`${item.bought ? 'text-gray-400 line-through' : 'text-[#011413]'}`}>
+                                                {item.amount + " " + item.unit}
+                                            </p>
+                                        </div>
+                                        <span className='flex flex-row justify-end pr-4 sm:pr-6'>
+                                            <Menu menuButton={<MenuButton><IoIosMore className='size-5 text-[#011413]' /></MenuButton>} transition>
+                                                <MenuItem onClick={() => handleDeleteShoppingListItem(item.id)}>Löschen</MenuItem>
+                                            </Menu>
+                                        </span>
 
-                        <MenuItem type='checkbox' checked={showBought} onClick={(e) => {
-                            if (e.checked === undefined)
-                                return;
-                            setShowBought(e.checked);
-                            Cookies.set('showBought', e.checked.toString(), { sameSite: 'strict' });
-                            fetchPipeline();
-                        }}>
-                            Gekauftes anzeigen
-                        </MenuItem>
-                    </Menu>
-                </span>
-                <ul className='overflow-y-scroll h-5/6 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-[#046865] scrollbar-track-slate-100'>
-                    {shoppingListItems ? shoppingListItems?.map(item => (
-                        item ?
-                            <li className='w-full flex flex-row justify-between items-center'>
-                                <div key={item.id} className='text-[#011413] flex flex-row font-semibold items-center'>
-                                    <input
-                                        type="checkbox"
-                                        className="h-5 w-5 mr-4 cursor-pointer rounded-full border border-gray-300 appearance-none checked:bg-[#046865] checked:border-transparent"
-                                        id={`checkbox-${item.id}`}
-                                        checked={item.bought}
-                                        onChange={() => handleCheckboxChange(item)}
-                                    />
-                                    <p className={`${item.bought ? 'text-gray-400 line-through' : 'text-[#011413]'}`}>
-                                        {item.ingredient}
-                                    </p>
-                                </div>
-                                <div key={item.ingredient + Math.random() + "unit"} className='p-2 flex text-[#011413] font-semibold flex-row justify-between items-center'>
-                                    <p className={`${item.bought ? 'text-gray-400 line-through' : 'text-[#011413]'}`}>
-                                        {item.amount + " " + item.unit}
-                                    </p>
-                                </div>
-                                <span className='flex flex-row justify-end pr-4 sm:pr-6'>
-                                    <Menu menuButton={<MenuButton><IoIosMore className='size-5 text-[#011413]' /></MenuButton>} transition>
-                                        <MenuItem onClick={() => handleDeleteShoppingListItem(item.id)}>Löschen</MenuItem>
-                                    </Menu>
-                                </span>
-
-                            </li> : <>
-                                <LoadingSpinner />
-                            </>
-                    )) : <LoadingSpinner />}
-                    <div ref={bottomRef}></div>
-
-                </ul>
-                <form className='w-full h-fit py-4 flex flex-row justify-between items-center pr-0 sm:pr-1' onSubmit={handleSubmit(onSubmit)}>
-                    <span className='w-3/5 mr-1'>
-                        <AutoCompleteInput search={handleAutoCompleteSearch} onSelect={handleIngredientSelect} />
-                    </span>
-                    <div className='flex w-2/5 flex-row'>
-                        <input
-                            key={'amount'}
-                            type='number'
-                            id='amount'
-                            step={0.1}
-                            {...register(`amount` as const, {
-                                valueAsNumber: true,
-                                min: 0,
-                                max: 50000,
-                                required: true,
-                            })}
-                            defaultValue={1}
-                            className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1'
-                        />
-                        <input
-                            key={'unit'}
-                            type='text'
-                            id='unit'
-                            {...register(`unit` as const, {
-                                required: true,
-                            })}
-                            defaultValue={selectedIngredient && typeof selectedIngredient !== 'string' ? selectedIngredient?.preferedUnit : "kg"}
-                            className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md'
-                        />
+                                    </li> : <>
+                                        <LoadingSpinner />
+                                    </>
+                            )) : <LoadingSpinner />}
+                            <div ref={bottomRef}></div>
+                        </ul>
                     </div>
-                    <button
-                        type='submit'
-                        className='bg-[#046865] ml-2 w-fit text-white p-3 rounded-full'>
-                        <MdAdd className='size-5' />
-                    </button>
-                </form>
+
+                    <form className='w-full h-fit py-4 flex flex-row justify-between items-center pr-0 sm:pr-1' onSubmit={handleSubmit(onSubmit)}>
+                        <span className='w-3/5 mr-1'>
+                            <AutoCompleteInput search={handleAutoCompleteSearch} onSelect={handleIngredientSelect} />
+                        </span>
+                        <div className='flex w-2/5 flex-row'>
+                            <input
+                                key={'amount'}
+                                type='number'
+                                id='amount'
+                                step={0.1}
+                                {...register(`amount` as const, {
+                                    valueAsNumber: true,
+                                    min: 0,
+                                    max: 50000,
+                                    required: true,
+                                })}
+                                defaultValue={1}
+                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1'
+                            />
+                            <input
+                                key={'unit'}
+                                type='text'
+                                id='unit'
+                                {...register(`unit` as const, {
+                                    required: true,
+                                })}
+                                defaultValue={selectedIngredient && typeof selectedIngredient !== 'string' ? selectedIngredient?.preferedUnit : "kg"}
+                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md'
+                            />
+                        </div>
+                        <button
+                            type='submit'
+                            className='bg-[#046865] ml-2 w-fit text-white p-3 rounded-full'>
+                            <MdAdd className='size-5' />
+                        </button>
+                    </form>
+                </div>
+
             </>
         )
     } else {

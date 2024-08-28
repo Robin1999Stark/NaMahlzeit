@@ -101,76 +101,81 @@ function InventoryListView() {
     }
     return (
         <>
-            <span className='flex flex-row justify-between items-center'>
-                <h1 className='mb-4 font-semibold text-[#011413] text-xl'>
-                    Bestand
-                </h1>
-                <Menu menuButton={<MenuButton><IoIosMore className='size-5 mr-4 text-[#011413]' /></MenuButton>} transition>
-                </Menu>
-            </span>
-            <ul className='overflow-y-scroll h-5/6 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-[#046865] scrollbar-track-slate-100'>
-                {inventory ? inventory?.map(inv => (
-                    <li className='w-full flex flex-row justify-between items-center'>
-                        <div key={inv.id} className='px-1 text-[#011413] flex flex-row font-semibold items-center'>
+            <div className='flex flex-col h-full'>
+                <div className='flex-grow'>
 
-                            <p>
-                                {inv.ingredient}
-                            </p>
-                        </div>
-                        <div key={inv.ingredient + "unit"} className='p-2 flex text-[#011413] font-semibold flex-row justify-between items-center'>
-                            {inv.amount + " " + inv.unit}
-                        </div>
-                        <span className='flex flex-row justify-end pr-4 sm:pr-6'>
-                            <Menu menuButton={<MenuButton><IoIosMore className='size-5 text-[#011413]' /></MenuButton>} transition>
-                                <MenuItem onClick={() => deleteInventoryItem(inv.id)}>Löschen</MenuItem>
-                            </Menu>
-                        </span>
+                    <span className='flex flex-row justify-between items-center'>
+                        <h1 className='mb-4 font-semibold text-[#011413] text-xl'>
+                            Bestand
+                        </h1>
+                        <Menu menuButton={<MenuButton><IoIosMore className='size-5 mr-4 text-[#011413]' /></MenuButton>} transition>
+                        </Menu>
+                    </span>
+                    <ul className='overflow-y-scroll h-5/6 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-[#046865] scrollbar-track-slate-100'>
+                        {inventory ? inventory?.map(inv => (
+                            <li className='w-full flex flex-row justify-between items-center'>
+                                <div key={inv.id} className='px-1 text-[#011413] flex flex-row font-semibold items-center'>
 
-                    </li>
+                                    <p>
+                                        {inv.ingredient}
+                                    </p>
+                                </div>
+                                <div key={inv.ingredient + "unit"} className='p-2 flex text-[#011413] font-semibold flex-row justify-between items-center'>
+                                    {inv.amount + " " + inv.unit}
+                                </div>
+                                <span className='flex flex-row justify-end pr-4 sm:pr-6'>
+                                    <Menu menuButton={<MenuButton><IoIosMore className='size-5 text-[#011413]' /></MenuButton>} transition>
+                                        <MenuItem onClick={() => deleteInventoryItem(inv.id)}>Löschen</MenuItem>
+                                    </Menu>
+                                </span>
 
-                )) : <LoadingSpinner />}
-            </ul>
-            <form className='w-full h-fit py-4 flex flex-row justify-between items-center pr-0 sm:pr-1' onSubmit={handleSubmit(onSubmit)}>
-                <span className='w-3/5 mr-1'>
-                    <AutoCompleteInput search={handleAutoCompleteSearch} onSelect={handleIngredientSelect} />
-                </span>
-                <div className='flex w-2/5 flex-row'>
-                    <input
-                        key={'amount'}
-                        type='number'
-                        id='amount'
-                        step={0.1}
-                        {...register(`amount` as const, {
-                            valueAsNumber: true,
-                            min: 0,
-                            max: 50000,
-                            required: true,
-                        })}
-                        defaultValue={1}
-                        className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md mr-1'
-                    />
-                    <input
-                        key={'unit'}
-                        type='text'
-                        id='unit'
-                        {...register(`unit` as const, {
-                            required: true,
-                        })}
-                        defaultValue={"kg"}
-                        className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md'
-                    />
+                            </li>
+
+                        )) : <LoadingSpinner />}
+                    </ul>
                 </div>
-                <button
-                    className='bg-[#046865] ml-2 w-fit text-white p-3 rounded-full'
-                    onClick={() => setAdd(true)}>
-                    <MdAdd className='size-5' />
-                </button>
-                <button
-                    className='bg-[#046865] ml-2 w-fit text-white p-3 rounded-full'
-                    onClick={() => setAdd(false)}>
-                    <LuMinus className='size-5' />
-                </button>
-            </form>
+                <form className='w-full h-fit py-4 flex flex-row justify-between items-center pr-0 sm:pr-1' onSubmit={handleSubmit(onSubmit)}>
+                    <span className='w-3/5 mr-1'>
+                        <AutoCompleteInput search={handleAutoCompleteSearch} onSelect={handleIngredientSelect} />
+                    </span>
+                    <div className='flex w-2/5 flex-row'>
+                        <input
+                            key={'amount'}
+                            type='number'
+                            id='amount'
+                            step={0.1}
+                            {...register(`amount` as const, {
+                                valueAsNumber: true,
+                                min: 0,
+                                max: 50000,
+                                required: true,
+                            })}
+                            defaultValue={1}
+                            className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md mr-1'
+                        />
+                        <input
+                            key={'unit'}
+                            type='text'
+                            id='unit'
+                            {...register(`unit` as const, {
+                                required: true,
+                            })}
+                            defaultValue={"kg"}
+                            className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md'
+                        />
+                    </div>
+                    <button
+                        className='bg-[#046865] ml-2 w-fit text-white p-3 rounded-full'
+                        onClick={() => setAdd(true)}>
+                        <MdAdd className='size-5' />
+                    </button>
+                    <button
+                        className='bg-[#046865] ml-2 w-fit text-white p-3 rounded-full'
+                        onClick={() => setAdd(false)}>
+                        <LuMinus className='size-5' />
+                    </button>
+                </form>
+            </div>
 
         </>
     )

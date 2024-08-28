@@ -79,13 +79,12 @@ function App() {
           </Suspense>
         </main>
         {/* Placeholder for mobile bottom nav bar */}
-        <span className={`${windowSize.width > SIZE_MOBILE ? 'hidden' : 'block'} h-[4.2rem]`}>
+        <span className={`${windowSize.width > SIZE_MOBILE ? 'hidden' : 'block'} h-[90px]`}>
         </span>
         {/* Placeholder for mobile bottom nav bar */}
         <span className={`${windowSize.width <= SIZE_MOBILE && showMITNav ? 'block' : 'hidden'} h-[4.2rem]`}>
         </span>
       </span>
-
     </>
   );
 }

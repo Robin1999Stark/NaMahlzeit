@@ -49,15 +49,12 @@ export class IngredientAmountWithMeal extends IngredientAmount {
         this.meal = meal;
     }
     static fromJSON(json: unknown): IngredientAmountWithMeal {
-        console.log(json)
         const obj = json as { id: unknown; ingredient: unknown; amount: unknown; unit: unknown; meal: unknown };
-        console.log(obj)
         let amount: number;
         if (typeof obj.amount === 'number') {
             amount = obj.amount;
         } else if (typeof obj.amount === 'string') {
             const parsedAmount = parseFloat(obj.amount);
-            console.log(parsedAmount)
             if (isNaN(parsedAmount)) {
                 throw new Error("Invalid amount format");
             }

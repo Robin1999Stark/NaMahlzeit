@@ -38,65 +38,139 @@ function NavBar() {
 
     if (windowSize.width > SIZE_MOBILE) {
         return (
-            <nav className='flex col-span-2 flex-row h-16 relative bg-[#004A41] z-10 items-center justify-between w-full'>
-                <ul className='w-full flex flex-row justify-end items-center mr-6'>
-                    <li key={'nav-planer'}>
-                        <Link
-                            className='flex flex-row justify-start text-white items-center px-4 hover:bg-[#007A6B] rounded-md'
-                            to={'/planer'}>
-                            <RxCalendar className='size-5 mr-2' />
-                            <p className='h-full cursor-pointer text-lg py-2 font-medium'>
-                                Speiseplan
-                            </p>
-                        </Link>
-                    </li>
-                    <li key={'nav-library'}>
-                        <Menu
-                            menuClassName={'bg-[#004A41] px-0 text-white absolute left-0 right-0 mt-4'}
-                            className={'absolute left-0 right-0'}
-                            menuButton={<span className='flex flex-row justify-start px-4 items-center text-white rounded-md hover:bg-[#007A6B]'>
-                                <LuLibrary className='size-5 mr-2' />
-                                <p className='h-full cursor-pointer text-lg py-2 font-medium '>
-                                    Bibliothek
-                                </p>
-                            </span>}>
-                            <MenuItem
-                                className={'hover:bg-[#007A6B] text-white text-lg flex flex-row justify-start items-center'}
-                                onClick={() => navigate("/meals")}>
-                                <PiBowlFood className='size-5 mr-2' />
-                                <p>
-                                    Rezepte
-                                </p>
-                            </MenuItem>
-                            <MenuItem
-                                className={'hover:bg-[#007A6B] text-white text-lg flex flex-row justify-start items-center'}
-                                onClick={() => navigate("/ingredients")}>
-                                <PiCarrot className='size-5 mr-2' />
-                                <p>
-                                    Zutaten
-                                </p>
-                            </MenuItem>
-                            <MenuItem
-                                className={'hover:bg-[#007A6B] text-white text-lg flex flex-row justify-start items-center'}
-                                onClick={() => navigate("/tags")}>
-                                <TbTag className='size-5 mr-2' />
-                                <p>
-                                    Tags
-                                </p>
-                            </MenuItem>
-                        </Menu>
-                    </li>
-                    <li key={'nav-lists'}>
-                        <Link
-                            className='flex flex-row justify-start text-white items-center px-4 hover:bg-[#007A6B] rounded-md'
-                            to={'/lists'}>
-                            <RiShoppingCartLine className='size-5 mr-2' />
-                            <p className='h-full cursor-pointer text-lg py-2 font-medium'>
-                                Listen
-                            </p>
-                        </Link>
-                    </li>
+            <nav className='flex col-span-2 flex-row h-16 relative z-10 shadow-md items-center justify-end bg-white w-full'>
+                <ul
+                    ref={componentRef}
+                    className='w-3/5 max-w-[40rem] flex flex-row px-4 py-4 justify-around items-center'>
+                    {
+                        (() => {
+                            const showActive = isActive('/planer')
+                            return (
+                                <li>
+                                    <Link
+                                        className={`${showActive ? 'text-[#004A41]' : 'text-[#7D8698]'} flex flex-row justify-start items-center`}
+                                        to={'/planer'}>
+                                        <RxCalendar className='size-6 mr-2' />
+                                        <p className={`${showActive ? 'block' : 'hidden'} text-base font-semibold`}>
+                                            Speiseplan
+                                        </p>
+                                    </Link>
+                                </li>
+                            );
+                        })()
+                    }
+                    {
+                        (() => {
+                            const showActive = isActive('/meals') || isActive('/ingredients') || isActive('/tags')
+
+                            const handleBibliothekClick = () => {
+                                if (!showActive) {
+                                    navigate('/meals');
+                                }
+                            };
+
+                            return (
+                                <li>
+
+                                    <Menu
+                                        menuClassName={'bg-white flex flex-row h-10 px-0 py-0 text-white'}
+                                        className={'absolute left-0 right-0'}
+                                        menuButton={<span
+                                            onClick={handleBibliothekClick}
+                                            className={`${showActive ? 'text-[#004A41]' : 'text-[#7D8698]'} cursor-pointer flex flex-row justify-start items-center`}>
+                                            <LuLibrary className='size-6 mr-2' />
+                                            <p className={`${showActive ? 'block' : 'hidden'} text-base font-semibold`}>
+                                                Bibliothek
+                                            </p>
+                                        </span>}>
+                                        {
+                                            (() => {
+                                                const showActive = isActive('/meals')
+                                                return (
+                                                    <MenuItem
+                                                        className={`${showActive ? 'text-[#004A41]' : 'text-[#7D8698]'} py-2 cursor-pointer flex flex-row justify-start items-center`}
+                                                        onClick={() => navigate("/meals")}>
+                                                        <PiBowlFood className='size-5 mr-2' />
+                                                        <p className={`text-base font-semibold`}>
+                                                            Rezepte
+                                                        </p>
+                                                    </MenuItem>
+                                                );
+                                            })()
+                                        }
+                                        {
+                                            (() => {
+                                                const showActive = isActive('/ingredients')
+                                                return (
+                                                    <MenuItem
+                                                        className={`${showActive ? 'text-[#004A41]' : 'text-[#7D8698]'} py-2  cursor-pointer flex flex-row justify-start items-center`}
+                                                        onClick={() => navigate("/ingredients")}>
+                                                        <PiCarrot className='size-5 mr-2' />
+                                                        <p className={`text-base font-semibold`}>
+                                                            Zutaten
+                                                        </p>
+                                                    </MenuItem>
+                                                );
+                                            })()
+                                        }
+                                        {
+                                            (() => {
+                                                const showActive = isActive('/tags')
+                                                return (
+                                                    <MenuItem
+                                                        className={`${showActive ? 'text-[#004A41]' : 'text-[#7D8698]'} py-2  cursor-pointer flex flex-row justify-start items-center`}
+                                                        onClick={() => navigate("/tags")}>
+                                                        <TbTag className='size-5 mr-2' />
+                                                        <p className={`text-base font-semibold`}>
+                                                            Tags
+                                                        </p>
+                                                    </MenuItem>
+                                                );
+                                            })()
+                                        }
+
+                                    </Menu>
+                                </li>
+                            );
+                        })()
+                    }
+
+                    {
+                        (() => {
+                            const showActive = isActive('/lists')
+                            return (
+                                <li>
+                                    <Link
+                                        className={`${showActive ? 'text-[#004A41]' : 'text-[#7D8698]'} flex flex-row justify-start items-center`}
+                                        to={'/lists'}>
+                                        <RiShoppingCartLine className='size-6 mr-2' />
+                                        <p className={`${showActive ? 'block' : 'hidden'} text-base font-semibold`}>
+                                            Listen
+                                        </p>
+                                    </Link>
+                                </li>
+                            );
+                        })()
+                    }
+                    {
+                        (() => {
+                            const showActive = isActive('/profile')
+                            return (
+                                <li>
+                                    <Link
+                                        className={`${showActive ? 'text-[#004A41]' : 'text-[#7D8698]'} flex flex-row justify-start items-center`}
+                                        to={'/profile'}>
+                                        <MdOutlinePerson3 className='size-6 mr-2' />
+                                        <p className={`${showActive ? 'block' : 'hidden'} text-base font-semibold`}>
+                                            Profil
+                                        </p>
+                                    </Link>
+                                </li>
+                            );
+                        })()
+                    }
                 </ul>
+
 
             </nav>
         )

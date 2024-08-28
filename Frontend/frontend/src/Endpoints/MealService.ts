@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
-import { IngredientAmount, IngredientAmountWithMeal } from '../Datatypes/Ingredient';
-import { Meal, MealTags, MealWithIngredientAmount, MealWithIngredientAmountMIID } from '../Datatypes/Meal';
-import { createMealIngredient, deleteMealIngredient, getAllMealIngredients, updateMealIngredient } from './MealIngredientService';
+import { IngredientAmount } from '../Datatypes/Ingredient';
+import { Meal, MealTags } from '../Datatypes/Meal';
+import { createMealIngredient } from './MealIngredientService';
 import { createMealTags } from './TagService';
 
 
