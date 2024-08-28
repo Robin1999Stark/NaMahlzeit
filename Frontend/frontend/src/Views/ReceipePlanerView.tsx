@@ -17,8 +17,8 @@ function ReceipePlanerView() {
     const MAX_CALENDAR_ENTRIES = 14
 
     const [windowSize, setWindowSize] = useState({
-        width: window.innerWidth,
-        height: window.innerHeight,
+        width: globalThis.innerWidth,
+        height: globalThis.innerHeight,
     })
     const context = useContext(MealContext);
 
@@ -223,14 +223,14 @@ function ReceipePlanerView() {
     };
     const handleResize = () => {
         setWindowSize({
-            width: window.innerWidth,
-            height: window.innerHeight,
+            width: globalThis.innerWidth,
+            height: globalThis.innerHeight,
         });
     }
     useEffect(() => {
-        window.addEventListener('resize', handleResize);
+        globalThis.addEventListener('resize', handleResize);
         return () => {
-            window.removeEventListener('resize', handleResize);
+            globalThis.removeEventListener('resize', handleResize);
         };
     }, []);
 

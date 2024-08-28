@@ -17,20 +17,20 @@ function NavBar() {
 
     const componentRef = useRef<HTMLUListElement>(null);
     const [windowSize, setWindowSize] = useState({
-        width: window.innerWidth,
-        height: window.innerHeight,
+        width: globalThis.innerWidth,
+        height: globalThis.innerHeight,
     })
 
     const handleResize = () => {
         setWindowSize({
-            width: window.innerWidth,
-            height: window.innerHeight,
+            width: globalThis.innerWidth,
+            height: globalThis.innerHeight,
         });
     };
     useEffect(() => {
-        window.addEventListener('resize', handleResize);
+        globalThis.addEventListener('resize', handleResize);
         return () => {
-            window.removeEventListener('resize', handleResize);
+            globalThis.removeEventListener('resize', handleResize);
         };
     }, []);
 

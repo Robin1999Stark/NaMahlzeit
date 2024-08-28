@@ -29,8 +29,8 @@ type Props = {
 function MealDragElement({ mealID, dragProvided, snapshot, date, customStyle, onAddMeal, onRemoveMeal, onMoveMeal, showMore = true }: Props) {
     const SIZE_MOBILE = 700;
     const [windowSize, setWindowSize] = useState({
-        width: window.innerWidth,
-        height: window.innerHeight,
+        width: globalThis.innerWidth,
+        height: globalThis.innerHeight,
     });
     const [meal, setMeal] = useState<Meal>();
     const [, setError] = useState<boolean>(false);
@@ -110,14 +110,14 @@ function MealDragElement({ mealID, dragProvided, snapshot, date, customStyle, on
 
     const handleResize = () => {
         setWindowSize({
-            width: window.innerWidth,
-            height: window.innerHeight,
+            width: globalThis.innerWidth,
+            height: globalThis.innerHeight,
         });
     }
     useEffect(() => {
-        window.addEventListener('resize', handleResize);
+        globalThis.addEventListener('resize', handleResize);
         return () => {
-            window.removeEventListener('resize', handleResize);
+            globalThis.removeEventListener('resize', handleResize);
         };
     }, []);
 

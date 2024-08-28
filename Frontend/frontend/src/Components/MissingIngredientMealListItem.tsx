@@ -12,7 +12,7 @@ function MissingIngredientMealListItem({ ingredient }: Props) {
     useEffect(() => {
         async function fetchMeal(mealID: number): Promise<Meal | null> {
             try {
-                const data = getMeal(mealID + "");
+                const data = await getMeal(mealID + "");
                 return data;
             } catch (error) {
                 console.log(error)
