@@ -23,8 +23,8 @@ function MealCard({ meal }: Props) {
             try {
                 const response = await getAllTagsFromMeal(id);
                 response ? setTags(response) : console.log("Error")
-            } catch (error) {
-                console.error("error");
+            } catch (_error) {
+                console.error("error", _error);
             }
         }
         fetchTags(meal.id);

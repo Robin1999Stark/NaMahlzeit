@@ -83,7 +83,7 @@ function MealsOverview() {
                 clearTimeout(debounceTimeout);
             }
 
-            const timeoutId = window.setTimeout(() => {
+            const timeoutId = globalThis.setTimeout(() => {
                 searchForMeals(searchString.trim());
             }, 500);
 

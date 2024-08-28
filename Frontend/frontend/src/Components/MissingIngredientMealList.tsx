@@ -14,7 +14,7 @@ function MissingIngredientMealList({ handleAddItemToShoppingList }: Props) {
     const [, setPlaners] = useState<FoodplanerItem[]>();
     const [ingredients, setIngredients] = useState<IngredientAmountWithMeal[]>([]);
 
-    async function handleAddAllToShoppingList() {
+    function handleAddAllToShoppingList() {
         ingredients.forEach(async (ingr) => {
             const inv: CreateInventoryItemInterface = { ingredient: ingr.ingredient, amount: ingr.amount, unit: ingr.unit };
             await handleAddItemToShoppingList(inv);

@@ -71,7 +71,7 @@ function IngredientsOverView() {
                 clearTimeout(debounceTimeout);
             }
 
-            const timeoutId = window.setTimeout(() => {
+            const timeoutId = globalThis.setTimeout(() => {
                 searchForIngredients(searchString.trim());
             }, 500);
 

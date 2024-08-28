@@ -33,7 +33,7 @@ function MealListItem({ meal, deleteMeal, addMealToPlaner }: Props) {
             try {
                 const response = await getAllTagsFromMeal(id);
                 response ? setTags(response) : console.log("Error")
-            } catch (error) {
+            } catch (_error) {
                 console.error("error");
             }
         }

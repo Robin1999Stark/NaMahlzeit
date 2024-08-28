@@ -21,7 +21,7 @@ function IngredientListItem({ ingredient, deleteIngredient }: Props) {
                 const response = await getAllTagsFromIngredient(ingredient);
                 if (response === null || response === undefined) return;
                 setTags(response.tags)
-            } catch (error) {
+            } catch (_error) {
                 return;
             }
         }

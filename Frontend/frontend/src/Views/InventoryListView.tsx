@@ -35,8 +35,8 @@ function InventoryListView() {
         try {
             const data = await getAllIngredients()
             setIngredients(data)
-        } catch (error) {
-            console.log(error)
+        } catch (_error) {
+            console.log(_error)
         }
     }
     async function handleAutoCompleteSearch(query: string) {
@@ -45,7 +45,7 @@ function InventoryListView() {
             const results: string[] = data.map((ingredient) => ingredient.title).filter((title) => title.toLowerCase().includes(query.toLowerCase()));
             return results
 
-        } catch (error) {
+        } catch (_error) {
             return [];
         }
     }
@@ -62,8 +62,8 @@ function InventoryListView() {
             const data = await getAllInventoryItems()
             //const sorted = data.sort((a, b) => a.ingredient.localeCompare(b.ingredient))
             setInventory(data)
-        } catch (error) {
-            console.log(error)
+        } catch (_error) {
+            console.log(_error)
         }
     }
     async function fetchPipeline() {
@@ -87,16 +87,16 @@ function InventoryListView() {
 
             }
             fetchPipeline();
-        } catch (error) {
-            console.log(error)
+        } catch (_error) {
+            console.log(_error)
         }
     }
     async function deleteInventoryItem(id: number) {
         try {
             await deleteInventoryItem(id);
             fetchPipeline();
-        } catch (error) {
-            console.log(error)
+        } catch (_error) {
+            console.log(_error)
         }
     }
     return (

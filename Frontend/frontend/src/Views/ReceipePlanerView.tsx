@@ -127,7 +127,7 @@ function ReceipePlanerView() {
     };
 
 
-    async function updateTimeSpan(from: Date, to: Date): Promise<[start: Date, end: Date]> {
+    function updateTimeSpan(from: Date, to: Date): [start: Date, end: Date] {
         const start = new Date(from);
         const end = new Date(to);
         setTimeSpan({ start: start, end: end });

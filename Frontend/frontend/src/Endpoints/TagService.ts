@@ -14,7 +14,7 @@ async function getAllTagsJSON(): Promise<unknown> {
     try {
         const response = await instance.get(`/tags/`);
         return response.data;
-    } catch (error) {
+    } catch (_error) {
         return null;
     }
 }
@@ -29,8 +29,8 @@ export async function getAllTags(): Promise<TagDT[] | null> {
             }
             throw new Error('Invalid tag data format');
         });
-    } catch (error) {
-        console.error('Error fetching Tags: ', error);
+    } catch (_error) {
+        console.error('Error fetching Tags: ', _error);
         return null;
     }
 }
@@ -46,8 +46,8 @@ export async function createTag({ name }: CreateTagInterface): Promise<TagDT | n
             headers: { 'Content-Type': 'application/json' }
         });
         return TagDT.fromJSON(response.data);
-    } catch (error) {
-        console.error('Error creating Tag:', error);
+    } catch (_error) {
+        console.error('Error creating Tag:', _error);
         return null;
     }
 }
@@ -56,8 +56,8 @@ export async function deleteTag(tag: string): Promise<AxiosResponse> {
     try {
         const response = await instance.delete(`/tags/${tag}/`);
         return response;
-    } catch (error) {
-        throw new Error('Error deleting Tag: ' + error);
+    } catch (_error) {
+        throw new Error('Error deleting Tag: ' + _error);
     }
 }
 
@@ -66,7 +66,7 @@ async function getAllTagsFromMealJSON(meal: number): Promise<unknown> {
     try {
         const response = await instance.get(`/meal-tags/${meal}/`);
         return response.data;
-    } catch (error) {
+    } catch (_error) {
         return null;
     }
 }
@@ -77,7 +77,7 @@ export async function getAllTagsFromMeal(meal: number): Promise<MealTags | null>
         const data = await getAllTagsFromMealJSON(meal);
         if (data === null || typeof data !== 'object' || data === null) return null;
         return MealTags.fromJSON(data as { mealID: number; tags: string[] });
-    } catch (error) {
+    } catch (_error) {
         return null;
     }
 }
@@ -141,7 +141,7 @@ export async function createOrUpdateMealTags(mealTags: MealTags): Promise<MealTa
         } else {
             return await createMealTags(mealTags);
         }
-    } catch (error) {
+    } catch (_error) {
         return null;
     }
 }
@@ -170,7 +170,7 @@ export async function getAllTagsFromIngredient(ingredient: string): Promise<Ingr
         const data = await getAllTagsFromIngredientJSON(ingredient);
         if (data === null || typeof data !== 'object' || data === null) return null;
         return IngredientTags.fromJSON(data as { ingredient: string; tags: string[] });
-    } catch (error) {
+    } catch (_error) {
         return null;
     }
 }
@@ -241,7 +241,7 @@ export async function createOrUpdateIngredientTags(ingredientTags: IngredientTag
         } else {
             return await createIngredientTags(ingredientTags);
         }
-    } catch (error) {
+    } catch (_error) {
         return null;
     }
 }

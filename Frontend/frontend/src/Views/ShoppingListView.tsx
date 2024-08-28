@@ -50,8 +50,8 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
         try {
             const ingredient = await getIngredient(id);
             return ingredient;
-        } catch (error) {
-            console.log(error);
+        } catch (_error) {
+            console.log(_error);
         }
         return null;
     }, []);
@@ -60,8 +60,8 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
         try {
             const data = await getAllIngredients();
             return data === undefined ? null : data;
-        } catch (error) {
-            console.log(error);
+        } catch (_error) {
+            console.log(_error);
         }
         return null;
     }, []);
@@ -70,8 +70,8 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
         try {
             const data = await getAllShoppingLists();
             return data;
-        } catch (error) {
-            console.log(error);
+        } catch (_error) {
+            console.log(_error);
         }
         return [];
     }, []);
@@ -81,8 +81,8 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
             const data = await getAllShoppingListItems();
             const actualItems = data.filter(item => items?.includes(item.id));
             return actualItems === undefined ? null : actualItems;
-        } catch (error) {
-            console.log(error);
+        } catch (_error) {
+            console.log(_error);
         }
         return null;
     }, []);
@@ -148,8 +148,8 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
                     setItemAdded(true);
                 }
             }
-        } catch (error) {
-            console.log(error);
+        } catch (_error) {
+            console.log(_error);
         }
     }, [shoppingList, setShoppingList]);
 
@@ -170,8 +170,8 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
                 await handleAddItemToShoppingList(invItem);
             }
 
-        } catch (error) {
-            console.error('Error adding planned ingredients:', error);
+        } catch (_error) {
+            console.error('Error adding planned ingredients:', _error);
         }
     }, [handleAddItemToShoppingList]);
 
@@ -179,8 +179,8 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
         try {
             await deleteShoppingListItem(id);
             fetchPipeline();
-        } catch (error) {
-            console.log(error);
+        } catch (_error) {
+            console.log(_error);
         }
     }, [fetchPipeline]);
 
@@ -223,7 +223,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
             const data = await getAllIngredients();
             const results: string[] = data.map((ingredient) => ingredient.title).filter((title) => title.toLowerCase().includes(query.toLowerCase()));
             return results;
-        } catch (error) {
+        } catch (_error) {
             return [];
         }
     }, []);
@@ -247,8 +247,8 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
                     setShoppingListItems([]);
                 }
             }
-        } catch (error) {
-            console.error("Error deleting the shopping list:", error);
+        } catch (_error) {
+            console.error("Error deleting the shopping list:", _error);
         }
     }, [fetchDataShoppingLists, fetchDataShoppingListItems, setShoppingList]);
 
@@ -278,8 +278,8 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
                     }
                 }, 500);
             }
-        } catch (error) {
-            console.log(error);
+        } catch (_error) {
+            console.log(_error);
         }
     }, [shoppingList, fetchDataShoppingListItems]);
 
