@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Meal } from '../Datatypes/Meal';
 import { TagDT } from '../Datatypes/Tag';
@@ -53,27 +53,28 @@ function MealsOverview() {
         }
     }
 
+
+    const searchForMeals = useCallback(async (search: string) => {
+        if (!search) {
+            setFilteredMeals(meals);
+            return;
+        }
+
+        const lowerCaseSearch = search.toLowerCase();
+        const mealsFromTags = await Promise.all(
+            (await getMealTagsFromTagList([new TagDT(lowerCaseSearch)])).map((tag) => tag.mealID)
+        );
+        if (!meals) return;
+
+        const filtered = meals.filter((meal) => {
+            return meal.title.toLowerCase().includes(lowerCaseSearch) || mealsFromTags.includes(meal.id);
+        });
+
+        setFilteredMeals(filtered);
+    }, [meals]);
+
     debounce(searchForMeals, 500);
 
-    async function searchForMeals(search: string) {
-        if (search === undefined || search === null || search === "") {
-            setFilteredMeals(meals);
-        } else {
-            let filteredMeals = meals;
-            const lowerCaseSearch = search.toLowerCase();
-            const mealsFromTags = await Promise.all(
-                (await getMealTagsFromTagList([new TagDT(lowerCaseSearch)])).map((tag) => tag.mealID)
-            );
-
-            filteredMeals = filteredMeals?.filter((meal) => {
-
-                if (meal.title.toLowerCase().includes(lowerCaseSearch)) return true
-                if (mealsFromTags.includes(meal.id)) return true
-                return false
-            });
-            setFilteredMeals(filteredMeals);
-        }
-    }
     // Debounce the searchForMeals function with a delay before making the API call
     useEffect(() => {
         if (searchString !== "" && searchString !== undefined && searchString !== null) {
@@ -88,7 +89,6 @@ function MealsOverview() {
 
             setDebounceTimeout(timeoutId);
 
-            // Cleanup function to clear the timeout when the component unmounts or when searchString changes
             return () => {
                 if (debounceTimeout) {
                     clearTimeout(debounceTimeout);
@@ -97,7 +97,7 @@ function MealsOverview() {
         } else {
             setFilteredMeals(meals);
         }
-    }, [searchString]);
+    }, [searchString, meals, searchForMeals]);
 
     const mealList = () => {
         return (

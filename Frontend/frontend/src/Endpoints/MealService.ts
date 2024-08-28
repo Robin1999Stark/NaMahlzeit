@@ -1,8 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { IngredientAmount } from '../Datatypes/Ingredient';
-import { Meal, MealTags } from '../Datatypes/Meal';
-import { createMealIngredient } from './MealIngredientService';
-import { createMealTags } from './TagService';
+import { Meal } from '../Datatypes/Meal';
 
 
 const BASE_URL = 'http://localhost:8000';

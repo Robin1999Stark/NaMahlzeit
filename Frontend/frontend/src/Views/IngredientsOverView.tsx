@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Ingredient } from '../Datatypes/Ingredient'
 import { LuFilter } from 'react-icons/lu'
@@ -40,29 +40,29 @@ function IngredientsOverView() {
             console.log(error)
         }
     }
+
+    const searchForIngredients = useCallback(async (search: string) => {
+        if (!search) {
+            setFilteredIngredients(ingredients);
+            return;
+        }
+
+        const lowerCaseSearch = search.toLowerCase();
+        const ingredientsFromTags = await Promise.all(
+            (await getIngredientTagsFromTagList([new TagDT(lowerCaseSearch)])).map((tag) => tag.ingredient)
+        );
+        if (!ingredients) return;
+
+        const filtered = ingredients.filter((ingredient) => {
+            return ingredient.title.toLowerCase().includes(lowerCaseSearch) || ingredientsFromTags.includes(ingredient.title);
+        });
+
+        setFilteredIngredients(filtered);
+    }, [ingredients]);
+
+
     debounce(searchForIngredients, 500);
 
-
-    async function searchForIngredients(search: string) {
-        if (search === undefined || search === null || search === "") {
-            setFilteredIngredients(ingredients);
-        } else {
-            let filteredIngredients = ingredients;
-            const lowerCaseSearch = search.toLowerCase();
-
-            const ingredientsFromTags = await Promise.all(
-                (await getIngredientTagsFromTagList([new TagDT(lowerCaseSearch)])).map((tag) => tag.ingredient)
-            );
-            filteredIngredients = filteredIngredients?.filter((ingredient) => {
-
-                if (ingredient.title.toLowerCase().includes(lowerCaseSearch)) return true
-                if (ingredientsFromTags.includes(ingredient.title)) return true
-                return false
-            });
-
-            setFilteredIngredients(filteredIngredients);
-        }
-    }
 
     useEffect(() => {
         if (searchString !== "" && searchString !== undefined && searchString !== null) {
@@ -77,7 +77,6 @@ function IngredientsOverView() {
 
             setDebounceTimeout(timeoutId);
 
-            // Cleanup function to clear the timeout when the component unmounts or when searchString changes
             return () => {
                 if (debounceTimeout) {
                     clearTimeout(debounceTimeout);
@@ -86,7 +85,7 @@ function IngredientsOverView() {
         } else {
             setFilteredIngredients(ingredients);
         }
-    }, [searchString]);
+    }, [searchString, ingredients, searchForIngredients]);
 
     const ingredientList = () => {
         return (

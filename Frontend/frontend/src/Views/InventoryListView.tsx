@@ -73,7 +73,7 @@ function InventoryListView() {
 
     useEffect(() => {
         fetchPipeline();
-    }, []);
+    }, [fetchPipeline]);
 
     const onSubmit = (data: InventoryItem) => {
         try {
