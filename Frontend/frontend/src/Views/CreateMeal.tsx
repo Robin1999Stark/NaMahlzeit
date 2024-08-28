@@ -11,7 +11,7 @@ import { createMealWithAmounts } from '../Endpoints/MealService';
 function CreateMeal() {
     const navigate = useNavigate();
     const [ingredients, setIngredients] = useState<Ingredient[]>()
-    const [picture, setPicture] = useState<File | null>(null); // Use File type for picture
+    const [picture, setPicture] = useState<File | null>(null);
 
     useEffect(() => {
         async function fetchData() {
@@ -29,7 +29,6 @@ function CreateMeal() {
         register,
         control,
         handleSubmit,
-        setValue,
         formState: { errors } } = useForm<MealWithIngredientAmount>({
             defaultValues: {
                 title: "",
@@ -49,7 +48,7 @@ function CreateMeal() {
     function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
         const file = event.target.files?.[0];
         if (file) {
-            setPicture(file); // Store the file object directly
+            setPicture(file);
         }
     }
 
@@ -70,7 +69,7 @@ function CreateMeal() {
             });
 
             if (picture) {
-                formData.append('picture', picture); // Append the File object directly
+                formData.append('picture', picture);
             }
 
             const response = await createMealWithAmounts(formData);
@@ -263,8 +262,6 @@ function CreateMeal() {
                                 onChange={handleFileChange}
                                 className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md mr-1' />
                             {picture && (
-                                <img src={URL.createObjectURL(picture)} alt="Selected" className='mt-2 max-w-xs' />
-                            )}{picture && (
                                 <img src={URL.createObjectURL(picture)} alt="Selected" className='mt-2 max-w-xs' />
                             )}
                         </li>

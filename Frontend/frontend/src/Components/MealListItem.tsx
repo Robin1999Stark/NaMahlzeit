@@ -24,6 +24,8 @@ function MealListItem({ meal, deleteMeal, addMealToPlaner }: Props) {
     const [tags, setTags] = useState<MealTags>();
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
+    const [imageError, setImageError] = useState<boolean>(false);
+
     const datePickerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -77,13 +79,26 @@ function MealListItem({ meal, deleteMeal, addMealToPlaner }: Props) {
         };
     }, []);
 
+    function handleImageError() {
+        setImageError(true);
+    }
+
     return (
         <>
             <li
                 className='select-none w-full h-full py-3 flex flex-row justify-between items-center rounded-md border-l-[6px] border-[#046865] truncate bg-[#fff]'>
                 <article className='text-center  flex flex-row justify-start ml-3 items-center w-full whitespace-normal text-[#011413] text-base '>
                     <figure className='w-7 h-7 rounded-full mr-3'>
-                        <PlaceholderMealImage rounded />
+                        {imageError || !meal?.picture ? (
+                            <PlaceholderMealImage rounded border='full' />
+                        ) : (
+                            <img
+                                src={meal.picture}
+                                alt="Meal"
+                                className='w-full h-full rounded-full object-cover aspect-square'
+                                onError={handleImageError}
+                            />
+                        )}
                     </figure>
                     <Link className='text-[#011413] underline' to={`/meals/${meal.id}`}>
                         <h3 className='text-start'>

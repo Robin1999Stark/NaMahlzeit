@@ -19,13 +19,12 @@ function MealDetailView() {
     const navigate = useNavigate();
     const { mealID } = useParams();
 
-    const [meal, setMeal] = useState<Meal>()
+    const [meal, setMeal] = useState<Meal | null>()
     const [, setError] = useState<string>("")
     const [mealIngredients, setMealIngredients] = useState<IngredientAmount[]>([])
     const [planned, setPlanned] = useState<IsPlannedResponse>();
     const [tags, setTags] = useState<MealTags>();
-
-    console.log("pic", meal?.picture);
+    const [imageError, setImageError] = useState<boolean>(false);
 
     function displayIsPlanned() {
         if (planned && planned.isPlanned) {
@@ -35,32 +34,32 @@ function MealDetailView() {
         }
     }
     useEffect(() => {
-
         async function fetchTags(id: string) {
             try {
                 const response = await getAllTagsFromMeal(Number(id));
                 response ? setTags(response) : setError("No Meal Found");
             } catch (error) {
-                setError("Error while fetching Tags occured");
+                setError("Error while fetching Tags occurred");
             }
         }
 
         async function fetchMeal() {
             try {
-                const response = await getMeal(mealID!)
-                response ? setMeal(response) : setError("Error occured while fetching Meal")
+                const response = await getMeal(mealID!);
+                setMeal(response);
+                setImageError(false);
             } catch (e) {
-                console.log(e)
+                setError("Error occurred while fetching Meal");
+                console.log(e);
             }
         }
 
-
         async function fetchMealIngredients() {
             try {
-                const response = await getAllMealIngredients(Number(mealID!))
-                response ? setMealIngredients(response) : setMealIngredients([])
+                const response = await getAllMealIngredients(Number(mealID!));
+                response ? setMealIngredients(response) : setMealIngredients([]);
             } catch (e) {
-                console.log(e)
+                console.log(e);
             }
         }
 
@@ -69,10 +68,11 @@ function MealDetailView() {
                 const response = await isPlanned(Number(mealId));
                 return response;
             } catch (error) {
-                console.error(error)
+                console.error(error);
             }
             return null;
         }
+
         async function fetchAllData() {
             if (mealID === undefined) return;
             fetchMeal();
@@ -82,9 +82,13 @@ function MealDetailView() {
             if (!planned) return;
             setPlanned(planned);
         }
-        fetchAllData()
 
-    }, [])
+        fetchAllData();
+    }, [mealID]);
+
+    function handleImageError() {
+        setImageError(true);
+    }
 
     return (
         <>
@@ -123,11 +127,16 @@ function MealDetailView() {
                 </span>
                 <hr className='mt-4 mb-8' />
                 <section className='flex flex-col md:flex-row w-full'>
-                    <span className='w-full max-w-[24rem]'>
-                        {meal?.picture ? (
-                            <img src={meal.picture} alt="Meal" className='w-full h-auto rounded-md border' />
-                        ) : (
+                    <span className='w-full max-w-[24rem] max-h-[24rem]'>
+                        {imageError || !meal?.picture ? (
                             <PlaceholderMealImage rounded border='full' />
+                        ) : (
+                            <img
+                                src={meal.picture}
+                                alt="Meal"
+                                className='w-full h-full rounded-full object-cover aspect-square'
+                                onError={handleImageError}
+                            />
                         )}
                     </span>
                     <div className="w-full pl-0 md:pl-20 mt-10 md:mt-0 flex-1 md:w-1/2 flex flex-col justify-between text-[#011413] h-full lg:w-1/2 xl:w-1/2 p-4 min-w-[200px]">

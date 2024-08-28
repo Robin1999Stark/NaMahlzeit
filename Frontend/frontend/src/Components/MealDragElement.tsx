@@ -36,6 +36,7 @@ function MealDragElement({ mealID, dragProvided, snapshot, date, customStyle, on
     const [, setError] = useState<boolean>(false);
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
+    const [imageError, setImageError] = useState<boolean>(false);
     const datePickerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -51,13 +52,11 @@ function MealDragElement({ mealID, dragProvided, snapshot, date, customStyle, on
     }, [mealID]);
 
 
-    async function handleRemoveMeal(planerDate: Date | undefined, mealID: number) {
+    function handleRemoveMeal(planerDate: Date | undefined, mealID: number) {
         if (planerDate === undefined) return;
         if (onRemoveMeal === undefined) return;
-        await onRemoveMeal(planerDate, mealID);
+        onRemoveMeal(planerDate, mealID);
     }
-
-
 
     const getDraggableStyle = (snapshot: DraggableStateSnapshot, dragProvided: DraggableProvided): CSSProperties => {
         const style: CSSProperties = {
@@ -122,6 +121,10 @@ function MealDragElement({ mealID, dragProvided, snapshot, date, customStyle, on
         };
     }, []);
 
+    function handleImageError() {
+        setImageError(true);
+    }
+
     return (
         <>
             <li
@@ -132,7 +135,16 @@ function MealDragElement({ mealID, dragProvided, snapshot, date, customStyle, on
                 ref={dragProvided.innerRef}>
                 <article className='text-center  flex flex-row justify-start ml-3 items-center w-full whitespace-normal text-[#011413] text-base '>
                     <figure className='w-7 h-7 rounded-full mr-3'>
-                        <PlaceholderMealImage rounded />
+                        {imageError || !meal?.picture ? (
+                            <PlaceholderMealImage rounded border='full' />
+                        ) : (
+                            <img
+                                src={meal.picture}
+                                alt="Meal"
+                                className='w-full h-full rounded-full object-cover aspect-square'
+                                onError={handleImageError}
+                            />
+                        )}
                     </figure>
                     {
                         meal !== undefined ? <a className='text-[#011413] underline' href={`/meals/${meal!.id}`}>
