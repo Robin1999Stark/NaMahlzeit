@@ -8,9 +8,9 @@ import { FoodPlaner, FoodplanerItem } from '../Datatypes/FoodPlaner'
 import { MealContext } from '../Components/MealContext'
 import Calendar from '../Components/Calendar'
 import { RxCalendar } from 'react-icons/rx'
-import { LuLibrary } from 'react-icons/lu'
 import { addMealToPlaner, moveMealBetweenPlanerItemsByDate, removeMealFromPlaner, createPlanerItem, getAllPlanerItems } from '../Endpoints/PlanerService'
 import { getAllMeals } from '../Endpoints/MealService'
+import { PiBowlFood } from 'react-icons/pi'
 
 function ReceipePlanerView() {
     const SIZE_MOBILE = 700;
@@ -296,7 +296,7 @@ function ReceipePlanerView() {
                                 <li
                                     onClick={() => setTogglePlaner(false)}
                                     className={`w-full flex flex-row py-1 z-10 cursor-pointer justify-center items-center ${!togglePlaner ? 'text-white font-bold' : 'text-[#011413]'} rounded-full items-center`}>
-                                    <LuLibrary className='size-5 mr-2' />
+                                    <PiBowlFood className='size-5 mr-2' />
                                     <p className='text-sm'>
                                         Rezepte
                                     </p>

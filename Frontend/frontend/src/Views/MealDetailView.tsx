@@ -131,12 +131,6 @@ function MealDetailView() {
                             {meal?.duration} Minuten
                         </p>
                     </div>
-                    <div className='ml-5 flex flex-row truncate  justify-end items-center'>
-                        <PiForkKnife className='size-4' />
-                        <p className='ml-2 mr-1 font-semibold'>
-                            {meal?.portion_size}
-                        </p>
-                    </div>
                 </span>
                 <hr className='mt-4 mb-8' />
                 <section className='flex flex-col justify-start items-center md:flex-row w-full'>
@@ -155,10 +149,19 @@ function MealDetailView() {
                     </span>
 
                     <div className="w-full pl-0 md:pl-20 mt-0 flex-1 md:w-1/2 flex flex-col justify-between text-[#011413] h-full lg:w-1/2 xl:w-1/2 p-4 min-w-[200px]">
-                        <div className='py-3 min-w-[200px]'>
-                            <h2 className='truncate my-2 text-lg font-bold'>
-                                Zutaten:
-                            </h2>
+                        <div className='py-3 min-w-[200px] '>
+                            <span className='w-full flex my-2 flex-row justify-between items-center'>
+                                <h2 className='truncate text-lg font-bold'>
+                                    Zutaten:
+                                </h2>
+                                <span className='flex flex-row truncate justify-end items-center'>
+                                    <PiForkKnife className='size-4' />
+                                    <p className='ml-2 font-semibold'>
+                                        {meal?.portion_size} Portionen
+                                    </p>
+                                </span>
+                            </span>
+
                             {
                                 mealIngredients ?
                                     <ul className='h-full my-2'>
