@@ -41,7 +41,7 @@ function MealDetailView() {
             try {
                 const response = await getAllTagsFromMeal(Number(id));
                 response ? setTags(response) : setError("No Meal Found");
-            } catch (error) {
+            } catch (_error) {
                 setError("Error while fetching Tags occurred");
             }
         }
@@ -51,9 +51,9 @@ function MealDetailView() {
                 const response = await getMeal(mealID!);
                 setMeal(response);
                 setImageError(false);
-            } catch (e) {
+            } catch (_error) {
                 setError("Error occurred while fetching Meal");
-                console.log(e);
+                console.log(_error);
             }
         }
 
@@ -61,8 +61,8 @@ function MealDetailView() {
             try {
                 const response = await getAllMealIngredients(Number(mealID!));
                 response ? setMealIngredients(response) : setMealIngredients([]);
-            } catch (e) {
-                console.log(e);
+            } catch (_error) {
+                console.log(_error);
             }
         }
 
@@ -70,8 +70,8 @@ function MealDetailView() {
             try {
                 const response = await isPlanned(Number(mealId));
                 return response;
-            } catch (error) {
-                console.error(error);
+            } catch (_error) {
+                console.error(_error);
             }
             return null;
         }

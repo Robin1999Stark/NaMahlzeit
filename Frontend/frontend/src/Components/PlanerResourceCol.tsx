@@ -47,7 +47,7 @@ function PlanerResourceCol({ mealListID, onAddMeal }: Props) {
                 clearTimeout(debounceTimeoutRef.current);
             }
 
-            debounceTimeoutRef.current = window.setTimeout(() => {
+            debounceTimeoutRef.current = globalThis.setTimeout(() => {
                 searchForMeals(searchString.trim());
             }, 500);
 
