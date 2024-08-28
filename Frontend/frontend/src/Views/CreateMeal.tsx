@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Ingredient } from '../Datatypes/Ingredient';
@@ -6,7 +6,7 @@ import { MealWithIngredientAmount } from '../Datatypes/Meal';
 import { LuMinus } from 'react-icons/lu';
 import { MdAdd } from 'react-icons/md';
 import { getAllIngredients } from '../Endpoints/IngredientService';
-import { createMealWithAmounts } from '../Endpoints/MealService';
+import { createMeal } from '../Endpoints/MealService';
 import { AiOutlineEdit } from 'react-icons/ai';
 import PlaceholderMealImage from '../Components/PlaceholderMealImage';
 function CreateMeal() {
@@ -76,7 +76,7 @@ function CreateMeal() {
                 formData.append('picture', picture);
             }
 
-            const response = await createMealWithAmounts(formData);
+            const response = await createMeal(formData);
             if (response) {
                 navigate(-1);
             } else {

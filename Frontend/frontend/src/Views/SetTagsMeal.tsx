@@ -1,27 +1,32 @@
 import { useEffect, useState } from 'react'
 import { TagDT } from '../Datatypes/Tag';
 import { ErrorResponse, useNavigate, useParams } from 'react-router-dom';
-import { useFieldArray, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { Meal, MealTags } from '../Datatypes/Meal';
 import { LuMinus } from 'react-icons/lu';
 import { MdAdd } from 'react-icons/md';
 import { getMeal } from '../Endpoints/MealService';
 import { getAllTags, getAllTagsFromMeal, createOrUpdateMealTags } from '../Endpoints/TagService';
 
+type FormValues = {
+    meal: number;
+    tags: Array<string>;
+}
 
 function SetTagsMeal() {
     const navigate = useNavigate();
     const { mealID } = useParams();
     const [tags, setTags] = useState<TagDT[]>();
     const [meal, setMeal] = useState<Meal>();
+    const [localTags, setLocalTags] = useState<string[]>([]);
+
     const {
         register,
-        control,
         setValue,
         handleSubmit,
-        formState: { errors } } = useForm<MealTags>({
+        formState: { errors } } = useForm<FormValues>({
             defaultValues: {
-                mealID: Number(mealID),
+                meal: Number(mealID),
                 tags: [],
             },
             mode: 'all'
@@ -31,9 +36,9 @@ function SetTagsMeal() {
         async function fetchData() {
             if (!mealID) return;
             try {
-                const tags = await getAllTags();
-                const meal = await getMeal(mealID);
-                let mealTags = null;
+                const fetchedTags = await getAllTags();
+                const fetchedMeal = await getMeal(mealID);
+                let mealTags: MealTags | null = null;
 
                 try {
                     mealTags = await getAllTagsFromMeal(Number(mealID));
@@ -45,38 +50,49 @@ function SetTagsMeal() {
                         console.error('Error fetching MealTags:', error);
                     }
                 }
-
-                if (tags !== null) {
-                    setTags(tags.sort((a, b) => a.name.localeCompare(b.name)));
-                }
-                if (meal !== null) {
-                    setMeal(meal);
-                }
-
-                // Set mealTags in the form
+                if (!fetchedMeal) return;
+                setTags(fetchedTags ? fetchedTags.sort((a, b) => a.name.localeCompare(b.name)) : []);
+                setMeal(fetchedMeal);
+                setLocalTags(mealTags ? mealTags.tags : []);
                 setValue('tags', mealTags ? mealTags.tags : []);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         }
-
         fetchData();
     }, [mealID, setValue]);
 
-    const { fields, append, remove } = useFieldArray<any>({
-        control,
-        name: "tags"
-    });
+    const addTag = () => {
+        setLocalTags([...localTags, '']);
+    };
 
+    const removeTag = (index: number) => {
+        setLocalTags(prevTags => prevTags.filter((_, i) => i !== index));
+    };
 
-    const onSubmit = async (data: MealTags) => {
+    const handleTagChange = (index: number, value: string) => {
+        setLocalTags(prevTags => {
+            const updatedTags = [...prevTags];
+            updatedTags[index] = value;
+            setValue('tags', updatedTags);
+            return updatedTags;
+        });
+    };
+
+    const onSubmit = async (data: FormValues) => {
         try {
-            await createOrUpdateMealTags(data);
+            setValue('tags', localTags);
+
+            await createOrUpdateMealTags({
+                mealID: data.meal,
+                tags: localTags
+            });
+
             navigate(-1);
         } catch (error) {
-            console.log(error)
+            console.error(error);
         }
-    }
+    };
     return (
         <>
             <section className='w-full my-4 px-7 flex flex-col justify-start items-start flex-grow'>
@@ -100,35 +116,34 @@ function SetTagsMeal() {
                                         type='button'
                                         key={'add_meal'}
                                         className='bg-[#046865] p-2.5 w-fit text-white rounded-full'
-                                        onClick={() => append(0)}>
+                                        onClick={addTag}>
                                         <MdAdd className='size-5' />
                                     </button>
                                 </span>
                             </span>
                             <ul className='w-full'>
-                                {fields.map((field, index) => (
-                                    <li key={field.id} className="w-full flex flex-row justify-between mb-4 items-center">
+                                {localTags.map((tag, index) => (
+                                    <li key={index} className="w-full flex flex-row justify-between mb-4 items-center">
                                         <select
-                                            key={"select-" + field.id}
                                             {...register(`tags.${index}` as const, {
                                                 required: true,
                                             })}
-                                            defaultValue={tags && tags.length > 0 ? tags[0].name : ""}
-                                            className='bg-white flex-1 w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-2' >
-
-                                            <option key={"select-meal" + field.id} value="">Select Ingredient</option>
-                                            {tags ? tags.map((tag) => (
+                                            value={tag}
+                                            onChange={(e) => handleTagChange(index, e.target.value)}
+                                            className='bg-white flex-1 w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md mr-2'>
+                                            <option value="">Select Tag</option>
+                                            {tags && tags.map((tag) => (
                                                 <option
-                                                    key={tag.name + field.id}
+                                                    key={tag.name}
                                                     value={tag.name}>
                                                     {tag.name}
                                                 </option>
-                                            )) : <></>}
+                                            ))}
                                         </select>
                                         <button
                                             type='button'
                                             className='bg-[#046865] p-2.5 w-fit text-white rounded-full'
-                                            onClick={() => remove(index)}>
+                                            onClick={() => removeTag(index)}>
                                             <LuMinus className='size-5' />
                                         </button>
                                     </li>

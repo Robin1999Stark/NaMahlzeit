@@ -53,101 +53,17 @@ export async function getMeal(id: string): Promise<Meal | null> {
     return meal;
 }
 
-
-interface CreateMealAmountInterface {
-    title: string;
-    description: string;
-    ingredients: IngredientAmount[];
-    preparation: string;
-    duration: number;
-    portion_size: number;
-    picture: string | null;
-}
-
-
-export async function createMealWithAmounts2({
-    title,
-    description,
-    ingredients,
-    preparation,
-    duration,
-    portion_size,
-    picture,
-}: CreateMealAmountInterface): Promise<Meal | null> {
-    const requestBody = {
-        title,
-        description,
-        ingredients: ingredients.map((ingredientAmount) => ({
-            title: ingredientAmount.ingredient,
-            amount: ingredientAmount.amount,
-            unit: ingredientAmount.unit,
-        })),
-        duration,
-        preparation,
-        portion_size,
-        picture,
-    };
-    const requestJSON = JSON.stringify(requestBody);
+export async function createMeal(formData: FormData): Promise<Meal | null> {
     try {
-        const response = await instance.post('/meals/', requestJSON, {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        const meal = Meal.fromJSON(response.data);
-
-        await Promise.all(
-            ingredients.map(async (ingredient) => {
-                return createMealIngredient({
-                    ingredient: ingredient.ingredient,
-                    meal: meal.id,
-                    amount: ingredient.amount,
-                    unit: ingredient.unit,
-                });
-            })
-        );
-
-        const tags = new MealTags(response.data.id, []);
-        await createMealTags(tags);
-        return meal;
-    } catch (error) {
-        console.error('Error creating Meal:', error);
-        return null;
-    }
-}
-
-
-export async function createMealWithAmounts(formData: FormData): Promise<Meal | null> {
-    console.log("fd", formData)
-    try {
-        // Make the API request using FormData
-        const response = await instance.post('/meals/', formData, {
+        const response = await instance.post(`/meals/`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
         });
-
-        // Assuming Meal.fromJSON exists and parses the response into a Meal object
-        const meal = Meal.fromJSON(response.data);
-
-        // Process ingredients and tags as needed
-        await Promise.all(
-            formData.getAll('ingredients').map(async (ingredient: any) => {
-                return createMealIngredient({
-                    ingredient: ingredient.ingredient,
-                    meal: meal.id,
-                    amount: ingredient.amount,
-                    unit: ingredient.unit,
-                });
-            })
-        );
-
-        const tags = new MealTags(response.data.id, []);
-        await createMealTags(tags);
-
-        return meal;
+        const updatedMeal: Meal = Meal.fromJSON(response.data);
+        return updatedMeal;
     } catch (error) {
-        console.error('Error creating Meal:', error);
+        console.error('Error updating Meal:', error);
         return null;
     }
 }

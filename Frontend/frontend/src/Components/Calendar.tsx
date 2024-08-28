@@ -20,7 +20,7 @@ function Calendar({ planer, maxEntries = 10 }: Props) {
         return (
             <React.Fragment key={day_str}>
                 <a href={'#' + day_str}>
-                    <li className='text-[#011413] flex flex-col justify-start mt-2 text-base items-center mb-4'>
+                    <li className='text-[#011413] flex flex-col justify-start mt-6 text-base items-center mb-4'>
                         {isToday ? isEmpty ?
                             <p className='mb-2 bg-[#F96E46] text-white px-[0.3rem] rounded-full'>
                                 {day}
@@ -44,7 +44,7 @@ function Calendar({ planer, maxEntries = 10 }: Props) {
     const entries = Object.entries(planer).slice(0, maxEntries);
 
     return (
-        <ul className='w-full flex flex-row justify-between items-center overflow-y-hidden h-fit overflow-x-scroll sm:overflow-x-hidden mt-2 mb-8'>
+        <ul className='w-full flex flex-row justify-between items-center overflow-y-hidden h-fit overflow-x-scroll sm:overflow-x-hidden mt-2 mb-4'>
             {entries.map(([key, value]) => (
                 displayDay(key, value)
             ))}

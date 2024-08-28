@@ -1,4 +1,4 @@
-from ..models import Ingredient, Meal, FoodPlanerItem, MealIngredient
+from ..models import Ingredient, Meal, FoodPlanerItem, MealIngredient, MealTags
 from rest_framework import viewsets, generics
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -45,17 +45,16 @@ def is_planned(request, meal_pk):
 
     if planned_items.exists():
         planned_date = planned_items.first().date
-        response_data = {'is_planned': True, 'planned_date': planned_date}
+        response_data = {
+            'is_planned': True,
+            'planned_date': planned_date.isoformat()
+        }
     else:
-        response_data = {'is_planned': False, 'planned_date': None}
-
-    # Return a JSON response indicating whether the meal is planned and its date
+        response_data = {
+            'is_planned': False,
+            'planned_date': None
+        }
     return JsonResponse(response_data)
-
-
-def get_all_mealingredients_from_meals(request):
-
-    pass
 
 
 def get_all_mealingredients_from_planer(request, start, end):
@@ -99,6 +98,86 @@ class MealListView(viewsets.ModelViewSet):
     serializer_class = MealListSerializer
     queryset = Meal.objects.all()
     parser_classes = (MultiPartParser, FormParser)
+
+    def parse_ingredients(self, form_data):
+        ingredients = []
+
+        for key, value in form_data.items():
+            if key.startswith('ingredients'):
+                try:
+                    index = int(key.split('[')[1].split(']')[0])
+                except (IndexError, ValueError):
+                    continue
+
+                attribute = key.split('.')[-1]
+
+                while len(ingredients) <= index:
+                    ingredients.append({})
+
+                if attribute in ['ingredient', 'amount', 'unit']:
+                    ingredients[index][attribute] = value
+
+        return ingredients
+
+    def create(self, request, *args, **kwargs):
+        form_data = request.data
+        print("Form Data:", form_data)
+
+        title = form_data.get('title')
+        description = form_data.get('description')
+        preparation = form_data.get('preparation')
+        duration = form_data.get('duration')
+        picture = form_data.get('picture')
+        portion_size = form_data.get('portion_size')
+
+        try:
+            meal = Meal.objects.create(
+                title=title,
+                description=description,
+                preparation=preparation,
+                duration=duration,
+                picture=picture,
+                portion_size=portion_size
+            )
+        except (ValueError, ValidationError) as e:
+            print(f"Error creating meal: {e}")
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        ingredients = self.parse_ingredients(form_data)
+        processed_ingredients = set()
+
+        for ingredient_data in ingredients:
+
+            ingredient_name = ingredient_data.get('ingredient')
+            amount = Decimal(ingredient_data.get('amount', 0))
+            unit = ingredient_data.get('unit')
+
+            try:
+                ingredient_instance = get_object_or_404(
+                    Ingredient, title=ingredient_name)
+
+                new_ingredient = MealIngredient.objects.create(
+                    meal=meal,
+                    ingredient=ingredient_instance,
+                    amount=amount,
+                    unit=unit
+                )
+                processed_ingredients.add(new_ingredient.id)
+            except Ingredient.DoesNotExist:
+                print(f"Ingredient '{ingredient_name}' does not exist.")
+            except (ValueError, ValidationError) as e:
+                print(f"Error with ingredient data: {e}")
+                return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            meal_tags = MealTags.objects.create(meal=meal)
+            print("MealTags Created:", meal_tags)
+        except (ValueError, ValidationError) as e:
+            print(f"Error creating MealTags: {e}")
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = self.get_serializer(meal)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)

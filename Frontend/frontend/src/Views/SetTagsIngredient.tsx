@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { ErrorResponse, useNavigate, useParams } from 'react-router-dom';
 import { TagDT } from '../Datatypes/Tag';
 import { Ingredient, IngredientTags } from '../Datatypes/Ingredient';
@@ -8,49 +8,53 @@ import { LuMinus } from 'react-icons/lu';
 import { getIngredient } from '../Endpoints/IngredientService';
 import { getAllTags, getAllTagsFromIngredient, createOrUpdateIngredientTags } from '../Endpoints/TagService';
 
+type FormValues = {
+    ingredient: string;
+    tags: Array<string>;
+}
 
 function SetTagsIngredient() {
     const navigate = useNavigate();
     const { ingredientID } = useParams();
     const [tags, setTags] = useState<TagDT[]>();
-    const [ingredient, setMeal] = useState<Ingredient>();
+    const [ingredient, setIngredient] = useState<Ingredient>();
+    const [localTags, setLocalTags] = useState<string[]>([]);
+
     const {
         register,
-        control,
         setValue,
         handleSubmit,
-        formState: { errors } } = useForm<IngredientTags>({
+        formState: { errors } } = useForm<FormValues>({
             defaultValues: {
-                ingredient: ingredientID,
+                ingredient: ingredientID || '',
                 tags: [],
             },
             mode: 'all'
         });
 
+
     useEffect(() => {
         async function fetchData() {
             if (!ingredientID) return;
             try {
-                const tags = await getAllTags();
-                const ingredient = await getIngredient(ingredientID);
-                let ingredientTags = null;
+                const fetchedTags = await getAllTags();
+                const fetchedIngredient = await getIngredient(ingredientID);
+                let ingredientTags: IngredientTags | null = null;
 
                 try {
                     ingredientTags = await getAllTagsFromIngredient(ingredientID);
                 } catch (error: unknown) {
                     const axiosError = error as ErrorResponse;
                     if (axiosError.status === 404) {
-                        console.log('MealTags not found (404)');
+                        console.log('Tags not found (404)');
                     } else {
-                        console.error('Error fetching MealTags:', error);
+                        console.error('Error fetching tags:', error);
                     }
                 }
 
-                // Set states based on the retrieved data
-                if (tags !== null) setTags(tags.sort((a, b) => a.name.localeCompare(b.name)));
-                if (ingredient !== null) setMeal(ingredient);
-
-                // Set ingredientTags in the form
+                setTags(fetchedTags ? fetchedTags.sort((a, b) => a.name.localeCompare(b.name)) : []);
+                setIngredient(fetchedIngredient);
+                setLocalTags(ingredientTags ? ingredientTags.tags : []);
                 setValue('tags', ingredientTags ? ingredientTags.tags : []);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -60,20 +64,40 @@ function SetTagsIngredient() {
         fetchData();
     }, [ingredientID, setValue]);
 
-    const { fields, append, remove } = useFieldArray<any>({
-        control,
-        name: "tags"
-    });
+
+    const addTag = () => {
+        setLocalTags([...localTags, '']);
+    };
+
+    const removeTag = (index: number) => {
+        setLocalTags(prevTags => prevTags.filter((_, i) => i !== index));
+    };
 
 
-    const onSubmit = async (data: IngredientTags) => {
+    const handleTagChange = (index: number, value: string) => {
+        setLocalTags(prevTags => {
+            const updatedTags = [...prevTags];
+            updatedTags[index] = value;
+            setValue('tags', updatedTags);
+            return updatedTags;
+        });
+    };
+
+    const onSubmit = async (data: FormValues) => {
         try {
-            await createOrUpdateIngredientTags(data);
+            setValue('tags', localTags);
+
+            await createOrUpdateIngredientTags({
+                ingredient: data.ingredient,
+                tags: localTags
+            });
+
             navigate(-1);
         } catch (error) {
-            console.log(error)
+            console.error(error);
         }
-    }
+    };
+
     return (
         <>
             <section className='w-full my-4 px-7 flex flex-col justify-start items-start flex-grow'>
@@ -97,36 +121,34 @@ function SetTagsIngredient() {
                                         type='button'
                                         key={'add_ingredient'}
                                         className='bg-[#046865] p-2.5 w-fit text-white rounded-full'
-                                        onClick={() => append(0)}>
+                                        onClick={addTag}>
                                         <MdAdd className='size-5' />
                                     </button>
                                 </span>
                             </span>
                             <ul className='w-full'>
-                                {fields.map((field, index) => (
-                                    <li key={field.id} className="w-full flex flex-row justify-between mb-4 items-center">
-                                        {/* Use a dropdown/select for ingredient titles */}
+                                {localTags.map((tag, index) => (
+                                    <li key={index} className="w-full flex flex-row justify-between mb-4 items-center">
                                         <select
-                                            key={"select-" + field.id}
                                             {...register(`tags.${index}` as const, {
                                                 required: true,
                                             })}
-                                            defaultValue={tags && tags.length > 0 ? tags[0].name : ""}
-                                            className='bg-white flex-1 w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-2' >
-
-                                            <option key={"select-ingredient" + field.id} value="">Select Ingredient</option>
-                                            {tags ? tags.map((tag) => (
+                                            value={tag}
+                                            onChange={(e) => handleTagChange(index, e.target.value)}
+                                            className='bg-white flex-1 w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md mr-2'>
+                                            <option value="">Select Tag</option>
+                                            {tags && tags.map((tag) => (
                                                 <option
-                                                    key={tag.name + field.id}
+                                                    key={tag.name}
                                                     value={tag.name}>
                                                     {tag.name}
                                                 </option>
-                                            )) : <></>}
+                                            ))}
                                         </select>
                                         <button
                                             type='button'
                                             className='bg-[#046865] p-2.5 w-fit text-white rounded-full'
-                                            onClick={() => remove(index)}>
+                                            onClick={() => removeTag(index)}>
                                             <LuMinus className='size-5' />
                                         </button>
                                     </li>
