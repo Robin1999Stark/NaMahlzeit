@@ -165,10 +165,10 @@ export async function isPlanned(mealID: number): Promise<IsPlannedResponse | nul
         const response = await axios.get(`${BASE_URL}/is-planned/${mealID}/`);
         const data = response.data;
 
-        if (typeof data.is_planned === 'boolean' && typeof data.planned_date === 'string') {
+        if (typeof data.is_planned === 'boolean' && (typeof data.planned_date === 'string' || data.planned_date === null)) {
             return {
                 isPlanned: data.is_planned,
-                plannedDate: new Date(data.planned_date)
+                plannedDate: data.planned_date ? new Date(data.planned_date) : null
             };
         }
         throw new Error('Invalid isPlanned response format');
