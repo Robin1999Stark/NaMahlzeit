@@ -1,4 +1,4 @@
-from ..models import Meal, FoodPlanerItem, MealIngredient
+from ..models import Ingredient, Meal, FoodPlanerItem, MealIngredient
 from rest_framework import viewsets, generics
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -9,6 +9,24 @@ from ..serializers.meal_serializers import MealIngredientSerializer, MealListSer
 from ..serializers.planer_serializers import FoodPlanerItem
 from rest_framework.decorators import api_view
 import json
+from rest_framework import status
+from rest_framework.parsers import MultiPartParser, FormParser
+from collections import defaultdict
+from decimal import Decimal
+from django.core.exceptions import ValidationError
+
+
+def querydict_to_dict(querydict):
+    result = defaultdict(dict)
+
+    for key in querydict:
+        parts = key.split('][')
+        if len(parts) > 1:
+            index = parts[0].split('[')[1]
+            field = parts[1].rstrip(']')
+            result[index][field] = querydict[key]
+
+    return {int(k): v for k, v in result.items()}
 
 
 @api_view(['GET'])
@@ -80,6 +98,78 @@ def get_all_meals_on_planer(request, start, end):
 class MealListView(viewsets.ModelViewSet):
     serializer_class = MealListSerializer
     queryset = Meal.objects.all()
+    parser_classes = (MultiPartParser, FormParser)
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+
+        form_data = request.data
+        print("Form Data:", form_data)
+
+        # Handle picture and portion_size
+        picture = form_data.get('picture', instance.picture)
+        portion_size = form_data.get('portion_size', instance.portion_size)
+
+        # Update meal fields
+        instance.title = form_data.get('title', instance.title)
+        instance.description = form_data.get(
+            'description', instance.description)
+        instance.preparation = form_data.get(
+            'preparation', instance.preparation)
+        instance.duration = form_data.get('duration', instance.duration)
+        instance.picture = picture
+        instance.portion_size = portion_size
+        instance.save()
+
+        ingredients_data = querydict_to_dict(form_data)
+        print("Parsed Ingredients Data:", ingredients_data)
+
+        existing_ingredients = MealIngredient.objects.filter(meal=instance)
+        existing_ingredients_ids = set(
+            existing_ingredients.values_list('id', flat=True))
+        processed_ingredients = set()
+
+        for index, ingredient_data in ingredients_data.items():
+            ingredient_id = int(ingredient_data.get('id', 0))
+            ingredient_name = ingredient_data.get('ingredient')
+            amount = Decimal(ingredient_data.get('amount', 0))
+            unit = ingredient_data.get('unit')
+
+            try:
+                # Fetch the Ingredient instance based on its name
+                ingredient_instance = get_object_or_404(
+                    Ingredient, title=ingredient_name)
+
+                if ingredient_id in existing_ingredients_ids:
+                    # Update existing ingredient
+                    ingredient = existing_ingredients.get(id=ingredient_id)
+                    ingredient.ingredient = ingredient_instance
+                    ingredient.amount = amount
+                    ingredient.unit = unit
+                    ingredient.save()
+                    processed_ingredients.add(ingredient.id)
+                else:
+                    # Create a new ingredient
+                    new_ingredient = MealIngredient.objects.create(
+                        meal=instance,
+                        ingredient=ingredient_instance,
+                        amount=amount,
+                        unit=unit
+                    )
+                    processed_ingredients.add(new_ingredient.id)
+            except Ingredient.DoesNotExist:
+                print(f"Ingredient '{ingredient_name}' does not exist.")
+            except (ValueError, ValidationError) as e:
+                print(f"Error with ingredient data: {e}")
+                raise
+
+        # Remove ingredients not processed (deleted by the user)
+        ingredients_to_delete = existing_ingredients_ids - processed_ingredients
+        MealIngredient.objects.filter(id__in=ingredients_to_delete).delete()
+
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class MealDetailView(generics.RetrieveUpdateDestroyAPIView):

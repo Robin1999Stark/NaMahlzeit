@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { IngredientAmount, IngredientAmountWithMeal } from '../Datatypes/Ingredient';
-import { Meal, MealTags, MealWithIngredientAmountMIID } from '../Datatypes/Meal';
+import { Meal, MealTags, MealWithIngredientAmount, MealWithIngredientAmountMIID } from '../Datatypes/Meal';
 import { createMealIngredient, deleteMealIngredient, getAllMealIngredients, updateMealIngredient } from './MealIngredientService';
 import { createMealTags } from './TagService';
 
@@ -152,68 +152,20 @@ export async function createMealWithAmounts(formData: FormData): Promise<Meal | 
     }
 }
 
-export async function updateMeal(id: number, meal: MealWithIngredientAmountMIID): Promise<Meal | null> {
-    const ingredientsToChange: IngredientAmountWithMeal[] = meal.ingredients;
-    const ingredientsToChangeIDs: number[] = ingredientsToChange.map((ingr) => ingr.id);
-
-    const requestBody = {
-        id: meal.id,
-        title: meal.title,
-        description: meal.description,
-        ingredients: meal.ingredients,
-        duration: meal.duration,
-        preparation: meal.preparation,
-    };
-
+export async function updateMeal(id: number, formData: FormData): Promise<Meal | null> {
     try {
-        // Update Meal
-        const responseMeal = await instance.put(`/meals/${id}/`, JSON.stringify(requestBody), {
+        const response = await instance.put(`/meals/${id}/`, formData, {
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'multipart/form-data',
             },
         });
 
-        // Update Meal Ingredients
-        const existingMealIngredients: IngredientAmountWithMeal[] = await getAllMealIngredients(id);
-        const existingMealIngredientsIDs: number[] = existingMealIngredients.map((ingr) => ingr.id);
-
-        const createdIngredients = ingredientsToChange.filter((ingr) => !existingMealIngredientsIDs.includes(ingr.id));
-        const deletedMealIngredientsIDs: number[] = existingMealIngredientsIDs.filter((ingrID) => !ingredientsToChangeIDs.includes(ingrID));
-
-        await Promise.all(
-            createdIngredients.map(async (ingr) => {
-                return createMealIngredient({
-                    meal: id,
-                    ingredient: ingr.ingredient,
-                    amount: ingr.amount,
-                    unit: ingr.unit,
-                });
-            })
-        );
-
-        await Promise.all(
-            deletedMealIngredientsIDs.map(async (ingredientID) => {
-                return deleteMealIngredient(ingredientID);
-            })
-        );
-
-        const updatedIngredients = ingredientsToChange.filter((ingr) => {
-            if (deletedMealIngredientsIDs.includes(ingr.id)) return false;
-            if (createdIngredients.map((ingr) => ingr.id).includes(ingr.id)) return false;
-            return true;
-        });
-
-        await Promise.all(
-            updatedIngredients.map(async (ingredient) => {
-                return updateMealIngredient(ingredient.id, ingredient);
-            })
-        );
-
-        return Meal.fromJSON(responseMeal.data);
+        const updatedMeal = Meal.fromJSON(response.data);
+        return updatedMeal;
     } catch (error) {
-        console.error('Error updating Meals:', error);
+        console.error('Error updating Meal:', error);
+        return null;
     }
-    return null;
 }
 
 export async function deleteMeal(mealID: number): Promise<AxiosResponse> {

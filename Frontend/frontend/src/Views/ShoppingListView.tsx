@@ -312,8 +312,8 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
     if (loaded) {
         return (
             <>
-                <span className='flex flex-row justify-between items-center'>
-                    <h1 className='mb-4 font-semibold truncate text-[#011413] text-xl'>
+                <span className='flex mb-4 flex-row justify-between items-center'>
+                    <h1 className='font-semibold truncate text-[#011413] text-xl'>
                         Einkaufsliste ({shoppingList && shoppingList.created.toLocaleDateString() + " - " + shoppingList.created.getHours() + ":" + shoppingList.created.getMinutes()})
                     </h1>
                     <Menu menuButton={<MenuButton><IoIosMore className='size-5 mr-4 text-[#011413]' /></MenuButton>} transition>

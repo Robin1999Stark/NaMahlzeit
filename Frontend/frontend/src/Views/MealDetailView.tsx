@@ -14,6 +14,8 @@ import { isPlanned, IsPlannedResponse } from '../Endpoints/PlanerService'
 import { getAllMealIngredients } from '../Endpoints/MealIngredientService'
 import { getMeal } from '../Endpoints/MealService'
 import { getAllTagsFromMeal } from '../Endpoints/TagService'
+import { PiForkKnife } from "react-icons/pi";
+import { IoMdClose } from "react-icons/io";
 
 function MealDetailView() {
     const navigate = useNavigate();
@@ -25,6 +27,7 @@ function MealDetailView() {
     const [planned, setPlanned] = useState<IsPlannedResponse>();
     const [tags, setTags] = useState<MealTags>();
     const [imageError, setImageError] = useState<boolean>(false);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     function displayIsPlanned() {
         if (planned && planned.isPlanned) {
@@ -90,6 +93,10 @@ function MealDetailView() {
         setImageError(true);
     }
 
+    function toggleModal() {
+        setIsModalOpen(!isModalOpen);
+    }
+
     return (
         <>
             <section className='w-full relative h-full left-[50%] translate-x-[-50%] px-8 mt-8 max-w-[70rem]'>
@@ -124,9 +131,15 @@ function MealDetailView() {
                             {meal?.duration} Minuten
                         </p>
                     </div>
+                    <div className='ml-5 flex flex-row truncate  justify-end items-center'>
+                        <PiForkKnife className='size-4' />
+                        <p className='ml-2 mr-1 font-semibold'>
+                            {meal?.portion_size}
+                        </p>
+                    </div>
                 </span>
                 <hr className='mt-4 mb-8' />
-                <section className='flex flex-col md:flex-row w-full'>
+                <section className='flex flex-col justify-start items-center md:flex-row w-full'>
                     <span className='w-full max-w-[24rem] max-h-[24rem]'>
                         {imageError || !meal?.picture ? (
                             <PlaceholderMealImage rounded border='full' />
@@ -134,17 +147,14 @@ function MealDetailView() {
                             <img
                                 src={meal.picture}
                                 alt="Meal"
-                                className='w-full h-full rounded-full object-cover aspect-square'
+                                className='w-full h-full rounded-full object-cover aspect-square cursor-pointer hover:opacity-90'
+                                onClick={toggleModal}
                                 onError={handleImageError}
                             />
                         )}
                     </span>
-                    <div className="w-full pl-0 md:pl-20 mt-10 md:mt-0 flex-1 md:w-1/2 flex flex-col justify-between text-[#011413] h-full lg:w-1/2 xl:w-1/2 p-4 min-w-[200px]">
-                        <blockquote className='mb-6'>
-                            {meal?.description &&
-                                <URLify text={meal?.description} />
-                            }
-                        </blockquote>
+
+                    <div className="w-full pl-0 md:pl-20 mt-0 flex-1 md:w-1/2 flex flex-col justify-between text-[#011413] h-full lg:w-1/2 xl:w-1/2 p-4 min-w-[200px]">
                         <div className='py-3 min-w-[200px]'>
                             <h2 className='truncate my-2 text-lg font-bold'>
                                 Zutaten:
@@ -164,6 +174,11 @@ function MealDetailView() {
                             <h2 className='truncate my-2 text-lg font-bold'>
                                 Zubereitung:
                             </h2>
+                            <blockquote className='mb-4'>
+                                {meal?.description &&
+                                    <URLify text={meal?.description} />
+                                }
+                            </blockquote>
                             <p className='text-base text-start font-medium text-[#011413] text'>
                                 {meal?.preparation ? <URLify text={meal.preparation} /> : "No Preparation found"}
                             </p>
@@ -171,6 +186,25 @@ function MealDetailView() {
                     </div>
                 </section>
             </section>
+            {/* Modal for Enlarged Image */}
+            {isModalOpen && meal?.picture && (
+                <div className="fixed inset-0 px-6 md:px-32 bg-black bg-opacity-70 flex items-center justify-center z-50" onClick={toggleModal}>
+                    <div className="relative bg-white max-w-[50rem] rounded-lg" onClick={(e) => e.stopPropagation()}>
+                        <img
+                            src={meal?.picture}
+                            alt="Enlarged Meal"
+                            className='max-w-full max-h-screen object-contain'
+                        />
+                        <button
+                            className='absolute top-1 right-1 bg-black bg-opacity-0 hover:bg-opacity-40 p-2 rounded-full'
+                            onClick={toggleModal}
+                            title='schließen'
+                        >
+                            <IoMdClose className='size-6 text-white' />
+                        </button>
+                    </div>
+                </div>
+            )}
 
         </>
     )

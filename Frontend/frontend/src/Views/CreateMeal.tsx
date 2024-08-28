@@ -7,10 +7,12 @@ import { LuMinus } from 'react-icons/lu';
 import { MdAdd } from 'react-icons/md';
 import { getAllIngredients } from '../Endpoints/IngredientService';
 import { createMealWithAmounts } from '../Endpoints/MealService';
-
+import { AiOutlineEdit } from 'react-icons/ai';
+import PlaceholderMealImage from '../Components/PlaceholderMealImage';
 function CreateMeal() {
     const navigate = useNavigate();
-    const [ingredients, setIngredients] = useState<Ingredient[]>()
+    const [ingredients, setIngredients] = useState<Ingredient[]>();
+    const [pictureURL, setPictureURL] = useState<string | null>(null);
     const [picture, setPicture] = useState<File | null>(null);
 
     useEffect(() => {
@@ -51,7 +53,15 @@ function CreateMeal() {
             setPicture(file);
         }
     }
-
+    function handlePictureChange(e: React.ChangeEvent<HTMLInputElement>) {
+        const file = e.target.files?.[0] || null;
+        setPicture(file);
+        if (file) {
+            // Create an object URL and set it as the picture preview
+            const objectURL = URL.createObjectURL(file);
+            setPictureURL(objectURL);
+        }
+    }
     async function onSubmit(data: MealWithIngredientAmount) {
         try {
             const formData = new FormData();
@@ -91,6 +101,36 @@ function CreateMeal() {
                 </h1>
                 <form className='w-full' onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
                     <ul className='flex flex-col justify-center my-3'>
+                        <li className='flex w-100 flex-col justify-between items-start my-3'>
+                            <label htmlFor='picture' className='text-sm mb-2 text-[#011413] font-semibold'>
+                                Bild:
+                            </label>
+                            <input
+                                type='file'
+                                id='picture'
+                                accept='image/*'
+                                onChange={handlePictureChange}
+                                className='hidden'
+                            />
+                            <div className='relative w-full max-w-[24rem] max-h-[24rem]'>
+                                <label htmlFor='picture' className='cursor-pointer  hover:opacity-90'>
+                                    {pictureURL ? (
+                                        <img
+                                            src={pictureURL}
+                                            alt="Selected"
+                                            className='w-full h-full rounded-full object-cover aspect-square'
+                                        />
+                                    ) : (
+                                        <PlaceholderMealImage rounded border='full' />
+                                    )}
+
+                                    {/* Overlay Icon */}
+                                    <span className='absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] bg-black bg-opacity-70 text-white rounded-full p-6'>
+                                        <AiOutlineEdit className='size-8' />
+                                    </span>
+                                </label>
+                            </div>
+                        </li>
                         <li key={"li-title"} className='flex w-100 flex-col flex-1 justify-between items-start my-3'>
                             <label
                                 htmlFor='title'
@@ -251,20 +291,7 @@ function CreateMeal() {
                                 defaultValue={4}
                                 className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md mr-1' />
                         </li>
-                        <li key={"li-picture"} className='flex w-100 flex-col flex-1 justify-between items-start my-3'>
-                            <label htmlFor='picture' className={`text-sm mb-2 text-[#011413] font-semibold truncate text-left align-middle`} >
-                                Bild:
-                            </label>
-                            <input
-                                type='file'
-                                id='picture'
-                                accept="image/*"
-                                onChange={handleFileChange}
-                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md mr-1' />
-                            {picture && (
-                                <img src={URL.createObjectURL(picture)} alt="Selected" className='mt-2 max-w-xs' />
-                            )}
-                        </li>
+
                     </ul>
                     <span className='w-full flex flex-row justify-end mb-6'>
                         <button
