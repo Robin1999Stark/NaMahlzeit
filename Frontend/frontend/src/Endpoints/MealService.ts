@@ -1,8 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { Meal } from '../Datatypes/Meal';
+import { BASE_URL } from './Settings';
 
-
-const BASE_URL = 'http://localhost:8000';
 
 const instance = axios.create({
     baseURL: BASE_URL,

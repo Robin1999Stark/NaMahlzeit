@@ -2,8 +2,8 @@ import axios, { AxiosResponse } from "axios";
 import { TagDT } from "../Datatypes/Tag";
 import { MealTags } from "../Datatypes/Meal";
 import { IngredientTags } from "../Datatypes/Ingredient";
+import { BASE_URL } from "./Settings";
 
-const BASE_URL = 'http://localhost:8000';
 
 const instance = axios.create({
     baseURL: BASE_URL,
