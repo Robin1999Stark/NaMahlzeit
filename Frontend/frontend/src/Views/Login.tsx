@@ -30,7 +30,6 @@ function Login({ setUser, setLoggedIn }: LoginProps) {
             if (user) {
                 setUser(user);
                 setLoggedIn(true);
-                console.log("User logged in successfully:", user);
 
                 Cookies.set("authToken", user.token, {
                     expires: 7,

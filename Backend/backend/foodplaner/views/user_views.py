@@ -150,10 +150,11 @@ CustomUser = get_user_model()
 
 
 class GetUserDataFromTokenView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = []
 
     def get(self, request, *args, **kwargs):
         # Get the token from the Authorization header
+        print('start of evaluation')
         print(request)
         auth_header = request.headers.get('Authorization', None)
         print(auth_header)

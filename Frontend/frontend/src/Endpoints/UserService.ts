@@ -9,17 +9,6 @@ const instance = axios.create({
 })
 
 
-async function getCsrfToken() {
-    try {
-        const response = await instance.get('/get_csrf_token');
-        const token = response.data.csrfToken;
-        return token;
-    } catch (error) {
-        console.error('Error fetching CSRF token', error);
-        return null;
-    }
-}
-
 export namespace UserService {
 
 
@@ -60,9 +49,7 @@ export namespace UserService {
         const path = BASE_URL + '/users/me-from-token'
         try {
             const response = await axios.get(path, {
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
+                headers: { Authorization: `Bearer ${token}` },
             });
 
             user = User.fromJSON(response.data, token);
@@ -104,7 +91,6 @@ export namespace UserService {
                 },
             });
             if (response.status === 201) {
-                console.log('User created:', response.data);
             } else {
                 console.error('Failed to create user:', response.status, response.data);
             }
@@ -115,15 +101,6 @@ export namespace UserService {
         }
     }
 
-
-    export async function updateUser(id: string, user: User) {
-
-    }
-
-
-    export async function deleteUser(id: string) {
-
-    }
 }
 
 export async function fetchUserData(token: string) {
@@ -138,7 +115,6 @@ export async function fetchUserData(token: string) {
 
         return response.data;
     } catch (error) {
-        // Handle error if user data retrieval fails
         console.error('Failed to fetch user data:', error);
         return null;
     }
@@ -148,10 +124,8 @@ export async function fetchUserData(token: string) {
 export async function getUser(username: string, pw: string): Promise<any> {
 
     let userData = null;
-    console.log(username, pw)
     try {
         const path = BASE_URL + '/users/login'
-        console.log(path)
 
         const response = await axios.post(path, {
             username: username,
