@@ -11,6 +11,10 @@ psycopg2-binary = "*"
 django-environ = "*"
 psycopg2 = "*"
 pillow = "*"
+dj-rest-auth = "*"
+django-allauth = "*"
+requests = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 

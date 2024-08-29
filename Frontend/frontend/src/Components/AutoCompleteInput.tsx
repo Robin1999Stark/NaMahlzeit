@@ -1,5 +1,5 @@
 import { debounce } from 'lodash';
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Ingredient } from '../Datatypes/Ingredient';
 
 type Props = {
@@ -15,7 +15,7 @@ function AutoCompleteInput({ onSelect, search }: Props) {
     const inputRef = useRef<HTMLInputElement>(null);
     const suggestionsRef = useRef<HTMLUListElement>(null);
 
-    async function searchForItems(query: string) {
+    const searchForItems = useCallback(async (query: string) => {
         if (!query) {
             setFilteredItems([]);
             return;
@@ -28,8 +28,9 @@ function AutoCompleteInput({ onSelect, search }: Props) {
         } catch (error) {
             console.error('Error fetching items:', error);
         }
-    }
-    const debouncedSearch = debounce(searchForItems, 300);
+    }, [search]);
+
+    const debouncedSearch = useCallback(debounce((query: string) => searchForItems(query), 300), [searchForItems]);
 
     useEffect(() => {
         debouncedSearch(searchString.trim());

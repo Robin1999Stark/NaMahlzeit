@@ -1,5 +1,33 @@
 from django.db import models
 from datetime import datetime
+from django.db import models
+from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.utils import timezone
+
+
+class CustomUser(AbstractUser):
+    birthday = models.DateField(null=True, blank=True)
+    profilepicture = models.ImageField(
+        upload_to='profile_pictures/', null=True)
+
+    groups = models.ManyToManyField(
+        Group,
+        related_name='customuser_set',
+        blank=True,
+        help_text="The groups this user belongs to. A user will get all permissions granted to each of their groups.",
+        verbose_name="groups",
+    )
+
+    user_permissions = models.ManyToManyField(
+        Permission,
+        related_name='customuser_permissions_set',
+        blank=True,
+        help_text="Specific permissions for this user.",
+        verbose_name="user permissions",
+    )
+
+    def __str__(self):
+        return self.username
 
 
 class UnitOptions(models.TextChoices):
@@ -99,7 +127,7 @@ class InventoryItem(models.Model):
 
 class ShoppingListItem(models.Model):
     bought = models.BooleanField(default=False)
-    added = models.DateTimeField(default=datetime.now())
+    added = models.DateTimeField(default=timezone.now)
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     amount = models.DecimalField(
         max_digits=10, default=1, decimal_places=2, null=True)
@@ -116,5 +144,5 @@ class ShoppingListItem(models.Model):
 
 
 class ShoppingList(models.Model):
-    created = models.DateTimeField(default=datetime.now())
+    created = models.DateTimeField(default=timezone.now)
     items = models.ManyToManyField(ShoppingListItem, blank=True)
