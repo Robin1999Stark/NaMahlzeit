@@ -134,7 +134,7 @@ function InventoryListView() {
                         )) : <LoadingSpinner />}
                     </ul>
                 </div>
-                <form className='w-full h-fit py-4 flex flex-row justify-between items-center pr-0 sm:pr-1' onSubmit={handleSubmit(onSubmit)}>
+                <form className='w-[90%] sm:w-full fixed sm:relative bottom-[7.4rem] sm:bottom-0 h-fit py-4 flex flex-row justify-between items-center pr-0 sm:pr-1' onSubmit={handleSubmit(onSubmit)}>
                     <span className='w-3/5 mr-1'>
                         <AutoCompleteInput search={handleAutoCompleteSearch} onSelect={handleIngredientSelect} />
                     </span>

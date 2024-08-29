@@ -242,7 +242,7 @@ function ReceipePlanerView() {
 
     const mobileView = () => {
         return (
-            <section className='flex flex-row pt-4 h-full justify-start items-start'>
+            <section className='flex flex-row pt-4 h-full justify-start items-start overflow-hidden'>
                 <DragDropContext onDragEnd={handleDragEnd}>
                     <section className='flex-1 h-full flex flex-col pl-6 pr-4'>
                         {
