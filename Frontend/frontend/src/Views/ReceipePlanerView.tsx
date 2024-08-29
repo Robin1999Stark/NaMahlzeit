@@ -279,7 +279,7 @@ function ReceipePlanerView() {
                         }
                         <span className='py-6 h-8'>
                         </span>
-                        <span className='absolute left-0 right-0 py-1 bottom-20 bg-white'>
+                        <span className='fixed left-0 right-0 py-1 bottom-20 bg-white'>
                             <ul className='relative flex flex-row justify-between mx-4 items-center bg-[#E8E9EB] rounded-full p-1'>
                                 <span
                                     className='absolute top-1 bottom-1 left-1 w-1/2 bg-[#004A41] rounded-full transition-transform duration-300 ease-in-out'
