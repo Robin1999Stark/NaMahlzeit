@@ -36,7 +36,7 @@ function App() {
   });
 
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
-  const [user, setUser] = useState<User | null>(null);
+  const [, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   const handleResize = () => {
@@ -108,26 +108,24 @@ function App() {
               )}
 
               {/* Protected Routes */}
-              {loggedIn && (
-                <Route element={<ProtectedRoute loggedIn={loggedIn} />}>
-                  <Route path="/planer" element={<ReceipePlanerView />} />
-                  <Route path="/meals/create" element={<CreateMeal />} />
-                  <Route path="/meals" element={<MealsOverview />} />
-                  <Route path="/meals/:mealID" element={<MealDetailView />} />
-                  <Route path="/meals/:mealID/edit" element={<EditMeal />} />
-                  <Route path="/meals/:mealID/tags" element={<SetTagsMeal />} />
-                  <Route path="/ingredients/create" element={<CreateIngredient />} />
-                  <Route path="/ingredients" element={<IngredientsOverView />} />
-                  <Route path="/ingredients/:ingredientID" element={<IngredientDetailView />} />
-                  <Route path="/ingredients/:ingredientID/edit" element={<EditIngredient />} />
-                  <Route path="/ingredients/:ingredientID/tags" element={<SetTagsIngredient />} />
-                  <Route path="/lists/" element={<InventoryShoppingList />} />
-                  <Route path="/tags" element={<TagsOverView />} />
-                  <Route path="/tags/create" element={<CreateTag />} />
-                  <Route path="/tags/:tagID/edit" element={<EditTag />} />
-                  <Route path="/profile" element={<Profile />} />
-                </Route>
-              )}
+              <Route element={<ProtectedRoute loggedIn={loggedIn} />}>
+                <Route path="/planer" element={<ReceipePlanerView />} />
+                <Route path="/meals/create" element={<CreateMeal />} />
+                <Route path="/meals" element={<MealsOverview />} />
+                <Route path="/meals/:mealID" element={<MealDetailView />} />
+                <Route path="/meals/:mealID/edit" element={<EditMeal />} />
+                <Route path="/meals/:mealID/tags" element={<SetTagsMeal />} />
+                <Route path="/ingredients/create" element={<CreateIngredient />} />
+                <Route path="/ingredients" element={<IngredientsOverView />} />
+                <Route path="/ingredients/:ingredientID" element={<IngredientDetailView />} />
+                <Route path="/ingredients/:ingredientID/edit" element={<EditIngredient />} />
+                <Route path="/ingredients/:ingredientID/tags" element={<SetTagsIngredient />} />
+                <Route path="/lists/" element={<InventoryShoppingList />} />
+                <Route path="/tags" element={<TagsOverView />} />
+                <Route path="/tags/create" element={<CreateTag />} />
+                <Route path="/tags/:tagID/edit" element={<EditTag />} />
+                <Route path="/profile" element={<Profile />} />
+              </Route>
 
               {/* Redirect to login if trying to access protected routes while not logged in */}
               <Route path="*" element={<Navigate to={loggedIn ? "/planer" : "/login"} />} />

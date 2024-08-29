@@ -15,6 +15,7 @@ dj-rest-auth = "*"
 django-allauth = "*"
 requests = "*"
 djangorestframework-simplejwt = "*"
+gunicorn = "*"
 
 [dev-packages]
 

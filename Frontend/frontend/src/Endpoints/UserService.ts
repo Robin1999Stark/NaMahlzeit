@@ -2,15 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import { User } from '../Datatypes/User';
 import { BASE_URL } from './Settings';
 
-
-const instance = axios.create({
-    baseURL: BASE_URL,
-    withCredentials: true,
-})
-
-
 export namespace UserService {
-
 
     export async function getUserByUserName(name: string, pw: string): Promise<User | null> {
 

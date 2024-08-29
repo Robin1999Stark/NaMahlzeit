@@ -13,7 +13,7 @@ services:
   backend:
     build:
       context: ./Backend/backend
-    command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn backend.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - .:/code
       - ./data/media:/code/media
@@ -29,7 +29,6 @@ services:
   frontend:
     build:
       context: ./Frontend/frontend
-    command: npm run dev -- --port 8080
     ports:
       - "8080:8080"
     depends_on:
