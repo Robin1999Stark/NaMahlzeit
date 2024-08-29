@@ -1,0 +1,1 @@
+export const BASE_URL = 'http://mac-server:8000'
