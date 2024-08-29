@@ -74,6 +74,7 @@ function PlanerResourceCol({ mealListID, onAddMeal }: Props) {
                 <input
                     type="search"
                     value={searchString}
+                    autoFocus={false}
                     onChange={(e) => setSearchString(e.target.value)}
                     className='bg-white w-full focus:ring-0 py-2 text-start shadow-md px-6 rounded-full mr-2'
                     placeholder='Rezepte Suchen ...' />
