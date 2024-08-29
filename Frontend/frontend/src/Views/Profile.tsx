@@ -3,7 +3,7 @@ import { IoIosMore } from 'react-icons/io'
 import { exportMeals } from '../Endpoints/MealService'
 import { exportTags } from '../Endpoints/TagService';
 import { exportIngredients } from '../Endpoints/IngredientService';
-
+import { MdOutlineFileDownload } from "react-icons/md";
 function Profile() {
 
     async function handleDownloadMeals() {
@@ -78,38 +78,58 @@ function Profile() {
         <>
             <section className='flex flex-col px-6 pt-4 h-full justify-start items-start'>
 
-                <span className='flex w-full flex-row justify-between items-center'>
-                    <h1 className='mb-4 font-semibold text-[#011413] text-xl'>
+                <span className='flex mb-4 w-full flex-row justify-between items-center'>
+                    <h1 className='font-semibold text-[#011413] text-xl'>
                         Profil
                     </h1>
                     <Menu menuButton={<MenuButton><IoIosMore className='size-5 mr-4 text-[#011413]' /></MenuButton>} transition>
                     </Menu>
                 </span>
-                <ul>
-                    <li className='w-full flex felx-col justify-start items-start'>
-                        <h2 className='mb-4 font-semibold text-[#011413] text-lg'>
+                <ul className='w-full'>
+                    <li className='w-full mb-4 flex felx-col justify-between items-center'>
+                        <h2 className='font-semibold text-[#011413] text-lg'>
                             Rezepte
                         </h2>
-                        <button onClick={() => handleDownloadMeals()}>
-                            Download
-                        </button>
-
+                        <span className='flex flex-row w-fit justify-end items-center'>
+                            <label className='text-sm text-[#011413] font-semibold'>
+                                Export JSON
+                            </label>
+                            <button
+                                className='bg-[#046865] ml-2 w-fit text-white p-3 rounded-full'
+                                onClick={() => handleDownloadMeals()}>
+                                <MdOutlineFileDownload className='size-5' />
+                            </button>
+                        </span>
                     </li>
-                    <li className='w-full flex felx-col justify-start items-start'>
-                        <h2 className='mb-4 font-semibold text-[#011413] text-lg'>
+                    <li className='w-full mb-4 flex felx-col justify-between items-center'>
+                        <h2 className=' font-semibold text-[#011413] text-lg'>
                             Zutaten
                         </h2>
-                        <button onClick={() => handleDownloadIngredients()}>
-                            Download
-                        </button>
+                        <span className='flex flex-row w-fit justify-end items-center'>
+                            <label className='text-sm text-[#011413] font-semibold'>
+                                Export JSON
+                            </label>
+                            <button
+                                className='bg-[#046865] ml-2 w-fit text-white p-3 rounded-full'
+                                onClick={() => handleDownloadIngredients()}>
+                                <MdOutlineFileDownload className='size-5' />
+                            </button>
+                        </span>
                     </li>
-                    <li className='w-full flex felx-col justify-start items-start'>
-                        <h2 className='mb-4 font-semibold text-[#011413] text-lg'>
+                    <li className='w-full mb-4 flex felx-col justify-between items-center'>
+                        <h2 className=' font-semibold text-[#011413] text-lg'>
                             Tags
                         </h2>
-                        <button onClick={() => handleDownloadTags()}>
-                            Download
-                        </button>
+                        <span className='flex flex-row w-fit justify-end items-center'>
+                            <label className='text-sm text-[#011413] font-semibold'>
+                                Export JSON
+                            </label>
+                            <button
+                                className='bg-[#046865] ml-2 w-fit text-white p-3 rounded-full'
+                                onClick={() => handleDownloadTags()}>
+                                <MdOutlineFileDownload className='size-5' />
+                            </button>
+                        </span>
                     </li>
                 </ul>
             </section>
