@@ -36,7 +36,6 @@ function MissingIngredientMealList({ handleAddItemToShoppingList }: Props) {
         async function fetchIngredientsFromPlaner(start: Date, end: Date): Promise<IngredientAmountWithMeal[] | null> {
             try {
                 const data = await getAllIngredientsFromPlanerInTimeRange(start, end);
-                console.log(data)
                 return data;
             } catch (error) {
                 console.log(error)

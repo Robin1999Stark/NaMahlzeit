@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { User } from '../Datatypes/User';
 
 const BASE_URL = 'http://localhost:8000';
@@ -21,15 +21,7 @@ async function getCsrfToken() {
 }
 
 export namespace UserService {
-    export async function login(name: string, pw: string) {
 
-    }
-
-
-
-    export async function getUserByID(id: string) {
-
-    }
 
     export async function getUserByUserName(name: string, pw: string): Promise<User | null> {
 
@@ -43,60 +35,83 @@ export namespace UserService {
             });
             const { token } = response.data;
 
+            if (!token) {
+                console.error('No token received');
+                return null;
+            }
             // Store the token in the browser's local storage or a state management library
             localStorage.setItem('authToken', token);
 
             // Fetch additional user data after successful login
             userData = await fetchUserData(token);
 
-            user = new User(name, pw, userData)
+            user = User.fromJSON(userData, token);
+            return user;
 
         } catch (error) {
             console.error('Failed to Login ' + error)
+            return null;
         }
-        return user;
     }
 
+    export async function getUserDataFromToken(token: string): Promise<User | null> {
 
-    export async function createUser(email: string, username: string, password1: string, password2: string, firstName: string, lastName: string, birthday: Date, profilePictureURL: string) {
+        let user = null;
+        const path = BASE_URL + '/users/me-from-token'
         try {
-            const csrfToken = await getCsrfToken();
+            const response = await axios.get(path, {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+
+            user = User.fromJSON(response.data, token);
+            return user;
+
+        } catch (error) {
+            console.error('Failed to Login ' + error)
+            return null;
+        }
+    }
+
+    interface CreatUserInterface {
+        username: string,
+        password1: string,
+        password2: string,
+        email: string,
+        birthday: Date,
+        profilePicture: string | null
+    }
+
+    export async function createUser({
+        username, password1, password2, email, birthday, profilePicture
+    }: CreatUserInterface): Promise<AxiosResponse | null> {
+        try {
             const path = BASE_URL + '/users/register'
 
-            if (csrfToken === null)
-                throw new Error('CSRF token is null');
-            email = "r.s.mar@gmx.de"
-            username = "peter123"
-            password1 = "passwort123"
-            password2 = "passwort123"
-            firstName = "Peter"
-            lastName = "Lustig"
-            birthday = new Date("1999-04-04")
-            const response = await axios.post(path, {
-                email,
-                username,
-                password1,
-                password2,
-                firstName,
-                lastName,
-                birthday,
-            }, {
+            const data = {
+                username: username,
+                email: email,
+                password1: password1,
+                password2: password2,
+                birthday: new Date(birthday).toLocaleDateString('en-CA'),
+                profilepicture: profilePicture
+            }
+
+            const response = await axios.post(path, data, {
                 headers: {
-                    'X-CSRFToken': csrfToken,
-                    'Content-Type': 'application/json', // Add this line to specify JSON content type
+                    'Content-Type': 'application/json',
                 },
             });
-            // Handle the response here
             if (response.status === 201) {
-                // User created successfully
                 console.log('User created:', response.data);
             } else {
-                // Handle other status codes if needed
                 console.error('Failed to create user:', response.status, response.data);
             }
+            return response;
         } catch (error) {
-            // Handle network errors or other exceptions
             console.error('Error creating user:', error);
+            return null;
         }
     }
 

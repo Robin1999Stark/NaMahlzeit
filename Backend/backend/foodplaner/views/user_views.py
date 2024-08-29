@@ -14,6 +14,11 @@ from ..forms.user_forms import CustomUserCreationForm
 from rest_framework.authtoken.models import Token
 from django.middleware.csrf import get_token
 from django.views.decorators.csrf import csrf_exempt
+from ..models import CustomUser
+from rest_framework_simplejwt.tokens import UntypedToken
+from rest_framework_simplejwt.exceptions import InvalidToken
+from rest_framework_simplejwt.settings import api_settings
+from django.contrib.auth import get_user_model
 
 
 def get_csrf_token(request):
@@ -129,10 +134,58 @@ class GetUserView(APIView):
         user = request.user
         data = {
             "username": user.username,
-            "firstname": user.firstname,
-            "lastname": user.lastname,
             "birthday": user.birthday,
             "email": user.email,
+            "profile_picture": user.profilepicture.url if user.profilepicture else None,
+            "groups": [group.name for group in user.groups.all()],
+            "permissions": [perm.codename for perm in user.user_permissions.all()],
+            "date_joined": user.date_joined,
+            "last_login": user.last_login,
+        }
+
+        return Response(data)
+
+
+CustomUser = get_user_model()
+
+
+class GetUserDataFromTokenView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, *args, **kwargs):
+        # Get the token from the Authorization header
+        print(request)
+        auth_header = request.headers.get('Authorization', None)
+        print(auth_header)
+        if not auth_header:
+            return Response({'detail': 'Authorization header is missing.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Extract the token
+        # Decode the token to get the user information
+        try:
+            token = auth_header.split(' ')[1]  # Expecting 'Bearer <token>'
+            print("Extracted Token:", token)  # Print the extracted token
+
+            UntypedToken(token)  # Verify the token
+            payload = api_settings.TOKEN_TYPE_CLAIM_HANDLER(
+                token)  # Decode the token
+            print("Decoded Payload:", payload)
+            username = payload.get('user_id')
+            user = CustomUser.objects.get(username=username)
+        except (InvalidToken, CustomUser.DoesNotExist):
+            return Response({'detail': 'Invalid token or user does not exist.'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        # Prepare user d
+
+        data = {
+            "username": user.username,
+            "birthday": getattr(user, 'birthday', None),
+            "email": user.email,
+            "profile_picture": user.profilepicture.url if user.profilepicture else None,
+            "groups": [group.name for group in user.groups.all()],
+            "permissions": [perm.codename for perm in user.user_permissions.all()],
+            "date_joined": user.date_joined,
+            "last_login": user.last_login,
         }
 
         return Response(data)

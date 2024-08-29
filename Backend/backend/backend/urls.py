@@ -9,7 +9,7 @@ from foodplaner.views.meal_views import get_all_meals_on_planer, export_meals, g
 from foodplaner.views.ingredient_views import IngredientDetailView, IngredientListView, export_ingredients
 from foodplaner.views.shoppinglist_views import ShoppingListItemView, ShoppingListView
 from foodplaner.views.inventory_views import InventoryItemView
-from foodplaner.views.user_views import UserRegistrationViewSet, GetUserView, UserLoginViewSet, UserLogoutViewSet, PasswordResetViewSet, PasswordResetConfirmViewSet, get_csrf_token
+from foodplaner.views.user_views import UserRegistrationViewSet, GetUserDataFromTokenView, GetUserView, UserLoginViewSet, UserLogoutViewSet, PasswordResetViewSet, PasswordResetConfirmViewSet, get_csrf_token
 
 
 router = routers.DefaultRouter()
@@ -34,6 +34,8 @@ urlpatterns = [
     path('users/login', UserLoginViewSet.as_view(), name='user-login'),
     path('users/logout', UserLogoutViewSet.as_view(), name='user-logout'),
     path('users/me', GetUserView.as_view(), name='get_user'),
+    path('users/me-from-token', GetUserDataFromTokenView.as_view(),
+         name='get_user_from_token'),
     path('users/password-reset',
          PasswordResetViewSet.as_view(), name='password-reset'),
     path('users/password_reset_confirm/<uidb64>/<token>',
