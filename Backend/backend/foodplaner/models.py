@@ -2,6 +2,7 @@ from django.db import models
 from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.utils import timezone
 
 
 class CustomUser(AbstractUser):
@@ -126,7 +127,7 @@ class InventoryItem(models.Model):
 
 class ShoppingListItem(models.Model):
     bought = models.BooleanField(default=False)
-    added = models.DateTimeField(default=datetime.now())
+    added = models.DateTimeField(default=timezone.now)
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     amount = models.DecimalField(
         max_digits=10, default=1, decimal_places=2, null=True)
@@ -143,5 +144,5 @@ class ShoppingListItem(models.Model):
 
 
 class ShoppingList(models.Model):
-    created = models.DateTimeField(default=datetime.now())
+    created = models.DateTimeField(default=timezone.now)
     items = models.ManyToManyField(ShoppingListItem, blank=True)

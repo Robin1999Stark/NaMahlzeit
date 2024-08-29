@@ -400,7 +400,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
                                 step={0.1}
                                 {...register(`amount` as const, {
                                     valueAsNumber: true,
-                                    min: 0,
+                                    min: 0.1,
                                     max: 50000,
                                     required: true,
                                 })}

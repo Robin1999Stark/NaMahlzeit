@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { InventoryItem } from '../Datatypes/Inventory'
 import { useForm } from 'react-hook-form';
 import { Ingredient } from '../Datatypes/Ingredient';
@@ -66,10 +66,10 @@ function InventoryListView() {
             console.log(_error)
         }
     }
-    async function fetchPipeline() {
+    const fetchPipeline = useCallback(async () => {
         await fetchDataIngredients();
         await fetchDataInventory();
-    }
+    }, []);
 
     useEffect(() => {
         fetchPipeline();
