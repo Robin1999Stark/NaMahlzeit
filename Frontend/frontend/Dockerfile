@@ -16,7 +16,7 @@ COPY . .
 RUN npm run build
 
 # Step 2: Serve the application
-FROM nginx:alpine
+FROM nginx:docker.io/nginx:alpine
 
 
 COPY nginx.conf /etc/nginx/nginx.conf
