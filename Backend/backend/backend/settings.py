@@ -1,6 +1,5 @@
 from pathlib import Path
-import socket
-from corsheaders.defaults import default_methods, default_headers
+from corsheaders.defaults import default_methods
 import os
 
 
@@ -25,9 +24,18 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     'corsheaders',
     'foodplaner'
 ]
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -61,6 +69,8 @@ TEMPLATES = [
 
 
 WSGI_APPLICATION = 'backend.wsgi.application'
+
+AUTH_USER_MODEL = 'foodplaner.CustomUser'
 
 CORS_ALLOW_HEADERS = [
     "accept",

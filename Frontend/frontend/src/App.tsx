@@ -18,6 +18,8 @@ import EditIngredient from "./Views/EditIngredient";
 import InventoryShoppingList from "./Views/InventoryShoppingList";
 import MealIngredientTagNavigation from "./Components/MealIngredientTagNavigation";
 import Profile from "./Views/Profile";
+import CreateUser from "./Views/CreateUser";
+import Login from "./Views/Login";
 
 export const mealListID = "meal-list";
 
@@ -58,7 +60,8 @@ function App() {
         <main className="flex-1 overflow-y-auto">
           <Suspense fallback={<div>Loading ...</div>}>
             <Routes>
-              <Route path="/" element={<ReceipePlanerView />} />
+              <Route path="/" element={<CreateUser />} />
+              <Route path="/login" element={<Login />} />
               <Route path="/planer" element={<ReceipePlanerView />} />
               <Route path="/meals/create" element={<CreateMeal />} />
               <Route path="/meals" element={<MealsOverview />} />
