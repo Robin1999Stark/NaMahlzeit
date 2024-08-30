@@ -277,7 +277,7 @@ function ReceipePlanerView() {
                                 </span>
                             </>
                         }
-                        <span className='py-6 h-8'>
+                        <span className='py-5 h-8'>
                         </span>
                         <span className='fixed left-0 right-0 py-1 bottom-20 bg-white'>
                             <ul className='relative flex flex-row justify-between mx-4 items-center bg-[#E8E9EB] rounded-full p-1'>
@@ -308,7 +308,6 @@ function ReceipePlanerView() {
             </section>
         )
     }
-
 
     if (windowSize.width > SIZE_MOBILE) {
         return (
