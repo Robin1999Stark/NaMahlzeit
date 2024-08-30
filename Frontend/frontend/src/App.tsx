@@ -29,6 +29,8 @@ import Cookies from "js-cookie";
 export const mealListID = "meal-list";
 
 function App() {
+
+  const showCreateUser = false;
   const SIZE_MOBILE = 700;
   const [windowSize, setWindowSize] = useState({
     width: globalThis.innerWidth,
@@ -102,8 +104,8 @@ function App() {
               {/* Public Routes */}
               {!loggedIn && (
                 <>
-                  <Route path="/" element={<CreateUser />} />
-                  <Route path="/login" element={<Login setLoggedIn={setLoggedIn} setUser={setUser} />} />
+                  {showCreateUser && <Route path="/" element={<CreateUser />} />}
+                  <Route path="/login" element={<Login setLoggedIn={setLoggedIn} setUser={setUser} showCreateUser={showCreateUser} />} />
                 </>
               )}
 

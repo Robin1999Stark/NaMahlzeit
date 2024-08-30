@@ -11,10 +11,11 @@ interface FormData {
 
 type LoginProps = {
     setUser: React.Dispatch<React.SetStateAction<User | null>>,
-    setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>
+    setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>,
+    showCreateUser: boolean,
 }
 
-function Login({ setUser, setLoggedIn }: LoginProps) {
+function Login({ setUser, setLoggedIn, showCreateUser }: LoginProps) {
     const {
         register,
         handleSubmit,
@@ -79,13 +80,14 @@ function Login({ setUser, setLoggedIn }: LoginProps) {
                     </li>
                 </ul>
                 <span className='w-full flex flex-row flex-wrap-reverse justify-end mb-6'>
-                    <button
+                    {showCreateUser && <button
                         type="button"
                         className='bg-slate-200 mr-0 sm:mr-2 text-[#011413] mt-2 sm:mt-0 hover:bg-slate-300 sm:w-fit w-full font-semibold py-2.5 px-4 rounded-md text-base'
                         onClick={() => navigate('../')}
                     >
                         Neuer Account
-                    </button>
+                    </button>}
+
                     <button
                         type="submit"
                         className='bg-[#046865] text-white sm:w-fit w-full font-semibold py-2.5 px-4 rounded-md text-base'
