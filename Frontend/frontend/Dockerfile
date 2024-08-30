@@ -24,8 +24,8 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # Kopiere die gebauten Dateien in das Nginx-Verzeichnis
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Nginx auf Port 8080 aussetzen
-EXPOSE 8080
+# Nginx auf Port 5000 aussetzen
+EXPOSE 5000
 
 # Nginx im Vordergrund ausführen
 CMD ["nginx", "-g", "daemon off;"]
