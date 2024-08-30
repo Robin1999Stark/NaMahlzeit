@@ -149,9 +149,9 @@ function IngredientsOverView() {
                                 clearTimeout(debounceTimeout);
                             }
                         }}
-                        autoFocus={true}
+                        autoFocus={false}
                         className='bg-white w-full focus:ring-0 py-2 text-start shadow-md px-6 rounded-full mr-2'
-                        placeholder='Nach Zutaten Suchen ...' />
+                        placeholder='Zutaten Suchen ...' />
                     <button
                         className='p-3 text-lg bg-[#046865] text-white rounded-full'
                         onClick={() => searchForIngredients(searchString)} >

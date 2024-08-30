@@ -12,6 +12,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import CustomDatePicker from './CustomDatePicker';
 import LoadingSpinner from './LoadingSpinner';
 import { getMeal } from '../Endpoints/MealService';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
     mealID: number
@@ -38,6 +39,8 @@ function MealDragElement({ mealID, dragProvided, snapshot, date, customStyle, on
     const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
     const [imageError, setImageError] = useState<boolean>(false);
     const datePickerRef = useRef<HTMLDivElement>(null);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function fetchMeal() {
@@ -147,17 +150,21 @@ function MealDragElement({ mealID, dragProvided, snapshot, date, customStyle, on
                         )}
                     </figure>
                     {
-                        meal !== undefined ? <a className='text-[#011413] underline' href={`/meals/${meal!.id}`}>
-                            <h1 className='text-start'>
+                        meal !== undefined ?
+                            <h1
+                                onClick={() => navigate(`/meals/${meal!.id}`)}
+                                className='text-start text-[#011413] underline'>
                                 {meal?.title}
                             </h1>
-                        </a> : <LoadingSpinner />
+                            : <LoadingSpinner />
                     }
                 </article>
                 {
                     showMore ?
-                        <Menu menuButton={<MenuButton><IoIosMore className='size-5 text-[#011413] mr-3' /></MenuButton>} transition>
-                            <MenuItem>Öffnen</MenuItem>
+                        <Menu menuButton={<MenuButton><IoIosMore className='size-5 text-[#011413] mr-3 cursor-pointer' /></MenuButton>} transition>
+                            <MenuItem onClick={() => {
+                                navigate(`/meals/${meal!.id}`)
+                            }}>Öffnen</MenuItem>
                             <MenuItem onClick={() => {
 
                                 handleRemoveMeal(date, mealID)
