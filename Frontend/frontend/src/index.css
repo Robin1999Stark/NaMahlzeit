@@ -61,22 +61,3 @@ body {
   min-width: 320px;
   min-height: 100vh;
 }
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background: linear-gradient(90deg, #008979 12.12%, #004A41 99.96%);
-  }
-  a {
-    color: #DFF9FF;
-  }
-  a:hover {
-    color: #046865;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-  input[type="text"] {
-    background-color: #011413;
-  }
-}
