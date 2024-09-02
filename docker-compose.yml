@@ -13,7 +13,7 @@ services:
   backend:
     build:
       context: ./Backend/backend
-    command: gunicorn backend.wsgi:application --bind 0.0.0.0:8000
+    command: gunicorn backend.wsgi:application --bind 0.0.0.0:8000 --workers 17 --timeout 30
     volumes:
       - .:/code
       - ./data/media:/code/media

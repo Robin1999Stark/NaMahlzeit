@@ -151,7 +151,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
 ]
 
-MEDIA_URL = '/media/'
+MEDIA_URL = '/code/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -161,18 +161,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
     "http://mac-server:5000",
-    "http://mac-server:8080",
     "http://localhost:5000",
-    "http://localhost:8080",
-    "http://frontend:8080",
+    "https://foodplaner-demo.robin-stark.com"
+
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://mac-server:5000",
-    "http://mac-server:8080",
     "http://localhost:5000",
-    "http://localhost:8080",
-    "http://frontend:8080",
+    "https://foodplaner-demo.robin-stark.com"
 ]
 
 CORS_ALLOW_CREDENTIALS = True
