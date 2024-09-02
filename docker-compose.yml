@@ -13,10 +13,10 @@ services:
   backend:
     build:
       context: ./Backend/backend
-    command: gunicorn backend.wsgi:application --bind 0.0.0.0:8000 --workers 17 --timeout 30
+    command: gunicorn backend.wsgi:application --bind 0.0.0.0:8000 --workers 5 --timeout 30
     volumes:
       - .:/code
-      - ./data/media:/code/media
+      - ./data/media:/media
     ports:
       - "8000:8000"
     environment:
