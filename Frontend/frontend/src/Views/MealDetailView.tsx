@@ -177,12 +177,12 @@ function MealDetailView() {
                             <h2 className='truncate my-2 text-lg font-bold'>
                                 Zubereitung:
                             </h2>
-                            <blockquote className='mb-4 text-base text-start text-[#011413]'>
+                            <blockquote className='mb-4 text-base text-start text-[#011413] whitespace-pre-wrap'>
                                 {meal?.description &&
                                     <URLify text={meal?.description} />
                                 }
                             </blockquote>
-                            <p className='text-base text-start text-[#011413]'>
+                            <p className='text-base text-start text-[#011413] whitespace-pre-wrap'>
                                 {meal?.preparation ? <URLify text={meal.preparation} /> : "No Preparation found"}
                             </p>
                         </article>
