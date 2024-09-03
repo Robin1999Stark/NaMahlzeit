@@ -133,7 +133,7 @@ function MealDetailView() {
                     </div>
                 </span>
                 <hr className='mt-4 mb-8' />
-                <section className='flex flex-col justify-start items-center md:flex-row w-full'>
+                <section className='flex flex-col justify-start md:items-center items-start md:flex-row w-full'>
                     <span className='w-full max-w-[24rem] max-h-[24rem]'>
                         {imageError || !meal?.picture ? (
                             <PlaceholderMealImage rounded border='full' />
@@ -177,12 +177,12 @@ function MealDetailView() {
                             <h2 className='truncate my-2 text-lg font-bold'>
                                 Zubereitung:
                             </h2>
-                            <blockquote className='mb-4'>
+                            <blockquote className='mb-4 text-base text-start font-medium text-[#011413]'>
                                 {meal?.description &&
                                     <URLify text={meal?.description} />
                                 }
                             </blockquote>
-                            <p className='text-base text-start font-medium text-[#011413] text'>
+                            <p className='text-base text-start font-medium text-[#011413]'>
                                 {meal?.preparation ? <URLify text={meal.preparation} /> : "No Preparation found"}
                             </p>
                         </article>
