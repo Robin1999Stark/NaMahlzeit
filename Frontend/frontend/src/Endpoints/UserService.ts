@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { User } from '../Datatypes/User';
-import { BASE_URL } from './Settings';
+import { BASE_URL, fetchCsrfToken } from './Settings';
 
 export namespace UserService {
 
@@ -10,9 +10,15 @@ export namespace UserService {
         let user = null;
         const path = BASE_URL + '/users/login'
         try {
+            const csrfToken = await fetchCsrfToken();
             const response = await axios.post(path, {
                 username: name,
                 password: pw,
+            }, {
+                headers: {
+                    'X-CSRFToken': csrfToken || '',
+                    'Content-Type': 'application/json',
+                },
             });
             const { token } = response.data;
 
@@ -76,9 +82,10 @@ export namespace UserService {
                 birthday: new Date(birthday).toLocaleDateString('en-CA'),
                 profilepicture: profilePicture
             }
-
+            const csrfToken = await fetchCsrfToken();
             const response = await axios.post(path, data, {
                 headers: {
+                    'X-CSRFToken': csrfToken || '',
                     'Content-Type': 'application/json',
                 },
             });
@@ -102,6 +109,7 @@ export async function fetchUserData(token: string) {
         const response = await axios.get(path, {
             headers: {
                 Authorization: `Token ${token}`,
+                'X-CSRFToken': await fetchCsrfToken() || '',
             },
         });
 
