@@ -34,7 +34,6 @@ function CreateUser() {
                     navigate('/login');
                 }
             }
-            console.log("User created successfully:", response);
             // You can add a redirect or a success message here
         } catch (error) {
             console.error("Error creating user:", error);

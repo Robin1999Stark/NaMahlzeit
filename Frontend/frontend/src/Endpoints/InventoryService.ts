@@ -60,7 +60,12 @@ export async function createInventoryItem({ ingredient, amount, unit }: CreateIn
 
 export async function deleteInventoryItem(id: number) {
     try {
-        const response = await instance.delete(`/inventory/${id}/`);
+        const response = await instance.delete(`/inventory/${id}/`,
+            {
+                headers: {
+                    'X-CSRFToken': await fetchCsrfToken() || '',
+                }
+            });
         return response.data;
     } catch (error) {
         throw new Error('Error deleting InventoryItem: ' + error);

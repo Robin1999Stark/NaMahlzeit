@@ -35,7 +35,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
         handleSubmit,
         watch,
         setValue,
-        formState: { errors } } = useForm<ShoppingListItem>({
+        formState: { } } = useForm<ShoppingListItem>({
             defaultValues: {
                 ingredient: "",
                 amount: 0,
@@ -43,7 +43,6 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
             },
             mode: 'all'
         });
-    console.log(errors);
     const selectedIngredientID = watch('ingredient');
 
     const fetchIngredient = useCallback(async (id: string): Promise<Ingredient | null> => {

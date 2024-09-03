@@ -115,7 +115,10 @@ export async function updateIngredient(ingredient: Ingredient): Promise<AxiosRes
 
     try {
         const response = await instance.put(`/ingredients/${ingredient.title}/`, JSON.stringify(requestBody), {
-            headers: { 'Content-Type': 'application/json' }
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': await fetchCsrfToken() || '',
+            }
         });
         return response;
     } catch (error) {
@@ -125,7 +128,12 @@ export async function updateIngredient(ingredient: Ingredient): Promise<AxiosRes
 
 export async function deleteIngredient(ingredient: string) {
     try {
-        const response = await instance.delete(`/ingredients/${ingredient}/`);
+        const response = await instance.delete(`/ingredients/${ingredient}/`,
+            {
+                headers: {
+                    'X-CSRFToken': await fetchCsrfToken() || '',
+                }
+            });
         return response.data;
     } catch (error) {
         throw new Error('Error deleting Ingredient: ' + error);

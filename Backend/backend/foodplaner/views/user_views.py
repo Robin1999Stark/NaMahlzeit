@@ -75,17 +75,10 @@ class UserLoginViewSet(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-        users = CustomUser.objects.all()
-        print("All users in the database:")
-        for user in users:
-            print(f'Username: {user.username}')
-
-        print(request.data)
         username = request.data.get('username')
         password = request.data.get('password')
 
         user = authenticate(username=username, password=password)
-        print(user)
         if user:
             if user.is_active:
                 login(request, user)

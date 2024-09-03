@@ -81,7 +81,12 @@ export async function updateMealIngredient(miID: number, mealIngredient: Ingredi
 
 export async function deleteMealIngredient(miID: number) {
     try {
-        const response = await instance.delete(`/meal-ingredients/${miID}/`);
+        const response = await instance.delete(`/meal-ingredients/${miID}/`,
+            {
+                headers: {
+                    'X-CSRFToken': await fetchCsrfToken() || '',
+                }
+            });
         return response.data;
     } catch (error) {
         throw new Error('Error deleting Meal Ingredient: ' + error);

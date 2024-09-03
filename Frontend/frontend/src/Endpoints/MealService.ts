@@ -71,6 +71,7 @@ export async function updateMeal(id: number, formData: FormData): Promise<Meal |
         const response = await instance.put(`/meals/${id}/`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
+                'X-CSRFToken': await fetchCsrfToken() || '',
             },
         });
 
@@ -84,7 +85,12 @@ export async function updateMeal(id: number, formData: FormData): Promise<Meal |
 
 export async function deleteMeal(mealID: number): Promise<AxiosResponse> {
     try {
-        const response = await instance.delete(`/meals/${mealID}/`);
+        const response = await instance.delete(`/meals/${mealID}/`,
+            {
+                headers: {
+                    'X-CSRFToken': await fetchCsrfToken() || '',
+                }
+            });
         return response;
     } catch (error) {
         throw new Error('Error deleting Meal: ' + error);
