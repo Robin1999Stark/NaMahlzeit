@@ -133,7 +133,7 @@ function MealDetailView() {
                     </div>
                 </span>
                 <hr className='mt-4 mb-8' />
-                <section className='flex flex-col justify-start md:items-center items-start md:flex-row w-full'>
+                <section className='flex flex-col justify-start items-center md:items-start md:flex-row w-full'>
                     <span className='w-full max-w-[24rem] max-h-[24rem]'>
                         {imageError || !meal?.picture ? (
                             <PlaceholderMealImage rounded border='full' />
