@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import { TagDT } from "../Datatypes/Tag";
 import { MealTags } from "../Datatypes/Meal";
 import { IngredientTags } from "../Datatypes/Ingredient";
-import { BASE_URL } from "./Settings";
+import { BASE_URL, fetchCsrfToken } from "./Settings";
 
 
 const instance = axios.create({
@@ -41,9 +41,13 @@ interface CreateTagInterface {
 
 export async function createTag({ name }: CreateTagInterface): Promise<TagDT | null> {
     const requestBody = { name };
+    const csrfToken = await fetchCsrfToken();
     try {
         const response = await instance.post('/tags/', JSON.stringify(requestBody), {
-            headers: { 'Content-Type': 'application/json' }
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            }
         });
         return TagDT.fromJSON(response.data);
     } catch (_error) {
@@ -106,9 +110,13 @@ export async function createMealTags(mealTags: MealTags): Promise<MealTags> {
         meal: mealTags.mealID,
         tags: mealTags.tags
     };
+    const csrfToken = await fetchCsrfToken();
     try {
         const response = await instance.post('/meal-tags/', JSON.stringify(requestBody), {
-            headers: { 'Content-Type': 'application/json' }
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            }
         });
         return MealTags.fromJSON(response.data);
     } catch (_error) {
@@ -199,9 +207,13 @@ export async function createIngredientTags(ingredientTags: IngredientTags): Prom
         ingredient: ingredientTags.ingredient,
         tags: ingredientTags.tags
     };
+    const csrfToken = await fetchCsrfToken();
     try {
         const response = await instance.post('/ingredient-tags/', JSON.stringify(requestBody), {
-            headers: { 'Content-Type': 'application/json' }
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            }
         });
         return IngredientTags.fromJSON(response.data);
     } catch (_error) {

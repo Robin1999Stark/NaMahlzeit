@@ -1,6 +1,6 @@
 import axios from "axios";
 import { InventoryItem } from "../Datatypes/Inventory";
-import { BASE_URL } from "./Settings";
+import { BASE_URL, fetchCsrfToken } from "./Settings";
 
 
 const instance = axios.create({
@@ -44,9 +44,11 @@ export async function createInventoryItem({ ingredient, amount, unit }: CreateIn
         unit: unit
     }
     try {
+        const csrfToken = await fetchCsrfToken();
         const response = await instance.post('/inventory/', JSON.stringify(requestBody), {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
             }
         })
         return InventoryItem.fromJSON(response.data);

@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { Ingredient, IngredientTags } from '../Datatypes/Ingredient';
 import { createIngredientTags } from './TagService';
-import { BASE_URL } from './Settings';
+import { BASE_URL, fetchCsrfToken } from './Settings';
 
 
 const instance = axios.create({
@@ -81,8 +81,12 @@ export async function createIngredient({ title, description, preferedUnit }: Cre
     };
 
     try {
+        const csrfToken = await fetchCsrfToken();
         const response = await instance.post('/ingredients/', JSON.stringify(requestBody), {
-            headers: { 'Content-Type': 'application/json' }
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            }
         });
 
         const tags = new IngredientTags(title, []);

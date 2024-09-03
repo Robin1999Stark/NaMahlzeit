@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { ShoppingList, ShoppingListItem } from "../Datatypes/ShoppingList";
-import { BASE_URL } from "./Settings";
+import { BASE_URL, fetchCsrfToken } from "./Settings";
 
 const instance = axios.create({
     baseURL: BASE_URL,
@@ -45,9 +45,11 @@ export async function createShoppingList({ items }: CreateShoppingList): Promise
     };
 
     try {
+        const csrfToken = await fetchCsrfToken();
         const response = await instance.post('/shopping-lists/', JSON.stringify(requestBody), {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
             }
         });
         return ShoppingList.fromJSON(response.data);
@@ -177,11 +179,12 @@ export async function createShoppingListItem({ ingredient, amount, unit, notes }
         unit: unit,
         notes: notes,
     };
-
+    const csrfToken = await fetchCsrfToken();
     try {
         const response = await instance.post('/shopping-list-items/', JSON.stringify(requestBody), {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
             }
         });
         return ShoppingListItem.fromJSON(response.data);

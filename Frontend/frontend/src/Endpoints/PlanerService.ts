@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { IngredientAmountWithMeal } from '../Datatypes/Ingredient';
 import { FoodplanerItem } from '../Datatypes/FoodPlaner';
-import { BASE_URL } from './Settings';
+import { BASE_URL, fetchCsrfToken } from './Settings';
 
 
 const instance = axios.create({
@@ -72,9 +72,12 @@ export async function createPlanerItem({ date, meals }: CreatePlanerInterface): 
     };
 
     try {
+        const csrfToken = await fetchCsrfToken();
+
         const response = await instance.post('/planer/', JSON.stringify(requestBody), {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
             }
         });
         return FoodplanerItem.fromJSON(response.data);
@@ -92,9 +95,11 @@ export async function updatePlanerItem(date: Date, planer: FoodplanerItem): Prom
     };
 
     try {
+        const csrfToken = await fetchCsrfToken();
         const response = await instance.put(`/planer/${dateString}/`, JSON.stringify(json), {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
             }
         });
         return response;
