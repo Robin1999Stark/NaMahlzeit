@@ -139,13 +139,10 @@ USE_I18N = True
 USE_TZ = True
 APPEND_SLASH = False
 
-SECURE_SSL_REDIRECT = True  # Redirect all HTTP requests to HTTPS
-SESSION_COOKIE_SECURE = True  # Ensure cookies are only sent over HTTPS
-CSRF_COOKIE_SECURE = True  # Ensure CSRF cookies are only sent over HTTPS
-# Enable HTTP Strict Transport Security (HSTS) for 1 year
-SECURE_HSTS_SECONDS = 31536000
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Apply HSTS to all subdomains
-SECURE_HSTS_PRELOAD = True
+SECURE_SSL_REDIRECT = not DEBUG    # Redirect all HTTP requests to HTTPS
+SESSION_COOKIE_SECURE = not DEBUG    # Ensure cookies are only sent over HTTPS
+CSRF_COOKIE_SECURE = not DEBUG    # Ensure CSRF cookies are only sent over HTTPS
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
