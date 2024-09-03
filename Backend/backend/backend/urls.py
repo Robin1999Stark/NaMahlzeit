@@ -42,7 +42,7 @@ urlpatterns = [
     path('api/users/password_reset_confirm/<uidb64>/<token>',
          PasswordResetConfirmViewSet.as_view(), name='password_reset_confirm'),
     path('api/admin/', admin.site.urls),
-    path('api/', include(router.urls)),
+    path('', include(router.urls)),
     path('api/planer/<int:pk>/', FoodPlanerItemDetailView.as_view(),
          name='foodplaneritem-detail'),
     path('api/planer/moveto/<str:to_planer>/<str:from_planer>/<int:meal_id>/', move_to_day,
