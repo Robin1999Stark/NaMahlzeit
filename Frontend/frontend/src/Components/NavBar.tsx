@@ -7,6 +7,7 @@ import { RxCalendar } from "react-icons/rx";
 import { RiShoppingCartLine } from 'react-icons/ri';
 import { PiBowlFood, PiCarrot } from 'react-icons/pi';
 import { TbTag } from 'react-icons/tb';
+import NavIcon from './NavIcon';
 
 function NavBar() {
 
@@ -40,11 +41,7 @@ function NavBar() {
         return (
             <nav className='flex col-span-2 flex-row h-16 relative z-10 shadow-md items-center justify-between bg-white w-full'>
                 <figure className='size-8 ml-4'>
-                    <img
-                        src={"LogoFoodplaner.svg"}
-                        alt=""
-                        className='size-8 object-cover aspect-square'
-                    />
+                    <NavIcon />
                 </figure>
                 <ul
                     ref={componentRef}
