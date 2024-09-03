@@ -39,11 +39,11 @@ function NavBar() {
     if (windowSize.width > SIZE_MOBILE) {
         return (
             <nav className='flex col-span-2 flex-row h-16 relative z-10 shadow-md items-center justify-between bg-white w-full'>
-                <figure className='h-fit w-fit'>
+                <figure className='size-8 ml-4'>
                     <img
                         src={"../Assets/LogoFoodplaner.svg"}
                         alt=""
-                        className='w-full h-full object-cover aspect-square'
+                        className='size-8 object-cover aspect-square'
                     />
                 </figure>
                 <ul
