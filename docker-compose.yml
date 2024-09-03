@@ -37,3 +37,4 @@ services:
       - /etc/ssl/private:/etc/ssl/private
     depends_on:
       - backend
+    command: nginx -g 'daemon off;'
