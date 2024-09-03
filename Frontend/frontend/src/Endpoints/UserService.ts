@@ -17,7 +17,6 @@ export namespace UserService {
             }, {
                 headers: {
                     'X-CSRFToken': csrfToken || '',
-                    'Content-Type': 'application/json',
                 },
             });
             const { token } = response.data;
@@ -119,28 +118,3 @@ export async function fetchUserData(token: string) {
         return null;
     }
 };
-
-
-export async function getUser(username: string, pw: string): Promise<any> {
-
-    let userData = null;
-    try {
-        const path = BASE_URL + '/users/login'
-
-        const response = await axios.post(path, {
-            username: username,
-            password: pw,
-        });
-        const { token } = response.data;
-
-        // Store the token in the browser's local storage or a state management library
-        localStorage.setItem('authToken', token);
-
-        // Fetch additional user data after successful login
-        userData = await fetchUserData(token);
-
-    } catch (error) {
-        console.error('Failed to Login ' + error)
-    }
-    return userData;
-}
