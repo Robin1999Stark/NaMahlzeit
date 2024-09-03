@@ -30,7 +30,7 @@ export const mealListID = "meal-list";
 
 function App() {
 
-  const showCreateUser = false;
+  const showCreateUser = true;
   const SIZE_MOBILE = 700;
   const [windowSize, setWindowSize] = useState({
     width: globalThis.innerWidth,
