@@ -1,1 +1,1 @@
-export const BASE_URL = 'https://foodplaner-demo.robin-stark.com'
+export const BASE_URL = 'https://foodplaner-demo.robin-stark.com/api'
