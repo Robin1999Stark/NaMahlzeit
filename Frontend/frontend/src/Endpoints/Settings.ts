@@ -1,1 +1,1 @@
-export const BASE_URL = 'http://mac-server:8000'
+export const BASE_URL = 'https://foodplaner-demo.robin-stark.com'
