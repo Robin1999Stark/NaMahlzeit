@@ -1,8 +1,14 @@
 import axios from 'axios';
 
-export const BASE_URL = 'https://foodplaner-demo.robin-stark.com/api'
+export const BASE_URL_PROD = 'https://foodplaner-demo.robin-stark.com/api'
+export const BASE_URL = 'http://localhost:8000/api'
+
+const instance = axios.create({
+    baseURL: BASE_URL,
+    withCredentials: true,
+})
 
 export async function fetchCsrfToken() {
-    const response = await axios.get(BASE_URL + "/get_csrf_token");
+    const response = await instance.get("/get_csrf_token");
     return response.data.csrfToken;
 }
