@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { ShoppingList, ShoppingListItem } from "../Datatypes/ShoppingList";
-import { BASE_URL } from "./Settings";
+import { BASE_URL, fetchCsrfToken } from "./Settings";
 
 const instance = axios.create({
     baseURL: BASE_URL,
@@ -45,9 +45,11 @@ export async function createShoppingList({ items }: CreateShoppingList): Promise
     };
 
     try {
+        const csrfToken = await fetchCsrfToken();
         const response = await instance.post('/shopping-lists/', JSON.stringify(requestBody), {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
             }
         });
         return ShoppingList.fromJSON(response.data);
@@ -57,7 +59,12 @@ export async function createShoppingList({ items }: CreateShoppingList): Promise
 }
 export async function deleteShoppingList(id: number): Promise<AxiosResponse> {
     try {
-        const response = await instance.delete(`/shopping-lists/${id}/`);
+        const response = await instance.delete(`/shopping-lists/${id}/`,
+            {
+                headers: {
+                    'X-CSRFToken': await fetchCsrfToken() || '',
+                }
+            });
         return response;
     } catch (error) {
         throw new Error('Error deleting ShoppingList: ' + error);
@@ -104,7 +111,9 @@ export async function updateShoppingList({ id, created, items }: UpdateShoppingL
     try {
         const response = await instance.put(`/shopping-lists/${id}/`, JSON.stringify(requestBody), {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRFToken': await fetchCsrfToken() || '',
+
             }
         });
         return ShoppingList.fromJSON(response.data);
@@ -127,7 +136,8 @@ export async function updateShoppingListItem(id: number, updateData: UpdateShopp
     try {
         const response = await instance.put(`/shopping-list-items/${id}/`, JSON.stringify(requestBody), {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRFToken': await fetchCsrfToken() || '',
             }
         });
         return ShoppingListItem.fromJSON(response.data);
@@ -177,11 +187,12 @@ export async function createShoppingListItem({ ingredient, amount, unit, notes }
         unit: unit,
         notes: notes,
     };
-
+    const csrfToken = await fetchCsrfToken();
     try {
         const response = await instance.post('/shopping-list-items/', JSON.stringify(requestBody), {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
             }
         });
         return ShoppingListItem.fromJSON(response.data);
@@ -193,7 +204,12 @@ export async function createShoppingListItem({ ingredient, amount, unit, notes }
 
 export async function deleteShoppingListItem(id: number): Promise<AxiosResponse> {
     try {
-        const response = await instance.delete(`/shopping-list-items/${id}/`);
+        const response = await instance.delete(`/shopping-list-items/${id}/`,
+            {
+                headers: {
+                    'X-CSRFToken': await fetchCsrfToken() || '',
+                }
+            });
         return response;
     } catch (error) {
         throw new Error('Error deleting ShoppinglistItem: ' + error);
@@ -214,7 +230,8 @@ export async function addItemToShoppingList(list: ShoppingList, itemID: number):
     try {
         await instance.put(`/shopping-lists/${list.id}/`, JSON.stringify(requestBody), {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRFToken': await fetchCsrfToken() || '',
             }
         });
     } catch (error) {
@@ -224,6 +241,7 @@ export async function addItemToShoppingList(list: ShoppingList, itemID: number):
 
 export async function createItemAndAddToShoppingList(list: ShoppingList, item: CreateShoppingListItem): Promise<ShoppingListItem | null> {
     try {
+        console.log(item)
         const createdItem = await createShoppingListItem(item);
         if (createdItem) {
             await addItemToShoppingList(list, createdItem.id);

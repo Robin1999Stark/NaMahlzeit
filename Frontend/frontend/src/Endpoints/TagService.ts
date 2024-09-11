@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import { TagDT } from "../Datatypes/Tag";
 import { MealTags } from "../Datatypes/Meal";
 import { IngredientTags } from "../Datatypes/Ingredient";
-import { BASE_URL } from "./Settings";
+import { BASE_URL, fetchCsrfToken } from "./Settings";
 
 
 const instance = axios.create({
@@ -41,9 +41,13 @@ interface CreateTagInterface {
 
 export async function createTag({ name }: CreateTagInterface): Promise<TagDT | null> {
     const requestBody = { name };
+    const csrfToken = await fetchCsrfToken();
     try {
         const response = await instance.post('/tags/', JSON.stringify(requestBody), {
-            headers: { 'Content-Type': 'application/json' }
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            }
         });
         return TagDT.fromJSON(response.data);
     } catch (_error) {
@@ -54,7 +58,12 @@ export async function createTag({ name }: CreateTagInterface): Promise<TagDT | n
 
 export async function deleteTag(tag: string): Promise<AxiosResponse> {
     try {
-        const response = await instance.delete(`/tags/${tag}/`);
+        const response = await instance.delete(`/tags/${tag}/`,
+            {
+                headers: {
+                    'X-CSRFToken': await fetchCsrfToken() || '',
+                }
+            });
         return response;
     } catch (_error) {
         throw new Error('Error deleting Tag: ' + _error);
@@ -106,9 +115,13 @@ export async function createMealTags(mealTags: MealTags): Promise<MealTags> {
         meal: mealTags.mealID,
         tags: mealTags.tags
     };
+    const csrfToken = await fetchCsrfToken();
     try {
         const response = await instance.post('/meal-tags/', JSON.stringify(requestBody), {
-            headers: { 'Content-Type': 'application/json' }
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            }
         });
         return MealTags.fromJSON(response.data);
     } catch (_error) {
@@ -124,7 +137,10 @@ export async function updateMealTags(meal: number, tags: MealTags): Promise<void
     };
     try {
         await instance.put(`/meal-tags/${meal}/`, JSON.stringify(requestBody), {
-            headers: { 'Content-Type': 'application/json' }
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': await fetchCsrfToken() || '',
+            }
         });
     } catch (_error) {
         throw new Error('Error while updating Meal Tags: ' + _error);
@@ -148,7 +164,12 @@ export async function createOrUpdateMealTags(mealTags: MealTags): Promise<MealTa
 
 export async function deleteMealTags(meal: number) {
     try {
-        const response = await instance.delete(`/meal-tags/${meal}/`);
+        const response = await instance.delete(`/meal-tags/${meal}/`,
+            {
+                headers: {
+                    'X-CSRFToken': await fetchCsrfToken() || '',
+                }
+            });
         return response.data;
     } catch (_error) {
         throw new Error('Error while deleting Meal Tags: ' + _error);
@@ -199,9 +220,13 @@ export async function createIngredientTags(ingredientTags: IngredientTags): Prom
         ingredient: ingredientTags.ingredient,
         tags: ingredientTags.tags
     };
+    const csrfToken = await fetchCsrfToken();
     try {
         const response = await instance.post('/ingredient-tags/', JSON.stringify(requestBody), {
-            headers: { 'Content-Type': 'application/json' }
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            }
         });
         return IngredientTags.fromJSON(response.data);
     } catch (_error) {
@@ -212,7 +237,12 @@ export async function createIngredientTags(ingredientTags: IngredientTags): Prom
 
 export async function deleteIngredientTags(ingredient: string): Promise<void> {
     try {
-        await instance.delete(`/ingredient-tags/${ingredient}/`);
+        await instance.delete(`/ingredient-tags/${ingredient}/`,
+            {
+                headers: {
+                    'X-CSRFToken': await fetchCsrfToken() || '',
+                }
+            });
     } catch (_error) {
         throw new Error('Error while deleting Ingredient Tags: ' + _error);
     }
@@ -225,7 +255,10 @@ export async function updateIngredientTags(ingredient: string, tags: IngredientT
     };
     try {
         await instance.put(`/ingredient-tags/${ingredient}/`, JSON.stringify(requestBody), {
-            headers: { 'Content-Type': 'application/json' }
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': await fetchCsrfToken() || '',
+            }
         });
     } catch (_error) {
         throw new Error('Error while updating Ingredient Tags: ' + _error);

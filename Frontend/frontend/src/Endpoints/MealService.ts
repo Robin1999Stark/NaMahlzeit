@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { Meal } from '../Datatypes/Meal';
-import { BASE_URL } from './Settings';
+import { BASE_URL, fetchCsrfToken } from './Settings';
 
 
 const instance = axios.create({
@@ -51,9 +51,11 @@ export async function getMeal(id: string): Promise<Meal | null> {
 
 export async function createMeal(formData: FormData): Promise<Meal | null> {
     try {
+        const csrfToken = await fetchCsrfToken();
         const response = await instance.post(`/meals/`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
+                'X-CSRFToken': csrfToken,
             },
         });
         const updatedMeal: Meal = Meal.fromJSON(response.data);
@@ -69,6 +71,7 @@ export async function updateMeal(id: number, formData: FormData): Promise<Meal |
         const response = await instance.put(`/meals/${id}/`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
+                'X-CSRFToken': await fetchCsrfToken() || '',
             },
         });
 
@@ -82,7 +85,12 @@ export async function updateMeal(id: number, formData: FormData): Promise<Meal |
 
 export async function deleteMeal(mealID: number): Promise<AxiosResponse> {
     try {
-        const response = await instance.delete(`/meals/${mealID}/`);
+        const response = await instance.delete(`/meals/${mealID}/`,
+            {
+                headers: {
+                    'X-CSRFToken': await fetchCsrfToken() || '',
+                }
+            });
         return response;
     } catch (error) {
         throw new Error('Error deleting Meal: ' + error);

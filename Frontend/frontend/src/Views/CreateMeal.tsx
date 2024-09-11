@@ -152,7 +152,7 @@ function CreateMeal() {
                                 rows={7}
                                 id='description'
                                 {...register("description", {
-                                    required: true,
+                                    required: false,
                                 })}
                                 defaultValue={"Lorem Ipsum"}
                                 className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md mr-1' />
@@ -240,14 +240,15 @@ function CreateMeal() {
                                 className={`text-sm mb-2 text-[#011413] font-semibold truncate text-left align-middle`} >
                                 Zubereitung:
                             </label>
-                            <input
-                                type='text'
+                            <textarea
+                                rows={7}
                                 id='preparation'
                                 {...register("preparation", {
                                     required: false,
                                 })}
-                                defaultValue={"Step 1"}
-                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
+                                defaultValue={"Erster Schritt: ..."}
+                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md mr-1' />
+
                         </li>
                         <li key={"li-duration"} className='flex w-100 flex-col flex-1 justify-between items-start my-3'>
                             <label

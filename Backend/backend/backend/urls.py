@@ -13,59 +13,60 @@ from foodplaner.views.user_views import UserRegistrationViewSet, GetUserDataFrom
 
 
 router = routers.DefaultRouter()
-router.register(r'meals', MealListView, basename='meal')
-router.register(r'planer', FoodPlanerItemView, basename='foodplaneritem')
-router.register(r'ingredients', IngredientListView, basename='ingredients')
-router.register(r'inventory', InventoryItemView, basename='inventory')
-router.register(r'meal-ingredients', MealIngredientListViewNormal,
+router.register(r'api/meals', MealListView, basename='meal')
+router.register(r'api/planer', FoodPlanerItemView, basename='foodplaneritem')
+router.register(r'api/ingredients', IngredientListView, basename='ingredients')
+router.register(r'api/inventory', InventoryItemView, basename='inventory')
+router.register(r'api/meal-ingredients', MealIngredientListViewNormal,
                 basename='meal-ingredients')
-router.register(r'shopping-lists', ShoppingListView, basename='shopping-lists')
-router.register(r'shopping-list-items', ShoppingListItemView,
+router.register(r'api/shopping-lists', ShoppingListView,
+                basename='shopping-lists')
+router.register(r'api/shopping-list-items', ShoppingListItemView,
                 basename='shopping-list-items')
-router.register(r'tags', TagListView, basename='tags')
-router.register(r'meal-tags', MealTagsListView, basename='meal-tags')
-router.register(r'ingredient-tags', IngredientTagsListView,
+router.register(r'api/tags', TagListView, basename='tags')
+router.register(r'api/meal-tags', MealTagsListView, basename='meal-tags')
+router.register(r'api/ingredient-tags', IngredientTagsListView,
                 basename='ingredient-tags')
 
 urlpatterns = [
-    path('get_csrf_token', get_csrf_token, name='get_csrf_token'),
-    path('users/register',
+    path('api/get_csrf_token', get_csrf_token, name='get_csrf_token'),
+    path('api/users/register',
          UserRegistrationViewSet.as_view({'post': 'create'}), name='user-register'),
-    path('users/login', UserLoginViewSet.as_view(), name='user-login'),
-    path('users/logout', UserLogoutViewSet.as_view(), name='user-logout'),
-    path('users/me', GetUserView.as_view(), name='get_user'),
-    path('users/me-from-token', GetUserDataFromTokenView.as_view(),
+    path('api/users/login', UserLoginViewSet.as_view(), name='user-login'),
+    path('api/users/logout', UserLogoutViewSet.as_view(), name='user-logout'),
+    path('api/users/me', GetUserView.as_view(), name='get_user'),
+    path('api/users/me-from-token', GetUserDataFromTokenView.as_view(),
          name='get_user_from_token'),
-    path('users/password-reset',
+    path('api/users/password-reset',
          PasswordResetViewSet.as_view(), name='password-reset'),
-    path('users/password_reset_confirm/<uidb64>/<token>',
+    path('api/users/password_reset_confirm/<uidb64>/<token>',
          PasswordResetConfirmViewSet.as_view(), name='password_reset_confirm'),
-    path('admin/', admin.site.urls),
+    path('api/admin/', admin.site.urls),
     path('', include(router.urls)),
-    path('planer/<int:pk>/', FoodPlanerItemDetailView.as_view(),
+    path('api/planer/<int:pk>/', FoodPlanerItemDetailView.as_view(),
          name='foodplaneritem-detail'),
-    path('planer/moveto/<str:to_planer>/<str:from_planer>/<int:meal_id>/', move_to_day,
+    path('api/planer/moveto/<str:to_planer>/<str:from_planer>/<int:meal_id>/', move_to_day,
          name='moveto'),
-    path('planer/remove/<str:planer_date>/<int:meal_id>/', remove_meal_from_planer_item,
+    path('api/planer/remove/<str:planer_date>/<int:meal_id>/', remove_meal_from_planer_item,
          name='moveto'),
-    path('get-all-meals-from-planer/<str:start>/<str:end>/', get_all_meals_on_planer,
+    path('api/get-all-meals-from-planer/<str:start>/<str:end>/', get_all_meals_on_planer,
          name='planer-get-all-meals'),
-    path('is-planned/<int:meal_pk>/', is_planned, name='meal-is-planned'),
-    path('get-all-ingredients-from-planer/<str:start>/<str:end>/', get_all_mealingredients_from_planer,
+    path('api/is-planned/<int:meal_pk>/', is_planned, name='meal-is-planned'),
+    path('api/get-all-ingredients-from-planer/<str:start>/<str:end>/', get_all_mealingredients_from_planer,
          name='planer-get-all-ingredients_meal'),
-    path('ingredients/<int:pk>/', IngredientDetailView.as_view(),
+    path('api/ingredients/<int:pk>/', IngredientDetailView.as_view(),
          name='ingredients-detail'),
 
-    path('meals/<int:meal_pk>/ingredients/',
+    path('api/meals/<int:meal_pk>/ingredients/',
          MealIngredientListView.as_view(), name='meals-ingredients-list'),
-    path('meals/<int:meal_pk>/ingredients/<int:pk>/',
+    path('api/meals/<int:meal_pk>/ingredients/<int:pk>/',
          MealIngredientDetailView.as_view(), name='meals-ingredients-detail'),
-    path('meals_by_tags/<str:tags>/', meals_by_tags, name='meals_by_tags'),
-    path('ingredients_by_tags/<str:tags>/',
+    path('api/meals_by_tags/<str:tags>/', meals_by_tags, name='meals_by_tags'),
+    path('api/ingredients_by_tags/<str:tags>/',
          ingredients_by_tags, name='ingredients_by_tags'),
 
-    path('export/ingredients/', export_ingredients, name='export_ingredients'),
-    path('export/meals/', export_meals, name='export_meals'),
-    path('export/tags/', export_tags, name='export_tags'),
+    path('api/export/ingredients/', export_ingredients, name='export_ingredients'),
+    path('api/export/meals/', export_meals, name='export_meals'),
+    path('api/export/tags/', export_tags, name='export_tags'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

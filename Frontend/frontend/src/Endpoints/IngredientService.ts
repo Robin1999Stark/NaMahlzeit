@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { Ingredient, IngredientTags } from '../Datatypes/Ingredient';
 import { createIngredientTags } from './TagService';
-import { BASE_URL } from './Settings';
+import { BASE_URL, fetchCsrfToken } from './Settings';
 
 
 const instance = axios.create({
@@ -81,8 +81,12 @@ export async function createIngredient({ title, description, preferedUnit }: Cre
     };
 
     try {
+        const csrfToken = await fetchCsrfToken();
         const response = await instance.post('/ingredients/', JSON.stringify(requestBody), {
-            headers: { 'Content-Type': 'application/json' }
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            }
         });
 
         const tags = new IngredientTags(title, []);
@@ -111,7 +115,10 @@ export async function updateIngredient(ingredient: Ingredient): Promise<AxiosRes
 
     try {
         const response = await instance.put(`/ingredients/${ingredient.title}/`, JSON.stringify(requestBody), {
-            headers: { 'Content-Type': 'application/json' }
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': await fetchCsrfToken() || '',
+            }
         });
         return response;
     } catch (error) {
@@ -121,7 +128,12 @@ export async function updateIngredient(ingredient: Ingredient): Promise<AxiosRes
 
 export async function deleteIngredient(ingredient: string) {
     try {
-        const response = await instance.delete(`/ingredients/${ingredient}/`);
+        const response = await instance.delete(`/ingredients/${ingredient}/`,
+            {
+                headers: {
+                    'X-CSRFToken': await fetchCsrfToken() || '',
+                }
+            });
         return response.data;
     } catch (error) {
         throw new Error('Error deleting Ingredient: ' + error);

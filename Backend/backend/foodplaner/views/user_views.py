@@ -13,7 +13,7 @@ from ..serializers.user_serializers import CustomUserCreationSerializer
 from ..forms.user_forms import CustomUserCreationForm
 from rest_framework.authtoken.models import Token
 from django.middleware.csrf import get_token
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from ..models import CustomUser
 from rest_framework_simplejwt.tokens import UntypedToken
 from rest_framework_simplejwt.exceptions import InvalidToken
@@ -21,6 +21,7 @@ from rest_framework_simplejwt.settings import api_settings
 from django.contrib.auth import get_user_model
 
 
+@ensure_csrf_cookie
 def get_csrf_token(request):
     csrf_token = get_token(request)
     print(csrf_token)

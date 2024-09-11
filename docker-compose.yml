@@ -14,6 +14,8 @@ services:
     build:
       context: ./Backend/backend
     command: gunicorn backend.wsgi:application --bind 0.0.0.0:8000 --workers 7 --worker-class gevent --timeout 180
+    #command: python manage.py runserver 0.0.0.0:8000
+
     volumes:
       - .:/code
       - ./data/media:/media
@@ -30,6 +32,11 @@ services:
     build:
       context: ./Frontend/frontend
     ports:
-      - "5000:5000"
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /etc/ssl/certs:/etc/ssl/certs
+      - /etc/ssl/private:/etc/ssl/private
     depends_on:
       - backend
+    command: nginx -g 'daemon off;'

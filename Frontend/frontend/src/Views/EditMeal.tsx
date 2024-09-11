@@ -298,12 +298,14 @@ function EditMeal() {
                                 <label htmlFor='preparation' className='text-sm mb-2 text-[#011413] font-semibold'>
                                     Zubereitung:
                                 </label>
-                                <input
-                                    type='text'
+                                <textarea
+                                    rows={7}
                                     id='preparation'
-                                    {...register("preparation")}
-                                    className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1'
-                                />
+                                    {...register("preparation", {
+                                        required: false,
+                                    })}
+                                    defaultValue={"Erster Schritt: ..."}
+                                    className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md mr-1' />
                             </li>
                             <li className='flex w-100 flex-col justify-between items-start my-3'>
                                 <label htmlFor='duration' className='text-sm mb-2 text-[#011413] font-semibold'>

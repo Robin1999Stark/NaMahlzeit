@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { IngredientAmountWithMeal } from '../Datatypes/Ingredient';
-import { BASE_URL } from './Settings';
+import { BASE_URL, fetchCsrfToken } from './Settings';
 
 const instance = axios.create({
     baseURL: BASE_URL,
@@ -45,11 +45,13 @@ export async function createMealIngredient(ingredient: CreateMealngredientInterf
         amount: ingredient.amount,
         unit: ingredient.unit,
     }
-
+    const csrfToken = await fetchCsrfToken();
     try {
+
         const response = await instance.post('/meal-ingredients/', JSON.stringify(requestBody), {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
             }
         })
         return IngredientAmountWithMeal.fromJSON(response.data);
@@ -61,10 +63,12 @@ export async function createMealIngredient(ingredient: CreateMealngredientInterf
 
 export async function updateMealIngredient(miID: number, mealIngredient: IngredientAmountWithMeal): Promise<IngredientAmountWithMeal | null> {
     const json = JSON.stringify(mealIngredient)
+    const csrfToken = await fetchCsrfToken();
     try {
         const response = await instance.post(`/meal-ingredients/${miID}/`, json, {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
             }
         });
         return IngredientAmountWithMeal.fromJSON(response.data)
@@ -77,7 +81,12 @@ export async function updateMealIngredient(miID: number, mealIngredient: Ingredi
 
 export async function deleteMealIngredient(miID: number) {
     try {
-        const response = await instance.delete(`/meal-ingredients/${miID}/`);
+        const response = await instance.delete(`/meal-ingredients/${miID}/`,
+            {
+                headers: {
+                    'X-CSRFToken': await fetchCsrfToken() || '',
+                }
+            });
         return response.data;
     } catch (error) {
         throw new Error('Error deleting Meal Ingredient: ' + error);

@@ -25,7 +25,7 @@ COPY nginx.conf /etc/nginx/nginx.conf
 COPY --from=build /app/dist /usr/share/nginx/html
 
 # Nginx auf Port 5000 aussetzen
-EXPOSE 5000
+EXPOSE 80
 
 # Nginx im Vordergrund ausführen
 CMD ["nginx", "-g", "daemon off;"]
