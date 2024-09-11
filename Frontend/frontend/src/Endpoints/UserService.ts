@@ -11,7 +11,6 @@ export namespace UserService {
         const path = BASE_URL + '/users/login'
         try {
             const csrfToken = await fetchCsrfToken();
-            console.log("csrf", csrfToken)
             const response = await axios.post(path, {
                 username: name,
                 password: pw,
@@ -83,7 +82,6 @@ export namespace UserService {
                 profilepicture: profilePicture
             }
             const csrfToken = await fetchCsrfToken();
-            console.log("csrfToken", csrfToken)
             const response = await axios.post(path, data, {
                 headers: {
                     'X-CSRFToken': csrfToken || '',

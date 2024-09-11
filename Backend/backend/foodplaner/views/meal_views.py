@@ -121,13 +121,13 @@ class MealListView(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         form_data = request.data
-        print("Form Data:", form_data)
+
+        picture = request.FILES.get('picture')
 
         title = form_data.get('title')
         description = form_data.get('description')
         preparation = form_data.get('preparation')
         duration = form_data.get('duration')
-        picture = form_data.get('picture')
         portion_size = form_data.get('portion_size')
 
         try:
@@ -184,10 +184,10 @@ class MealListView(viewsets.ModelViewSet):
         instance = self.get_object()
 
         form_data = request.data
-        print("Form Data:", form_data)
 
         # Handle picture and portion_size
-        picture = form_data.get('picture', instance.picture)
+
+        picture = request.FILES.get('picture', instance.picture)
         portion_size = form_data.get('portion_size', instance.portion_size)
 
         # Update meal fields
