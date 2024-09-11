@@ -102,7 +102,7 @@ function InventoryListView() {
     return (
         <>
             <div className='flex flex-col h-full'>
-                <div className='flex-grow'>
+                <div className='h-[90%]'>
 
                     <span className='flex flex-row justify-between items-center'>
                         <h1 className='mb-4 font-semibold text-[#011413] text-xl'>
@@ -111,7 +111,7 @@ function InventoryListView() {
                         <Menu menuButton={<MenuButton><IoIosMore className='size-5 mr-4 text-[#011413]' /></MenuButton>} transition>
                         </Menu>
                     </span>
-                    <ul className='overflow-y-scroll h-5/6 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-[#046865] scrollbar-track-slate-100'>
+                    <ul className='overflow-y-scroll h-[90%] scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-[#046865] scrollbar-track-slate-100'>
                         {inventory ? inventory?.map(inv => (
                             <li className='w-full flex flex-row justify-between items-center'>
                                 <div key={inv.id} className='px-1 text-[#011413] flex flex-row font-semibold items-center'>

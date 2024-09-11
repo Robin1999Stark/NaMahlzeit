@@ -241,6 +241,7 @@ export async function addItemToShoppingList(list: ShoppingList, itemID: number):
 
 export async function createItemAndAddToShoppingList(list: ShoppingList, item: CreateShoppingListItem): Promise<ShoppingListItem | null> {
     try {
+        console.log(item)
         const createdItem = await createShoppingListItem(item);
         if (createdItem) {
             await addItemToShoppingList(list, createdItem.id);

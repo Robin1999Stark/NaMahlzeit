@@ -312,7 +312,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
         return (
             <>
                 <div className='flex flex-col h-full'>
-                    <div className='flex-grow'>
+                    <div className='h-[90%]'>
                         <span className='flex mb-4 flex-row justify-between items-center'>
                             <h1 className='font-semibold truncate text-[#011413] text-xl'>
                                 Einkaufsliste ({shoppingList && shoppingList.created.toLocaleDateString() + " - " + shoppingList.created.getHours() + ":" + shoppingList.created.getMinutes()})
@@ -352,7 +352,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
                                 </MenuItem>
                             </Menu>
                         </span>
-                        <ul className='overflow-y-scroll h-5/6 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-[#046865] scrollbar-track-slate-100'>
+                        <ul className='overflow-y-scroll h-[90%] scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-[#046865] scrollbar-track-slate-100'>
                             {shoppingListItems ? shoppingListItems?.map(item => (
                                 item ?
                                     <li className='w-full flex flex-row justify-between items-center'>
