@@ -23,13 +23,13 @@ Check out the live demo of the app [here](https://foodplaner-demo.robin-stark.co
 
 ## 🖼️ Screenshots
 ### Meal Library
-![Meal Library](https://github.com/Robin1999Stark/FoodPlanerWG/blob/main/Screenshots/Library.png?raw=true)
+![Meal Library](https://github.com/Robin1999Stark/NaMahlzeit/blob/main/Screenshots/Library.png?raw=true)
 
 ### Weekly Planner
-![Weekly Planner](https://github.com/Robin1999Stark/FoodPlanerWG/blob/main/Screenshots/Planner.png?raw=true)
+![Weekly Planner](https://github.com/Robin1999Stark/NaMahlzeit/blob/main/Screenshots/Planner.png?raw=true)
 
 ### Shopping List
-![Shopping List](https://github.com/Robin1999Stark/FoodPlanerWG/blob/main/Screenshots/ShoppingList.png?raw=true)
+![Shopping List](https://github.com/Robin1999Stark/NaMahlzeit/blob/main/Screenshots/ShoppingList.png?raw=true)
 
 ## 🛠️ Tech Stack
 - **Frontend**: React with TailwindCSS for styling and CSS animations
