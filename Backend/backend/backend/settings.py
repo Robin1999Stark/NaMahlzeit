@@ -164,6 +164,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://mac-server:5000",
     "http://localhost:5000",
     "http://localhost:3000",
+    "http://localhost:3001",
     "http://localhost:80",
     "https://foodplaner-demo.robin-stark.com"
 ]
@@ -172,6 +173,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://mac-server:5000",
     "http://localhost:5000",
     "http://localhost:3000",
+    "http://localhost:3001",
     "http://localhost:80",
     "https://foodplaner-demo.robin-stark.com"
 ]

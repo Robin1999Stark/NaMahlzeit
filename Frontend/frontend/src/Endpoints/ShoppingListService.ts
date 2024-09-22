@@ -169,7 +169,7 @@ export async function updateItemAndList(list: ShoppingList, item: ShoppingListIt
     }
     return null;
 }
-interface CreateShoppingListItem {
+export interface CreateShoppingListItem {
     ingredient: string;
     amount: number;
     unit: string;
@@ -216,24 +216,26 @@ export async function deleteShoppingListItem(id: number): Promise<AxiosResponse>
     }
 }
 
-export async function addItemToShoppingList(list: ShoppingList, itemID: number): Promise<void> {
+export async function addItemToShoppingList(list: ShoppingList, itemID: number) {
     const date = new Date(list.created);
     const dateString = date.toISOString();
-    const items = [...list.items, itemID];
+
+    const updatedItems = [...list.items, itemID];
 
     const requestBody = {
         id: list.id,
         created: dateString,
-        items: items,
+        items: updatedItems,
     };
 
     try {
-        await instance.put(`/shopping-lists/${list.id}/`, JSON.stringify(requestBody), {
+        const result = await instance.put(`/shopping-lists/${list.id}/`, JSON.stringify(requestBody), {
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': await fetchCsrfToken() || '',
             }
         });
+        return result;
     } catch (error) {
         console.error('Error adding item to Shopping list:', error);
     }
@@ -241,9 +243,9 @@ export async function addItemToShoppingList(list: ShoppingList, itemID: number):
 
 export async function createItemAndAddToShoppingList(list: ShoppingList, item: CreateShoppingListItem): Promise<ShoppingListItem | null> {
     try {
-        console.log(item)
         const createdItem = await createShoppingListItem(item);
         if (createdItem) {
+            list.items.push(createdItem.id);
             await addItemToShoppingList(list, createdItem.id);
         }
         return createdItem;

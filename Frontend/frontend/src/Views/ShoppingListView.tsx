@@ -128,30 +128,44 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
         ingredient ? setValue('unit', ingredient?.preferedUnit) : setValue('unit', 'kg');
     }, [fetchIngredient, selectedIngredientID, setValue]);
 
-    const handleAddItemToShoppingList = useCallback(async (data: InventoryItem | CreateInventoryItemInterface) => {
+
+    const handleAddItemsToShoppingList = useCallback(async (itemsData: InventoryItem[] | CreateInventoryItemInterface[]) => {
         try {
-            if (!shoppingList) {
-                const list = await createShoppingList({ items: [] });
+            let list: ShoppingList | undefined | null = shoppingList;
+    
+            if (!list) {
+                // Erstelle die Liste nur einmal, falls sie noch nicht existiert
+                list = await createShoppingList({ items: [] });
                 if (!list) return;
                 setShoppingList(list);
             }
-            if (shoppingList) {
-                const item = await createItemAndAddToShoppingList(shoppingList, {
+    
+            // Iteriere über alle Items und füge sie zur existierenden Liste hinzu
+            for (const data of itemsData) {
+                const item = await createItemAndAddToShoppingList(list, {
                     ingredient: data.ingredient,
-                    amount: data.amount,
                     unit: data.unit,
-                    notes: "",
+                    amount: data.amount,
+                    notes: ''
                 });
+    
                 if (item) {
-                    setShoppingListItems((prevItems) => [...(prevItems || []), item]);
-                    setItemAdded(true);
+                    console.log("Item hinzugefügt", item);
+                    // Die Einkaufsliste und die Liste der Items aktualisieren
+                    setShoppingListItems((prevItems) => {
+                        const updatedItems = prevItems ? [...prevItems, item] : [item];
+                        return updatedItems;
+                    });
                 }
             }
+    
+            setItemAdded(true);
         } catch (_error) {
             console.log(_error);
         }
     }, [shoppingList, setShoppingList]);
-
+    
+    
     const handleAddPlannedIngredients = useCallback(async () => {
         const today = new Date();
         const futureDate = new Date(today);
@@ -160,19 +174,13 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
             const ingredients = await getAllIngredientsFromPlanerInTimeRange(today, futureDate);
             if (!ingredients) return;
 
-            for (const ingredient of ingredients) {
-                const invItem: CreateInventoryItemInterface = {
-                    ingredient: ingredient.ingredient,
-                    amount: ingredient.amount,
-                    unit: ingredient.unit
-                };
-                await handleAddItemToShoppingList(invItem);
-            }
+            const list = await handleAddItemsToShoppingList(ingredients);
+
 
         } catch (_error) {
             console.error('Error adding planned ingredients:', _error);
         }
-    }, [handleAddItemToShoppingList]);
+    }, [handleAddItemsToShoppingList]);
 
     const handleDeleteShoppingListItem = useCallback(async (id: number) => {
         try {
@@ -305,7 +313,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
             console.log('Please select a valid ingredient.');
             return;
         }
-        await handleAddItemToShoppingList(data);
+        await handleAddItemsToShoppingList([data]);
     }
 
     if (loaded) {

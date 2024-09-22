@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from ..models import ShoppingListItem, ShoppingList
+from ..unit_synonyms import get_unit_syn_dict
 
 
 class ShoppingListItemSerializer(serializers.ModelSerializer):
@@ -14,8 +15,16 @@ class ShoppingListItemSerializer(serializers.ModelSerializer):
         instance.ingredient = validated_data.get(
             'ingredient', instance.ingredient)
         instance.amount = validated_data.get('amount', instance.amount)
-        instance.unit = validated_data.get('unit', instance.unit)
         instance.notes = validated_data.get('notes', instance.notes)
+        
+        unit_syn_dict = get_unit_syn_dict()
+        unit = validated_data.get('unit', instance.unit)
+        
+        if unit in unit_syn_dict:
+            instance.unit = unit_syn_dict[unit]
+        else:
+            instance.unit = unit  
+        
         instance.save()
         return instance
 

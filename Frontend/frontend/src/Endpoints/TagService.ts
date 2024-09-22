@@ -14,6 +14,8 @@ async function getAllTagsJSON(): Promise<unknown> {
     try {
         const response = await instance.get(`/tags/`);
         return response.data;
+
+
     } catch (_error) {
         return null;
     }
