@@ -93,16 +93,17 @@ export async function getAllTagsFromMeal(meal: number): Promise<MealTags | null>
     }
 }
 
-export async function getMealTagsFromTagList(tags: TagDT[]): Promise<MealTags[]> {
+export async function getMealsFromTagList(tags: TagDT[]): Promise<MealTags[]> {
     try {
         const tagString = tags.map(tag => tag.name).join(',');
         const response = await instance.get(`/meals_by_tags/${tagString}/`);
         if (response.data.meals && Array.isArray(response.data.meals)) {
             return response.data.meals.map((tag: unknown) => {
-                if (typeof tag === 'object' && tag !== null && 'mealID' in tag) {
-                    return MealTags.fromJSON(tag as { mealID: number; tags: string[] });
-                }
-                throw new Error('Invalid meal tags data format');
+                if (typeof tag === 'object' && tag !== null && 'meal' in tag) {
+                    return MealTags.fromJSON(tag as { meal: number; tags: string[] });
+                } else{
+                    throw new Error('Invalid meal tags data format');
+                } 
             });
         }
         return [];
@@ -291,3 +292,4 @@ export async function exportTags(): Promise<AxiosResponse> {
 }
 
 
+getMealsFromTagList

@@ -52,8 +52,8 @@ function MealCard({ meal }: Props) {
             <Link className='w-full flex flex-row text-base underline font-semibold justify-start py-2 px-3 items-center text-[#011413]' to={`/meals/${meal.id}`}>{meal.title}</Link>
             <ul className='flex flex-row justify-start items-center flex-wrap px-3 my-2 w-full'>
                 {
-                    tags ? tags.tags.map((tag) =>
-                        <li className='py-1'>
+                    tags ? tags.tags.map((tag, index) =>
+                        <li key={index} className='py-1'>
                             <Tag title={tag} />
                         </li>
                     ) : <></>
