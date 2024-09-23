@@ -9,7 +9,8 @@ import { LuFilter, LuList, LuSquareStack } from 'react-icons/lu';
 import MealCard from '../Components/MealCard';
 import { addMealToPlaner } from '../Endpoints/PlanerService';
 import { deleteMeal, getAllMeals } from '../Endpoints/MealService';
-import { getMealTagsFromTagList } from '../Endpoints/TagService';
+import { getMealsFromTagList } from '../Endpoints/TagService';
+import React from 'react';
 
 function MealsOverview() {
     const navigate = useNavigate();
@@ -62,8 +63,9 @@ function MealsOverview() {
 
         const lowerCaseSearch = search.toLowerCase();
         const mealsFromTags = await Promise.all(
-            (await getMealTagsFromTagList([new TagDT(lowerCaseSearch)])).map((tag) => tag.mealID)
+            (await getMealsFromTagList([new TagDT(lowerCaseSearch)])).map((tag) => tag.mealID)
         );
+        console.log("mft", mealsFromTags)
         if (!meals) return;
 
         const filtered = meals.filter((meal) => {
@@ -87,7 +89,7 @@ function MealsOverview() {
                 searchForMeals(searchString.trim());
             }, 500);
 
-            setDebounceTimeout(timeoutId);
+            setDebounceTimeout(timeoutId as unknown as number);
 
             return () => {
                 if (debounceTimeout) {
@@ -120,7 +122,8 @@ function MealsOverview() {
                             </li>
                         }
                     }
-                    return <>
+                    return (
+                        <React.Fragment key={meal.id}>
                         {prefix}
                         <span
                             key={meal.id}
@@ -130,7 +133,9 @@ function MealsOverview() {
                                 addMealToPlaner={handleAddMeal}
                                 deleteMeal={handleDeleteMeal} />
                         </span>
-                    </>
+                    </React.Fragment>
+                    )
+               
                 }) : <></>}
             </ul>
         )
@@ -140,7 +145,7 @@ function MealsOverview() {
         return (
             <ul className='w-full h-full flex px-7 py-4 flex-row flex-wrap flex-grow'>
                 {filteredMeals ? filteredMeals?.map((meal,) => {
-                    return <li className='mr-2'>
+                    return <li key={meal.id} className='mr-2'>
                         <MealCard meal={meal} deleteMeal={handleDeleteMeal} />
                     </li>
                 }
@@ -189,12 +194,12 @@ function MealsOverview() {
                 </div>
                 <div className='flex-row flex-1 hidden md:flex justify-end items-center w-full '>
                     <button
-                        className={`${isList ? 'text-[#FF6B00] border-[#FF6B00]' : 'text-[#046865] border-[#046865]'} invisible lg:visible border-2 rounded-full p-2.5 mr-3 text-lg`}
+                        className={`${!isList ? 'text-[#7D8698] border-[#7D8698]' : 'text-[#046865] border-[#046865]'} invisible lg:visible border-2 rounded-full p-2.5 mr-3 text-lg`}
                         onClick={() => setIsList(true)} >
                         <LuList />
                     </button>
                     <button
-                        className={`${!isList ? 'text-[#FF6B00] border-[#FF6B00]' : 'text-[#046865] border-[#046865]'} invisible lg:visible border-2 rounded-full p-2.5 mr-3 text-lg`}
+                        className={`${isList ? 'text-[#7D8698] border-[#7D8698]' : 'text-[#046865] border-[#046865]'} invisible lg:visible border-2 rounded-full p-2.5 mr-3 text-lg`}
                         onClick={() => setIsList(false)} >
                         <LuSquareStack />
                     </button>

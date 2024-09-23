@@ -35,8 +35,8 @@ function Login({ setUser, setLoggedIn, showCreateUser }: LoginProps) {
 
                 Cookies.set("authToken", user.token, {
                     expires: 7,
-                    sameSite: 'None',
-                    //secure: true 
+                    sameSite: 'strict',
+                    secure: true 
                 });
 
                 navigate('/planer');

@@ -6,6 +6,7 @@ import { MdAdd } from 'react-icons/md';
 import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
 import { IoIosMore } from 'react-icons/io';
 import { getAllTags } from '../Endpoints/TagService';
+import React from 'react';
 
 function TagsOverView() {
     const navigate = useNavigate();
@@ -108,23 +109,23 @@ function TagsOverView() {
                             </li>
                         }
                     }
-                    return <>
-                        {prefix}
-                        <li
-                            key={tag.name}
-                            className='select-none w-full h-full py-3 my-2 flex flex-row justify-between items-center rounded-md border-l-[6px] border-[#046865] truncate bg-[#fff]'>
-                            <h1 className='text-start ml-3 text-base'>
-                                {tag.name}
-                            </h1>
-                            <Menu menuButton={<MenuButton><IoIosMore className='size-5 text-[#011413] mr-3' /></MenuButton>} transition>
-                                <MenuItem onClick={() => deleteTag(tag.name)}>
-                                    Löschen
-                                </MenuItem>
-                            </Menu>
-                        </li>
-                    </>
-
-
+                    return (
+                        <React.Fragment key={tag.name}>
+                            {prefix}
+                            <li
+                                key={tag.name}
+                                className='select-none w-full h-full py-3 my-2 flex flex-row justify-between items-center rounded-md border-l-[6px] border-[#046865] truncate bg-[#fff]'>
+                                <h1 className='text-start ml-3 text-base'>
+                                    {tag.name}
+                                </h1>
+                                <Menu menuButton={<MenuButton><IoIosMore className='size-5 text-[#011413] mr-3' /></MenuButton>} transition>
+                                    <MenuItem onClick={() => deleteTag(tag.name)}>
+                                        Löschen
+                                    </MenuItem>
+                                </Menu>
+                            </li>
+                        </React.Fragment>
+                    )
                 }
                 ) : <></>}
             </ul>
