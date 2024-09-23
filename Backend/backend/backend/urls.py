@@ -48,7 +48,7 @@ urlpatterns = [
     path('api/planer/moveto/<str:to_planer>/<str:from_planer>/<int:meal_id>/', move_to_day,
          name='moveto'),
     path('api/planer/remove/<str:planer_date>/<int:meal_id>/', remove_meal_from_planer_item,
-         name='moveto'),
+         name='remove-meal'),
     path('api/get-all-meals-from-planer/<str:start>/<str:end>/', get_all_meals_on_planer,
          name='planer-get-all-meals'),
     path('api/is-planned/<int:meal_pk>/', is_planned, name='meal-is-planned'),
