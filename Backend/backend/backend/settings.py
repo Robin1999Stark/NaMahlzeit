@@ -164,14 +164,14 @@ CORS_ALLOWED_ORIGINS = [
     #"http://mac-server:5000",
     #"http://localhost:3001",
     #"http://localhost:80",
-    "https://foodplaner-demo.robin-stark.com"
+    "https://na-mahlzeit.de"
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     #"http://mac-server:5000",
     #"http://localhost:3001",
     #"http://localhost:80",
-    "https://foodplaner-demo.robin-stark.com"
+    "https://na-mahlzeit.de"
 ]
 
 CORS_ALLOW_CREDENTIALS = True
