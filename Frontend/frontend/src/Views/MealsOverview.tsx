@@ -65,7 +65,6 @@ function MealsOverview() {
         const mealsFromTags = await Promise.all(
             (await getMealsFromTagList([new TagDT(lowerCaseSearch)])).map((tag) => tag.mealID)
         );
-        console.log("mft", mealsFromTags)
         if (!meals) return;
 
         const filtered = meals.filter((meal) => {

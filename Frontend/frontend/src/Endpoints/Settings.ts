@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 
-//export const BASE_URL_LOC = 'https://foodplaner-demo.robin-stark.com/api'
-export const BASE_URL = "http://localhost:8000/api"
+export const BASE_URL = 'https://foodplaner-demo.robin-stark.com/api'
+//export const BASE_URL = "http://localhost:8000/api"
 
 
 const instance = axios.create({
