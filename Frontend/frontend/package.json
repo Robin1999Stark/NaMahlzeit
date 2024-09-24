@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "@szhsin/react-menu": "^4.2.2",
-    "axios": "^1.6.7",
+    "axios": "^1.7.7",
+    "dotenv": "^16.4.5",
     "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
@@ -22,7 +23,8 @@
     "react-hook-form": "^7.49.3",
     "react-icons": "^5.0.1",
     "react-router-dom": "^6.21.3",
-    "tailwind-scrollbar": "^3.1.0"
+    "tailwind-scrollbar": "^3.1.0",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.6",

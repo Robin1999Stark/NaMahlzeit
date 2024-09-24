@@ -8,6 +8,7 @@ import { TagDT } from '../Datatypes/Tag'
 import { debounce } from 'lodash'
 import { getAllIngredients } from '../Endpoints/IngredientService'
 import { getIngredientTagsFromTagList } from '../Endpoints/TagService'
+import React from 'react'
 
 function IngredientsOverView() {
     const [ingredients, setIngredients] = useState<Ingredient[]>()
@@ -75,7 +76,7 @@ function IngredientsOverView() {
                 searchForIngredients(searchString.trim());
             }, 500);
 
-            setDebounceTimeout(timeoutId);
+            setDebounceTimeout(timeoutId as unknown as number);
 
             return () => {
                 if (debounceTimeout) {
@@ -107,16 +108,17 @@ function IngredientsOverView() {
                             </li>
                         }
                     }
-                    return <>
-                        {prefix}
-                        <li
-                            key={`prefix-${ingredient.title}-${index}`}
-                            className='py-[0.2rem] px-2 flex flex-row justify-between overflow-hidden rounded-sm bg-white bg-opacity-10'>
-                            <IngredientListItem ingredient={ingredient} deleteIngredient={deleteIngredient} />
-                        </li>
-                    </>
-                }
-                ) : <></>}
+                    return (
+                        <React.Fragment key={ingredient.title}>
+                            {prefix}
+                            <li
+                                key={`prefix-${ingredient.title}-${index}`}
+                                className='py-[0.2rem] px-2 flex flex-row justify-between overflow-hidden rounded-sm bg-white bg-opacity-10'>
+                                <IngredientListItem ingredient={ingredient} deleteIngredient={deleteIngredient} />
+                            </li>
+                        </React.Fragment>
+                    )
+                }) : <></>}
             </ul>
         )
     }

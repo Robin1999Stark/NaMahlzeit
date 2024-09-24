@@ -128,30 +128,44 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
         ingredient ? setValue('unit', ingredient?.preferedUnit) : setValue('unit', 'kg');
     }, [fetchIngredient, selectedIngredientID, setValue]);
 
-    const handleAddItemToShoppingList = useCallback(async (data: InventoryItem | CreateInventoryItemInterface) => {
+
+    const handleAddItemsToShoppingList = useCallback(async (itemsData: InventoryItem[] | CreateInventoryItemInterface[]) => {
         try {
-            if (!shoppingList) {
-                const list = await createShoppingList({ items: [] });
+            let list: ShoppingList | undefined | null = shoppingList;
+    
+            if (!list) {
+                // Erstelle die Liste nur einmal, falls sie noch nicht existiert
+                list = await createShoppingList({ items: [] });
                 if (!list) return;
                 setShoppingList(list);
             }
-            if (shoppingList) {
-                const item = await createItemAndAddToShoppingList(shoppingList, {
+    
+            // Iteriere über alle Items und füge sie zur existierenden Liste hinzu
+            for (const data of itemsData) {
+                const item = await createItemAndAddToShoppingList(list, {
                     ingredient: data.ingredient,
-                    amount: data.amount,
                     unit: data.unit,
-                    notes: "",
+                    amount: data.amount,
+                    notes: ''
                 });
+    
                 if (item) {
-                    setShoppingListItems((prevItems) => [...(prevItems || []), item]);
-                    setItemAdded(true);
+                    console.log("Item hinzugefügt", item);
+                    // Die Einkaufsliste und die Liste der Items aktualisieren
+                    setShoppingListItems((prevItems) => {
+                        const updatedItems = prevItems ? [...prevItems, item] : [item];
+                        return updatedItems;
+                    });
                 }
             }
+    
+            setItemAdded(true);
         } catch (_error) {
             console.log(_error);
         }
     }, [shoppingList, setShoppingList]);
-
+    
+    
     const handleAddPlannedIngredients = useCallback(async () => {
         const today = new Date();
         const futureDate = new Date(today);
@@ -160,19 +174,13 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
             const ingredients = await getAllIngredientsFromPlanerInTimeRange(today, futureDate);
             if (!ingredients) return;
 
-            for (const ingredient of ingredients) {
-                const invItem: CreateInventoryItemInterface = {
-                    ingredient: ingredient.ingredient,
-                    amount: ingredient.amount,
-                    unit: ingredient.unit
-                };
-                await handleAddItemToShoppingList(invItem);
-            }
+            await handleAddItemsToShoppingList(ingredients);
+
 
         } catch (_error) {
             console.error('Error adding planned ingredients:', _error);
         }
-    }, [handleAddItemToShoppingList]);
+    }, [handleAddItemsToShoppingList]);
 
     const handleDeleteShoppingListItem = useCallback(async (id: number) => {
         try {
@@ -305,7 +313,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
             console.log('Please select a valid ingredient.');
             return;
         }
-        await handleAddItemToShoppingList(data);
+        await handleAddItemsToShoppingList([data]);
     }
 
     if (loaded) {
@@ -323,7 +331,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
                                 </MenuItem>
                                 <SubMenu label='Listen'>
                                     {
-                                        shoppingLists.map((list) => <MenuItem onClick={() => {
+                                        shoppingLists.map((list) => <MenuItem key={list.id} onClick={() => {
                                             fetchPipeline(list);
                                         }}>
                                             <p className={`${shoppingList?.id === list.id && 'font-bold underline-offset-1'}`}>
@@ -355,7 +363,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
                         <ul className='overflow-y-scroll h-[90%] scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-[#046865] scrollbar-track-slate-100'>
                             {shoppingListItems ? shoppingListItems?.map(item => (
                                 item ?
-                                    <li className='w-full flex flex-row justify-between items-center'>
+                                    <li key={item.id} className='w-full flex flex-row justify-between items-center'>
                                         <div key={item.id} className='text-[#011413] flex flex-row font-semibold items-center'>
                                             <input
                                                 type="checkbox"
@@ -368,7 +376,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
                                                 {item.ingredient}
                                             </p>
                                         </div>
-                                        <div key={item.ingredient + Math.random() + "unit"} className='p-2 flex text-[#011413] font-semibold flex-row justify-between items-center'>
+                                        <div className='p-2 flex text-[#011413] font-semibold flex-row justify-between items-center'>
                                             <p className={`${item.bought ? 'text-gray-400 line-through' : 'text-[#011413]'}`}>
                                                 {item.amount + " " + item.unit}
                                             </p>
@@ -379,9 +387,9 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
                                             </Menu>
                                         </span>
 
-                                    </li> : <>
+                                    </li> : <li key="loading-spinner">
                                         <LoadingSpinner />
-                                    </>
+                                    </li>
                             )) : <LoadingSpinner />}
                             <div ref={bottomRef}></div>
                         </ul>

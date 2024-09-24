@@ -4,7 +4,7 @@ import { Meal } from '../Datatypes/Meal';
 import { BiShuffle } from 'react-icons/bi';
 import { TagDT } from '../Datatypes/Tag';
 import { MealContext } from './MealContext';
-import { getMealTagsFromTagList } from '../Endpoints/TagService';
+import { getMealsFromTagList } from '../Endpoints/TagService';
 
 type Props = {
     mealListID: string;
@@ -31,7 +31,7 @@ function PlanerResourceCol({ mealListID, onAddMeal }: Props) {
         } else {
             const lowerCaseSearch = search.toLowerCase();
             const mealsFromTags = await Promise.all(
-                (await getMealTagsFromTagList([new TagDT(lowerCaseSearch)])).map((tag) => tag.mealID)
+                (await getMealsFromTagList([new TagDT(lowerCaseSearch)])).map((tag) => tag.mealID)
             );
 
             const filtered = meals.filter((meal) =>
