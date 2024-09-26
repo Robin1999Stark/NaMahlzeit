@@ -34,9 +34,32 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    #volumes:
+    volumes:
+      - ./nginx/html:/usr/share/nginx/html
+      - ./nginx/certs:/etc/letsencrypt
     #  - /etc/ssl/certs:/etc/ssl/certs
     #  - /etc/ssl/private:/etc/ssl/private
     depends_on:
       - backend
     command: nginx -g 'daemon off;'
+
+  certbot:
+    image: certbot/certbot
+    command: certonly --webroot --webroot-path=/usr/share/nginx/html -d na-mahlzeit.de -d www.na-mahlzeit.de --email deine-email@example.com --agree-tos --non-interactive
+    volumes:
+      - ./nginx/html:/usr/share/nginx/html # Zertifikat-Validierung über Webroot
+      - ./nginx/certs:/etc/letsencrypt # Zertifikate speichern
+    depends_on:
+      - frontend
+
+  certbot-renew:
+    image: certbot/certbot
+    command: renew --webroot --webroot-path=/usr/share/nginx/html
+    volumes:
+      - ./nginx/html:/usr/share/nginx/html
+      - ./nginx/certs:/etc/letsencrypt
+    deploy:
+      restart_policy:
+        condition: on-failure
+    depends_on:
+      - frontend
