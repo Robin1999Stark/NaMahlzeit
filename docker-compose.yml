@@ -55,8 +55,6 @@ services:
   frontend:
     build:
       context: ./Frontend/frontend
-    ports:
-      - "80:80"
     environment:
       - DOMAIN=DOMAIN
     depends_on:
