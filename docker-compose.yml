@@ -36,8 +36,6 @@ services:
       - DOMAIN
     depends_on:
       - frontend
-    ports:
-      - 80:80
     volumes:
       - ./etc/nginx/templates:/etc/nginx/templates:ro
 
