@@ -31,39 +31,28 @@ services:
   frontend:
     build:
       context: ./Frontend/frontend
+    expose:
+      - "80"
+    environment:
+      - VIRTUAL_HOST=na-mahlzeit.de,www.na-mahlzeit.de
+      - LETSENCRYPT_HOST=na-mahlzeit.de,www.na-mahlzeit.de
+      - LETSENCRYPT_EMAIL=fuerRo138@gmx.de
+    depends_on:
+      - backend
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx/html:/usr/share/nginx/html
-      - ./nginx/certs:/etc/letsencrypt
-    #  - /etc/ssl/certs:/etc/ssl/certs
-    #  - /etc/ssl/private:/etc/ssl/private
-    depends_on:
-      - backend
-    command: nginx -g 'daemon off;'
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost/" ]
-      interval: 30s
-      timeout: 10s
-      retries: 5
+      - "/var/run/docker.sock:/tmp/docker.sock:ro"
 
-  certbot:
-    image: certbot/certbot
-    depends_on:
-      frontend:
-        condition: service_healthy
-    command: certonly --webroot --webroot-path=/usr/share/nginx/html -d na-mahlzeit.de -d www.na-mahlzeit.de --email fuerRo138@gmx.de --agree-tos --non-interactive
+  nginx-letsencrypt-companion:
+    image: jrcs/letsencrypt-nginx-proxy-companion
     volumes:
-      - ./nginx/html:/usr/share/nginx/html # Zertifikat-Validierung über Webroot
-      - ./nginx/certs:/etc/letsencrypt # Zertifikate speichern
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "certs-volume:/etc/nginx/certs"
 
-  certbot-renew:
-    image: certbot/certbot
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew --webroot --webroot-path=/usr/share/nginx/html; sleep 12h & wait $${!}; done;'"
-    volumes:
-      - ./nginx/html:/usr/share/nginx/html
-      - ./nginx/certs:/etc/letsencrypt
-    depends_on:
-      - frontend:
-          condition: service_healthy
+volumes:
+  certs-volume:
