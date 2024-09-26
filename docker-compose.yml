@@ -22,7 +22,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - POSTGRES_NAME=POSTGRES_DB
+      - POSTGRES_NAME=${POSTGRES_DB}
       - POSTGRES_USER
       - POSTGRES_PASSWORD
     depends_on:
