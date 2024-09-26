@@ -32,7 +32,7 @@ services:
     build:
       context: ./Frontend/frontend
     expose:
-      - "80"
+      - "80:80"
     environment:
       - VIRTUAL_HOST=na-mahlzeit.de,www.na-mahlzeit.de
       - LETSENCRYPT_HOST=na-mahlzeit.de,www.na-mahlzeit.de
@@ -56,3 +56,4 @@ services:
 
 volumes:
   certs-volume:
+  db-volume:
