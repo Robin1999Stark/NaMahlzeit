@@ -54,12 +54,9 @@ services:
 
   certbot-renew:
     image: certbot/certbot
-    command: renew --webroot --webroot-path=/usr/share/nginx/html
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew --webroot --webroot-path=/usr/share/nginx/html; sleep 12h & wait $${!}; done;'"
     volumes:
       - ./nginx/html:/usr/share/nginx/html
       - ./nginx/certs:/etc/letsencrypt
-    deploy:
-      restart_policy:
-        condition: on-failure
     depends_on:
       - frontend
