@@ -45,7 +45,7 @@ services:
     image: certbot/certbot:latest
     depends_on:
       - nginx
-    command: certonly --webroot -w /var/www/html -d ${DOMAIN} -d www.${DOMAIN} --non-interactive --agree-tos --email ${EMAIL} --staging
+    command: certonly --webroot -w /var/www/certbot -d ${DOMAIN} -d www.${DOMAIN} --non-interactive --agree-tos --email ${EMAIL} --staging
     volumes:
       - ./etc/letsencrypt:/etc/letsencrypt
       - ./certbot/data:/var/www/certbot
