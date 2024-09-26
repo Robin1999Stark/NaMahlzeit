@@ -31,7 +31,7 @@ services:
   frontend:
     build:
       context: ./Frontend/frontend
-    expose:
+    ports:
       - "80:80"
     environment:
       - VIRTUAL_HOST=na-mahlzeit.de,www.na-mahlzeit.de
