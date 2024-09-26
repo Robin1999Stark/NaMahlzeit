@@ -42,15 +42,21 @@ services:
     depends_on:
       - backend
     command: nginx -g 'daemon off;'
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost/" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   certbot:
     image: certbot/certbot
+    depends_on:
+      frontend:
+        condition: service_healthy
     command: certonly --webroot --webroot-path=/usr/share/nginx/html -d na-mahlzeit.de -d www.na-mahlzeit.de --email fuerRo138@gmx.de --agree-tos --non-interactive
     volumes:
       - ./nginx/html:/usr/share/nginx/html # Zertifikat-Validierung über Webroot
       - ./nginx/certs:/etc/letsencrypt # Zertifikate speichern
-    depends_on:
-      - frontend
 
   certbot-renew:
     image: certbot/certbot
@@ -59,4 +65,5 @@ services:
       - ./nginx/html:/usr/share/nginx/html
       - ./nginx/certs:/etc/letsencrypt
     depends_on:
-      - frontend
+      - frontend:
+          condition: service_healthy
