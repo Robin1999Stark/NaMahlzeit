@@ -45,7 +45,7 @@ services:
 
   certbot:
     image: certbot/certbot
-    command: certonly --webroot --webroot-path=/usr/share/nginx/html -d na-mahlzeit.de -d www.na-mahlzeit.de --email deine-email@example.com --agree-tos --non-interactive
+    command: certonly --webroot --webroot-path=/usr/share/nginx/html -d na-mahlzeit.de -d www.na-mahlzeit.de --email fuerRo138@gmx.de --agree-tos --non-interactive
     volumes:
       - ./nginx/html:/usr/share/nginx/html # Zertifikat-Validierung über Webroot
       - ./nginx/certs:/etc/letsencrypt # Zertifikate speichern
