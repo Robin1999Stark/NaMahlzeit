@@ -33,7 +33,7 @@ services:
     image: nginx:latest
     restart: unless-stopped
     environment:
-      - DOMAIN
+      - DOMAIN=${DOMAIN}
     depends_on:
       - frontend
     volumes:
