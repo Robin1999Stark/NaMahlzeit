@@ -56,7 +56,7 @@ services:
     build:
       context: ./Frontend/frontend
     environment:
-      - DOMAIN=DOMAIN
+      - DOMAIN
     depends_on:
       - backend
 
