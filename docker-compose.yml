@@ -34,9 +34,9 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    volumes:
-      - /etc/ssl/certs:/etc/ssl/certs
-      - /etc/ssl/private:/etc/ssl/private
+    #volumes:
+    #  - /etc/ssl/certs:/etc/ssl/certs
+    #  - /etc/ssl/private:/etc/ssl/private
     depends_on:
       - backend
     command: nginx -g 'daemon off;'
