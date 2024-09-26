@@ -6,9 +6,9 @@ services:
     volumes:
       - ./data/db:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB
-      - POSTGRES_USER
-      - POSTGRES_PASSWORD
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
 
   backend:
     build:
@@ -23,8 +23,9 @@ services:
       - "8000:8000"
     environment:
       - POSTGRES_NAME=${POSTGRES_DB}
-      - POSTGRES_USER
-      - POSTGRES_PASSWORD
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+
     depends_on:
       - db
 
