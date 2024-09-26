@@ -28,6 +28,50 @@ services:
     depends_on:
       - db
 
+  nginx:
+    build: ./nginx
+    image: evgeniy-khyst/nginx
+    environment:
+      - DRY_RUN
+    volumes:
+      - ./config.json:/letsencrypt-docker-compose/config.json:ro
+      - ./nginx-conf/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx-conf/conf.d:/etc/nginx/conf.d:ro
+      - ./html:/var/www/html:ro
+      - nginx_conf_ssl:/etc/nginx/ssl
+      - letsencrypt_certs:/etc/letsencrypt
+      - certbot_acme_challenge:/var/www/certbot
+    ports:
+      - "80:80"
+      - "443:443"
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "nginx", "80" ]
+      interval: 30s
+      timeout: 30s
+      start_period: 30s
+      retries: 10
+    restart: unless-stopped
+
+  certbot:
+    build: ./certbot
+    image: evgeniy-khyst/certbot
+    environment:
+      - DRY_RUN
+    volumes:
+      - ./config.json:/letsencrypt-docker-compose/config.json:ro
+      - letsencrypt_certs:/etc/letsencrypt
+      - certbot_acme_challenge:/var/www/certbot
+    healthcheck:
+      test: [ "CMD-SHELL", 'test -n "$$(ls -A /etc/letsencrypt/live/)" || test "$$DRY_RUN" == "true" || exit 1' ]
+      interval: 30s
+      timeout: 30s
+      start_period: 30s
+      retries: 5
+    depends_on:
+      nginx:
+        condition: service_healthy
+    restart: unless-stopped
+
   frontend:
     build:
       context: ./Frontend/frontend
@@ -40,20 +84,8 @@ services:
     depends_on:
       - backend
 
-  nginx-proxy:
-    image: jwilder/nginx-proxy
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - "/var/run/docker.sock:/tmp/docker.sock:ro"
-
-  nginx-letsencrypt-companion:
-    image: jrcs/letsencrypt-nginx-proxy-companion
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "certs-volume:/etc/nginx/certs"
-
 volumes:
-  certs-volume:
+  nginx_conf_ssl:
+  letsencrypt_certs:
+  certbot_acme_challenge:
   db-volume:
