@@ -56,9 +56,11 @@ services:
     build:
       context: ./Frontend/frontend
     environment:
-      - DOMAIN
+      - DOMAIN=${DOMAIN}
     depends_on:
       - backend
+    volumes:
+      - ./Frontend/frontend/build:/usr/share/nginx/html
 
 volumes:
   nginx_conf_ssl:
