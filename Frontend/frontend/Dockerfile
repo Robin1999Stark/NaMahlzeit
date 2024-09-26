@@ -19,7 +19,7 @@ RUN npm run build
 FROM docker.io/nginx:alpine
 
 
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY ../../nginx.conf /etc/nginx/nginx.conf
 
 # Kopiere die gebauten Dateien in das Nginx-Verzeichnis
 COPY --from=build /app/dist /usr/share/nginx/html
