@@ -20,7 +20,7 @@ function PlanerResourceCol({ mealListID, onAddMeal }: Props) {
     const { meals, setMeals } = context;
     const [filteredMeals, setFilteredMeals] = useState<Meal[]>([]);
     const [searchString, setSearchString] = useState<string>("");
-    const debounceTimeoutRef = useRef<number | null>(null);
+    const debounceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     useEffect(() => {
         setFilteredMeals(meals);
     }, [meals]);
