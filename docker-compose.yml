@@ -58,9 +58,7 @@ services:
     ports:
       - "80:80"
     environment:
-      - VIRTUAL_HOST=na-mahlzeit.de,www.na-mahlzeit.de
-      - LETSENCRYPT_HOST=na-mahlzeit.de,www.na-mahlzeit.de
-      - LETSENCRYPT_EMAIL=fuerRo138@gmx.de
+      - DOMAIN=DOMAIN
     depends_on:
       - backend
 
