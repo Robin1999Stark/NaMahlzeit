@@ -47,7 +47,7 @@ services:
     depends_on:
       - nginx
     command: >-
-      certonly --reinstall --webroot --webroot-path=/var/www/certbot --email ${EMAIL} --agree-tos --no-eff-email -d ${DOMAIN}
+      certonly --reinstall --staging --webroot --webroot-path=/var/www/certbot --email ${EMAIL} --agree-tos --no-eff-email -d ${DOMAIN}
     volumes:
       - ./etc/letsencrypt:/etc/letsencrypt
       - ./certbot/data:/var/www/certbot
