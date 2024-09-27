@@ -55,6 +55,9 @@ services:
   frontend:
     build:
       context: ./Frontend/frontend
+    container_name: frontend
+    expose:
+      - "80" # Intern wird Port 80 für Nginx freigegeben
     environment:
       - DOMAIN=${DOMAIN}
     depends_on:
