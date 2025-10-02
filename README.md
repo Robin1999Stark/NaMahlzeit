@@ -5,7 +5,7 @@
 This project originated from a common challenge in my shared apartment: deciding what to cook for the upcoming days. *NaMahlzeit* solves this by offering a collaborative space where users can plan meals, manage ingredients, and share their meal schedules with a group, making meal planning a hassle-free experience.
 
 ## 🚀 Demo
-Check out the live demo of the app [here](https://foodplaner-demo.robin-stark.com/login/). Feel free to log in with the provided test credentials to explore the features:
+Check out the live demo of the app [here](https://na-mahlzeit.de/login/). Feel free to log in with the provided test credentials to explore the features:
 - **Username**: `TestUser`
 - **Password**: `TestPassword17`
 
