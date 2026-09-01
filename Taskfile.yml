@@ -1,0 +1,32 @@
+version: '3'
+
+tasks:
+  run-dev:
+    desc: Run the project in development mode with docker-compose
+    cmds:
+      - sudo docker compose -f docker-compose.dev.yml up --build
+
+  stop:
+    desc: Stop all running containers
+    cmds:
+      - sudo docker compose -f docker-compose.dev.yml down
+
+  logs:
+    desc: Show logs from running containers
+    cmds:
+      - sudo docker compose -f docker-compose.dev.yml logs -f
+
+  build:
+    desc: Build the docker images
+    cmds:
+      - sudo docker compose -f docker-compose.dev.yml build
+
+  migrate:
+    desc: Run Django database migrations
+    cmds:
+      - sudo docker compose -f docker-compose.dev.yml exec -T backend python manage.py migrate
+
+  load-data:
+    desc: Load initial data from mealplaner_dump.json
+    cmds:
+      - sudo docker compose -f docker-compose.dev.yml exec -T backend python manage.py loaddata /code/mealplaner_dump.json
