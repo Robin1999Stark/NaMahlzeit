@@ -1,0 +1,9 @@
+framework:
+    secret: '%env(APP_SECRET)%'
+    router:
+        utf8: true
+    handle_all_throwables: true
+
+when@test:
+    framework:
+        test: true

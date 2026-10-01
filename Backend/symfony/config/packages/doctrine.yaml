@@ -1,0 +1,13 @@
+doctrine:
+    dbal:
+        url: '%env(DATABASE_URL)%'
+        driver: pdo_pgsql
+        options:
+            !php/const PDO::ATTR_TIMEOUT: 2
+    orm:
+        auto_mapping: false
+        mappings:
+            ExistingDatabase:
+                type: attribute
+                dir: '%kernel.project_dir%/src/Outbound/Persistence/Doctrine/Entity'
+                prefix: 'App\Outbound\Persistence\Doctrine\Entity'

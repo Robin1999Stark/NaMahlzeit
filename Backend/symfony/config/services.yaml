@@ -1,0 +1,33 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/Domain/'
+            - '../src/Outbound/Persistence/Doctrine/Entity/'
+            - '../src/Kernel.php'
+
+    App\Inbound\Http\:
+        resource: '../src/Inbound/Http/'
+        tags: ['controller.service_arguments']
+
+    App\Application\Port\Inbound\Readiness:
+        alias: App\Application\Service\ReadinessService
+
+    App\Application\Port\Outbound\DatabaseAvailability:
+        alias: App\Outbound\Persistence\Doctrine\DoctrineDatabaseAvailability
+
+    App\Application\Port\Outbound\IngredientRepository:
+        alias: App\Outbound\Persistence\Doctrine\DoctrineIngredientRepository
+
+when@test:
+    services:
+        App\Application\Port\Outbound\DatabaseAvailability:
+            alias: App\Outbound\Persistence\Doctrine\DoctrineDatabaseAvailability
+            public: true
+        App\Application\Port\Outbound\IngredientRepository:
+            alias: App\Outbound\Persistence\Doctrine\DoctrineIngredientRepository
+            public: true

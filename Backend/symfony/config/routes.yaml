@@ -1,0 +1,5 @@
+http_controllers:
+    resource:
+        path: ../src/Inbound/Http/
+        namespace: App\Inbound\Http
+    type: attribute

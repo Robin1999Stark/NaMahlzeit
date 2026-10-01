@@ -1,6 +1,36 @@
 version: '3'
 
 services:
+  backend-symfony:
+    profiles: [symfony]
+    build:
+      context: ./Backend/symfony
+      target: development
+    environment:
+      APP_ENV: dev
+      APP_DEBUG: "1"
+      APP_SECRET: "${SYMFONY_APP_SECRET:-local-development-only}"
+      DATABASE_URL: "${SYMFONY_DATABASE_URL:-postgresql://robin:postgres@db:5432/postgres?serverVersion=18&charset=utf8}"
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:8080:80"
+    volumes:
+      - ./Backend/symfony/src:/app/src
+      - ./Backend/symfony/config:/app/config
+      - ./Backend/symfony/public:/app/public
+      - ./Backend/symfony/bin:/app/bin
+      - ./Backend/symfony/tests:/app/tests
+      - ./Backend/symfony/phpunit.xml.dist:/app/phpunit.xml.dist:ro
+      - ./Backend/symfony/.env:/app/.env:ro
+    healthcheck:
+      test: ["CMD", "php", "-r", "exit(@file_get_contents('http://127.0.0.1/ready') === false ? 1 : 0);"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 30s
+
   db:
     image: docker.io/library/postgres:18
     volumes:

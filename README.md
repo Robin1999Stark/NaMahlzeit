@@ -36,6 +36,69 @@ Check out the live demo of the app [here](https://na-mahlzeit.de/login/). Feel f
 - **Backend**: Django for a robust, scalable backend
 - **Database**: PostgreSQL
 
+## Symfony backend development
+
+The standalone PHP 8.4 / Symfony 7.4 LTS backend lives in `Backend/symfony`.
+Start it with `task run-dev-symfony`, then open http://localhost:8080/health.
+The response is `{"status":"ok"}`. Only Docker and Task are required locally.
+
+The service uses the Compose profile `symfony`; it can also be started directly:
+
+```sh
+docker compose -f docker-compose.dev.yml up -d --build --wait backend-symfony
+```
+
+Compose starts the existing PostgreSQL 18 service `db` and waits until it is
+healthy. Both Compose configurations use the same database image and data mount.
+`/health` checks HTTP liveness; `/ready` checks database availability (`200` when
+available, `503` otherwise). The container healthcheck uses `/ready`.
+There is no authentication or frontend integration yet.
+
+Doctrine ORM and DBAL connect through `DATABASE_URL`. Compose defaults to
+`postgresql://robin:postgres@db:5432/postgres?serverVersion=18&charset=utf8`;
+override it with `SYMFONY_DATABASE_URL` (URL-encode special characters in credentials).
+`SYMFONY_APP_SECRET` sets the Symfony secret; the development configuration has
+a local default. The runtime configuration uses `APP_ENV=prod` and disables debug.
+
+The backend uses hexagonal architecture:
+
+```text
+Backend/symfony/
+  src/Domain/                     # Framework-independent models and rules
+  src/Application/Port/Inbound/   # Interfaces exposed by use cases
+  src/Application/Port/Outbound/  # Persistence interfaces consumed by use cases
+  src/Application/Service/        # Use cases
+  src/Inbound/Http/               # Symfony controllers
+  src/Outbound/Persistence/       # Doctrine adapters and persistence entities
+  config/                         # Wiring, routes, and database configuration
+```
+
+Each class and interface has its own file and uses strict types. Dependencies
+are injected through constructors. Domain classes encapsulate their state and
+have no Symfony or Doctrine dependencies. `IngredientRepository` is implemented
+by `DoctrineIngredientRepository`, which reads the existing Django table
+`foodplaner_ingredient`. A separate Doctrine entity maps the quoted `preferedUnit`
+column and nullable values to the independent domain model. Ingredient HTTP
+endpoints can be added through application use cases later.
+
+Django continues to own schema migrations (`task db-init`). Symfony startup does
+not create databases, run migrations, or update the schema. The Doctrine mapping
+currently covers only ingredients, not the entire Django schema.
+
+Development source, configuration, and tests are mounted into the container;
+changes are available without restarting. Re-run `task run-dev-symfony` after
+changes to Composer dependencies or the Dockerfile to rebuild the image.
+Run `task check-symfony` for configuration, mapping, and PHPUnit checks.
+Run `task check-symfony-db` to include the PostgreSQL integration test; it uses a
+temporary table in a rolled-back transaction without modifying existing records.
+Stop the backend with `task stop-symfony`.
+
+For the runtime image (without development dependencies or source mounts), use:
+
+```sh
+docker compose up -d --build --wait backend-symfony
+```
+
 ## Local development database
 
 Run `task db-init` to start the local PostgreSQL database, wait until it is ready,

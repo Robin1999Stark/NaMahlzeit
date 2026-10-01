@@ -1,14 +1,41 @@
 version: '3'
 
 services:
+  backend-symfony:
+    profiles: [symfony]
+    build:
+      context: ./Backend/symfony
+      target: runtime
+    environment:
+      APP_ENV: prod
+      APP_DEBUG: "0"
+      APP_SECRET: "${SYMFONY_APP_SECRET:-}"
+      DATABASE_URL: "${SYMFONY_DATABASE_URL:-postgresql://robin:postgres@db:5432/postgres?serverVersion=18&charset=utf8}"
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:8080:80"
+    healthcheck:
+      test: ["CMD", "php", "-r", "exit(@file_get_contents('http://127.0.0.1/ready') === false ? 1 : 0);"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
   db:
-    image: docker.io/library/postgres
+    image: docker.io/library/postgres:18
     volumes:
-      - ./data/db:/var/lib/postgresql/data
+      - ./data/db:/var/lib/postgresql
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=robin
       - POSTGRES_PASSWORD=postgres
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U robin -d postgres"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
 
   backend:
     build:

@@ -1,6 +1,31 @@
 version: '3'
 
 tasks:
+  run-dev-symfony:
+    desc: Build and start the standalone Symfony backend on localhost:8080
+    cmds:
+      - docker compose -f docker-compose.dev.yml up -d --build --wait backend-symfony
+
+  stop-symfony:
+    desc: Stop the standalone Symfony backend
+    cmds:
+      - docker compose -f docker-compose.dev.yml stop backend-symfony
+
+  check-symfony:
+    desc: Validate Symfony configuration, Doctrine mapping, and run PHPUnit
+    cmds:
+      - docker compose -f docker-compose.dev.yml run --rm --no-deps backend-symfony composer validate --strict
+      - docker compose -f docker-compose.dev.yml run --rm --no-deps backend-symfony php bin/console lint:yaml config
+      - docker compose -f docker-compose.dev.yml run --rm --no-deps backend-symfony php bin/console lint:container
+      - docker compose -f docker-compose.dev.yml run --rm --no-deps backend-symfony php bin/console doctrine:schema:validate --skip-sync
+      - docker compose -f docker-compose.dev.yml run --rm --no-deps backend-symfony vendor/bin/phpunit
+
+  check-symfony-db:
+    desc: Run Symfony tests including the PostgreSQL repository integration test
+    cmds:
+      - docker compose -f docker-compose.dev.yml up -d --wait db
+      - docker compose -f docker-compose.dev.yml run --rm --no-deps -e RUN_DATABASE_TESTS=1 backend-symfony vendor/bin/phpunit
+
   run-dev:
     desc: Run the project in development mode with docker-compose
     cmds:
