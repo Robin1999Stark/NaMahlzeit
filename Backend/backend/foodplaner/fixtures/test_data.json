@@ -1,0 +1,1184 @@
+[
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Apfel",
+    "fields": {
+      "description": "Obst",
+      "preferedUnit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Birne",
+    "fields": {
+      "description": "Obst",
+      "preferedUnit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Gouda",
+    "fields": {
+      "description": "Kõse",
+      "preferedUnit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Mehl",
+    "fields": {
+      "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam no",
+      "preferedUnit": "kg"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Milch",
+    "fields": {
+      "description": "Milchprodukt",
+      "preferedUnit": "l"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Mozzarella",
+    "fields": {
+      "description": "Käse",
+      "preferedUnit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Schinken",
+    "fields": {
+      "description": "sdfds",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Tomate",
+    "fields": {
+      "description": "Red fruit/vegi",
+      "preferedUnit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Tomaten passiert",
+    "fields": {
+      "description": "passierte Tomaten",
+      "preferedUnit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Trauben",
+    "fields": {
+      "description": "stuff",
+      "preferedUnit": "kg"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Wurst",
+    "fields": {
+      "description": "Test",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.meal",
+    "pk": 3,
+    "fields": {
+      "title": "Pizza",
+      "description": "Pizza"
+    }
+  },
+  {
+    "model": "foodplaner.meal",
+    "pk": 4,
+    "fields": {
+      "title": "Kõsepizza",
+      "description": "Kõsepizza"
+    }
+  },
+  {
+    "model": "foodplaner.meal",
+    "pk": 5,
+    "fields": {
+      "title": "Lasagne",
+      "description": "Lasagne"
+    }
+  },
+  {
+    "model": "foodplaner.meal",
+    "pk": 6,
+    "fields": {
+      "title": "Pfannkuchen",
+      "description": "Pfannkuchen"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 8,
+    "fields": {
+      "meal": 3,
+      "ingredient": "Schinken",
+      "amount": "1.00",
+      "unit": "kg"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 9,
+    "fields": {
+      "meal": 3,
+      "ingredient": "Tomate",
+      "amount": "3.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 18,
+    "fields": {
+      "meal": 6,
+      "ingredient": "Mehl",
+      "amount": "0.50",
+      "unit": "kg"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 19,
+    "fields": {
+      "meal": 6,
+      "ingredient": "Birne",
+      "amount": "2.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.foodplaneritem",
+    "pk": "2023-12-04",
+    "fields": {
+      "meals": []
+    }
+  },
+  {
+    "model": "foodplaner.foodplaneritem",
+    "pk": "2023-12-06",
+    "fields": {
+      "meals": [
+        3
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.foodplaneritem",
+    "pk": "2023-12-05",
+    "fields": {
+      "meals": [
+        6
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.foodplaneritem",
+    "pk": "2023-12-08",
+    "fields": {
+      "meals": [
+        4
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.foodplaneritem",
+    "pk": "2023-12-10",
+    "fields": {
+      "meals": [
+        3
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.foodplaneritem",
+    "pk": "2023-12-07",
+    "fields": {
+      "meals": []
+    }
+  },
+  {
+    "model": "foodplaner.foodplaneritem",
+    "pk": "2023-12-11",
+    "fields": {
+      "meals": []
+    }
+  },
+  {
+    "model": "foodplaner.foodplaneritem",
+    "pk": "2023-12-09",
+    "fields": {
+      "meals": [
+        4
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.foodplaneritem",
+    "pk": "2023-12-14",
+    "fields": {
+      "meals": []
+    }
+  },
+  {
+    "model": "foodplaner.foodplaneritem",
+    "pk": "2023-12-13",
+    "fields": {
+      "meals": [
+        4
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.foodplaneritem",
+    "pk": "2023-12-16",
+    "fields": {
+      "meals": []
+    }
+  },
+  {
+    "model": "foodplaner.foodplaneritem",
+    "pk": "2023-12-12",
+    "fields": {
+      "meals": [
+        3
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.foodplaneritem",
+    "pk": "2023-12-15",
+    "fields": {
+      "meals": [
+        3
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.foodplaneritem",
+    "pk": "2023-12-17",
+    "fields": {
+      "meals": []
+    }
+  },
+  {
+    "model": "foodplaner.foodplaneritem",
+    "pk": "2023-12-18",
+    "fields": {
+      "meals": [
+        5
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.foodplaneritem",
+    "pk": "2023-12-19",
+    "fields": {
+      "meals": []
+    }
+  },
+  {
+    "model": "foodplaner.foodplaneritem",
+    "pk": "2023-12-20",
+    "fields": {
+      "meals": []
+    }
+  },
+  {
+    "model": "foodplaner.foodplaneritem",
+    "pk": "2023-12-21",
+    "fields": {
+      "meals": [
+        4
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.inventoryitem",
+    "pk": 42,
+    "fields": {
+      "ingredient": "Wurst",
+      "amount": "6.00",
+      "unit": "kg"
+    }
+  },
+  {
+    "model": "foodplaner.inventoryitem",
+    "pk": 43,
+    "fields": {
+      "ingredient": "Apfel",
+      "amount": "6.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.inventoryitem",
+    "pk": 48,
+    "fields": {
+      "ingredient": "Trauben",
+      "amount": "2.10",
+      "unit": "kg"
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 1,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-05T15:50:12.219Z",
+      "ingredient": "Schinken",
+      "amount": "23.00",
+      "unit": "kg",
+      "notes": "buy at Alid"
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 9,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T18:23:41.669Z",
+      "ingredient": "Trauben",
+      "amount": "0.30",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 10,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T18:24:22.378Z",
+      "ingredient": "Trauben",
+      "amount": "0.30",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 11,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T18:25:05.512Z",
+      "ingredient": "Trauben",
+      "amount": "0.30",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 12,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T18:25:42.234Z",
+      "ingredient": "Trauben",
+      "amount": "0.30",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 13,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T18:27:12.617Z",
+      "ingredient": "Trauben",
+      "amount": "0.30",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 14,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T18:28:19.232Z",
+      "ingredient": "Trauben",
+      "amount": "0.30",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 15,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T18:28:20.520Z",
+      "ingredient": "Trauben",
+      "amount": "0.30",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 16,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T18:28:21.168Z",
+      "ingredient": "Trauben",
+      "amount": "0.30",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 17,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T18:28:29.635Z",
+      "ingredient": "Trauben",
+      "amount": "0.30",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 18,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T18:29:01.535Z",
+      "ingredient": "Trauben",
+      "amount": "0.30",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 19,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T18:29:35.798Z",
+      "ingredient": "Trauben",
+      "amount": "0.30",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 20,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T18:30:00.304Z",
+      "ingredient": "Trauben",
+      "amount": "0.30",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 21,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T18:30:24.237Z",
+      "ingredient": "Trauben",
+      "amount": "0.30",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 22,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T18:30:42.319Z",
+      "ingredient": "Trauben",
+      "amount": "0.30",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 23,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T18:31:40.970Z",
+      "ingredient": "Trauben",
+      "amount": "0.30",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 24,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T18:33:31.420Z",
+      "ingredient": "Trauben",
+      "amount": "0.30",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 25,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T18:34:09.249Z",
+      "ingredient": "Trauben",
+      "amount": "0.30",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 29,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T18:38:32.601Z",
+      "ingredient": "Trauben",
+      "amount": "0.30",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 30,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T18:39:55.720Z",
+      "ingredient": "Trauben",
+      "amount": "0.30",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 31,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T18:40:11.221Z",
+      "ingredient": "Trauben",
+      "amount": "0.30",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 32,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T18:40:27.430Z",
+      "ingredient": "Tomaten passiert",
+      "amount": "34.00",
+      "unit": "l",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 33,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T18:41:08.579Z",
+      "ingredient": "Mozzarella",
+      "amount": "1.10",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 34,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T18:42:33.381Z",
+      "ingredient": "Mehl",
+      "amount": "2.00",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 36,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T19:06:04.737Z",
+      "ingredient": "Mozzarella",
+      "amount": "4.00",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 37,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T19:06:06.378Z",
+      "ingredient": "Mozzarella",
+      "amount": "4.00",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 38,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T19:06:14.762Z",
+      "ingredient": "Mozzarella",
+      "amount": "4.00",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 39,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T19:06:22.846Z",
+      "ingredient": "Mozzarella",
+      "amount": "4.00",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 40,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T19:06:24.130Z",
+      "ingredient": "Mozzarella",
+      "amount": "4.00",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 41,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T19:07:35.975Z",
+      "ingredient": "Trauben",
+      "amount": "0.60",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 42,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T19:08:47.960Z",
+      "ingredient": "Trauben",
+      "amount": "0.60",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 43,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T19:08:55.355Z",
+      "ingredient": "Trauben",
+      "amount": "0.60",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 44,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T19:10:24.343Z",
+      "ingredient": "Trauben",
+      "amount": "0.60",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 45,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T19:13:57.267Z",
+      "ingredient": "Trauben",
+      "amount": "0.60",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 46,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T19:16:31.522Z",
+      "ingredient": "Trauben",
+      "amount": "0.60",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 47,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T19:17:25.650Z",
+      "ingredient": "Trauben",
+      "amount": "0.60",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 48,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T19:17:58.450Z",
+      "ingredient": "Trauben",
+      "amount": "0.60",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 49,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-05T18:47:38.558Z",
+      "ingredient": "Trauben",
+      "amount": "0.60",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 50,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-05T18:48:18.307Z",
+      "ingredient": "Tomate",
+      "amount": "2.00",
+      "unit": "stk",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 51,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-05T18:48:41.691Z",
+      "ingredient": "Mozzarella",
+      "amount": "0.40",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 57,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-05T18:56:24.298Z",
+      "ingredient": "Gouda",
+      "amount": "2.00",
+      "unit": "stk",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 59,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-05T18:56:28.488Z",
+      "ingredient": "Gouda",
+      "amount": "2.00",
+      "unit": "stk",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 61,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-05T18:56:32.571Z",
+      "ingredient": "Gouda",
+      "amount": "2.00",
+      "unit": "stk",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 62,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-05T18:56:33.539Z",
+      "ingredient": "Gouda",
+      "amount": "2.00",
+      "unit": "stk",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 63,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-05T18:56:34.203Z",
+      "ingredient": "Gouda",
+      "amount": "2.00",
+      "unit": "stk",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 64,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-05T18:56:34.915Z",
+      "ingredient": "Gouda",
+      "amount": "2.00",
+      "unit": "stk",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 66,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-05T18:56:50.473Z",
+      "ingredient": "Gouda",
+      "amount": "2.00",
+      "unit": "stk",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 67,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-05T18:56:51.957Z",
+      "ingredient": "Gouda",
+      "amount": "2.00",
+      "unit": "stk",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 68,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-05T18:56:56.779Z",
+      "ingredient": "Gouda",
+      "amount": "2.00",
+      "unit": "stk",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 72,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-05T18:57:00.764Z",
+      "ingredient": "Gouda",
+      "amount": "2.00",
+      "unit": "stk",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 73,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-05T18:57:01.549Z",
+      "ingredient": "Gouda",
+      "amount": "2.00",
+      "unit": "stk",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 74,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-05T18:57:02.559Z",
+      "ingredient": "Gouda",
+      "amount": "2.00",
+      "unit": "stk",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 80,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-05T19:07:13.030Z",
+      "ingredient": "Tomaten passiert",
+      "amount": "3.00",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 81,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-05T19:07:13.896Z",
+      "ingredient": "Tomaten passiert",
+      "amount": "3.00",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 82,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-05T19:07:14.356Z",
+      "ingredient": "Tomaten passiert",
+      "amount": "3.00",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 83,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-05T19:07:15.124Z",
+      "ingredient": "Tomaten passiert",
+      "amount": "3.00",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 94,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-06T16:03:13.599Z",
+      "ingredient": "Tomaten passiert",
+      "amount": "0.40",
+      "unit": "stk",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 95,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-06T16:03:14.505Z",
+      "ingredient": "Tomaten passiert",
+      "amount": "0.40",
+      "unit": "stk",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 96,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-06T16:03:14.823Z",
+      "ingredient": "Tomaten passiert",
+      "amount": "0.40",
+      "unit": "stk",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 97,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-06T16:03:15.003Z",
+      "ingredient": "Tomaten passiert",
+      "amount": "0.40",
+      "unit": "stk",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 98,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-06T16:03:15.327Z",
+      "ingredient": "Tomaten passiert",
+      "amount": "0.40",
+      "unit": "stk",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 99,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-06T16:03:15.652Z",
+      "ingredient": "Tomaten passiert",
+      "amount": "0.40",
+      "unit": "stk",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 100,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-06T16:03:16.828Z",
+      "ingredient": "Tomaten passiert",
+      "amount": "0.40",
+      "unit": "stk",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 101,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-06T16:03:17.477Z",
+      "ingredient": "Tomaten passiert",
+      "amount": "0.40",
+      "unit": "stk",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 102,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-06T16:03:17.740Z",
+      "ingredient": "Tomaten passiert",
+      "amount": "0.40",
+      "unit": "stk",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 103,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-06T16:03:18.317Z",
+      "ingredient": "Tomaten passiert",
+      "amount": "0.40",
+      "unit": "stk",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 105,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-06T16:03:47.421Z",
+      "ingredient": "Tomaten passiert",
+      "amount": "0.40",
+      "unit": "stk",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 139,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-06T17:32:11.405Z",
+      "ingredient": "Schinken",
+      "amount": "1.00",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 140,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-06T17:32:11.407Z",
+      "ingredient": "Birne",
+      "amount": "2.00",
+      "unit": "stk",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglist",
+    "pk": 1,
+    "fields": {
+      "created": "2023-12-05T15:50:12.220Z",
+      "items": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglist",
+    "pk": 2,
+    "fields": {
+      "created": "2023-01-06T10:00:07.371Z",
+      "items": [
+        139,
+        140
+      ]
+    }
+  }
+]

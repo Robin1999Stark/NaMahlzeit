@@ -36,6 +36,20 @@ Check out the live demo of the app [here](https://na-mahlzeit.de/login/). Feel f
 - **Backend**: Django for a robust, scalable backend
 - **Database**: PostgreSQL
 
+## Local development database
+
+Run `task db-init` to start the local PostgreSQL database, wait until it is ready,
+and apply the Django migrations. Docker must be running. The task can be run again
+to apply new migrations; existing data is preserved in `data/db`.
+
+Use `task run-dev` to start the application, then open http://localhost (port 80).
+Run `task load-test-data` (alias: `task load-data`) to initialize the database and
+import the predefined sample data from
+`Backend/backend/foodplaner/fixtures/test_data.json`. This includes ingredients,
+meals, meal plans, inventory, and shopping lists. The backend does not need to be
+running. Re-running the task reloads the fixture records using their existing IDs
+and overwrites changes to those records; it does not clear the database.
+
 ## 📅 Roadmap
 - [x] Implement meal planner with drag-and-drop
 - [x] Generate shopping and inventory lists

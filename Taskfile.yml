@@ -21,12 +21,20 @@ tasks:
     cmds:
       - sudo docker compose -f docker-compose.dev.yml build
 
+  db-init:
+    desc: Initialize the local database and apply Django migrations
+    cmds:
+      - docker compose -f docker-compose.dev.yml up -d --wait db
+      - docker compose -f docker-compose.dev.yml run --rm --no-deps backend python manage.py migrate
+
   migrate:
     desc: Run Django database migrations
     cmds:
       - sudo docker compose -f docker-compose.dev.yml exec -T backend python manage.py migrate
 
-  load-data:
-    desc: Load initial data from mealplaner_dump.json
+  load-test-data:
+    desc: Initialize the local database and load predefined JSON test data
+    aliases: [load-data]
     cmds:
-      - sudo docker compose -f docker-compose.dev.yml exec -T backend python manage.py loaddata /code/mealplaner_dump.json
+      - task: db-init
+      - docker compose -f docker-compose.dev.yml run --rm --no-deps backend python manage.py loaddata /code/Backend/backend/foodplaner/fixtures/test_data.json
