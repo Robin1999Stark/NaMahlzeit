@@ -51,7 +51,7 @@ function IngredientDetailView() {
 
     return (
         <>
-            <section className='w-full absolute left-[50%] translate-x-[-50%] px-8 mt-8 max-w-[70rem]'>
+            <section className='w-full absolute left-[50%] translate-x-[-50%] px-8 mt-8 max-w-280'>
                 <span className='flex flex-row justify-between items-center'>
                     <span className='flex flex-row justify-start items-center'>
                         <h1 className='font-semibold text-[#011413] text-2xl mx-2'>

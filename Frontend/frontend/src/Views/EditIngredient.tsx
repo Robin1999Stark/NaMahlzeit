@@ -56,7 +56,7 @@ function EditIngredient() {
     }
     return (
         <>
-            <section className='w-full my-4 px-7 flex flex-col justify-start items-start flex-grow'>
+            <section className='w-full my-4 px-7 flex flex-col justify-start items-start grow'>
                 <h1 className='truncate text-[#011413] text-xl font-semibold flex-1'>
                     Zutat '{ingredientData?.title}' anpassen
                 </h1>
@@ -77,7 +77,7 @@ function EditIngredient() {
                                     required: true,
                                 })}
                                 defaultValue={"Gericht"}
-                                className='bg-white w-full shadow-sm focus:shadow-lg disabled:text-slate-400 py-2 text-start  px-3 rounded-md mr-1' />
+                                className='bg-white w-full shadow-xs focus:shadow-lg disabled:text-slate-400 py-2 text-start  px-3 rounded-md mr-1' />
                         </li>
                         <li key={"li-description"} className='flex w-100 flex-col flex-1 justify-between items-start my-3'>
                             {errors.title && (
@@ -96,7 +96,7 @@ function EditIngredient() {
                                     required: true,
                                 })}
                                 defaultValue={"Lorem Ipsum"}
-                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md mr-1' />
+                                className='bg-white w-full shadow-xs focus:shadow-lg py-2 text-start px-3 rounded-md mr-1' />
                             {errors.description && (
                                 <p className='text-red-500 text-sm mt-1'>{errors.description.message}</p>
                             )}
@@ -115,7 +115,7 @@ function EditIngredient() {
                                     required: true,
                                 })}
                                 defaultValue={"kg"}
-                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md mr-1' />
+                                className='bg-white w-full shadow-xs focus:shadow-lg py-2 text-start px-3 rounded-md mr-1' />
                             {errors.preferedUnit && (
                                 <p className='text-red-500 text-sm mt-1'>{errors.preferedUnit.message}</p>
                             )}

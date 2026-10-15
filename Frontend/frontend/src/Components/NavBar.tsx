@@ -39,7 +39,7 @@ function NavBar() {
 
     if (windowSize.width > SIZE_MOBILE) {
         return (
-            <nav className='flex col-span-2 flex-row h-16 relative z-10 shadow-md items-center justify-between bg-white w-full'>
+            <nav className='flex col-span-2 flex-row h-20 pt-6 shrink-0 relative z-10 shadow-md items-center justify-between bg-white w-full'>
                 <span
                     onClick={() => { navigate('/planer'); }}
                     className='w-fit flex flex-row justify-start items-center cursor-pointer'>
@@ -56,7 +56,7 @@ function NavBar() {
 
                 <ul
                     ref={componentRef}
-                    className='w-3/5 max-w-[40rem] flex flex-row px-4 py-4 justify-around items-center'>
+                    className='w-3/5 max-w-160 flex flex-row px-4 py-4 justify-around items-center'>
                     {
                         (() => {
                             const showActive = isActive('/planer')

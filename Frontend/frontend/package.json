@@ -6,40 +6,45 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "lint:fix": "eslint . --ext .js,.ts,.tsx --fix",
+    "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "npm run lint -- --fix",
     "preview": "vite preview"
   },
   "dependencies": {
     "@szhsin/react-menu": "^4.2.2",
-    "axios": "^1.6.7",
-    "js-cookie": "^3.0.5",
-    "lodash": "^4.17.21",
+    "axios": "^1.20.0",
+    "js-cookie": "^3.0.8",
+    "lodash": "^4.18.1",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-datepicker": "^7.3.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.49.3",
     "react-icons": "^5.0.1",
-    "react-router-dom": "^6.21.3",
-    "tailwind-scrollbar": "^3.1.0"
+    "react-router-dom": "^7.18.4",
+    "tailwind-scrollbar": "^4.0.2"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.5",
     "@types/js-cookie": "^3.0.6",
     "@types/lodash": "^4.14.202",
     "@types/react": "^18.2.43",
     "@types/react-beautiful-dnd": "^13.1.8",
     "@types/react-dom": "^18.2.17",
-    "@typescript-eslint/eslint-plugin": "^6.21.0",
-    "@typescript-eslint/parser": "^6.21.0",
-    "@vitejs/plugin-react": "^4.2.1",
-    "autoprefixer": "^10.4.17",
-    "eslint": "^8.57.0",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.5",
-    "postcss": "^8.4.33",
-    "tailwindcss": "^3.4.1",
+    "@typescript-eslint/eslint-plugin": "^8.71.2",
+    "@typescript-eslint/parser": "^8.71.2",
+    "@vitejs/plugin-react": "^6.1.2",
+    "eslint": "^9.39.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.5.7",
+    "globals": "^17.13.0",
+    "postcss": "^8.5.30",
+    "tailwindcss": "^4.3.3",
     "typescript": "^5.2.2",
-    "vite": "^5.0.8"
+    "vite": "^8.3.4",
+    "@tailwindcss/postcss": "^4.3.3"
+  },
+  "engines": {
+    "node": ">=22.12.0"
   }
 }

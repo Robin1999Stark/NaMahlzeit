@@ -100,7 +100,7 @@ function SetTagsIngredient() {
 
     return (
         <>
-            <section className='w-full my-4 px-7 flex flex-col justify-start items-start flex-grow'>
+            <section className='w-full my-4 px-7 flex flex-col justify-start items-start grow'>
                 <h1 className='truncate text-[#011413] text-xl font-semibold flex-1'>
                     Tags für '{ingredient?.title}' verwalten
                 </h1>
@@ -135,7 +135,7 @@ function SetTagsIngredient() {
                                             })}
                                             value={tag}
                                             onChange={(e) => handleTagChange(index, e.target.value)}
-                                            className='bg-white flex-1 w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md mr-2'>
+                                            className='bg-white flex-1 w-full shadow-xs focus:shadow-lg py-2 text-start px-3 rounded-md mr-2'>
                                             <option value="">Select Tag</option>
                                             {tags && tags.map((tag) => (
                                                 <option

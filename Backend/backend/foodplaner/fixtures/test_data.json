@@ -1,57 +1,652 @@
 [
   {
+    "model": "foodplaner.tag",
+    "pk": "Curry",
+    "fields": {}
+  },
+  {
+    "model": "foodplaner.tag",
+    "pk": "Eintopf",
+    "fields": {}
+  },
+  {
+    "model": "foodplaner.tag",
+    "pk": "Fisch",
+    "fields": {}
+  },
+  {
+    "model": "foodplaner.tag",
+    "pk": "Fleisch",
+    "fields": {}
+  },
+  {
+    "model": "foodplaner.tag",
+    "pk": "Frühstück",
+    "fields": {}
+  },
+  {
+    "model": "foodplaner.tag",
+    "pk": "Ofengericht",
+    "fields": {}
+  },
+  {
+    "model": "foodplaner.tag",
+    "pk": "Pasta",
+    "fields": {}
+  },
+  {
+    "model": "foodplaner.tag",
+    "pk": "Pfannengericht",
+    "fields": {}
+  },
+  {
+    "model": "foodplaner.tag",
+    "pk": "Reisgericht",
+    "fields": {}
+  },
+  {
+    "model": "foodplaner.tag",
+    "pk": "Salat",
+    "fields": {}
+  },
+  {
+    "model": "foodplaner.tag",
+    "pk": "Schnell",
+    "fields": {}
+  },
+  {
+    "model": "foodplaner.tag",
+    "pk": "Suppe",
+    "fields": {}
+  },
+  {
+    "model": "foodplaner.tag",
+    "pk": "Süßspeise",
+    "fields": {}
+  },
+  {
+    "model": "foodplaner.tag",
+    "pk": "Vegan",
+    "fields": {}
+  },
+  {
+    "model": "foodplaner.tag",
+    "pk": "Vegetarisch",
+    "fields": {}
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Ahornsirup",
+    "fields": {
+      "description": "Ahornsirup für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "ml"
+    }
+  },
+  {
     "model": "foodplaner.ingredient",
     "pk": "Apfel",
     "fields": {
-      "description": "Obst",
+      "description": "Frische Äpfel, zum Beispiel Elstar oder Boskoop.",
       "preferedUnit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Aubergine",
+    "fields": {
+      "description": "Aubergine für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Basilikum",
+    "fields": {
+      "description": "Basilikum für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Basmatireis",
+    "fields": {
+      "description": "Basmatireis für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
     }
   },
   {
     "model": "foodplaner.ingredient",
     "pk": "Birne",
     "fields": {
-      "description": "Obst",
+      "description": "Reife, noch feste Birnen.",
       "preferedUnit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Blattsalat",
+    "fields": {
+      "description": "Blattsalat für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Blattspinat",
+    "fields": {
+      "description": "Frischer oder tiefgekühlter Blattspinat ohne Sahne und Gewürze.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Brokkoli",
+    "fields": {
+      "description": "Brokkoli für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Brot",
+    "fields": {
+      "description": "Brot für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Butter",
+    "fields": {
+      "description": "Butter für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Champignon",
+    "fields": {
+      "description": "Champignon für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Chilipulver",
+    "fields": {
+      "description": "Chilipulver für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Couscous",
+    "fields": {
+      "description": "Couscous für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Currypulver",
+    "fields": {
+      "description": "Currypulver für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Ei",
+    "fields": {
+      "description": "Ei für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Erbsen",
+    "fields": {
+      "description": "Erbsen für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Erdnussmus",
+    "fields": {
+      "description": "Cremiges Erdnussmus ohne zugesetzten Zucker.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Feta",
+    "fields": {
+      "description": "Feta für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Frühlingszwiebel",
+    "fields": {
+      "description": "Frühlingszwiebel für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Gemüsebrühe",
+    "fields": {
+      "description": "Fertig angerührte Gemüsebrühe, möglichst mild gesalzen.",
+      "preferedUnit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Gnocchi",
+    "fields": {
+      "description": "Frische Kartoffelgnocchi aus dem Kühlregal.",
+      "preferedUnit": "g"
     }
   },
   {
     "model": "foodplaner.ingredient",
     "pk": "Gouda",
     "fields": {
-      "description": "Kõse",
+      "description": "Milder Schnittkäse zum Reiben und Überbacken.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Gurke",
+    "fields": {
+      "description": "Gurke für die Zubereitung der Beispielrezepte.",
       "preferedUnit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Hafercuisine",
+    "fields": {
+      "description": "Pflanzliche Kochcreme auf Haferbasis.",
+      "preferedUnit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Haferdrink",
+    "fields": {
+      "description": "Ungesüßter pflanzlicher Haferdrink.",
+      "preferedUnit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Haferflocken",
+    "fields": {
+      "description": "Haferflocken für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Hokkaidokürbis",
+    "fields": {
+      "description": "Hokkaido mit essbarer Schale; Menge ohne Kerne und Stiel.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Hähnchenbrust",
+    "fields": {
+      "description": "Hähnchenbrustfilet ohne Haut und Knochen.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Ingwer",
+    "fields": {
+      "description": "Ingwer für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Karotte",
+    "fields": {
+      "description": "Karotte für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Kartoffel",
+    "fields": {
+      "description": "Kartoffel für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Kichererbsen",
+    "fields": {
+      "description": "Gegarte Kichererbsen aus Dose oder Glas; Menge als Abtropfgewicht.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Kidneybohnen",
+    "fields": {
+      "description": "Gegarte Kidneybohnen aus Dose oder Glas; Menge als Abtropfgewicht.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Kirschtomate",
+    "fields": {
+      "description": "Kirschtomate für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Knoblauch",
+    "fields": {
+      "description": "Knoblauch für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "Zehe"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Kokosmilch",
+    "fields": {
+      "description": "Kokosmilch für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Kreuzkümmel",
+    "fields": {
+      "description": "Kreuzkümmel für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Lachsfilet",
+    "fields": {
+      "description": "Entgrätetes Lachsfilet, frisch oder vollständig aufgetaut.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Lasagneplatten",
+    "fields": {
+      "description": "Lasagneplatten für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Lauch",
+    "fields": {
+      "description": "Lauch für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Limette",
+    "fields": {
+      "description": "Limette für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Mais",
+    "fields": {
+      "description": "Gegarter Zuckermais aus der Dose; Menge als Abtropfgewicht.",
+      "preferedUnit": "g"
     }
   },
   {
     "model": "foodplaner.ingredient",
     "pk": "Mehl",
     "fields": {
-      "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam no",
-      "preferedUnit": "kg"
+      "description": "Weizenmehl Type 405 oder 550 zum Backen und Binden.",
+      "preferedUnit": "g"
     }
   },
   {
     "model": "foodplaner.ingredient",
     "pk": "Milch",
     "fields": {
-      "description": "Milchprodukt",
-      "preferedUnit": "l"
+      "description": "Kuhmilch für Teige und cremige Saucen.",
+      "preferedUnit": "ml"
     }
   },
   {
     "model": "foodplaner.ingredient",
     "pk": "Mozzarella",
     "fields": {
-      "description": "Käse",
+      "description": "Mozzarella aus Kuhmilch; Mengen ohne Lake.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Muskat",
+    "fields": {
+      "description": "Muskat für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Naturjoghurt",
+    "fields": {
+      "description": "Naturjoghurt für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Olive",
+    "fields": {
+      "description": "Olive für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Olivenöl",
+    "fields": {
+      "description": "Olivenöl für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Oregano",
+    "fields": {
+      "description": "Oregano für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Paprika",
+    "fields": {
+      "description": "Paprika für die Zubereitung der Beispielrezepte.",
       "preferedUnit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Paprikapulver",
+    "fields": {
+      "description": "Paprikapulver für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Penne",
+    "fields": {
+      "description": "Penne für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Petersilie",
+    "fields": {
+      "description": "Petersilie für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Pfeffer",
+    "fields": {
+      "description": "Pfeffer für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Quark",
+    "fields": {
+      "description": "Quark für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Rapsöl",
+    "fields": {
+      "description": "Rapsöl für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Rinderhackfleisch",
+    "fields": {
+      "description": "Rinderhackfleisch für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Risottoreis",
+    "fields": {
+      "description": "Risottoreis für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Rote Linsen",
+    "fields": {
+      "description": "Rote Linsen für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Rote Zwiebel",
+    "fields": {
+      "description": "Rote Zwiebel für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Salz",
+    "fields": {
+      "description": "Salz für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
     }
   },
   {
     "model": "foodplaner.ingredient",
     "pk": "Schinken",
     "fields": {
-      "description": "sdfds",
+      "description": "Gekochter Schinken für Pizza und warme Gerichte.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Schnittlauch",
+    "fields": {
+      "description": "Schnittlauch für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Sojasauce",
+    "fields": {
+      "description": "Sojasauce für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Spaghetti",
+    "fields": {
+      "description": "Spaghetti für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Spätzle",
+    "fields": {
+      "description": "Frische Eierspätzle aus dem Kühlregal.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Staudensellerie",
+    "fields": {
+      "description": "Staudensellerie für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Süßkartoffel",
+    "fields": {
+      "description": "Süßkartoffel für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Thunfisch",
+    "fields": {
+      "description": "Thunfisch aus der Dose im eigenen Saft; Menge als Abtropfgewicht.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Tofu",
+    "fields": {
+      "description": "Fester Naturtofu, vor dem Braten trocken tupfen.",
       "preferedUnit": "g"
     }
   },
@@ -59,16 +654,24 @@
     "model": "foodplaner.ingredient",
     "pk": "Tomate",
     "fields": {
-      "description": "Red fruit/vegi",
+      "description": "Frische, reife Tomaten.",
       "preferedUnit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Tomaten gehackt",
+    "fields": {
+      "description": "Tomaten gehackt für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
     }
   },
   {
     "model": "foodplaner.ingredient",
     "pk": "Tomaten passiert",
     "fields": {
-      "description": "passierte Tomaten",
-      "preferedUnit": "stk"
+      "description": "Passierte Tomaten ohne zusätzliche Gewürze.",
+      "preferedUnit": "g"
     }
   },
   {
@@ -81,6 +684,54 @@
   },
   {
     "model": "foodplaner.ingredient",
+    "pk": "Trockenhefe",
+    "fields": {
+      "description": "Trockenhefe für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Vegetarischer Hartkäse",
+    "fields": {
+      "description": "Hartkäse mit mikrobiellem Lab, geeignet für vegetarische Gerichte.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Walnuss",
+    "fields": {
+      "description": "Walnuss für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Wasser",
+    "fields": {
+      "description": "Wasser für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Weizennudeln",
+    "fields": {
+      "description": "Asiatische Weizennudeln ohne Ei.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Weizentortilla",
+    "fields": {
+      "description": "Weizentortilla für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
     "pk": "Wurst",
     "fields": {
       "description": "Test",
@@ -88,55 +739,3333 @@
     }
   },
   {
+    "model": "foodplaner.ingredient",
+    "pk": "Zimt",
+    "fields": {
+      "description": "Zimt für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Zitrone",
+    "fields": {
+      "description": "Zitrone für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Zucchini",
+    "fields": {
+      "description": "Zucchini für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Zucker",
+    "fields": {
+      "description": "Zucker für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.ingredient",
+    "pk": "Zwiebel",
+    "fields": {
+      "description": "Zwiebel für die Zubereitung der Beispielrezepte.",
+      "preferedUnit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.meal",
+    "pk": 1001,
+    "fields": {
+      "title": "Spaghetti mit Tomatensauce",
+      "description": "Einfaches Nudelgericht mit Knoblauch, Basilikum und fruchtiger Tomatensauce.",
+      "duration": 25,
+      "portion_size": 4,
+      "preparation": "1. Zwiebel und Knoblauch fein würfeln. Im Olivenöl bei mittlerer Hitze 3 Minuten anschwitzen.\n\n2. Passierte Tomaten, 3 g Salz und Pfeffer zugeben. Offen 15 Minuten köcheln lassen.\n\n3. Spaghetti in reichlich Wasser mit dem übrigen Salz nach Packungsangabe bissfest kochen und abgießen.\n\n4. Basilikum hacken und unter die Sauce rühren. Spaghetti mit der Sauce vermengen.",
+      "picture": ""
+    }
+  },
+  {
+    "model": "foodplaner.meal",
+    "pk": 1002,
+    "fields": {
+      "title": "Rotes Linsencurry mit Reis",
+      "description": "Sämiges Curry aus roten Linsen, Karotten und Kokosmilch mit Basmatireis.",
+      "duration": 35,
+      "portion_size": 4,
+      "preparation": "1. Zwiebel, Knoblauch und Ingwer fein hacken, Karotten klein würfeln. Linsen in einem Sieb abspülen.\n\n2. Öl in einem Topf erhitzen. Gemüse 4 Minuten anbraten und Currypulver kurz mitrösten.\n\n3. Linsen, Kokosmilch und Brühe zugeben. Unter gelegentlichem Rühren 20 Minuten köcheln, bis die Linsen weich sind.\n\n4. Reis nach Packungsangabe garen. Curry mit Salz abschmecken und mit Reis servieren.",
+      "picture": ""
+    }
+  },
+  {
+    "model": "foodplaner.meal",
+    "pk": 1003,
+    "fields": {
+      "title": "Chili sin Carne",
+      "description": "Bunter Bohneneintopf mit Mais, Paprika und Tomaten, dazu Reis.",
+      "duration": 35,
+      "portion_size": 4,
+      "preparation": "1. Bohnen und Mais abspülen und abtropfen lassen. Paprika würfeln, Zwiebel und Knoblauch hacken.\n\n2. Öl erhitzen und Zwiebel, Knoblauch und Paprika 5 Minuten anbraten. Kreuzkümmel, Paprika- und Chilipulver kurz mitrösten.\n\n3. Tomaten, Bohnen und Mais zugeben und bei kleiner Hitze 20 Minuten köcheln lassen.\n\n4. Reis nach Packungsangabe garen. Chili mit Salz abschmecken und mit dem Reis servieren.",
+      "picture": ""
+    }
+  },
+  {
+    "model": "foodplaner.meal",
+    "pk": 1004,
+    "fields": {
+      "title": "Hähnchen-Gemüse-Reispfanne",
+      "description": "Reispfanne mit Hähnchenbrust, Paprika und Zucchini.",
+      "duration": 35,
+      "portion_size": 4,
+      "preparation": "1. Reis nach Packungsangabe kochen. Paprika, Zucchini und Zwiebel würfeln.\n\n2. Hähnchen separat in mundgerechte Stücke schneiden. 15 ml Öl in einer großen Pfanne erhitzen und das Fleisch rundherum etwa 7 Minuten anbraten.\n\n3. Fleisch herausnehmen. Restliches Öl und das Gemüse in die Pfanne geben und 7 Minuten braten.\n\n4. Brühe, Paprikapulver, Salz, Pfeffer und Fleisch zugeben. Weitere 5–8 Minuten garen, bis das Hähnchen vollständig durchgegart ist. Reis unterheben.",
+      "picture": ""
+    }
+  },
+  {
+    "model": "foodplaner.meal",
+    "pk": 1005,
+    "fields": {
+      "title": "Ofenkartoffeln mit Kräuterquark",
+      "description": "Knusprige Kartoffelspalten mit einem frischen Quark-Joghurt-Dip.",
+      "duration": 55,
+      "portion_size": 4,
+      "preparation": "1. Backofen auf 200 °C Ober-/Unterhitze vorheizen. Kartoffeln waschen und in gleich große Spalten schneiden.\n\n2. Kartoffeln mit Öl, Paprikapulver, 4 g Salz und der Hälfte des Pfeffers mischen. Auf einem Blech verteilen.\n\n3. 40–45 Minuten backen und nach der Hälfte der Zeit wenden.\n\n4. Kräuter hacken und mit Quark, Joghurt, restlichem Salz und Pfeffer verrühren. Zu den Kartoffeln servieren.",
+      "picture": ""
+    }
+  },
+  {
+    "model": "foodplaner.meal",
+    "pk": 1006,
+    "fields": {
+      "title": "Mediterraner Couscous-Salat",
+      "description": "Lauwarmer Couscous mit Kichererbsen, knackigem Gemüse und Zitronendressing.",
+      "duration": 25,
+      "portion_size": 4,
+      "preparation": "1. Brühe aufkochen, Couscous damit übergießen und abgedeckt nach Packungsangabe etwa 10 Minuten quellen lassen.\n\n2. Kichererbsen abspülen und abtropfen lassen. Gurke, Tomaten und Paprika würfeln; Petersilie hacken.\n\n3. Zitrone auspressen und den Saft mit Öl, Salz und Pfeffer verrühren.\n\n4. Couscous mit einer Gabel auflockern und mit Kichererbsen, Gemüse, Kräutern und Dressing mischen.",
+      "picture": ""
+    }
+  },
+  {
+    "model": "foodplaner.meal",
+    "pk": 1007,
+    "fields": {
+      "title": "Spinat-Feta-Nudelauflauf",
+      "description": "Überbackene Penne mit Blattspinat, Tomaten und cremigem Feta.",
+      "duration": 45,
+      "portion_size": 4,
+      "preparation": "1. Ofen auf 190 °C Ober-/Unterhitze vorheizen. Penne in Wasser mit 4 g Salz 2 Minuten kürzer als auf der Packung angegeben kochen.\n\n2. Zwiebel und Knoblauch hacken und in Öl anschwitzen. Spinat zugeben und bei mittlerer Hitze auftauen beziehungsweise zusammenfallen lassen.\n\n3. Passierte Tomaten, übriges Salz und Pfeffer zugeben und 5 Minuten köcheln. Mit den abgetropften Nudeln und zerbröseltem Feta mischen.\n\n4. In eine Auflaufform geben, mit geriebenem Gouda bestreuen und 20 Minuten backen.",
+      "picture": ""
+    }
+  },
+  {
+    "model": "foodplaner.meal",
+    "pk": 1008,
+    "fields": {
+      "title": "Kartoffel-Lauch-Suppe",
+      "description": "Cremige Gemüsesuppe mit Kartoffeln, Lauch und einem Schuss Hafercuisine.",
+      "duration": 35,
+      "portion_size": 4,
+      "preparation": "1. Kartoffeln und Karotten schälen und würfeln. Lauch gründlich waschen und in Ringe schneiden; Zwiebel hacken.\n\n2. Öl in einem großen Topf erhitzen und Zwiebel sowie Lauch 4 Minuten anschwitzen.\n\n3. Kartoffeln, Karotten und Brühe zugeben. Zugedeckt etwa 20 Minuten kochen, bis das Gemüse weich ist.\n\n4. Einen Teil der Suppe pürieren. Hafercuisine einrühren, kurz erhitzen und mit Salz, Pfeffer und Muskat abschmecken.",
+      "picture": ""
+    }
+  },
+  {
+    "model": "foodplaner.meal",
+    "pk": 1009,
+    "fields": {
+      "title": "Kürbis-Kokos-Suppe",
+      "description": "Herbstliche Hokkaidosuppe mit Ingwer und Kokosmilch.",
+      "duration": 40,
+      "portion_size": 4,
+      "preparation": "1. Kürbis waschen, entkernen und würfeln. Kartoffeln schälen und würfeln, Zwiebel und Ingwer hacken.\n\n2. Öl erhitzen und Zwiebel mit Ingwer 3 Minuten anschwitzen. Currypulver kurz mitrösten.\n\n3. Kürbis, Kartoffeln und Brühe zugeben. 25 Minuten köcheln lassen, bis alles weich ist.\n\n4. Kokosmilch zugießen und die Suppe fein pürieren. Noch einmal erhitzen und mit Salz und Pfeffer würzen.",
+      "picture": ""
+    }
+  },
+  {
+    "model": "foodplaner.meal",
+    "pk": 1010,
+    "fields": {
+      "title": "Lachs mit Brokkoli und Reis",
+      "description": "Zitronenlachs aus dem Ofen mit Brokkoliröschen und Basmatireis.",
+      "duration": 35,
+      "portion_size": 4,
+      "preparation": "1. Ofen auf 200 °C Ober-/Unterhitze vorheizen. Brokkoli in kleine Röschen teilen und mit 20 ml Öl, 3 g Salz und etwas Pfeffer mischen.\n\n2. Brokkoli auf einem Blech verteilen und zunächst 10 Minuten backen. Reis nach Packungsangabe kochen.\n\n3. Lachs mit dem übrigen Öl, Salz und Pfeffer würzen. Zitrone in Scheiben schneiden und auf den Fisch legen.\n\n4. Lachs zum Brokkoli auf das Blech legen und alles weitere 15–20 Minuten backen, bis der Fisch durchgegart ist. Mit Reis servieren.",
+      "picture": ""
+    }
+  },
+  {
+    "model": "foodplaner.meal",
+    "pk": 1011,
+    "fields": {
+      "title": "Spaghetti mit Linsenbolognese",
+      "description": "Herzhafte Tomatensauce mit roten Linsen, Karotten und Sellerie.",
+      "duration": 40,
+      "portion_size": 4,
+      "preparation": "1. Karotten und Sellerie fein würfeln, Zwiebel und Knoblauch hacken. Linsen abspülen.\n\n2. Gemüse in Öl 5 Minuten anbraten. Linsen, passierte Tomaten, Brühe und Oregano zugeben.\n\n3. Sauce etwa 25 Minuten köcheln lassen, bis die Linsen weich sind. Mit 2 g Salz und Pfeffer abschmecken.\n\n4. Spaghetti in reichlich Wasser mit dem übrigen Salz bissfest kochen. Abgießen und mit der Sauce servieren.",
+      "picture": ""
+    }
+  },
+  {
+    "model": "foodplaner.meal",
+    "pk": 1012,
+    "fields": {
+      "title": "Champignon-Risotto",
+      "description": "Cremiges Risotto mit gebratenen Champignons und italienischem Hartkäse.",
+      "duration": 40,
+      "portion_size": 4,
+      "preparation": "1. Brühe in einem Topf heiß halten. Pilze in Scheiben schneiden, Zwiebel und Knoblauch fein hacken.\n\n2. Pilze in 20 g Butter kräftig 6–8 Minuten anbraten und herausnehmen. Restliche Butter zugeben, Zwiebel und Knoblauch darin anschwitzen.\n\n3. Reis 2 Minuten mitdünsten. Brühe kellenweise zugeben und regelmäßig rühren. Neue Brühe erst zugeben, wenn die vorherige fast aufgenommen ist.\n\n4. Nach etwa 20–25 Minuten sind die Körner bissfest. Pilze, geriebenen Käse und gehackte Petersilie unterheben. Mit Salz und Pfeffer abschmecken.",
+      "picture": ""
+    }
+  },
+  {
+    "model": "foodplaner.meal",
+    "pk": 1013,
+    "fields": {
+      "title": "Gnocchi-Tomaten-Pfanne",
+      "description": "Knusprige Gnocchi mit Kirschtomaten, Spinat und Mozzarella.",
+      "duration": 20,
+      "portion_size": 4,
+      "preparation": "1. Kirschtomaten halbieren, Knoblauch hacken und frischen Spinat waschen. Mozzarella abtropfen lassen und zupfen.\n\n2. Gnocchi in einer großen Pfanne mit Öl bei mittlerer Hitze etwa 8 Minuten rundherum goldbraun braten.\n\n3. Tomaten und Knoblauch zugeben und weitere 4 Minuten braten. Spinat unterheben und zusammenfallen lassen.\n\n4. Mit Salz und Pfeffer würzen. Mozzarella darauf verteilen und zugedeckt 2 Minuten schmelzen lassen.",
+      "picture": ""
+    }
+  },
+  {
+    "model": "foodplaner.meal",
+    "pk": 1014,
+    "fields": {
+      "title": "Shakshuka mit Brot",
+      "description": "Eier in würziger Tomaten-Paprika-Sauce, dazu knuspriges Brot.",
+      "duration": 35,
+      "portion_size": 4,
+      "preparation": "1. Paprika und Zwiebel würfeln, Knoblauch hacken. In einer großen Pfanne mit Öl 6 Minuten anbraten.\n\n2. Gewürze kurz mitrösten, Tomaten zugeben und 15 Minuten köcheln lassen. Mit Salz und Pfeffer würzen.\n\n3. Acht Mulden in die Sauce drücken und jeweils ein Ei hineinschlagen. Zugedeckt bei kleiner Hitze 8–12 Minuten stocken lassen.\n\n4. Mit gehackter Petersilie bestreuen und mit Brot servieren.",
+      "picture": ""
+    }
+  },
+  {
+    "model": "foodplaner.meal",
+    "pk": 1015,
+    "fields": {
+      "title": "Gebratener Reis mit Ei",
+      "description": "Frisch gekochter Reis mit Erbsen, Karotten, Frühlingszwiebeln und Rührei.",
+      "duration": 25,
+      "portion_size": 4,
+      "preparation": "1. Reis nach Packungsangabe kochen, abgießen und kurz ausdampfen lassen. Karotten klein würfeln, Frühlingszwiebeln in Ringe schneiden.\n\n2. 10 ml Öl in einer großen Pfanne erhitzen. Eier verquirlen und darin unter Rühren stocken lassen; herausnehmen.\n\n3. Übriges Öl in die Pfanne geben und Karotten 5 Minuten braten. Erbsen und Frühlingszwiebeln zufügen und weitere 3 Minuten braten.\n\n4. Reis zugeben und unter Rühren 4 Minuten kräftig braten. Ei, Sojasauce und Pfeffer unterheben und heiß servieren.",
+      "picture": ""
+    }
+  },
+  {
+    "model": "foodplaner.meal",
+    "pk": 1016,
+    "fields": {
+      "title": "Kichererbsen-Spinat-Curry",
+      "description": "Mildes Kokoscurry mit Kichererbsen und Spinat, dazu Reis.",
+      "duration": 30,
+      "portion_size": 4,
+      "preparation": "1. Reis nach Packungsangabe kochen. Kichererbsen abspülen, Zwiebel, Knoblauch und Ingwer hacken.\n\n2. Öl erhitzen. Zwiebel, Knoblauch und Ingwer 3 Minuten anschwitzen und Currypulver kurz mitrösten.\n\n3. Tomaten, Kokosmilch und Kichererbsen zugeben und 12 Minuten köcheln lassen.\n\n4. Spinat zugeben und 5–8 Minuten weitergaren, bis er aufgetaut beziehungsweise zusammengefallen ist. Mit Salz abschmecken und mit Reis anrichten.",
+      "picture": ""
+    }
+  },
+  {
+    "model": "foodplaner.meal",
+    "pk": 1017,
+    "fields": {
+      "title": "Gemüse-Feta-Blech",
+      "description": "Buntes Ofengemüse mit Kartoffeln, Zucchini und Feta.",
+      "duration": 50,
+      "portion_size": 4,
+      "preparation": "1. Ofen auf 200 °C Ober-/Unterhitze vorheizen. Kartoffeln in dünne Spalten schneiden und mit der Hälfte des Öls sowie der Hälfte des Salzes mischen.\n\n2. Kartoffeln auf einem großen Blech 15 Minuten vorbacken. Zucchini in Scheiben, Paprika und Zwiebeln in Stücke schneiden.\n\n3. Gemüse mit dem restlichen Öl, Salz, Pfeffer und Oregano vermengen und zu den Kartoffeln geben. Weitere 15 Minuten backen.\n\n4. Feta darüberbröseln und alles weitere 10–15 Minuten backen, bis die Kartoffeln weich sind.",
+      "picture": ""
+    }
+  },
+  {
+    "model": "foodplaner.meal",
+    "pk": 1018,
+    "fields": {
+      "title": "Hähnchen-Wraps mit Joghurtsauce",
+      "description": "Gefüllte Weizentortillas mit Hähnchen, Salat und frischer Joghurtsauce.",
+      "duration": 30,
+      "portion_size": 4,
+      "preparation": "1. Salat waschen, Tomaten und Gurke klein schneiden. Knoblauch fein hacken und mit Joghurt, dem Saft einer halben Zitrone, 2 g Salz und Pfeffer verrühren.\n\n2. Hähnchen separat in Streifen schneiden und mit Paprikapulver sowie dem übrigen Salz würzen.\n\n3. Fleisch in Öl rundherum 8–10 Minuten braten, bis es vollständig durchgegart ist. Mit dem übrigen Zitronensaft beträufeln.\n\n4. Tortillas nach Packungsangabe erwärmen. Mit Sauce, Salat, Gemüse und Hähnchen füllen und fest einrollen.",
+      "picture": ""
+    }
+  },
+  {
+    "model": "foodplaner.meal",
+    "pk": 1019,
+    "fields": {
+      "title": "Thunfisch-Tomaten-Pasta",
+      "description": "Schnelle Penne mit Thunfisch, Tomaten und schwarzen Oliven.",
+      "duration": 25,
+      "portion_size": 4,
+      "preparation": "1. Penne in reichlich Wasser mit 4 g Salz nach Packungsangabe bissfest kochen.\n\n2. Zwiebel und Knoblauch hacken und in Öl anschwitzen. Tomaten und Oregano zugeben und 12 Minuten köcheln lassen.\n\n3. Thunfisch abtropfen lassen und zerpflücken, Oliven in Ringe schneiden. Beides in der Sauce 3 Minuten erhitzen.\n\n4. Sauce mit dem übrigen Salz und Pfeffer abschmecken. Nudeln abgießen und unterheben.",
+      "picture": ""
+    }
+  },
+  {
+    "model": "foodplaner.meal",
+    "pk": 1020,
+    "fields": {
+      "title": "Penne mit Brokkoli-Käsesauce",
+      "description": "Pasta und Brokkoli in einer cremigen Sauce aus Milch und Gouda.",
+      "duration": 25,
+      "portion_size": 4,
+      "preparation": "1. Brokkoli in kleine Röschen teilen und Gouda reiben. Penne in Wasser mit 4 g Salz nach Packungsangabe kochen; Brokkoli in den letzten 5 Minuten mitgaren.\n\n2. Butter schmelzen, Mehl einrühren und Milch nach und nach mit dem Schneebesen einarbeiten.\n\n3. Sauce 5 Minuten köcheln lassen. Käse bei kleiner Hitze darin schmelzen und mit übrigem Salz, Pfeffer und Muskat würzen.\n\n4. Nudeln und Brokkoli abgießen und mit der Käsesauce mischen.",
+      "picture": ""
+    }
+  },
+  {
+    "model": "foodplaner.meal",
+    "pk": 1021,
+    "fields": {
+      "title": "Ratatouille mit Reis",
+      "description": "Mediterranes Schmorgemüse mit Aubergine, Zucchini und Paprika.",
+      "duration": 45,
+      "portion_size": 4,
+      "preparation": "1. Aubergine, Zucchini und Paprika würfeln. Zwiebel und Knoblauch hacken.\n\n2. Öl in einem großen Topf erhitzen, Aubergine 5 Minuten anbraten. Zwiebel, Paprika und Zucchini zugeben und weitere 5 Minuten braten.\n\n3. Knoblauch, Tomaten und Oregano zugeben. Zugedeckt 25 Minuten bei kleiner Hitze schmoren und gelegentlich umrühren.\n\n4. Reis nach Packungsangabe garen. Gemüse mit Salz und Pfeffer abschmecken und mit Reis servieren.",
+      "picture": ""
+    }
+  },
+  {
+    "model": "foodplaner.meal",
+    "pk": 1022,
+    "fields": {
+      "title": "Süßkartoffel-Bohnen-Chili",
+      "description": "Würziger Eintopf aus Süßkartoffeln, Kidneybohnen und Mais, dazu Brot.",
+      "duration": 40,
+      "portion_size": 4,
+      "preparation": "1. Süßkartoffeln schälen und in etwa 2 cm große Würfel schneiden. Zwiebel hacken, Bohnen und Mais abspülen.\n\n2. Zwiebel in Öl 3 Minuten anschwitzen. Süßkartoffeln, Kreuzkümmel und Chilipulver zugeben und kurz mitbraten.\n\n3. Tomaten und Brühe zugeben. Zugedeckt 20 Minuten köcheln, dann Bohnen und Mais unterrühren.\n\n4. Weitere 8 Minuten garen, bis die Süßkartoffeln weich sind. Mit Salz abschmecken und mit Brot servieren.",
+      "picture": ""
+    }
+  },
+  {
+    "model": "foodplaner.meal",
+    "pk": 1023,
+    "fields": {
+      "title": "Käsespätzle mit Röstzwiebeln",
+      "description": "Herzhafte Spätzle mit geschmolzenem Käse und langsam gebräunten Zwiebeln.",
+      "duration": 30,
+      "portion_size": 4,
+      "preparation": "1. Frische Spätzle aus dem Kühlregal verwenden und nach Packungsangabe vorbereiten. Zwiebeln in dünne Ringe schneiden und Gouda reiben.\n\n2. Zwiebeln in 25 g Butter bei mittlerer Hitze etwa 15 Minuten goldbraun braten, dabei regelmäßig wenden.\n\n3. Übrige Butter in einer zweiten großen Pfanne erhitzen und Spätzle 5 Minuten anbraten. Milch und Gouda zugeben und bei kleiner Hitze unter Rühren schmelzen lassen.\n\n4. Mit Salz und Pfeffer abschmecken. Mit Röstzwiebeln und gehacktem Schnittlauch servieren.",
+      "picture": ""
+    }
+  },
+  {
+    "model": "foodplaner.meal",
+    "pk": 1024,
+    "fields": {
+      "title": "Kartoffel-Spinat-Frittata",
+      "description": "Ofenomelett mit Kartoffeln, Blattspinat und Feta.",
+      "duration": 45,
+      "portion_size": 4,
+      "preparation": "1. Kartoffeln schälen, in dünne Scheiben schneiden und 8 Minuten in Wasser vorkochen. Abgießen. Ofen auf 180 °C Ober-/Unterhitze vorheizen.\n\n2. Zwiebel hacken und in Öl anschwitzen. Spinat zugeben und auftauen beziehungsweise zusammenfallen lassen; überschüssige Flüssigkeit verdampfen lassen.\n\n3. Eier mit Milch, Salz und Pfeffer verquirlen. Kartoffeln und Spinat in eine gefettete Auflaufform geben und die Eiermilch darübergießen.\n\n4. Feta darüberbröseln und 25–30 Minuten backen, bis die Eiermasse vollständig gestockt ist.",
+      "picture": ""
+    }
+  },
+  {
+    "model": "foodplaner.meal",
+    "pk": 1025,
+    "fields": {
+      "title": "Apfel-Zimt-Porridge",
+      "description": "Warmes Haferfrühstück mit Apfelstücken, Zimt und Walnüssen.",
+      "duration": 15,
+      "portion_size": 4,
+      "preparation": "1. Äpfel waschen, entkernen und würfeln. Walnüsse grob hacken.\n\n2. Haferflocken, Haferdrink, die Hälfte der Äpfel und Salz in einen Topf geben und unter Rühren aufkochen.\n\n3. Bei kleiner Hitze 5–8 Minuten köcheln lassen und regelmäßig umrühren. Zimt einrühren.\n\n4. Auf vier Schalen verteilen und mit restlichen Apfelstücken, Walnüssen und Ahornsirup garnieren.",
+      "picture": ""
+    }
+  },
+  {
+    "model": "foodplaner.meal",
+    "pk": 1026,
+    "fields": {
+      "title": "Gemüse-Tofu-Nudeln mit Erdnusssauce",
+      "description": "Asiatische Weizennudeln mit gebratenem Tofu, Gemüse und cremiger Erdnusssauce.",
+      "duration": 30,
+      "portion_size": 4,
+      "preparation": "1. Weizennudeln ohne Ei nach Packungsangabe kochen. Tofu trocken tupfen und würfeln, Brokkoli klein teilen, Paprika und Karotten in dünne Streifen schneiden.\n\n2. Erdnussmus mit Sojasauce, Limettensaft und warmem Wasser glatt rühren.\n\n3. Tofu in der Hälfte des Öls 7 Minuten rundherum braten und herausnehmen. Gemüse im übrigen Öl unter Rühren 6–8 Minuten bissfest braten.\n\n4. Tofu und abgetropfte Nudeln zum Gemüse geben. Erdnusssauce unterheben und alles 2 Minuten erhitzen.",
+      "picture": ""
+    }
+  },
+  {
     "model": "foodplaner.meal",
     "pk": 3,
     "fields": {
-      "title": "Pizza",
-      "description": "Pizza"
+      "title": "Schinkenpizza",
+      "description": "Zwei große Blechpizzen mit Tomatensauce, Schinken und Mozzarella für vier Personen.",
+      "duration": 90,
+      "portion_size": 4,
+      "preparation": "1. Mehl, Trockenhefe und Salz mischen. Lauwarmes Wasser und 20 ml Öl zugeben, 8 Minuten kneten und abgedeckt 45 Minuten gehen lassen.\n\n2. Backofen auf 220 °C Ober-/Unterhitze vorheizen. Tomaten in Scheiben, Schinken in Streifen und Mozzarella in Stücke schneiden.\n\n3. Teig halbieren, auf zwei Blechen dünn ausrollen und mit den restlichen 10 ml Öl bestreichen. Passierte Tomaten darauf verteilen und mit Oregano bestreuen.\n\n4. Mit Schinken, Tomaten und Mozzarella belegen. Bleche nacheinander jeweils 15–18 Minuten backen, bis der Boden knusprig ist.",
+      "picture": ""
     }
   },
   {
     "model": "foodplaner.meal",
     "pk": 4,
     "fields": {
-      "title": "Kõsepizza",
-      "description": "Kõsepizza"
+      "title": "Käsepizza",
+      "description": "Zwei Blechpizzen mit würziger Tomatensauce, Gouda und Mozzarella.",
+      "duration": 90,
+      "portion_size": 4,
+      "preparation": "1. Mehl, Hefe und Salz mischen. Lauwarmes Wasser und 20 ml Olivenöl einarbeiten, 8 Minuten kneten und abgedeckt 45 Minuten gehen lassen.\n\n2. Ofen auf 220 °C Ober-/Unterhitze vorheizen. Gouda reiben und Mozzarella zupfen.\n\n3. Teig auf zwei Blechen ausrollen und mit dem übrigen Öl bestreichen. Passierte Tomaten und Oregano darauf verteilen.\n\n4. Beide Käsesorten darübergeben. Bleche nacheinander jeweils 15–18 Minuten goldbraun backen.",
+      "picture": ""
     }
   },
   {
     "model": "foodplaner.meal",
     "pk": 5,
     "fields": {
-      "title": "Lasagne",
-      "description": "Lasagne"
+      "title": "Lasagne Bolognese",
+      "description": "Klassische Lasagne mit Rinderhack, Tomatensauce und selbst gemachter Béchamel.",
+      "duration": 80,
+      "portion_size": 4,
+      "preparation": "1. Zwiebel, Karotten und Knoblauch fein würfeln. Öl erhitzen, Hackfleisch krümelig anbraten, Gemüse zugeben und 5 Minuten mitbraten.\n\n2. Passierte Tomaten, Oregano, die Hälfte des Salzes und Pfeffer einrühren und 20 Minuten leise köcheln lassen.\n\n3. Butter in einem zweiten Topf schmelzen, Mehl einrühren und die Milch nach und nach mit dem Schneebesen zugeben. 5 Minuten köcheln und mit dem übrigen Salz würzen.\n\n4. Ofen auf 180 °C Ober-/Unterhitze vorheizen. Fleischsauce, Lasagneplatten und Béchamel abwechselnd in eine Auflaufform schichten; mit Béchamel und geriebenem Gouda abschließen.\n\n5. 35–40 Minuten backen, bis die Nudelplatten weich sind. Vor dem Anschneiden 5 Minuten ruhen lassen.",
+      "picture": ""
     }
   },
   {
     "model": "foodplaner.meal",
     "pk": 6,
     "fields": {
-      "title": "Pfannkuchen",
-      "description": "Pfannkuchen"
+      "title": "Birnenpfannkuchen",
+      "description": "Goldbraune Pfannkuchen mit frischen Birnen und Zimt für vier Personen.",
+      "duration": 30,
+      "portion_size": 4,
+      "preparation": "1. Mehl, Milch, Eier, Zucker und Salz zu einem glatten Teig verrühren und 10 Minuten quellen lassen.\n\n2. Birnen entkernen und in dünne Spalten schneiden. Zimt in den Teig rühren.\n\n3. Butter portionsweise in einer beschichteten Pfanne erhitzen. Jeweils etwas Teig und Birnenspalten hineingeben.\n\n4. Etwa 8 Pfannkuchen bei mittlerer Hitze von jeder Seite 2–3 Minuten backen und bis zum Servieren warm halten.",
+      "picture": ""
     }
   },
   {
     "model": "foodplaner.mealingredient",
-    "pk": 8,
+    "pk": 1001,
     "fields": {
       "meal": 3,
-      "ingredient": "Schinken",
+      "ingredient": "Mehl",
+      "amount": "500.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1002,
+    "fields": {
+      "meal": 3,
+      "ingredient": "Wasser",
+      "amount": "300.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1003,
+    "fields": {
+      "meal": 3,
+      "ingredient": "Trockenhefe",
+      "amount": "7.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1004,
+    "fields": {
+      "meal": 3,
+      "ingredient": "Olivenöl",
+      "amount": "30.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1005,
+    "fields": {
+      "meal": 3,
+      "ingredient": "Salz",
+      "amount": "8.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1006,
+    "fields": {
+      "meal": 3,
+      "ingredient": "Tomaten passiert",
+      "amount": "300.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1007,
+    "fields": {
+      "meal": 3,
+      "ingredient": "Mozzarella",
+      "amount": "250.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1008,
+    "fields": {
+      "meal": 3,
+      "ingredient": "Oregano",
+      "amount": "2.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1009,
+    "fields": {
+      "meal": 4,
+      "ingredient": "Mehl",
+      "amount": "500.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1010,
+    "fields": {
+      "meal": 4,
+      "ingredient": "Wasser",
+      "amount": "300.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1011,
+    "fields": {
+      "meal": 4,
+      "ingredient": "Trockenhefe",
+      "amount": "7.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1012,
+    "fields": {
+      "meal": 4,
+      "ingredient": "Olivenöl",
+      "amount": "30.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1013,
+    "fields": {
+      "meal": 4,
+      "ingredient": "Salz",
+      "amount": "8.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1014,
+    "fields": {
+      "meal": 4,
+      "ingredient": "Tomaten passiert",
+      "amount": "350.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1015,
+    "fields": {
+      "meal": 4,
+      "ingredient": "Gouda",
+      "amount": "200.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1016,
+    "fields": {
+      "meal": 4,
+      "ingredient": "Mozzarella",
+      "amount": "250.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1017,
+    "fields": {
+      "meal": 4,
+      "ingredient": "Oregano",
+      "amount": "2.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1018,
+    "fields": {
+      "meal": 5,
+      "ingredient": "Lasagneplatten",
+      "amount": "250.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1019,
+    "fields": {
+      "meal": 5,
+      "ingredient": "Rinderhackfleisch",
+      "amount": "500.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1020,
+    "fields": {
+      "meal": 5,
+      "ingredient": "Zwiebel",
       "amount": "1.00",
-      "unit": "kg"
+      "unit": "stk"
     }
   },
   {
     "model": "foodplaner.mealingredient",
-    "pk": 9,
+    "pk": 1021,
     "fields": {
-      "meal": 3,
+      "meal": 5,
+      "ingredient": "Karotte",
+      "amount": "2.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1022,
+    "fields": {
+      "meal": 5,
+      "ingredient": "Knoblauch",
+      "amount": "2.00",
+      "unit": "Zehe"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1023,
+    "fields": {
+      "meal": 5,
+      "ingredient": "Olivenöl",
+      "amount": "20.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1024,
+    "fields": {
+      "meal": 5,
+      "ingredient": "Tomaten passiert",
+      "amount": "700.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1025,
+    "fields": {
+      "meal": 5,
+      "ingredient": "Butter",
+      "amount": "40.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1026,
+    "fields": {
+      "meal": 5,
+      "ingredient": "Mehl",
+      "amount": "40.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1027,
+    "fields": {
+      "meal": 5,
+      "ingredient": "Milch",
+      "amount": "600.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1028,
+    "fields": {
+      "meal": 5,
+      "ingredient": "Gouda",
+      "amount": "150.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1029,
+    "fields": {
+      "meal": 5,
+      "ingredient": "Oregano",
+      "amount": "2.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1030,
+    "fields": {
+      "meal": 5,
+      "ingredient": "Salz",
+      "amount": "8.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1031,
+    "fields": {
+      "meal": 5,
+      "ingredient": "Pfeffer",
+      "amount": "1.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1032,
+    "fields": {
+      "meal": 6,
+      "ingredient": "Milch",
+      "amount": "500.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1033,
+    "fields": {
+      "meal": 6,
+      "ingredient": "Ei",
+      "amount": "4.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1034,
+    "fields": {
+      "meal": 6,
+      "ingredient": "Zucker",
+      "amount": "30.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1035,
+    "fields": {
+      "meal": 6,
+      "ingredient": "Salz",
+      "amount": "1.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1036,
+    "fields": {
+      "meal": 6,
+      "ingredient": "Butter",
+      "amount": "40.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1037,
+    "fields": {
+      "meal": 6,
+      "ingredient": "Zimt",
+      "amount": "1.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1038,
+    "fields": {
+      "meal": 1001,
+      "ingredient": "Spaghetti",
+      "amount": "400.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1039,
+    "fields": {
+      "meal": 1001,
+      "ingredient": "Tomaten passiert",
+      "amount": "700.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1040,
+    "fields": {
+      "meal": 1001,
+      "ingredient": "Zwiebel",
+      "amount": "1.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1041,
+    "fields": {
+      "meal": 1001,
+      "ingredient": "Knoblauch",
+      "amount": "2.00",
+      "unit": "Zehe"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1042,
+    "fields": {
+      "meal": 1001,
+      "ingredient": "Olivenöl",
+      "amount": "30.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1043,
+    "fields": {
+      "meal": 1001,
+      "ingredient": "Basilikum",
+      "amount": "10.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1044,
+    "fields": {
+      "meal": 1001,
+      "ingredient": "Salz",
+      "amount": "8.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1045,
+    "fields": {
+      "meal": 1001,
+      "ingredient": "Pfeffer",
+      "amount": "1.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1046,
+    "fields": {
+      "meal": 1002,
+      "ingredient": "Rote Linsen",
+      "amount": "250.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1047,
+    "fields": {
+      "meal": 1002,
+      "ingredient": "Basmatireis",
+      "amount": "300.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1048,
+    "fields": {
+      "meal": 1002,
+      "ingredient": "Karotte",
+      "amount": "2.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1049,
+    "fields": {
+      "meal": 1002,
+      "ingredient": "Zwiebel",
+      "amount": "1.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1050,
+    "fields": {
+      "meal": 1002,
+      "ingredient": "Knoblauch",
+      "amount": "2.00",
+      "unit": "Zehe"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1051,
+    "fields": {
+      "meal": 1002,
+      "ingredient": "Ingwer",
+      "amount": "20.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1052,
+    "fields": {
+      "meal": 1002,
+      "ingredient": "Kokosmilch",
+      "amount": "400.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1053,
+    "fields": {
+      "meal": 1002,
+      "ingredient": "Gemüsebrühe",
+      "amount": "500.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1054,
+    "fields": {
+      "meal": 1002,
+      "ingredient": "Rapsöl",
+      "amount": "20.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1055,
+    "fields": {
+      "meal": 1002,
+      "ingredient": "Currypulver",
+      "amount": "2.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1056,
+    "fields": {
+      "meal": 1002,
+      "ingredient": "Salz",
+      "amount": "4.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1057,
+    "fields": {
+      "meal": 1003,
+      "ingredient": "Kidneybohnen",
+      "amount": "480.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1058,
+    "fields": {
+      "meal": 1003,
+      "ingredient": "Mais",
+      "amount": "285.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1059,
+    "fields": {
+      "meal": 1003,
+      "ingredient": "Paprika",
+      "amount": "2.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1060,
+    "fields": {
+      "meal": 1003,
+      "ingredient": "Zwiebel",
+      "amount": "1.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1061,
+    "fields": {
+      "meal": 1003,
+      "ingredient": "Knoblauch",
+      "amount": "2.00",
+      "unit": "Zehe"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1062,
+    "fields": {
+      "meal": 1003,
+      "ingredient": "Tomaten gehackt",
+      "amount": "800.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1063,
+    "fields": {
+      "meal": 1003,
+      "ingredient": "Basmatireis",
+      "amount": "250.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1064,
+    "fields": {
+      "meal": 1003,
+      "ingredient": "Olivenöl",
+      "amount": "20.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1065,
+    "fields": {
+      "meal": 1003,
+      "ingredient": "Kreuzkümmel",
+      "amount": "2.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1066,
+    "fields": {
+      "meal": 1003,
+      "ingredient": "Paprikapulver",
+      "amount": "2.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1067,
+    "fields": {
+      "meal": 1003,
+      "ingredient": "Chilipulver",
+      "amount": "0.50",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1068,
+    "fields": {
+      "meal": 1003,
+      "ingredient": "Salz",
+      "amount": "4.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1069,
+    "fields": {
+      "meal": 1004,
+      "ingredient": "Hähnchenbrust",
+      "amount": "600.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1070,
+    "fields": {
+      "meal": 1004,
+      "ingredient": "Basmatireis",
+      "amount": "300.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1071,
+    "fields": {
+      "meal": 1004,
+      "ingredient": "Paprika",
+      "amount": "2.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1072,
+    "fields": {
+      "meal": 1004,
+      "ingredient": "Zucchini",
+      "amount": "1.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1073,
+    "fields": {
+      "meal": 1004,
+      "ingredient": "Zwiebel",
+      "amount": "1.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1074,
+    "fields": {
+      "meal": 1004,
+      "ingredient": "Rapsöl",
+      "amount": "30.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1075,
+    "fields": {
+      "meal": 1004,
+      "ingredient": "Gemüsebrühe",
+      "amount": "150.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1076,
+    "fields": {
+      "meal": 1004,
+      "ingredient": "Paprikapulver",
+      "amount": "2.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1077,
+    "fields": {
+      "meal": 1004,
+      "ingredient": "Salz",
+      "amount": "5.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1078,
+    "fields": {
+      "meal": 1004,
+      "ingredient": "Pfeffer",
+      "amount": "1.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1079,
+    "fields": {
+      "meal": 1005,
+      "ingredient": "Kartoffel",
+      "amount": "1200.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1080,
+    "fields": {
+      "meal": 1005,
+      "ingredient": "Quark",
+      "amount": "500.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1081,
+    "fields": {
+      "meal": 1005,
+      "ingredient": "Naturjoghurt",
+      "amount": "200.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1082,
+    "fields": {
+      "meal": 1005,
+      "ingredient": "Schnittlauch",
+      "amount": "20.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1083,
+    "fields": {
+      "meal": 1005,
+      "ingredient": "Petersilie",
+      "amount": "15.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1084,
+    "fields": {
+      "meal": 1005,
+      "ingredient": "Olivenöl",
+      "amount": "30.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1085,
+    "fields": {
+      "meal": 1005,
+      "ingredient": "Paprikapulver",
+      "amount": "2.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1086,
+    "fields": {
+      "meal": 1005,
+      "ingredient": "Salz",
+      "amount": "6.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1087,
+    "fields": {
+      "meal": 1005,
+      "ingredient": "Pfeffer",
+      "amount": "1.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1088,
+    "fields": {
+      "meal": 1006,
+      "ingredient": "Couscous",
+      "amount": "300.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1089,
+    "fields": {
+      "meal": 1006,
+      "ingredient": "Gemüsebrühe",
+      "amount": "350.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1090,
+    "fields": {
+      "meal": 1006,
+      "ingredient": "Kichererbsen",
+      "amount": "240.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1091,
+    "fields": {
+      "meal": 1006,
+      "ingredient": "Gurke",
+      "amount": "1.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1092,
+    "fields": {
+      "meal": 1006,
+      "ingredient": "Tomate",
+      "amount": "4.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1093,
+    "fields": {
+      "meal": 1006,
+      "ingredient": "Paprika",
+      "amount": "1.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1094,
+    "fields": {
+      "meal": 1006,
+      "ingredient": "Petersilie",
+      "amount": "20.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1095,
+    "fields": {
+      "meal": 1006,
+      "ingredient": "Zitrone",
+      "amount": "1.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1096,
+    "fields": {
+      "meal": 1006,
+      "ingredient": "Olivenöl",
+      "amount": "40.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1097,
+    "fields": {
+      "meal": 1006,
+      "ingredient": "Salz",
+      "amount": "3.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1098,
+    "fields": {
+      "meal": 1006,
+      "ingredient": "Pfeffer",
+      "amount": "0.50",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1099,
+    "fields": {
+      "meal": 1007,
+      "ingredient": "Penne",
+      "amount": "400.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1100,
+    "fields": {
+      "meal": 1007,
+      "ingredient": "Blattspinat",
+      "amount": "450.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1101,
+    "fields": {
+      "meal": 1007,
+      "ingredient": "Feta",
+      "amount": "200.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1102,
+    "fields": {
+      "meal": 1007,
+      "ingredient": "Tomaten passiert",
+      "amount": "500.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1103,
+    "fields": {
+      "meal": 1007,
+      "ingredient": "Zwiebel",
+      "amount": "1.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1104,
+    "fields": {
+      "meal": 1007,
+      "ingredient": "Knoblauch",
+      "amount": "2.00",
+      "unit": "Zehe"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1105,
+    "fields": {
+      "meal": 1007,
+      "ingredient": "Olivenöl",
+      "amount": "20.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1106,
+    "fields": {
+      "meal": 1007,
+      "ingredient": "Gouda",
+      "amount": "100.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1107,
+    "fields": {
+      "meal": 1007,
+      "ingredient": "Salz",
+      "amount": "6.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1108,
+    "fields": {
+      "meal": 1007,
+      "ingredient": "Pfeffer",
+      "amount": "1.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1109,
+    "fields": {
+      "meal": 1008,
+      "ingredient": "Kartoffel",
+      "amount": "800.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1110,
+    "fields": {
+      "meal": 1008,
+      "ingredient": "Lauch",
+      "amount": "400.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1111,
+    "fields": {
+      "meal": 1008,
+      "ingredient": "Karotte",
+      "amount": "2.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1112,
+    "fields": {
+      "meal": 1008,
+      "ingredient": "Zwiebel",
+      "amount": "1.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1113,
+    "fields": {
+      "meal": 1008,
+      "ingredient": "Gemüsebrühe",
+      "amount": "1000.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1114,
+    "fields": {
+      "meal": 1008,
+      "ingredient": "Hafercuisine",
+      "amount": "200.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1115,
+    "fields": {
+      "meal": 1008,
+      "ingredient": "Olivenöl",
+      "amount": "20.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1116,
+    "fields": {
+      "meal": 1008,
+      "ingredient": "Salz",
+      "amount": "3.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1117,
+    "fields": {
+      "meal": 1008,
+      "ingredient": "Pfeffer",
+      "amount": "1.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1118,
+    "fields": {
+      "meal": 1008,
+      "ingredient": "Muskat",
+      "amount": "0.25",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1119,
+    "fields": {
+      "meal": 1009,
+      "ingredient": "Hokkaidokürbis",
+      "amount": "1000.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1120,
+    "fields": {
+      "meal": 1009,
+      "ingredient": "Kartoffel",
+      "amount": "300.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1121,
+    "fields": {
+      "meal": 1009,
+      "ingredient": "Zwiebel",
+      "amount": "1.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1122,
+    "fields": {
+      "meal": 1009,
+      "ingredient": "Ingwer",
+      "amount": "20.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1123,
+    "fields": {
+      "meal": 1009,
+      "ingredient": "Gemüsebrühe",
+      "amount": "800.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1124,
+    "fields": {
+      "meal": 1009,
+      "ingredient": "Kokosmilch",
+      "amount": "400.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1125,
+    "fields": {
+      "meal": 1009,
+      "ingredient": "Rapsöl",
+      "amount": "20.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1126,
+    "fields": {
+      "meal": 1009,
+      "ingredient": "Currypulver",
+      "amount": "1.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1127,
+    "fields": {
+      "meal": 1009,
+      "ingredient": "Salz",
+      "amount": "3.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1128,
+    "fields": {
+      "meal": 1009,
+      "ingredient": "Pfeffer",
+      "amount": "0.50",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1129,
+    "fields": {
+      "meal": 1010,
+      "ingredient": "Lachsfilet",
+      "amount": "600.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1130,
+    "fields": {
+      "meal": 1010,
+      "ingredient": "Brokkoli",
+      "amount": "800.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1131,
+    "fields": {
+      "meal": 1010,
+      "ingredient": "Basmatireis",
+      "amount": "300.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1132,
+    "fields": {
+      "meal": 1010,
+      "ingredient": "Zitrone",
+      "amount": "1.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1133,
+    "fields": {
+      "meal": 1010,
+      "ingredient": "Olivenöl",
+      "amount": "30.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1134,
+    "fields": {
+      "meal": 1010,
+      "ingredient": "Salz",
+      "amount": "5.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1135,
+    "fields": {
+      "meal": 1010,
+      "ingredient": "Pfeffer",
+      "amount": "1.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1136,
+    "fields": {
+      "meal": 1011,
+      "ingredient": "Spaghetti",
+      "amount": "400.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1137,
+    "fields": {
+      "meal": 1011,
+      "ingredient": "Rote Linsen",
+      "amount": "200.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1138,
+    "fields": {
+      "meal": 1011,
+      "ingredient": "Karotte",
+      "amount": "2.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1139,
+    "fields": {
+      "meal": 1011,
+      "ingredient": "Staudensellerie",
+      "amount": "150.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1140,
+    "fields": {
+      "meal": 1011,
+      "ingredient": "Zwiebel",
+      "amount": "1.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1141,
+    "fields": {
+      "meal": 1011,
+      "ingredient": "Knoblauch",
+      "amount": "2.00",
+      "unit": "Zehe"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1142,
+    "fields": {
+      "meal": 1011,
+      "ingredient": "Tomaten passiert",
+      "amount": "700.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1143,
+    "fields": {
+      "meal": 1011,
+      "ingredient": "Gemüsebrühe",
+      "amount": "400.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1144,
+    "fields": {
+      "meal": 1011,
+      "ingredient": "Olivenöl",
+      "amount": "25.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1145,
+    "fields": {
+      "meal": 1011,
+      "ingredient": "Oregano",
+      "amount": "2.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1146,
+    "fields": {
+      "meal": 1011,
+      "ingredient": "Salz",
+      "amount": "6.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1147,
+    "fields": {
+      "meal": 1011,
+      "ingredient": "Pfeffer",
+      "amount": "1.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1148,
+    "fields": {
+      "meal": 1012,
+      "ingredient": "Risottoreis",
+      "amount": "350.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1149,
+    "fields": {
+      "meal": 1012,
+      "ingredient": "Champignon",
+      "amount": "500.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1150,
+    "fields": {
+      "meal": 1012,
+      "ingredient": "Zwiebel",
+      "amount": "1.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1151,
+    "fields": {
+      "meal": 1012,
+      "ingredient": "Knoblauch",
+      "amount": "1.00",
+      "unit": "Zehe"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1152,
+    "fields": {
+      "meal": 1012,
+      "ingredient": "Gemüsebrühe",
+      "amount": "1200.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1153,
+    "fields": {
+      "meal": 1012,
+      "ingredient": "Butter",
+      "amount": "40.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1154,
+    "fields": {
+      "meal": 1012,
+      "ingredient": "Vegetarischer Hartkäse",
+      "amount": "80.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1155,
+    "fields": {
+      "meal": 1012,
+      "ingredient": "Petersilie",
+      "amount": "15.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1156,
+    "fields": {
+      "meal": 1012,
+      "ingredient": "Salz",
+      "amount": "2.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1157,
+    "fields": {
+      "meal": 1012,
+      "ingredient": "Pfeffer",
+      "amount": "1.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1158,
+    "fields": {
+      "meal": 1013,
+      "ingredient": "Gnocchi",
+      "amount": "800.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1159,
+    "fields": {
+      "meal": 1013,
+      "ingredient": "Kirschtomate",
+      "amount": "400.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1160,
+    "fields": {
+      "meal": 1013,
+      "ingredient": "Blattspinat",
+      "amount": "200.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1161,
+    "fields": {
+      "meal": 1013,
+      "ingredient": "Mozzarella",
+      "amount": "250.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1162,
+    "fields": {
+      "meal": 1013,
+      "ingredient": "Knoblauch",
+      "amount": "2.00",
+      "unit": "Zehe"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1163,
+    "fields": {
+      "meal": 1013,
+      "ingredient": "Olivenöl",
+      "amount": "30.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1164,
+    "fields": {
+      "meal": 1013,
+      "ingredient": "Salz",
+      "amount": "4.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1165,
+    "fields": {
+      "meal": 1013,
+      "ingredient": "Pfeffer",
+      "amount": "1.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1166,
+    "fields": {
+      "meal": 1014,
+      "ingredient": "Ei",
+      "amount": "8.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1167,
+    "fields": {
+      "meal": 1014,
+      "ingredient": "Tomaten gehackt",
+      "amount": "800.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1168,
+    "fields": {
+      "meal": 1014,
+      "ingredient": "Paprika",
+      "amount": "2.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1169,
+    "fields": {
+      "meal": 1014,
+      "ingredient": "Zwiebel",
+      "amount": "1.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1170,
+    "fields": {
+      "meal": 1014,
+      "ingredient": "Knoblauch",
+      "amount": "2.00",
+      "unit": "Zehe"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1171,
+    "fields": {
+      "meal": 1014,
+      "ingredient": "Olivenöl",
+      "amount": "25.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1172,
+    "fields": {
+      "meal": 1014,
+      "ingredient": "Kreuzkümmel",
+      "amount": "1.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1173,
+    "fields": {
+      "meal": 1014,
+      "ingredient": "Paprikapulver",
+      "amount": "2.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1174,
+    "fields": {
+      "meal": 1014,
+      "ingredient": "Petersilie",
+      "amount": "15.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1175,
+    "fields": {
+      "meal": 1014,
+      "ingredient": "Brot",
+      "amount": "300.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1176,
+    "fields": {
+      "meal": 1014,
+      "ingredient": "Salz",
+      "amount": "4.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1177,
+    "fields": {
+      "meal": 1014,
+      "ingredient": "Pfeffer",
+      "amount": "0.50",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1178,
+    "fields": {
+      "meal": 1015,
+      "ingredient": "Basmatireis",
+      "amount": "300.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1179,
+    "fields": {
+      "meal": 1015,
+      "ingredient": "Ei",
+      "amount": "4.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1180,
+    "fields": {
+      "meal": 1015,
+      "ingredient": "Erbsen",
+      "amount": "250.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1181,
+    "fields": {
+      "meal": 1015,
+      "ingredient": "Karotte",
+      "amount": "2.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1182,
+    "fields": {
+      "meal": 1015,
+      "ingredient": "Frühlingszwiebel",
+      "amount": "4.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1183,
+    "fields": {
+      "meal": 1015,
+      "ingredient": "Sojasauce",
+      "amount": "50.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1184,
+    "fields": {
+      "meal": 1015,
+      "ingredient": "Rapsöl",
+      "amount": "30.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1185,
+    "fields": {
+      "meal": 1015,
+      "ingredient": "Pfeffer",
+      "amount": "0.50",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1186,
+    "fields": {
+      "meal": 1016,
+      "ingredient": "Kichererbsen",
+      "amount": "480.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1187,
+    "fields": {
+      "meal": 1016,
+      "ingredient": "Blattspinat",
+      "amount": "400.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1188,
+    "fields": {
+      "meal": 1016,
+      "ingredient": "Kokosmilch",
+      "amount": "400.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1189,
+    "fields": {
+      "meal": 1016,
+      "ingredient": "Tomaten gehackt",
+      "amount": "400.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1190,
+    "fields": {
+      "meal": 1016,
+      "ingredient": "Zwiebel",
+      "amount": "1.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1191,
+    "fields": {
+      "meal": 1016,
+      "ingredient": "Knoblauch",
+      "amount": "2.00",
+      "unit": "Zehe"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1192,
+    "fields": {
+      "meal": 1016,
+      "ingredient": "Ingwer",
+      "amount": "15.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1193,
+    "fields": {
+      "meal": 1016,
+      "ingredient": "Basmatireis",
+      "amount": "300.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1194,
+    "fields": {
+      "meal": 1016,
+      "ingredient": "Rapsöl",
+      "amount": "20.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1195,
+    "fields": {
+      "meal": 1016,
+      "ingredient": "Currypulver",
+      "amount": "2.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1196,
+    "fields": {
+      "meal": 1016,
+      "ingredient": "Salz",
+      "amount": "4.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1197,
+    "fields": {
+      "meal": 1017,
+      "ingredient": "Kartoffel",
+      "amount": "800.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1198,
+    "fields": {
+      "meal": 1017,
+      "ingredient": "Zucchini",
+      "amount": "2.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1199,
+    "fields": {
+      "meal": 1017,
+      "ingredient": "Paprika",
+      "amount": "2.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1200,
+    "fields": {
+      "meal": 1017,
+      "ingredient": "Rote Zwiebel",
+      "amount": "2.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1201,
+    "fields": {
+      "meal": 1017,
+      "ingredient": "Kirschtomate",
+      "amount": "300.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1202,
+    "fields": {
+      "meal": 1017,
+      "ingredient": "Feta",
+      "amount": "300.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1203,
+    "fields": {
+      "meal": 1017,
+      "ingredient": "Olivenöl",
+      "amount": "40.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1204,
+    "fields": {
+      "meal": 1017,
+      "ingredient": "Oregano",
+      "amount": "2.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1205,
+    "fields": {
+      "meal": 1017,
+      "ingredient": "Salz",
+      "amount": "4.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1206,
+    "fields": {
+      "meal": 1017,
+      "ingredient": "Pfeffer",
+      "amount": "1.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1207,
+    "fields": {
+      "meal": 1018,
+      "ingredient": "Weizentortilla",
+      "amount": "8.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1208,
+    "fields": {
+      "meal": 1018,
+      "ingredient": "Hähnchenbrust",
+      "amount": "600.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1209,
+    "fields": {
+      "meal": 1018,
+      "ingredient": "Blattsalat",
+      "amount": "150.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1210,
+    "fields": {
+      "meal": 1018,
       "ingredient": "Tomate",
       "amount": "3.00",
       "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1211,
+    "fields": {
+      "meal": 1018,
+      "ingredient": "Gurke",
+      "amount": "1.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1212,
+    "fields": {
+      "meal": 1018,
+      "ingredient": "Naturjoghurt",
+      "amount": "250.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1213,
+    "fields": {
+      "meal": 1018,
+      "ingredient": "Zitrone",
+      "amount": "1.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1214,
+    "fields": {
+      "meal": 1018,
+      "ingredient": "Knoblauch",
+      "amount": "1.00",
+      "unit": "Zehe"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1215,
+    "fields": {
+      "meal": 1018,
+      "ingredient": "Rapsöl",
+      "amount": "20.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1216,
+    "fields": {
+      "meal": 1018,
+      "ingredient": "Paprikapulver",
+      "amount": "2.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1217,
+    "fields": {
+      "meal": 1018,
+      "ingredient": "Salz",
+      "amount": "5.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1218,
+    "fields": {
+      "meal": 1018,
+      "ingredient": "Pfeffer",
+      "amount": "0.50",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1219,
+    "fields": {
+      "meal": 1019,
+      "ingredient": "Penne",
+      "amount": "400.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1220,
+    "fields": {
+      "meal": 1019,
+      "ingredient": "Thunfisch",
+      "amount": "300.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1221,
+    "fields": {
+      "meal": 1019,
+      "ingredient": "Tomaten gehackt",
+      "amount": "800.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1222,
+    "fields": {
+      "meal": 1019,
+      "ingredient": "Zwiebel",
+      "amount": "1.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1223,
+    "fields": {
+      "meal": 1019,
+      "ingredient": "Knoblauch",
+      "amount": "2.00",
+      "unit": "Zehe"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1224,
+    "fields": {
+      "meal": 1019,
+      "ingredient": "Olive",
+      "amount": "80.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1225,
+    "fields": {
+      "meal": 1019,
+      "ingredient": "Olivenöl",
+      "amount": "20.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1226,
+    "fields": {
+      "meal": 1019,
+      "ingredient": "Oregano",
+      "amount": "1.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1227,
+    "fields": {
+      "meal": 1019,
+      "ingredient": "Salz",
+      "amount": "6.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1228,
+    "fields": {
+      "meal": 1019,
+      "ingredient": "Pfeffer",
+      "amount": "0.50",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1229,
+    "fields": {
+      "meal": 1020,
+      "ingredient": "Penne",
+      "amount": "400.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1230,
+    "fields": {
+      "meal": 1020,
+      "ingredient": "Brokkoli",
+      "amount": "600.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1231,
+    "fields": {
+      "meal": 1020,
+      "ingredient": "Milch",
+      "amount": "500.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1232,
+    "fields": {
+      "meal": 1020,
+      "ingredient": "Gouda",
+      "amount": "150.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1233,
+    "fields": {
+      "meal": 1020,
+      "ingredient": "Butter",
+      "amount": "25.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1234,
+    "fields": {
+      "meal": 1020,
+      "ingredient": "Mehl",
+      "amount": "25.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1235,
+    "fields": {
+      "meal": 1020,
+      "ingredient": "Salz",
+      "amount": "6.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1236,
+    "fields": {
+      "meal": 1020,
+      "ingredient": "Pfeffer",
+      "amount": "0.50",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1237,
+    "fields": {
+      "meal": 1020,
+      "ingredient": "Muskat",
+      "amount": "0.25",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1238,
+    "fields": {
+      "meal": 1021,
+      "ingredient": "Aubergine",
+      "amount": "1.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1239,
+    "fields": {
+      "meal": 1021,
+      "ingredient": "Zucchini",
+      "amount": "2.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1240,
+    "fields": {
+      "meal": 1021,
+      "ingredient": "Paprika",
+      "amount": "2.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1241,
+    "fields": {
+      "meal": 1021,
+      "ingredient": "Zwiebel",
+      "amount": "1.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1242,
+    "fields": {
+      "meal": 1021,
+      "ingredient": "Knoblauch",
+      "amount": "3.00",
+      "unit": "Zehe"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1243,
+    "fields": {
+      "meal": 1021,
+      "ingredient": "Tomaten gehackt",
+      "amount": "800.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1244,
+    "fields": {
+      "meal": 1021,
+      "ingredient": "Basmatireis",
+      "amount": "300.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1245,
+    "fields": {
+      "meal": 1021,
+      "ingredient": "Olivenöl",
+      "amount": "40.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1246,
+    "fields": {
+      "meal": 1021,
+      "ingredient": "Oregano",
+      "amount": "2.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1247,
+    "fields": {
+      "meal": 1021,
+      "ingredient": "Salz",
+      "amount": "5.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1248,
+    "fields": {
+      "meal": 1021,
+      "ingredient": "Pfeffer",
+      "amount": "1.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1249,
+    "fields": {
+      "meal": 1022,
+      "ingredient": "Süßkartoffel",
+      "amount": "800.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1250,
+    "fields": {
+      "meal": 1022,
+      "ingredient": "Kidneybohnen",
+      "amount": "480.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1251,
+    "fields": {
+      "meal": 1022,
+      "ingredient": "Mais",
+      "amount": "285.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1252,
+    "fields": {
+      "meal": 1022,
+      "ingredient": "Tomaten gehackt",
+      "amount": "800.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1253,
+    "fields": {
+      "meal": 1022,
+      "ingredient": "Zwiebel",
+      "amount": "1.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1254,
+    "fields": {
+      "meal": 1022,
+      "ingredient": "Gemüsebrühe",
+      "amount": "300.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1255,
+    "fields": {
+      "meal": 1022,
+      "ingredient": "Olivenöl",
+      "amount": "20.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1256,
+    "fields": {
+      "meal": 1022,
+      "ingredient": "Kreuzkümmel",
+      "amount": "2.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1257,
+    "fields": {
+      "meal": 1022,
+      "ingredient": "Chilipulver",
+      "amount": "0.50",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1258,
+    "fields": {
+      "meal": 1022,
+      "ingredient": "Salz",
+      "amount": "4.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1259,
+    "fields": {
+      "meal": 1022,
+      "ingredient": "Brot",
+      "amount": "300.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1260,
+    "fields": {
+      "meal": 1023,
+      "ingredient": "Spätzle",
+      "amount": "800.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1261,
+    "fields": {
+      "meal": 1023,
+      "ingredient": "Gouda",
+      "amount": "250.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1262,
+    "fields": {
+      "meal": 1023,
+      "ingredient": "Zwiebel",
+      "amount": "3.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1263,
+    "fields": {
+      "meal": 1023,
+      "ingredient": "Butter",
+      "amount": "40.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1264,
+    "fields": {
+      "meal": 1023,
+      "ingredient": "Milch",
+      "amount": "100.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1265,
+    "fields": {
+      "meal": 1023,
+      "ingredient": "Schnittlauch",
+      "amount": "15.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1266,
+    "fields": {
+      "meal": 1023,
+      "ingredient": "Salz",
+      "amount": "3.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1267,
+    "fields": {
+      "meal": 1023,
+      "ingredient": "Pfeffer",
+      "amount": "1.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1268,
+    "fields": {
+      "meal": 1024,
+      "ingredient": "Kartoffel",
+      "amount": "600.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1269,
+    "fields": {
+      "meal": 1024,
+      "ingredient": "Blattspinat",
+      "amount": "300.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1270,
+    "fields": {
+      "meal": 1024,
+      "ingredient": "Ei",
+      "amount": "8.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1271,
+    "fields": {
+      "meal": 1024,
+      "ingredient": "Milch",
+      "amount": "100.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1272,
+    "fields": {
+      "meal": 1024,
+      "ingredient": "Feta",
+      "amount": "150.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1273,
+    "fields": {
+      "meal": 1024,
+      "ingredient": "Zwiebel",
+      "amount": "1.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1274,
+    "fields": {
+      "meal": 1024,
+      "ingredient": "Olivenöl",
+      "amount": "25.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1275,
+    "fields": {
+      "meal": 1024,
+      "ingredient": "Salz",
+      "amount": "4.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1276,
+    "fields": {
+      "meal": 1024,
+      "ingredient": "Pfeffer",
+      "amount": "1.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1277,
+    "fields": {
+      "meal": 1025,
+      "ingredient": "Haferflocken",
+      "amount": "240.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1278,
+    "fields": {
+      "meal": 1025,
+      "ingredient": "Haferdrink",
+      "amount": "1000.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1279,
+    "fields": {
+      "meal": 1025,
+      "ingredient": "Apfel",
+      "amount": "4.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1280,
+    "fields": {
+      "meal": 1025,
+      "ingredient": "Walnuss",
+      "amount": "60.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1281,
+    "fields": {
+      "meal": 1025,
+      "ingredient": "Ahornsirup",
+      "amount": "40.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1282,
+    "fields": {
+      "meal": 1025,
+      "ingredient": "Zimt",
+      "amount": "2.00",
+      "unit": "tsp"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1283,
+    "fields": {
+      "meal": 1025,
+      "ingredient": "Salz",
+      "amount": "1.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1284,
+    "fields": {
+      "meal": 1026,
+      "ingredient": "Weizennudeln",
+      "amount": "300.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1285,
+    "fields": {
+      "meal": 1026,
+      "ingredient": "Tofu",
+      "amount": "400.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1286,
+    "fields": {
+      "meal": 1026,
+      "ingredient": "Brokkoli",
+      "amount": "400.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1287,
+    "fields": {
+      "meal": 1026,
+      "ingredient": "Paprika",
+      "amount": "2.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1288,
+    "fields": {
+      "meal": 1026,
+      "ingredient": "Karotte",
+      "amount": "2.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1289,
+    "fields": {
+      "meal": 1026,
+      "ingredient": "Erdnussmus",
+      "amount": "80.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1290,
+    "fields": {
+      "meal": 1026,
+      "ingredient": "Sojasauce",
+      "amount": "60.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1291,
+    "fields": {
+      "meal": 1026,
+      "ingredient": "Limette",
+      "amount": "1.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1292,
+    "fields": {
+      "meal": 1026,
+      "ingredient": "Wasser",
+      "amount": "120.00",
+      "unit": "ml"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 1293,
+    "fields": {
+      "meal": 1026,
+      "ingredient": "Rapsöl",
+      "amount": "30.00",
+      "unit": "ml"
     }
   },
   {
@@ -145,8 +4074,8 @@
     "fields": {
       "meal": 6,
       "ingredient": "Mehl",
-      "amount": "0.50",
-      "unit": "kg"
+      "amount": "300.00",
+      "unit": "g"
     }
   },
   {
@@ -160,19 +4089,342 @@
     }
   },
   {
-    "model": "foodplaner.foodplaneritem",
-    "pk": "2023-12-04",
+    "model": "foodplaner.mealingredient",
+    "pk": 8,
     "fields": {
-      "meals": []
+      "meal": 3,
+      "ingredient": "Schinken",
+      "amount": "200.00",
+      "unit": "g"
+    }
+  },
+  {
+    "model": "foodplaner.mealingredient",
+    "pk": 9,
+    "fields": {
+      "meal": 3,
+      "ingredient": "Tomate",
+      "amount": "3.00",
+      "unit": "stk"
+    }
+  },
+  {
+    "model": "foodplaner.mealtags",
+    "pk": 1001,
+    "fields": {
+      "tags": [
+        "Vegan",
+        "Pasta",
+        "Schnell"
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.mealtags",
+    "pk": 1002,
+    "fields": {
+      "tags": [
+        "Vegan",
+        "Curry"
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.mealtags",
+    "pk": 1003,
+    "fields": {
+      "tags": [
+        "Vegan",
+        "Eintopf"
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.mealtags",
+    "pk": 1004,
+    "fields": {
+      "tags": [
+        "Fleisch",
+        "Pfannengericht"
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.mealtags",
+    "pk": 1005,
+    "fields": {
+      "tags": [
+        "Vegetarisch",
+        "Ofengericht"
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.mealtags",
+    "pk": 1006,
+    "fields": {
+      "tags": [
+        "Vegan",
+        "Salat",
+        "Schnell"
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.mealtags",
+    "pk": 1007,
+    "fields": {
+      "tags": [
+        "Vegetarisch",
+        "Pasta",
+        "Ofengericht"
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.mealtags",
+    "pk": 1008,
+    "fields": {
+      "tags": [
+        "Vegan",
+        "Suppe"
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.mealtags",
+    "pk": 1009,
+    "fields": {
+      "tags": [
+        "Vegan",
+        "Suppe"
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.mealtags",
+    "pk": 1010,
+    "fields": {
+      "tags": [
+        "Fisch",
+        "Ofengericht"
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.mealtags",
+    "pk": 1011,
+    "fields": {
+      "tags": [
+        "Vegan",
+        "Pasta"
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.mealtags",
+    "pk": 1012,
+    "fields": {
+      "tags": [
+        "Vegetarisch",
+        "Reisgericht"
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.mealtags",
+    "pk": 1013,
+    "fields": {
+      "tags": [
+        "Vegetarisch",
+        "Pfannengericht",
+        "Schnell"
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.mealtags",
+    "pk": 1014,
+    "fields": {
+      "tags": [
+        "Vegetarisch",
+        "Pfannengericht"
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.mealtags",
+    "pk": 1015,
+    "fields": {
+      "tags": [
+        "Vegetarisch",
+        "Pfannengericht",
+        "Schnell"
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.mealtags",
+    "pk": 1016,
+    "fields": {
+      "tags": [
+        "Vegan",
+        "Curry",
+        "Schnell"
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.mealtags",
+    "pk": 1017,
+    "fields": {
+      "tags": [
+        "Vegetarisch",
+        "Ofengericht"
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.mealtags",
+    "pk": 1018,
+    "fields": {
+      "tags": [
+        "Fleisch",
+        "Schnell"
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.mealtags",
+    "pk": 1019,
+    "fields": {
+      "tags": [
+        "Fisch",
+        "Pasta",
+        "Schnell"
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.mealtags",
+    "pk": 1020,
+    "fields": {
+      "tags": [
+        "Vegetarisch",
+        "Pasta",
+        "Schnell"
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.mealtags",
+    "pk": 1021,
+    "fields": {
+      "tags": [
+        "Vegan",
+        "Eintopf"
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.mealtags",
+    "pk": 1022,
+    "fields": {
+      "tags": [
+        "Vegan",
+        "Eintopf"
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.mealtags",
+    "pk": 1023,
+    "fields": {
+      "tags": [
+        "Vegetarisch",
+        "Pfannengericht",
+        "Schnell"
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.mealtags",
+    "pk": 1024,
+    "fields": {
+      "tags": [
+        "Vegetarisch",
+        "Ofengericht"
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.mealtags",
+    "pk": 1025,
+    "fields": {
+      "tags": [
+        "Vegan",
+        "Frühstück",
+        "Schnell"
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.mealtags",
+    "pk": 1026,
+    "fields": {
+      "tags": [
+        "Vegan",
+        "Pfannengericht",
+        "Schnell"
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.mealtags",
+    "pk": 3,
+    "fields": {
+      "tags": [
+        "Fleisch",
+        "Ofengericht"
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.mealtags",
+    "pk": 4,
+    "fields": {
+      "tags": [
+        "Vegetarisch",
+        "Ofengericht"
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.mealtags",
+    "pk": 5,
+    "fields": {
+      "tags": [
+        "Fleisch",
+        "Ofengericht"
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.mealtags",
+    "pk": 6,
+    "fields": {
+      "tags": [
+        "Vegetarisch",
+        "Süßspeise",
+        "Schnell"
+      ]
     }
   },
   {
     "model": "foodplaner.foodplaneritem",
-    "pk": "2023-12-06",
+    "pk": "2023-12-04",
     "fields": {
-      "meals": [
-        3
-      ]
+      "meals": []
     }
   },
   {
@@ -186,7 +4438,32 @@
   },
   {
     "model": "foodplaner.foodplaneritem",
+    "pk": "2023-12-06",
+    "fields": {
+      "meals": [
+        3
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.foodplaneritem",
+    "pk": "2023-12-07",
+    "fields": {
+      "meals": []
+    }
+  },
+  {
+    "model": "foodplaner.foodplaneritem",
     "pk": "2023-12-08",
+    "fields": {
+      "meals": [
+        4
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.foodplaneritem",
+    "pk": "2023-12-09",
     "fields": {
       "meals": [
         4
@@ -204,46 +4481,7 @@
   },
   {
     "model": "foodplaner.foodplaneritem",
-    "pk": "2023-12-07",
-    "fields": {
-      "meals": []
-    }
-  },
-  {
-    "model": "foodplaner.foodplaneritem",
     "pk": "2023-12-11",
-    "fields": {
-      "meals": []
-    }
-  },
-  {
-    "model": "foodplaner.foodplaneritem",
-    "pk": "2023-12-09",
-    "fields": {
-      "meals": [
-        4
-      ]
-    }
-  },
-  {
-    "model": "foodplaner.foodplaneritem",
-    "pk": "2023-12-14",
-    "fields": {
-      "meals": []
-    }
-  },
-  {
-    "model": "foodplaner.foodplaneritem",
-    "pk": "2023-12-13",
-    "fields": {
-      "meals": [
-        4
-      ]
-    }
-  },
-  {
-    "model": "foodplaner.foodplaneritem",
-    "pk": "2023-12-16",
     "fields": {
       "meals": []
     }
@@ -259,11 +4497,34 @@
   },
   {
     "model": "foodplaner.foodplaneritem",
+    "pk": "2023-12-13",
+    "fields": {
+      "meals": [
+        4
+      ]
+    }
+  },
+  {
+    "model": "foodplaner.foodplaneritem",
+    "pk": "2023-12-14",
+    "fields": {
+      "meals": []
+    }
+  },
+  {
+    "model": "foodplaner.foodplaneritem",
     "pk": "2023-12-15",
     "fields": {
       "meals": [
         3
       ]
+    }
+  },
+  {
+    "model": "foodplaner.foodplaneritem",
+    "pk": "2023-12-16",
+    "fields": {
+      "meals": []
     }
   },
   {
@@ -346,10 +4607,10 @@
   },
   {
     "model": "foodplaner.shoppinglistitem",
-    "pk": 9,
+    "pk": 10,
     "fields": {
       "bought": false,
-      "added": "2023-11-05T18:23:41.669Z",
+      "added": "2023-11-05T18:24:22.378Z",
       "ingredient": "Trauben",
       "amount": "0.30",
       "unit": "kg",
@@ -358,13 +4619,61 @@
   },
   {
     "model": "foodplaner.shoppinglistitem",
-    "pk": 10,
+    "pk": 100,
     "fields": {
       "bought": false,
-      "added": "2023-11-05T18:24:22.378Z",
-      "ingredient": "Trauben",
-      "amount": "0.30",
-      "unit": "kg",
+      "added": "2023-12-06T16:03:16.828Z",
+      "ingredient": "Tomaten passiert",
+      "amount": "0.40",
+      "unit": "stk",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 101,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-06T16:03:17.477Z",
+      "ingredient": "Tomaten passiert",
+      "amount": "0.40",
+      "unit": "stk",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 102,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-06T16:03:17.740Z",
+      "ingredient": "Tomaten passiert",
+      "amount": "0.40",
+      "unit": "stk",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 103,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-06T16:03:18.317Z",
+      "ingredient": "Tomaten passiert",
+      "amount": "0.40",
+      "unit": "stk",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 105,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-06T16:03:47.421Z",
+      "ingredient": "Tomaten passiert",
+      "amount": "0.40",
+      "unit": "stk",
       "notes": ""
     }
   },
@@ -406,6 +4715,18 @@
   },
   {
     "model": "foodplaner.shoppinglistitem",
+    "pk": 139,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-06T17:32:11.405Z",
+      "ingredient": "Schinken",
+      "amount": "1.00",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
     "pk": 14,
     "fields": {
       "bought": false,
@@ -413,6 +4734,18 @@
       "ingredient": "Trauben",
       "amount": "0.30",
       "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
+    "pk": 140,
+    "fields": {
+      "bought": false,
+      "added": "2023-12-06T17:32:11.407Z",
+      "ingredient": "Birne",
+      "amount": "2.00",
+      "unit": "stk",
       "notes": ""
     }
   },
@@ -1006,6 +5339,18 @@
   },
   {
     "model": "foodplaner.shoppinglistitem",
+    "pk": 9,
+    "fields": {
+      "bought": false,
+      "added": "2023-11-05T18:23:41.669Z",
+      "ingredient": "Trauben",
+      "amount": "0.30",
+      "unit": "kg",
+      "notes": ""
+    }
+  },
+  {
+    "model": "foodplaner.shoppinglistitem",
     "pk": 94,
     "fields": {
       "bought": false,
@@ -1072,90 +5417,6 @@
       "added": "2023-12-06T16:03:15.652Z",
       "ingredient": "Tomaten passiert",
       "amount": "0.40",
-      "unit": "stk",
-      "notes": ""
-    }
-  },
-  {
-    "model": "foodplaner.shoppinglistitem",
-    "pk": 100,
-    "fields": {
-      "bought": false,
-      "added": "2023-12-06T16:03:16.828Z",
-      "ingredient": "Tomaten passiert",
-      "amount": "0.40",
-      "unit": "stk",
-      "notes": ""
-    }
-  },
-  {
-    "model": "foodplaner.shoppinglistitem",
-    "pk": 101,
-    "fields": {
-      "bought": false,
-      "added": "2023-12-06T16:03:17.477Z",
-      "ingredient": "Tomaten passiert",
-      "amount": "0.40",
-      "unit": "stk",
-      "notes": ""
-    }
-  },
-  {
-    "model": "foodplaner.shoppinglistitem",
-    "pk": 102,
-    "fields": {
-      "bought": false,
-      "added": "2023-12-06T16:03:17.740Z",
-      "ingredient": "Tomaten passiert",
-      "amount": "0.40",
-      "unit": "stk",
-      "notes": ""
-    }
-  },
-  {
-    "model": "foodplaner.shoppinglistitem",
-    "pk": 103,
-    "fields": {
-      "bought": false,
-      "added": "2023-12-06T16:03:18.317Z",
-      "ingredient": "Tomaten passiert",
-      "amount": "0.40",
-      "unit": "stk",
-      "notes": ""
-    }
-  },
-  {
-    "model": "foodplaner.shoppinglistitem",
-    "pk": 105,
-    "fields": {
-      "bought": false,
-      "added": "2023-12-06T16:03:47.421Z",
-      "ingredient": "Tomaten passiert",
-      "amount": "0.40",
-      "unit": "stk",
-      "notes": ""
-    }
-  },
-  {
-    "model": "foodplaner.shoppinglistitem",
-    "pk": 139,
-    "fields": {
-      "bought": false,
-      "added": "2023-12-06T17:32:11.405Z",
-      "ingredient": "Schinken",
-      "amount": "1.00",
-      "unit": "kg",
-      "notes": ""
-    }
-  },
-  {
-    "model": "foodplaner.shoppinglistitem",
-    "pk": 140,
-    "fields": {
-      "bought": false,
-      "added": "2023-12-06T17:32:11.407Z",
-      "ingredient": "Birne",
-      "amount": "2.00",
       "unit": "stk",
       "notes": ""
     }

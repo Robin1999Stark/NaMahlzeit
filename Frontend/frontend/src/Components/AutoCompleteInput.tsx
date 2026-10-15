@@ -1,5 +1,5 @@
 import { debounce } from 'lodash';
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Ingredient } from '../Datatypes/Ingredient';
 
 type Props = {
@@ -30,7 +30,7 @@ function AutoCompleteInput({ onSelect, search }: Props) {
         }
     }, [search]);
 
-    const debouncedSearch = useCallback(debounce((query: string) => searchForItems(query), 300), [searchForItems]);
+    const debouncedSearch = useMemo(() => debounce(searchForItems, 300), [searchForItems]);
 
     useEffect(() => {
         debouncedSearch(searchString.trim());
@@ -77,7 +77,7 @@ function AutoCompleteInput({ onSelect, search }: Props) {
         <div className="relative">
             {showSuggestions && filteredItems.length > 0 && (
                 <ul
-                    className="absolute bottom-full mb-1 left-0 w-full bg-white rounded-md shadow-sm z-10"
+                    className="absolute bottom-full mb-1 left-0 w-full bg-white rounded-md shadow-xs z-10"
                     ref={suggestionsRef}>
                     <li
                         key={'freetext'}
@@ -108,7 +108,7 @@ function AutoCompleteInput({ onSelect, search }: Props) {
                 onFocus={() => filteredItems.length > 0 && setShowSuggestions(true)}
                 onKeyDown={handleKeyDown}
                 ref={inputRef}
-                className='bg-white w-full py-2 text-start shadow-sm focus:shadow-lg px-6 rounded-md mr-2'
+                className='bg-white w-full py-2 text-start shadow-xs focus:shadow-lg px-6 rounded-md mr-2'
                 placeholder='Zutaten Suchen'
             />
         </div>

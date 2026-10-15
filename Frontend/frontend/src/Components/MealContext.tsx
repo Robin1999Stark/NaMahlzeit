@@ -1,13 +1,7 @@
-import React, { createContext, useState, ReactNode, useEffect } from 'react';
+import React, { useState, ReactNode, useEffect } from 'react';
 import { Meal } from '../Datatypes/Meal';
+import { MealContext } from './meal-context';
 import { getAllMeals } from '../Endpoints/MealService';
-
-interface MealContextType {
-    meals: Meal[];
-    setMeals: React.Dispatch<React.SetStateAction<Meal[]>>;
-}
-
-const MealContext = createContext<MealContextType | undefined>(undefined);
 
 const MealProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [meals, setMeals] = useState<Meal[]>([]);
@@ -33,4 +27,4 @@ const MealProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     );
 };
 
-export { MealProvider, MealContext };
+export { MealProvider };

@@ -3,7 +3,7 @@ import MealDragList from './MealDragList';
 import { Meal } from '../Datatypes/Meal';
 import { BiShuffle } from 'react-icons/bi';
 import { TagDT } from '../Datatypes/Tag';
-import { MealContext } from './MealContext';
+import { MealContext } from './meal-context';
 import { getMealTagsFromTagList } from '../Endpoints/TagService';
 
 type Props = {

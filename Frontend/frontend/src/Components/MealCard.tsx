@@ -22,7 +22,11 @@ function MealCard({ meal }: Props) {
         async function fetchTags(id: number) {
             try {
                 const response = await getAllTagsFromMeal(id);
-                response ? setTags(response) : console.log("Error")
+                if (response) {
+                    setTags(response);
+                } else {
+                    console.log("Error");
+                }
             } catch (_error) {
                 console.error("error", _error);
             }
@@ -35,7 +39,7 @@ function MealCard({ meal }: Props) {
     }
 
     return (
-        <section className='min-w-[8rem] max-w-[12rem] flex-grow flex-1 pb-4 rounded-md h-fit flex flex-col items-center justify-start bg-white p-2'>
+        <section className='min-w-32 max-w-48 grow flex-1 pb-4 rounded-md h-fit flex flex-col items-center justify-start bg-white p-2'>
             <span className='w-full'>
                 {imageError || !meal?.picture ? (
                     <PlaceholderMealImage />

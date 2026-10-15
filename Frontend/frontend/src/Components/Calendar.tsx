@@ -35,7 +35,7 @@ function Calendar({ planer, maxEntries = 10 }: Props) {
                     </li>
                 </a>
                 {date.getDay() === 0 &&
-                    <li className='h-full w-[1px] bg-gray-200'></li>
+                    <li className='h-full w-px bg-gray-200'></li>
                 }
             </React.Fragment>
         );

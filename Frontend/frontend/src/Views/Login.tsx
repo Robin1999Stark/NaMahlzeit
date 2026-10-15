@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { UserService } from "../Endpoints/UserService";
 import { User } from "../Datatypes/User";
-import Cookies from "js-cookie";
 import NavIcon from "../Components/NavIcon";
 
 interface FormData {
@@ -33,12 +32,6 @@ function Login({ setUser, setLoggedIn, showCreateUser }: LoginProps) {
                 setUser(user);
                 setLoggedIn(true);
 
-                Cookies.set("authToken", user.token, {
-                    expires: 7,
-                    sameSite: 'None',
-                    //secure: true 
-                });
-
                 navigate('/planer');
             }
         } catch (error) {
@@ -47,7 +40,7 @@ function Login({ setUser, setLoggedIn, showCreateUser }: LoginProps) {
     };
 
     return (
-        <section className='w-full my-4 px-7 flex flex-col justify-start items-center flex-grow'>
+        <section className='w-full my-4 px-7 flex flex-col justify-start items-center grow'>
             <div className="flex flex-col justify-center items-center mb-4">
                 <figure className='size-40'>
                     <NavIcon />
@@ -60,7 +53,7 @@ function Login({ setUser, setLoggedIn, showCreateUser }: LoginProps) {
                 </h1>
             </div>
 
-            <div className="max-w-[24rem] w-full md:w-1/2 md:border md:border-slate-200 md:px-8 py-6 md:rounded-sm">
+            <div className="max-w-[24rem] w-full md:w-1/2 md:border md:border-slate-200 md:px-8 py-6 md:rounded-xs">
                 <h1 className='truncate text-[#011413] w-full text-xl font-semibold flex-1'>
                     Login
                 </h1>
@@ -76,7 +69,7 @@ function Login({ setUser, setLoggedIn, showCreateUser }: LoginProps) {
                                 id="username"
                                 type="text"
                                 {...register("username", { required: "Username is required" })}
-                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
+                                className='bg-white w-full shadow-xs focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
                             {errors.username && <p className="text-red-500 text-sm">{errors.username.message}</p>}
                         </li>
                         <li key={"li-password"} className='flex w-100 flex-col flex-1 justify-between items-start my-3'>
@@ -89,7 +82,7 @@ function Login({ setUser, setLoggedIn, showCreateUser }: LoginProps) {
                                 id="password"
                                 type="password"
                                 {...register("password", { required: "Password is required" })}
-                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
+                                className='bg-white w-full shadow-xs focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
                             {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
                         </li>
                     </ul>

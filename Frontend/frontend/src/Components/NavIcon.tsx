@@ -9,10 +9,18 @@ function NavIcon() {
     useEffect(() => {
         const intervalId = setTimeout(() => {
             const left = Math.random() > 0.5;
-            left ? setShowEyeLeft(false) : setShowEyeRight(false);
+            if (left) {
+                setShowEyeLeft(false);
+            } else {
+                setShowEyeRight(false);
+            }
 
             setTimeout(() => {
-                left ? setShowEyeLeft(true) : setShowEyeRight(true);
+                if (left) {
+                    setShowEyeLeft(true);
+                } else {
+                    setShowEyeRight(true);
+                }
             }, 270);
         }, 10000);
 

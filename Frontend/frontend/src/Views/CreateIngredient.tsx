@@ -49,7 +49,7 @@ function CreateIngredient() {
     return (
         <>
 
-            <section className='w-full my-4 px-7 flex flex-col justify-start items-start flex-grow'>
+            <section className='w-full my-4 px-7 flex flex-col justify-start items-start grow'>
                 <h1 className='truncate text-[#011413] text-xl font-semibold flex-1'>
                     Neue Zutat erstellen
                 </h1>
@@ -70,7 +70,7 @@ function CreateIngredient() {
                                     required: true,
                                 })}
                                 defaultValue={"Gericht"}
-                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
+                                className='bg-white w-full shadow-xs focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
                         </li>
                         <li key={"li-description"} className='flex w-100 flex-col flex-1 justify-between items-start my-3'>
                             <label
@@ -85,7 +85,7 @@ function CreateIngredient() {
                                     required: true,
                                 })}
                                 defaultValue={"Lorem Ipsum"}
-                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
+                                className='bg-white w-full shadow-xs focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
                         </li>
                         <li key={"li-pU"} className='flex w-100 flex-col flex-1 justify-between items-start my-3'>
                             <label
@@ -100,7 +100,7 @@ function CreateIngredient() {
                                     required: true,
                                 })}
                                 defaultValue={"kg"}
-                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
+                                className='bg-white w-full shadow-xs focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
                         </li>
                     </ul>
                     <div className='w-full flex flex-col-reverse justify-end mb-6 sm:flex-row'>

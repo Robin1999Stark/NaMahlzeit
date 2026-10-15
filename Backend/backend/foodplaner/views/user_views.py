@@ -13,18 +13,13 @@ from ..serializers.user_serializers import CustomUserCreationSerializer
 from ..forms.user_forms import CustomUserCreationForm
 from rest_framework.authtoken.models import Token
 from django.middleware.csrf import get_token
-from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
-from ..models import CustomUser
-from rest_framework_simplejwt.tokens import UntypedToken
-from rest_framework_simplejwt.exceptions import InvalidToken
-from rest_framework_simplejwt.settings import api_settings
-from django.contrib.auth import get_user_model
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie, csrf_protect
 
 
 @ensure_csrf_cookie
 def get_csrf_token(request):
     csrf_token = get_token(request)
-    print(csrf_token)
     return JsonResponse({'csrfToken': csrf_token})
 
 
@@ -72,6 +67,7 @@ class UserRegistrationViewSet(ViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@method_decorator(csrf_protect, name="dispatch")
 class UserLoginViewSet(APIView):
     permission_classes = [AllowAny]
 
@@ -147,47 +143,5 @@ class GetUserView(APIView):
         return Response(data)
 
 
-CustomUser = get_user_model()
-
-
-class GetUserDataFromTokenView(APIView):
-    permission_classes = []
-
-    def get(self, request, *args, **kwargs):
-        # Get the token from the Authorization header
-        print('start of evaluation')
-        print(request)
-        auth_header = request.headers.get('Authorization', None)
-        print(auth_header)
-        if not auth_header:
-            return Response({'detail': 'Authorization header is missing.'}, status=status.HTTP_400_BAD_REQUEST)
-
-        # Extract the token
-        # Decode the token to get the user information
-        try:
-            token = auth_header.split(' ')[1]  # Expecting 'Bearer <token>'
-            print("Extracted Token:", token)  # Print the extracted token
-
-            UntypedToken(token)  # Verify the token
-            payload = api_settings.TOKEN_TYPE_CLAIM_HANDLER(
-                token)  # Decode the token
-            print("Decoded Payload:", payload)
-            username = payload.get('user_id')
-            user = CustomUser.objects.get(username=username)
-        except (InvalidToken, CustomUser.DoesNotExist):
-            return Response({'detail': 'Invalid token or user does not exist.'}, status=status.HTTP_401_UNAUTHORIZED)
-
-        # Prepare user d
-
-        data = {
-            "username": user.username,
-            "birthday": getattr(user, 'birthday', None),
-            "email": user.email,
-            "profile_picture": user.profilepicture.url if user.profilepicture else None,
-            "groups": [group.name for group in user.groups.all()],
-            "permissions": [perm.codename for perm in user.user_permissions.all()],
-            "date_joined": user.date_joined,
-            "last_login": user.last_login,
-        }
-
-        return Response(data)
+class GetUserDataFromTokenView(GetUserView):
+    """Keep the existing URL using the configured DRF authentication backends."""

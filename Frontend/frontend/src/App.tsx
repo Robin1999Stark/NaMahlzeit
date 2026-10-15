@@ -24,7 +24,6 @@ import { User } from "./Datatypes/User";
 import LoadingSpinner from "./Components/LoadingSpinner";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import { UserService } from "./Endpoints/UserService";
-import Cookies from "js-cookie";
 
 export const mealListID = "meal-list";
 
@@ -55,30 +54,19 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const checkAuthToken = async () => {
-      const token = Cookies.get('authToken');
-      if (token) {
-        try {
-          const userData = await UserService.getUserDataFromToken(token);
-          if (userData) {
-            setUser(userData);
-            setLoggedIn(true);
-          } else {
-            Cookies.remove('authToken');
-            setLoggedIn(false);
-          }
-        } catch (error) {
-          console.error("Failed to fetch user data from token", error);
-          Cookies.remove('authToken');
-          setLoggedIn(false);
-        }
-      } else {
-        setLoggedIn(false);
+    const restoreSession = async () => {
+      try {
+        const user = await UserService.getCurrentUser();
+        setUser(user);
+        setLoggedIn(user !== null);
+      } catch (error) {
+        console.error("Failed to restore session", error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
-    checkAuthToken();
+    restoreSession();
   }, []);
 
 
@@ -90,15 +78,15 @@ function App() {
 
   return (
     <>
-      <span className="h-screen flex flex-col">
+      <span className="h-dvh flex flex-col overflow-hidden pt-[env(safe-area-inset-top)]">
         <NavBar />
         {/* Placeholder for mobile */}
-        <span className={`${windowSize.width > SIZE_MOBILE ? 'hidden' : 'block'} h-4`}>
+        <span className={`${windowSize.width > SIZE_MOBILE ? 'hidden' : 'block'} h-4 shrink-0`}>
         </span>
         <span className={`${windowSize.width <= SIZE_MOBILE && showMITNav ? 'block' : 'hidden'}`}>
           <MealIngredientTagNavigation />
         </span>
-        <main className="flex-1 overflow-y-auto">
+        <main className="min-h-0 flex-1 overflow-y-auto">
           <Suspense fallback={<LoadingSpinner />}>
             <Routes>
               {/* Public Routes */}
@@ -135,10 +123,10 @@ function App() {
           </Suspense>
         </main>
         {/* Placeholder for mobile bottom nav bar */}
-        <span className={`${windowSize.width > SIZE_MOBILE ? 'hidden' : 'block'} h-[70px]`}>
+        <span className={`${windowSize.width > SIZE_MOBILE ? 'hidden' : 'block'} h-[70px] shrink-0`}>
         </span>
         {/* Placeholder for mobile bottom nav bar */}
-        <span className={`${windowSize.width <= SIZE_MOBILE && showMITNav ? 'block' : 'hidden'} h-[70px]`}>
+        <span className={`${windowSize.width <= SIZE_MOBILE && showMITNav ? 'block' : 'hidden'} h-[70px] shrink-0`}>
         </span>
       </span>
     </>
