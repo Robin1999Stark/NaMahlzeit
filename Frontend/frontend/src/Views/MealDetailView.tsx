@@ -196,7 +196,7 @@ function MealDetailView() {
                         <img
                             src={meal?.picture}
                             alt="Enlarged Meal"
-                            className='max-w-full max-h-screen object-contain'
+                            className='max-w-full max-h-dvh object-contain'
                         />
                         <button
                             className='absolute top-1 right-1 bg-black bg-opacity-0 hover:bg-opacity-40 p-2 rounded-full'

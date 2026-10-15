@@ -35,6 +35,7 @@ Check out the live demo of the app [here](https://na-mahlzeit.de/login/). Feel f
 - **Frontend**: React with TailwindCSS for styling and CSS animations
 - **Backend**: Django for a robust, scalable backend
 - **Database**: PostgreSQL
+- **Sessions**: Redis
 
 ## Local development database
 
@@ -49,6 +50,36 @@ import the predefined sample data from
 meals, meal plans, inventory, and shopping lists. The backend does not need to be
 running. Re-running the task reloads the fixture records using their existing IDs
 and overwrites changes to those records; it does not clear the database.
+
+The fixture includes 30 complete recipes for four servings each, with ingredient
+quantities, preparation steps, cooking times, and filterable tags. There are
+12 vegan recipes, 12 vegetarian recipes, four meat dishes, and two fish dishes,
+including lentil curry, lasagne, shakshuka, salmon with broccoli, and apple porridge.
+Legumes, corn, and canned tuna use drained weights; vegetable broth quantities
+refer to prepared broth. The four original recipe IDs are preserved and their
+placeholder content is replaced with complete recipes.
+
+## Session storage
+
+Django sessions use the built-in Redis cache backend with a dedicated `sessions`
+cache. Both Docker Compose configurations start Redis and wait for its healthcheck
+before starting the backend. Run `task run-dev` to rebuild the backend with the
+Redis client dependency and start the services.
+
+`REDIS_URL` configures the connection (default: `redis://redis:6379/0`). Redis is
+accessible only within the Docker network. To use an external Redis server, set
+`REDIS_URL` on the backend service; authenticated `redis://` and TLS `rediss://`
+URLs are supported.
+
+The frontend restores the signed-in user through `GET /api/users/me` on startup.
+Authentication uses Django's HttpOnly `sessionid` cookie; no API token needs to be
+stored in JavaScript cookies or local storage. Login requests include a CSRF token.
+
+Session expiry follows Django's default of two weeks. Redis stores data in the
+`redis-data` volume with append-only persistence, so ordinary container restarts
+preserve sessions. Removing that volume or clearing Redis logs out session users.
+The first deployment requires existing session users to log in again because
+database sessions are not migrated. Existing API token authentication is unchanged.
 
 ## 📅 Roadmap
 - [x] Implement meal planner with drag-and-drop

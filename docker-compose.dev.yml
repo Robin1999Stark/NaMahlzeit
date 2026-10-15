@@ -15,6 +15,17 @@ services:
       timeout: 5s
       retries: 30
 
+  redis:
+    image: redis:7.4-alpine
+    command: redis-server --appendonly yes --maxmemory-policy noeviction
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+
   backend:
     build:
       context: ./Backend/backend
@@ -26,10 +37,13 @@ services:
       - "8000:8000"
     environment:
       - POSTGRES_NAME=postgres
+      - REDIS_URL=redis://redis:6379/0
       - POSTGRES_USER=robin
       - POSTGRES_PASSWORD=postgres
     depends_on:
       db:
+        condition: service_healthy
+      redis:
         condition: service_healthy
 
   frontend:
@@ -42,3 +56,6 @@ services:
     depends_on:
       - backend
     command: nginx -g 'daemon off;'
+
+volumes:
+  redis-data:

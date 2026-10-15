@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { UserService } from "../Endpoints/UserService";
 import { User } from "../Datatypes/User";
-import Cookies from "js-cookie";
 import NavIcon from "../Components/NavIcon";
 
 interface FormData {
@@ -32,12 +31,6 @@ function Login({ setUser, setLoggedIn, showCreateUser }: LoginProps) {
             if (user) {
                 setUser(user);
                 setLoggedIn(true);
-
-                Cookies.set("authToken", user.token, {
-                    expires: 7,
-                    sameSite: 'None',
-                    //secure: true 
-                });
 
                 navigate('/planer');
             }

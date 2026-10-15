@@ -6,55 +6,34 @@ export namespace UserService {
 
     export async function getUserByUserName(name: string, pw: string): Promise<User | null> {
 
-        let userData = null;
-        let user = null;
-        const path = BASE_URL + '/users/login'
         try {
             const csrfToken = await fetchCsrfToken();
-            const response = await axios.post(path, {
+            await axios.post(BASE_URL + '/users/login', {
                 username: name,
                 password: pw,
             }, {
-                headers: {
-                    'X-CSRFToken': csrfToken || '',
-                },
+                withCredentials: true,
+                headers: { 'X-CSRFToken': csrfToken },
             });
-            const { token } = response.data;
-
-            if (!token) {
-                console.error('No token received');
-                return null;
-            }
-            // Store the token in the browser's local storage or a state management library
-            localStorage.setItem('authToken', token);
-
-            // Fetch additional user data after successful login
-            userData = await fetchUserData(token);
-
-            user = User.fromJSON(userData, token);
-            return user;
-
+            return await getCurrentUser();
         } catch (error) {
-            console.error('Failed to Login ' + error)
+            console.error('Failed to login:', error);
             return null;
         }
     }
 
-    export async function getUserDataFromToken(token: string): Promise<User | null> {
-
-        let user = null;
-        const path = BASE_URL + '/users/me-from-token'
+    export async function getCurrentUser(): Promise<User | null> {
         try {
-            const response = await axios.get(path, {
-                headers: { Authorization: `Bearer ${token}` },
+            const response = await axios.get(BASE_URL + '/users/me', {
+                withCredentials: true,
             });
-
-            user = User.fromJSON(response.data, token);
-            return user;
-
+            return User.fromJSON(response.data, '');
         } catch (error) {
-            console.error('Failed to Login ' + error)
-            return null;
+            if (axios.isAxiosError(error) &&
+                (error.response?.status === 401 || error.response?.status === 403)) {
+                return null;
+            }
+            throw error;
         }
     }
 

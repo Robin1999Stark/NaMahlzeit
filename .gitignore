@@ -25,3 +25,10 @@ dist-ssr
 
 
 /data/
+# Local Python environments
+.venv/
+.venv-python314/
+
+# Python bytecode
+__pycache__/
+*.py[cod]

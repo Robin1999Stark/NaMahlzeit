@@ -39,7 +39,7 @@ function NavBar() {
 
     if (windowSize.width > SIZE_MOBILE) {
         return (
-            <nav className='flex col-span-2 flex-row h-16 relative z-10 shadow-md items-center justify-between bg-white w-full'>
+            <nav className='flex col-span-2 flex-row h-20 pt-8 shrink-0 relative z-10 shadow-md items-center justify-between bg-white w-full'>
                 <span
                     onClick={() => { navigate('/planer'); }}
                     className='w-fit flex flex-row justify-start items-center cursor-pointer'>
