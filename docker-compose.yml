@@ -3,6 +3,7 @@ version: '3'
 services:
   backend-symfony:
     profiles: [symfony]
+    image: namahlzeit-backend-symfony:runtime
     build:
       context: ./Backend/symfony
       target: runtime
