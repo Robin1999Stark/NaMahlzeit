@@ -21,7 +21,7 @@ function IngredientListItem({ ingredient, deleteIngredient }: Props) {
                 const response = await getAllTagsFromIngredient(ingredient);
                 if (response === null || response === undefined) return;
                 setTags(response.tags)
-            } catch (_error) {
+            } catch {
                 return;
             }
         }
@@ -31,7 +31,7 @@ function IngredientListItem({ ingredient, deleteIngredient }: Props) {
     return (
         <>
             <span
-                className='select-none w-full h-full py-3 flex flex-row justify-between items-center rounded-md border-l-[6px] border-[#046865] truncate bg-[#fff]'>
+                className='select-none w-full h-full py-3 flex flex-row justify-between items-center rounded-md border-l-[6px] border-[#046865] truncate bg-white'>
                 <article className='text-center  flex flex-row justify-start ml-3 items-center w-full whitespace-normal text-[#011413] text-base '>
                     <Link className='text-[#011413] ml-2 underline' to={`/ingredients/${ingredient.title}`}>
                         <h3 className='text-start'>

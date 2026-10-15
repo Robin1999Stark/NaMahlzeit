@@ -35,7 +35,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
         handleSubmit,
         watch,
         setValue,
-        formState: { } } = useForm<ShoppingListItem>({
+    } = useForm<ShoppingListItem>({
             defaultValues: {
                 ingredient: "",
                 amount: 0,
@@ -125,7 +125,11 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
 
     const handleUnitChange = useCallback(async () => {
         const ingredient = await fetchIngredient(selectedIngredientID);
-        ingredient ? setValue('unit', ingredient?.preferedUnit) : setValue('unit', 'kg');
+        if (ingredient) {
+            setValue('unit', ingredient?.preferedUnit);
+        } else {
+            setValue('unit', 'kg');
+        }
     }, [fetchIngredient, selectedIngredientID, setValue]);
 
     const handleAddItemToShoppingList = useCallback(async (data: InventoryItem | CreateInventoryItemInterface) => {
@@ -188,7 +192,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
         if (selectedIngredientID) {
             handleUnitChange();
         }
-    }, [selectedIngredientID]);
+    }, [selectedIngredientID, handleUnitChange]);
 
 
     function sortItems(items: ShoppingListItem[]): ShoppingListItem[] {
@@ -222,7 +226,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
             const data = await getAllIngredients();
             const results: string[] = data.map((ingredient) => ingredient.title).filter((title) => title.toLowerCase().includes(query.toLowerCase()));
             return results;
-        } catch (_error) {
+        } catch {
             return [];
         }
     }, []);
@@ -403,7 +407,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
                                     required: true,
                                 })}
                                 defaultValue={1}
-                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1'
+                                className='bg-white w-full shadow-xs focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1'
                             />
                             <input
                                 key={'unit'}
@@ -413,7 +417,7 @@ function ShoppingListView({ shoppingList, setShoppingList }: Props) {
                                     required: true,
                                 })}
                                 defaultValue={selectedIngredient && typeof selectedIngredient !== 'string' ? selectedIngredient?.preferedUnit : "kg"}
-                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md'
+                                className='bg-white w-full shadow-xs focus:shadow-lg py-2 text-start px-3 rounded-md'
                             />
                         </div>
                         <button

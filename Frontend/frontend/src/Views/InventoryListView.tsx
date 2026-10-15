@@ -45,7 +45,7 @@ function InventoryListView() {
             const results: string[] = data.map((ingredient) => ingredient.title).filter((title) => title.toLowerCase().includes(query.toLowerCase()));
             return results
 
-        } catch (_error) {
+        } catch {
             return [];
         }
     }
@@ -151,7 +151,7 @@ function InventoryListView() {
                                 required: true,
                             })}
                             defaultValue={1}
-                            className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md mr-1'
+                            className='bg-white w-full shadow-xs focus:shadow-lg py-2 text-start px-3 rounded-md mr-1'
                         />
                         <input
                             key={'unit'}
@@ -161,7 +161,7 @@ function InventoryListView() {
                                 required: true,
                             })}
                             defaultValue={"kg"}
-                            className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md'
+                            className='bg-white w-full shadow-xs focus:shadow-lg py-2 text-start px-3 rounded-md'
                         />
                     </div>
                     <button

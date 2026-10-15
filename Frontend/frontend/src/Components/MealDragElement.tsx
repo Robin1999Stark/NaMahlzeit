@@ -46,7 +46,11 @@ function MealDragElement({ mealID, dragProvided, snapshot, date, customStyle, on
         async function fetchMeal() {
             try {
                 const response = await getMeal(mealID + "")
-                response ? setMeal(response) : setError(true)
+                if (response) {
+                    setMeal(response);
+                } else {
+                    setError(true);
+                }
             } catch (e) {
                 console.log(e)
             }
@@ -133,7 +137,7 @@ function MealDragElement({ mealID, dragProvided, snapshot, date, customStyle, on
             <li
                 {...dragProvided.dragHandleProps}
                 {...dragProvided.draggableProps}
-                className='select-none h-full my-2 flex flex-row relative justify-between items-center rounded-md border-l-[6px] border-[#046865] truncate bg-[#fff]'
+                className='select-none h-full my-2 flex flex-row relative justify-between items-center rounded-md border-l-[6px] border-[#046865] truncate bg-white'
                 style={style}
                 ref={dragProvided.innerRef}>
                 <article className='text-center  flex flex-row justify-start ml-3 items-center w-full whitespace-normal text-[#011413] text-base '>

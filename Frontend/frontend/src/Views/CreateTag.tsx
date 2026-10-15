@@ -29,7 +29,7 @@ function CreateTag() {
     }
     return (
         <>
-            <section className='w-full my-4 px-7 flex flex-col justify-start items-start flex-grow'>
+            <section className='w-full my-4 px-7 flex flex-col justify-start items-start grow'>
                 <h1 className='truncate text-[#011413] text-xl font-semibold flex-1'>
                     Neuen Tag erstellen
                 </h1>
@@ -49,7 +49,7 @@ function CreateTag() {
                                     required: true,
                                 })}
                                 defaultValue={"tag"}
-                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
+                                className='bg-white w-full shadow-xs focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
                         </li>
 
                     </ul>

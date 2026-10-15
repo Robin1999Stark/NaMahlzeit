@@ -1,3 +1,13 @@
+interface UserData {
+    username: string;
+    password?: string;
+    email: string;
+    birthday?: string | null;
+    profile_picture?: string | null;
+    last_login?: string | null;
+    date_joined?: string | null;
+}
+
 export class User {
     username: string;
     pw: string;
@@ -19,21 +29,21 @@ export class User {
         this.lastLogin = lastLogin;
     }
 
-    static fromJSON(jsonData: any, token: string): User {
+    static fromJSON(jsonData: UserData, token: string): User {
 
         const birthday = jsonData.birthday ? new Date(jsonData.birthday) : undefined;
-        const lastLogin = jsonData.birthday ? new Date(jsonData.last_login) : undefined;
-        const dateJoined = jsonData.birthday ? new Date(jsonData.date_joined) : undefined;
+        const lastLogin = jsonData.last_login ? new Date(jsonData.last_login) : undefined;
+        const dateJoined = jsonData.date_joined ? new Date(jsonData.date_joined) : undefined;
 
         return new User(
             jsonData.username,
-            jsonData.password,
+            jsonData.password ?? '',
             token,
             jsonData.email,
             birthday,
-            jsonData.profilePicture,
-            lastLogin,
-            dateJoined
+            jsonData.profile_picture ?? undefined,
+            dateJoined,
+            lastLogin
         );
     }
 }

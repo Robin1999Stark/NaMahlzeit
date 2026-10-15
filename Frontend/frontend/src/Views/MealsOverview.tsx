@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Meal } from '../Datatypes/Meal';
 import { TagDT } from '../Datatypes/Tag';
-import debounce from 'lodash/debounce';
 import MealListItem from '../Components/MealListItem';
 import { MdAdd } from 'react-icons/md';
 import { LuFilter, LuList, LuSquareStack } from 'react-icons/lu';
@@ -16,7 +15,6 @@ function MealsOverview() {
     const [meals, setMeals] = useState<Meal[]>();
     const [filteredMeals, setFilteredMeals] = useState<Meal[]>();
     const [searchString, setSearchString] = useState<string>("");
-    const [debounceTimeout, setDebounceTimeout] = useState<number | null>(null);
     const [isList, setIsList] = useState<boolean>(true);
 
     const handleAddMeal = async (to: Date, mealId: number) => {
@@ -73,30 +71,17 @@ function MealsOverview() {
         setFilteredMeals(filtered);
     }, [meals]);
 
-    debounce(searchForMeals, 500);
-
-    // Debounce the searchForMeals function with a delay before making the API call
     useEffect(() => {
-        if (searchString !== "" && searchString !== undefined && searchString !== null) {
-
-            if (debounceTimeout) {
-                clearTimeout(debounceTimeout);
-            }
-
-            const timeoutId = globalThis.setTimeout(() => {
-                searchForMeals(searchString.trim());
-            }, 500);
-
-            setDebounceTimeout(timeoutId);
-
-            return () => {
-                if (debounceTimeout) {
-                    clearTimeout(debounceTimeout);
-                }
-            };
-        } else {
+        if (!searchString.trim()) {
             setFilteredMeals(meals);
+            return;
         }
+
+        const timeoutId = globalThis.setTimeout(() => {
+            searchForMeals(searchString.trim());
+        }, 500);
+
+        return () => globalThis.clearTimeout(timeoutId);
     }, [searchString, meals, searchForMeals]);
 
     const mealList = () => {
@@ -124,7 +109,7 @@ function MealsOverview() {
                         {prefix}
                         <span
                             key={meal.id}
-                            className='py-[0.2rem] px-2 flex flex-row justify-between overflow-hidden rounded-sm bg-white bg-opacity-10'>
+                            className='py-[0.2rem] px-2 flex flex-row justify-between overflow-hidden rounded-xs bg-white/10'>
                             <MealListItem
                                 meal={meal}
                                 addMealToPlaner={handleAddMeal}
@@ -138,7 +123,7 @@ function MealsOverview() {
 
     const mealCards = () => {
         return (
-            <ul className='w-full h-full flex px-7 py-4 flex-row flex-wrap flex-grow'>
+            <ul className='w-full h-full flex px-7 py-4 flex-row flex-wrap grow'>
                 {filteredMeals ? filteredMeals?.map((meal,) => {
                     return <li className='mr-2'>
                         <MealCard meal={meal} deleteMeal={handleDeleteMeal} />
@@ -152,7 +137,7 @@ function MealsOverview() {
     return (
         <>
             {/* Only visible in mobile version */}
-            <section className='w-full my-4 px-7 md:hidden flex flex-row items-center justify-between flex-grow '>
+            <section className='w-full my-4 px-7 md:hidden flex flex-row items-center justify-between grow '>
                 <h1 className='truncate text-[#011413] text-xl font-semibold flex-1'>
                     Rezepte ({filteredMeals?.length})
                 </h1>
@@ -163,20 +148,16 @@ function MealsOverview() {
                 </button>
             </section >
 
-            <section className='w-full my-4 px-7 flex flex-row items-center justify-between flex-grow'>
+            <section className='w-full my-4 px-7 flex flex-row items-center justify-between grow'>
                 <h1 className='truncate text-[#011413] hidden md:block text-xl font-semibold flex-1'>
                     Rezepte ({filteredMeals?.length})
                 </h1>
-                <div className='flex flex-grow flex-row justify-center items-center'>
+                <div className='flex grow flex-row justify-center items-center'>
                     <input
                         type="text"
                         value={searchString}
                         onChange={(e) => {
                             setSearchString(e.target.value);
-                            // debounced search - delays search
-                            if (debounceTimeout) {
-                                clearTimeout(debounceTimeout);
-                            }
                         }}
                         autoFocus={false}
                         className='bg-white w-full focus:ring-0 py-2 text-start shadow-md px-6 rounded-full mr-2'

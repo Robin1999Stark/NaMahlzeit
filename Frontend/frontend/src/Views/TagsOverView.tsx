@@ -52,7 +52,7 @@ function TagsOverView() {
     return (
         <>
             {/* Only visible in mobile version */}
-            <section className='w-full my-4 px-7 md:hidden flex flex-row items-center justify-between flex-grow '>
+            <section className='w-full my-4 px-7 md:hidden flex flex-row items-center justify-between grow '>
                 <h1 className='truncate text-[#011413] text-xl font-semibold flex-1'>
                     Tags ({filteredTags?.length})
                 </h1>
@@ -62,11 +62,11 @@ function TagsOverView() {
                     <MdAdd />
                 </button>
             </section >
-            <section className='w-full my-4 px-7 flex flex-row items-center justify-between flex-grow'>
+            <section className='w-full my-4 px-7 flex flex-row items-center justify-between grow'>
                 <h1 className='truncate text-[#011413] hidden md:block text-xl font-semibold flex-1'>
                     Tags ({filteredTags?.length})
                 </h1>
-                <div className='flex flex-grow flex-row justify-center items-center'>
+                <div className='flex grow flex-row justify-center items-center'>
                     <input type="text" value={searchString}
                         onChange={(e) => {
                             setSearchString(e.target.value);
@@ -112,7 +112,7 @@ function TagsOverView() {
                         {prefix}
                         <li
                             key={tag.name}
-                            className='select-none w-full h-full py-3 my-2 flex flex-row justify-between items-center rounded-md border-l-[6px] border-[#046865] truncate bg-[#fff]'>
+                            className='select-none w-full h-full py-3 my-2 flex flex-row justify-between items-center rounded-md border-l-[6px] border-[#046865] truncate bg-white'>
                             <h1 className='text-start ml-3 text-base'>
                                 {tag.name}
                             </h1>

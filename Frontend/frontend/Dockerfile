@@ -1,5 +1,5 @@
 # Step 1: Build the application
-FROM node:18 AS build
+FROM node:24 AS build
 
 WORKDIR /app
 
@@ -7,7 +7,7 @@ WORKDIR /app
 COPY package.json .
 COPY package-lock.json .
 
-RUN npm install
+RUN npm ci
 
 # Kopiere den Rest des Codes nach dem Installieren der Dependencies
 COPY . .

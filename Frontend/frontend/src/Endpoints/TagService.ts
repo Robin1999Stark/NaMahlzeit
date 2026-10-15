@@ -14,7 +14,7 @@ async function getAllTagsJSON(): Promise<unknown> {
     try {
         const response = await instance.get(`/tags/`);
         return response.data;
-    } catch (_error) {
+    } catch {
         return null;
     }
 }
@@ -75,7 +75,7 @@ async function getAllTagsFromMealJSON(meal: number): Promise<unknown> {
     try {
         const response = await instance.get(`/meal-tags/${meal}/`);
         return response.data;
-    } catch (_error) {
+    } catch {
         return null;
     }
 }
@@ -86,7 +86,7 @@ export async function getAllTagsFromMeal(meal: number): Promise<MealTags | null>
         const data = await getAllTagsFromMealJSON(meal);
         if (data === null || typeof data !== 'object' || data === null) return null;
         return MealTags.fromJSON(data as { mealID: number; tags: string[] });
-    } catch (_error) {
+    } catch {
         return null;
     }
 }
@@ -157,7 +157,7 @@ export async function createOrUpdateMealTags(mealTags: MealTags): Promise<MealTa
         } else {
             return await createMealTags(mealTags);
         }
-    } catch (_error) {
+    } catch {
         return null;
     }
 }
@@ -181,7 +181,7 @@ async function getAllTagsFromIngredientJSON(ingredient: string): Promise<unknown
     try {
         const response = await instance.get(`/ingredient-tags/${ingredient}/`);
         return response.data;
-    } catch (_error) {
+    } catch {
         return null;
     }
 }
@@ -191,7 +191,7 @@ export async function getAllTagsFromIngredient(ingredient: string): Promise<Ingr
         const data = await getAllTagsFromIngredientJSON(ingredient);
         if (data === null || typeof data !== 'object' || data === null) return null;
         return IngredientTags.fromJSON(data as { ingredient: string; tags: string[] });
-    } catch (_error) {
+    } catch {
         return null;
     }
 }
@@ -274,7 +274,7 @@ export async function createOrUpdateIngredientTags(ingredientTags: IngredientTag
         } else {
             return await createIngredientTags(ingredientTags);
         }
-    } catch (_error) {
+    } catch {
         return null;
     }
 }

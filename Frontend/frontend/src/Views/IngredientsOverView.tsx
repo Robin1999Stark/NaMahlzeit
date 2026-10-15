@@ -5,7 +5,6 @@ import { LuFilter } from 'react-icons/lu'
 import { MdAdd } from 'react-icons/md'
 import IngredientListItem from '../Components/IngredientListItem'
 import { TagDT } from '../Datatypes/Tag'
-import { debounce } from 'lodash'
 import { getAllIngredients } from '../Endpoints/IngredientService'
 import { getIngredientTagsFromTagList } from '../Endpoints/TagService'
 
@@ -13,7 +12,6 @@ function IngredientsOverView() {
     const [ingredients, setIngredients] = useState<Ingredient[]>()
     const [filteredIngredients, setFilteredIngredients] = useState<Ingredient[]>();
     const [searchString, setSearchString] = useState<string>("");
-    const [debounceTimeout, setDebounceTimeout] = useState<number | null>(null);
 
     const navigate = useNavigate();
     async function fetchData() {
@@ -61,30 +59,17 @@ function IngredientsOverView() {
     }, [ingredients]);
 
 
-    debounce(searchForIngredients, 500);
-
-
     useEffect(() => {
-        if (searchString !== "" && searchString !== undefined && searchString !== null) {
-
-            if (debounceTimeout) {
-                clearTimeout(debounceTimeout);
-            }
-
-            const timeoutId = globalThis.setTimeout(() => {
-                searchForIngredients(searchString.trim());
-            }, 500);
-
-            setDebounceTimeout(timeoutId);
-
-            return () => {
-                if (debounceTimeout) {
-                    clearTimeout(debounceTimeout);
-                }
-            };
-        } else {
+        if (!searchString.trim()) {
             setFilteredIngredients(ingredients);
+            return;
         }
+
+        const timeoutId = globalThis.setTimeout(() => {
+            searchForIngredients(searchString.trim());
+        }, 500);
+
+        return () => globalThis.clearTimeout(timeoutId);
     }, [searchString, ingredients, searchForIngredients]);
 
     const ingredientList = () => {
@@ -111,7 +96,7 @@ function IngredientsOverView() {
                         {prefix}
                         <li
                             key={`prefix-${ingredient.title}-${index}`}
-                            className='py-[0.2rem] px-2 flex flex-row justify-between overflow-hidden rounded-sm bg-white bg-opacity-10'>
+                            className='py-[0.2rem] px-2 flex flex-row justify-between overflow-hidden rounded-xs bg-white/10'>
                             <IngredientListItem ingredient={ingredient} deleteIngredient={deleteIngredient} />
                         </li>
                     </>
@@ -124,7 +109,7 @@ function IngredientsOverView() {
     return (
         <>
             {/* Only visible in mobile version */}
-            <section className='w-full my-4 px-7 md:hidden flex flex-row items-center justify-between flex-grow '>
+            <section className='w-full my-4 px-7 md:hidden flex flex-row items-center justify-between grow '>
                 <h1 className='truncate text-[#011413] text-xl font-semibold flex-1'>
                     Zutaten ({filteredIngredients?.length})
                 </h1>
@@ -134,20 +119,16 @@ function IngredientsOverView() {
                     <MdAdd />
                 </button>
             </section >
-            <section className='w-full my-4 px-7 flex flex-row items-center justify-between flex-grow'>
+            <section className='w-full my-4 px-7 flex flex-row items-center justify-between grow'>
                 <h1 className='truncate text-[#011413] hidden md:block text-xl font-semibold flex-1'>
                     Zutaten ({filteredIngredients?.length})
                 </h1>
-                <div className='flex flex-grow flex-row justify-center items-center'>
+                <div className='flex grow flex-row justify-center items-center'>
                     <input
                         type="text"
                         value={searchString}
                         onChange={(e) => {
                             setSearchString(e.target.value);
-                            // debounced search - delays search
-                            if (debounceTimeout) {
-                                clearTimeout(debounceTimeout);
-                            }
                         }}
                         autoFocus={false}
                         className='bg-white w-full focus:ring-0 py-2 text-start shadow-md px-6 rounded-full mr-2'

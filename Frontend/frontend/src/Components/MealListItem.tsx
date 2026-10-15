@@ -32,8 +32,12 @@ function MealListItem({ meal, deleteMeal, addMealToPlaner }: Props) {
         async function fetchTags(id: number) {
             try {
                 const response = await getAllTagsFromMeal(id);
-                response ? setTags(response) : console.log("Error")
-            } catch (_error) {
+                if (response) {
+                    setTags(response);
+                } else {
+                    console.log("Error");
+                }
+            } catch {
                 console.error("error");
             }
         }
@@ -86,7 +90,7 @@ function MealListItem({ meal, deleteMeal, addMealToPlaner }: Props) {
     return (
         <>
             <li
-                className='select-none w-full h-full py-3 flex flex-row justify-between items-center rounded-md border-l-[6px] border-[#046865] truncate bg-[#fff]'>
+                className='select-none w-full h-full py-3 flex flex-row justify-between items-center rounded-md border-l-[6px] border-[#046865] truncate bg-white'>
                 <article className='text-center  flex flex-row justify-start ml-3 items-center w-full whitespace-normal text-[#011413] text-base '>
                     <figure className='w-7 h-7 rounded-full mr-3'>
                         {imageError || !meal?.picture ? (

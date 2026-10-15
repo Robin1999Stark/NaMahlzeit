@@ -93,3 +93,15 @@ Feel free to fork this repository, make your changes, and submit a pull request.
 
 ## 📄 License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Frontend checks
+
+The frontend uses Node.js 24 (see `Frontend/frontend/.nvmrc`). From
+`Frontend/frontend`, run `npm ci`, `npm run lint`, `npm run build`, and `npm audit`.
+The Frontend GitHub Actions workflow runs the same checks; it replaces the old
+Deno workflow because this project uses npm, Vite, and ESLint.
+
+The patched toolchain uses Vite 8, ESLint 9, React Router 7, and Tailwind CSS 4.
+Tailwind styles and configuration have been migrated to its CSS-based format.
+Tailwind 4 requires Safari 16.4+, Chrome 111+, or Firefox 128+; see the
+[Tailwind upgrade guide](https://tailwindcss.com/docs/upgrade-guide).

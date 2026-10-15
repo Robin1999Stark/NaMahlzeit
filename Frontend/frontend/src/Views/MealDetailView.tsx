@@ -40,8 +40,12 @@ function MealDetailView() {
         async function fetchTags(id: string) {
             try {
                 const response = await getAllTagsFromMeal(Number(id));
-                response ? setTags(response) : setError("No Meal Found");
-            } catch (_error) {
+                if (response) {
+                    setTags(response);
+                } else {
+                    setError("No Meal Found");
+                }
+            } catch {
                 setError("Error while fetching Tags occurred");
             }
         }
@@ -60,7 +64,11 @@ function MealDetailView() {
         async function fetchMealIngredients() {
             try {
                 const response = await getAllMealIngredients(Number(mealID!));
-                response ? setMealIngredients(response) : setMealIngredients([]);
+                if (response) {
+                    setMealIngredients(response);
+                } else {
+                    setMealIngredients([]);
+                }
             } catch (_error) {
                 console.log(_error);
             }
@@ -99,7 +107,7 @@ function MealDetailView() {
 
     return (
         <>
-            <section className='w-full relative h-full left-[50%] translate-x-[-50%] px-8 mt-8 max-w-[70rem]'>
+            <section className='w-full relative h-full left-[50%] translate-x-[-50%] px-8 mt-8 max-w-280'>
                 <span className='flex flex-row justify-between items-center'>
                     <span className='flex flex-row justify-start items-center'>
                         <h1 className='font-semibold text-[#011413] text-2xl mr-2'>
@@ -134,7 +142,7 @@ function MealDetailView() {
                 </span>
                 <hr className='mt-4 mb-8' />
                 <section className='flex flex-col justify-start items-center md:items-start md:flex-row w-full'>
-                    <span className='w-full max-w-[24rem] max-h-[24rem]'>
+                    <span className='w-full max-w-[24rem] max-h-96'>
                         {imageError || !meal?.picture ? (
                             <PlaceholderMealImage rounded border='full' />
                         ) : (
@@ -191,15 +199,15 @@ function MealDetailView() {
             </section>
             {/* Modal for Enlarged Image */}
             {isModalOpen && meal?.picture && (
-                <div className="fixed inset-0 px-6 md:px-32 bg-black bg-opacity-70 flex items-center justify-center z-50" onClick={toggleModal}>
-                    <div className="relative bg-white max-w-[50rem] rounded-lg" onClick={(e) => e.stopPropagation()}>
+                <div className="fixed inset-0 px-6 md:px-32 bg-black/70 flex items-center justify-center z-50" onClick={toggleModal}>
+                    <div className="relative bg-white max-w-200 rounded-lg" onClick={(e) => e.stopPropagation()}>
                         <img
                             src={meal?.picture}
                             alt="Enlarged Meal"
                             className='max-w-full max-h-dvh object-contain'
                         />
                         <button
-                            className='absolute top-1 right-1 bg-black bg-opacity-0 hover:bg-opacity-40 p-2 rounded-full'
+                            className='absolute top-1 right-1 bg-black/0 hover:bg-black/40 p-2 rounded-full'
                             onClick={toggleModal}
                             title='schließen'
                         >

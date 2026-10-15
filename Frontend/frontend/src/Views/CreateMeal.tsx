@@ -89,7 +89,7 @@ function CreateMeal() {
 
     return (
         <>
-            <section className='w-full my-4 px-7 flex flex-col justify-start items-start flex-grow'>
+            <section className='w-full my-4 px-7 flex flex-col justify-start items-start grow'>
                 <h1 className='truncate text-[#011413] text-xl font-semibold flex-1'>
                     Neues Gericht erstellen
                 </h1>
@@ -106,7 +106,7 @@ function CreateMeal() {
                                 onChange={handlePictureChange}
                                 className='hidden'
                             />
-                            <div className='relative w-full max-w-[24rem] max-h-[24rem]'>
+                            <div className='relative w-full max-w-[24rem] max-h-96'>
                                 <label htmlFor='picture' className='cursor-pointer  hover:opacity-90'>
                                     {pictureURL ? (
                                         <img
@@ -119,7 +119,7 @@ function CreateMeal() {
                                     )}
 
                                     {/* Overlay Icon */}
-                                    <span className='absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] bg-black bg-opacity-70 text-white rounded-full p-6'>
+                                    <span className='absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] bg-black/70 text-white rounded-full p-6'>
                                         <AiOutlineEdit className='size-8' />
                                     </span>
                                 </label>
@@ -140,7 +140,7 @@ function CreateMeal() {
                                     required: true,
                                 })}
                                 defaultValue={"Gericht"}
-                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
+                                className='bg-white w-full shadow-xs focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
                         </li>
                         <li key={"li-description"} className='flex w-100 flex-col flex-1 justify-between items-start my-3'>
                             <label
@@ -155,7 +155,7 @@ function CreateMeal() {
                                     required: false,
                                 })}
                                 defaultValue={"Lorem Ipsum"}
-                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md mr-1' />
+                                className='bg-white w-full shadow-xs focus:shadow-lg py-2 text-start px-3 rounded-md mr-1' />
                         </li>
                         <li key={"ingredients-key"} className="flex w-100 flex-col flex-1 justify-between items-start my-3">
                             <span className='w-full mb-3 flex flex-row justify-between items-center'>
@@ -184,7 +184,7 @@ function CreateMeal() {
                                                 required: true,
                                             })}
                                             defaultValue={ingredients ? ingredients[0].title : 0} // Ensure a valid initial value
-                                            className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' >
+                                            className='bg-white w-full shadow-xs focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' >
 
                                             <option key={"select-ingredient"} value="">Select Ingredient</option>
                                             {ingredients ? ingredients.map((ingredient) => (
@@ -207,7 +207,7 @@ function CreateMeal() {
                                                     required: true,
                                                 })}
                                                 defaultValue={1}
-                                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
+                                                className='bg-white w-full shadow-xs focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
                                         </span>
                                         <span className='flex flex-col justify-start'>
                                             <input
@@ -217,7 +217,7 @@ function CreateMeal() {
                                                     required: true,
                                                 })}
                                                 defaultValue={"kg"}
-                                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
+                                                className='bg-white w-full shadow-xs focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
                                         </span>
                                         <button
                                             type='button'
@@ -247,7 +247,7 @@ function CreateMeal() {
                                     required: false,
                                 })}
                                 defaultValue={"Erster Schritt: ..."}
-                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md mr-1' />
+                                className='bg-white w-full shadow-xs focus:shadow-lg py-2 text-start px-3 rounded-md mr-1' />
 
                         </li>
                         <li key={"li-duration"} className='flex w-100 flex-col flex-1 justify-between items-start my-3'>
@@ -267,7 +267,7 @@ function CreateMeal() {
                                     max: 1000,
                                 })}
                                 defaultValue={10}
-                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
+                                className='bg-white w-full shadow-xs focus:shadow-lg py-2 text-start  px-3 rounded-md mr-1' />
                         </li>
                         <li key={"li-portion-size"} className='flex w-100 flex-col flex-1 justify-between items-start my-3'>
                             <label htmlFor='portion_size' className={`text-sm mb-2 text-[#011413] font-semibold truncate text-left align-middle`} >
@@ -284,7 +284,7 @@ function CreateMeal() {
                                     max: 1000,
                                 })}
                                 defaultValue={4}
-                                className='bg-white w-full shadow-sm focus:shadow-lg py-2 text-start px-3 rounded-md mr-1' />
+                                className='bg-white w-full shadow-xs focus:shadow-lg py-2 text-start px-3 rounded-md mr-1' />
                         </li>
 
                     </ul>
