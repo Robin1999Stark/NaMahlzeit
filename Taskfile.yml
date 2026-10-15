@@ -38,3 +38,26 @@ tasks:
     cmds:
       - task: db-init
       - docker compose -f docker-compose.dev.yml run --rm --no-deps backend python manage.py loaddata /code/Backend/backend/foodplaner/fixtures/test_data.json
+
+  hooks:install:
+    desc: Enable the repository pre-push hook for this clone
+    cmds:
+      - git config --local core.hooksPath .githooks
+
+  check:
+    desc: Run the frontend linter, frontend build, and backend tests before pushing
+    cmds:
+      - task: frontend:check
+      - task: backend:test
+
+  frontend:check:
+    desc: Install locked frontend dependencies, lint, and build with Node.js
+    cmds:
+      - bash scripts/check-frontend.sh
+
+  backend:test:
+    desc: Run Django tests with PostgreSQL and an isolated Redis cache
+    cmds:
+      - docker compose -f docker-compose.dev.yml up -d --wait db redis
+      - docker compose -f docker-compose.dev.yml build backend
+      - docker compose -f docker-compose.dev.yml run --rm -T --no-deps -e REDIS_URL=redis://redis:6379/15 backend python /code/Backend/backend/manage.py test --noinput

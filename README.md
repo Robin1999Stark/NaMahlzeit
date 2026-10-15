@@ -105,3 +105,25 @@ The patched toolchain uses Vite 8, ESLint 9, React Router 7, and Tailwind CSS 4.
 Tailwind styles and configuration have been migrated to its CSS-based format.
 Tailwind 4 requires Safari 16.4+, Chrome 111+, or Firefox 128+; see the
 [Tailwind upgrade guide](https://tailwindcss.com/docs/upgrade-guide).
+
+## Git hooks
+
+Run `task hooks:install` once after cloning to enable the versioned Git hooks.
+Before every push, `.githooks/pre-push` runs `task check` and aborts the push if
+any check fails. Checks run from the repository root, including when Git is
+invoked from a subdirectory.
+
+The checks install the locked frontend dependencies with `npm ci`, run ESLint
+and the production build, then run all Django tests in Docker. Node.js 24, npm,
+Go Task, and a running Docker daemon are required. If nvm is installed in its
+standard location or `NVM_DIR`, the frontend check automatically selects the
+version from `.nvmrc`; run `nvm install` there once if it is not installed yet.
+
+Backend tests start PostgreSQL and Redis, rebuild the backend image, and run
+against the current source. Django creates a separate `test_postgres` database;
+Redis database 15 is reserved for tests to keep test sessions separate from the
+application's sessions in database 0. The application containers do not need to
+be running. You can also run `task frontend:check` or `task backend:test` directly.
+
+The hook runs on `pre-push`, so commits remain quick. Git hook activation is local
+to each clone; the GitHub Actions frontend checks continue to run independently.

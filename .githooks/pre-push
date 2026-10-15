@@ -1,0 +1,16 @@
+#!/bin/sh
+set -eu
+
+repo_root=$(git rev-parse --show-toplevel)
+cd "$repo_root"
+
+if ! command -v task >/dev/null 2>&1; then
+    echo 'Push blocked: install Go Task to run the repository checks.' >&2
+    exit 1
+fi
+
+# Git supplies the pushed refs on stdin. Keep check commands from consuming them.
+if ! task check </dev/null; then
+    echo 'Push blocked: fix the failed checks and push again.' >&2
+    exit 1
+fi
