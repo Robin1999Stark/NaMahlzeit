@@ -13,3 +13,10 @@ RUN pip install -U pipenv
 RUN pipenv install --system
 
 COPY . /backend/
+
+# copy entrypoint and make it executable
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+

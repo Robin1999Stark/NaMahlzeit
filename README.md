@@ -6,10 +6,8 @@ This project originated from a common challenge in my shared apartment: deciding
 
 ## 🚀 Demo
 Check out the live demo of the app [here](https://na-mahlzeit.de/login/). Feel free to log in with the provided test credentials to explore the features:
-- **Username**: `TestUser`
-- **Password**: `TestPassword17`
+Feel free to log in with the provided test account to explore the features. For security, the test password is not published in the repository — create a test user locally or ask the maintainer for demo credentials.
 
-## ✨ Features
 - 📅 **Meal Planner** with drag-and-drop functionality
 - 🛒 **Shopping List** automatically generated based on your meal plan
 - 📦 **Inventory List** to track your ingredients
