@@ -181,12 +181,22 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost",
-    "https://foodplaner-demo.robin-stark.com"
+    "http://localhost:5173",
+    "https://localhost",
+    "https://localhost:5173",
+    "https://foodplaner-demo.robin-stark.com",
+    "https://na-mahlzeit.de",
+    "https://www.na-mahlzeit.de",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost",
-    "https://foodplaner-demo.robin-stark.com"
+    "http://localhost:5173",
+    "https://localhost",
+    "https://localhost:5173",
+    "https://foodplaner-demo.robin-stark.com",
+    "https://na-mahlzeit.de",
+    "https://www.na-mahlzeit.de",
 ]
 
 CORS_ALLOW_CREDENTIALS = True

@@ -4,17 +4,17 @@ tasks:
   run-dev:
     desc: Run the project in development mode with docker-compose
     cmds:
-      - docker compose -f docker-compose.dev.yml up --build
+      - docker-compose -f docker-compose.dev.yml up --build
 
   stop:
     desc: Stop all running containers
     cmds:
-      - docker compose -f docker-compose.dev.yml down
+      - docker-compose -f docker-compose.dev.yml down
 
   logs:
     desc: Show logs from running containers
     cmds:
-      - docker compose -f docker-compose.dev.yml logs -f
+      - docker-compose -f docker-compose.dev.yml logs -f
 
   build:
     desc: Build the docker images
@@ -24,20 +24,20 @@ tasks:
   db-init:
     desc: Initialize the local database and apply Django migrations
     cmds:
-      - docker compose -f docker-compose.dev.yml up -d --wait db
-      - docker compose -f docker-compose.dev.yml run --rm --no-deps backend python manage.py migrate
+      - docker-compose -f docker-compose.dev.yml up -d --wait db
+      - docker-compose -f docker-compose.dev.yml run --rm --no-deps backend python manage.py migrate
 
   migrate:
     desc: Run Django database migrations
     cmds:
-      - sudo docker compose -f docker-compose.dev.yml exec -T backend python manage.py migrate
+      - sudo docker-compose -f docker-compose.dev.yml exec -T backend python manage.py migrate
 
   load-test-data:
     desc: Initialize the local database and load predefined JSON test data
     aliases: [load-data]
     cmds:
       - task: db-init
-      - docker compose -f docker-compose.dev.yml run --rm --no-deps backend python manage.py loaddata /code/Backend/backend/foodplaner/fixtures/test_data.json
+      - docker-compose -f docker-compose.dev.yml run --rm --no-deps backend python manage.py loaddata /code/Backend/backend/foodplaner/fixtures/test_data.json
 
   hooks:install:
     desc: Enable the repository pre-push hook for this clone
@@ -58,6 +58,6 @@ tasks:
   backend:test:
     desc: Run Django tests with PostgreSQL and an isolated Redis cache
     cmds:
-      - docker compose -f docker-compose.dev.yml up -d --wait db redis
-      - docker compose -f docker-compose.dev.yml build backend
-      - docker compose -f docker-compose.dev.yml run --rm -T --no-deps -e REDIS_URL=redis://redis:6379/15 backend python /code/Backend/backend/manage.py test --noinput
+      - docker-compose -f docker-compose.dev.yml up -d --wait db redis
+      - docker-compose -f docker-compose.dev.yml build backend
+      - docker-compose -f docker-compose.dev.yml run --rm -T --no-deps -e REDIS_URL=redis://redis:6379/15 backend python /code/Backend/backend/manage.py test --noinput
