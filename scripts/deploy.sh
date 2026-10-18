@@ -16,6 +16,16 @@ MIGRATE="${MIGRATE:-1}"
 PRUNE="${PRUNE:-1}"
 NO_CACHE="${NO_CACHE:-0}"
 
+# Detect available docker compose command (docker compose plugin or docker-compose binary)
+if command -v docker >/dev/null 2>&1 && docker compose version >/dev/null 2>&1; then
+  COMPOSE_CMD="docker compose"
+elif command -v docker-compose >/dev/null 2>&1; then
+  COMPOSE_CMD="docker-compose"
+else
+  echo "[deploy] ERROR: neither 'docker compose' nor 'docker-compose' available" >&2
+  exit 1
+fi
+
 show_help(){
   cat <<EOF
 Usage: $0 [--no-cache]
@@ -52,15 +62,15 @@ if [[ -f "$ENV_FILE" ]]; then
 fi
 
 echo "[deploy] Pulling images..."
-docker compose -f "$COMPOSE_FILE" pull
+$COMPOSE_CMD -f "$COMPOSE_FILE" pull
 
 echo "[deploy] Building images..."
-docker compose -f "$COMPOSE_FILE" build $BUILD_NO_CACHE_FLAG --pull
+$COMPOSE_CMD -f "$COMPOSE_FILE" build $BUILD_NO_CACHE_FLAG --pull
 
 if [[ "$MIGRATE" == "1" ]]; then
   echo "[deploy] Running migrations on service '$MIGRATE_SERVICE' (if present)"
-  if docker compose -f "$COMPOSE_FILE" ps --services | grep -q "^$MIGRATE_SERVICE$"; then
-    docker compose -f "$COMPOSE_FILE" run --rm "$MIGRATE_SERVICE" python manage.py migrate || {
+  if $COMPOSE_CMD -f "$COMPOSE_FILE" ps --services | grep -q "^$MIGRATE_SERVICE$"; then
+    $COMPOSE_CMD -f "$COMPOSE_FILE" run --rm "$MIGRATE_SERVICE" python manage.py migrate || {
       echo "[deploy] WARNING: migrations command failed" >&2
     }
   else
@@ -69,7 +79,7 @@ if [[ "$MIGRATE" == "1" ]]; then
 fi
 
 echo "[deploy] Starting services (detached)..."
-docker compose -f "$COMPOSE_FILE" up -d --remove-orphans
+$COMPOSE_CMD -f "$COMPOSE_FILE" up -d --remove-orphans
 
 if [[ "$PRUNE" == "1" ]]; then
   echo "[deploy] Pruning unused images..."
@@ -77,6 +87,6 @@ if [[ "$PRUNE" == "1" ]]; then
 fi
 
 echo "[deploy] Done. Active containers:"
-docker compose -f "$COMPOSE_FILE" ps
+$COMPOSE_CMD -f "$COMPOSE_FILE" ps
 
 exit 0
