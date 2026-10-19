@@ -67,10 +67,27 @@ $COMPOSE_CMD -f "$COMPOSE_FILE" pull
 echo "[deploy] Building images..."
 $COMPOSE_CMD -f "$COMPOSE_FILE" build $BUILD_NO_CACHE_FLAG --pull
 
+echo "[deploy] Starting database and cache first..."
+$COMPOSE_CMD -f "$COMPOSE_FILE" up -d --remove-orphans db redis
+
+echo "[deploy] Waiting for PostgreSQL to become ready..."
+for i in {1..60}; do
+  if $COMPOSE_CMD -f "$COMPOSE_FILE" exec -T db pg_isready -U "${POSTGRES_USER:-postgres}" >/dev/null 2>&1; then
+    break
+  fi
+  echo "[deploy] Waiting for database... ($i/60)"
+  sleep 2
+done
+
+if ! $COMPOSE_CMD -f "$COMPOSE_FILE" exec -T db pg_isready -U "${POSTGRES_USER:-postgres}" >/dev/null 2>&1; then
+  echo "[deploy] ERROR: PostgreSQL did not become ready in time" >&2
+  exit 1
+fi
+
 if [[ "$MIGRATE" == "1" ]]; then
   echo "[deploy] Running migrations on service '$MIGRATE_SERVICE' (if present)"
   if $COMPOSE_CMD -f "$COMPOSE_FILE" ps --services | grep -q "^$MIGRATE_SERVICE$"; then
-    $COMPOSE_CMD -f "$COMPOSE_FILE" run --rm "$MIGRATE_SERVICE" python manage.py migrate || {
+    $COMPOSE_CMD -f "$COMPOSE_FILE" run --rm --no-deps "$MIGRATE_SERVICE" python manage.py migrate || {
       echo "[deploy] WARNING: migrations command failed" >&2
     }
   else
@@ -78,7 +95,7 @@ if [[ "$MIGRATE" == "1" ]]; then
   fi
 fi
 
-echo "[deploy] Starting services (detached)..."
+echo "[deploy] Starting remaining services (detached)..."
 $COMPOSE_CMD -f "$COMPOSE_FILE" up -d --remove-orphans
 
 if [[ "$PRUNE" == "1" ]]; then
