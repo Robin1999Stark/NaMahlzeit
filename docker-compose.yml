@@ -2,7 +2,7 @@ version: '3'
 
 services:
   db:
-    image: docker.io/library/postgres
+    image: postgres:15
     volumes:
       - ./data/db:/var/lib/postgresql/data
     environment:
