@@ -60,6 +60,7 @@ export async function createUser({
         }
         const csrfToken = await fetchCsrfToken();
         const response = await axios.post(path, data, {
+            withCredentials: true,
             headers: {
                 'X-CSRFToken': csrfToken || '',
                 'Content-Type': 'application/json',
