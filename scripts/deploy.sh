@@ -50,32 +50,30 @@ else
   BUILD_NO_CACHE_FLAG=""
 fi
 
-echo "[deploy] Root: $ROOT_DIR"
-echo "[deploy] Compose: $COMPOSE_FILE  Env: $ENV_FILE  Migrate: $MIGRATE  Service: $MIGRATE_SERVICE"
-
 if [[ -f "$ENV_FILE" ]]; then
-  echo "[deploy] Sourcing $ENV_FILE"
   set -a
   # shellcheck disable=SC1090
   source "$ENV_FILE"
   set +a
 fi
 
+echo "[deploy] Root: $ROOT_DIR"
+echo "[deploy] Compose: $COMPOSE_FILE  Env: $ENV_FILE  Migrate: $MIGRATE  Service: $MIGRATE_SERVICE"
+
 echo "[deploy] Pulling images..."
-$COMPOSE_CMD -f "$COMPOSE_FILE" pull
+$COMPOSE_CMD -f "$COMPOSE_FILE" pull --ignore-pull-failures || true
 
 echo "[deploy] Building images..."
-$COMPOSE_CMD -f "$COMPOSE_FILE" build $BUILD_NO_CACHE_FLAG --pull
+$COMPOSE_CMD -f "$COMPOSE_FILE" build $BUILD_NO_CACHE_FLAG --pull || true
 
-echo "[deploy] Starting database and cache first..."
-$COMPOSE_CMD -f "$COMPOSE_FILE" up -d --remove-orphans db redis
+echo "[deploy] Starting infrastructure services..."
+$COMPOSE_CMD -f "$COMPOSE_FILE" up -d --remove-orphans db redis || true
 
-echo "[deploy] Waiting for PostgreSQL to become ready..."
-for i in {1..60}; do
+echo "[deploy] Waiting for PostgreSQL..."
+for i in $(seq 1 60); do
   if $COMPOSE_CMD -f "$COMPOSE_FILE" exec -T db pg_isready -U "${POSTGRES_USER:-postgres}" >/dev/null 2>&1; then
     break
   fi
-  echo "[deploy] Waiting for database... ($i/60)"
   sleep 2
 done
 
@@ -84,8 +82,21 @@ if ! $COMPOSE_CMD -f "$COMPOSE_FILE" exec -T db pg_isready -U "${POSTGRES_USER:-
   exit 1
 fi
 
+echo "[deploy] Waiting for Redis..."
+for i in $(seq 1 60); do
+  if $COMPOSE_CMD -f "$COMPOSE_FILE" exec -T redis redis-cli ping >/dev/null 2>&1; then
+    break
+  fi
+  sleep 2
+done
+
+if ! $COMPOSE_CMD -f "$COMPOSE_FILE" exec -T redis redis-cli ping >/dev/null 2>&1; then
+  echo "[deploy] ERROR: Redis did not become ready in time" >&2
+  exit 1
+fi
+
 if [[ "$MIGRATE" == "1" ]]; then
-  echo "[deploy] Running migrations on service '$MIGRATE_SERVICE' (if present)"
+  echo "[deploy] Running database migrations..."
   if $COMPOSE_CMD -f "$COMPOSE_FILE" ps --services | grep -q "^$MIGRATE_SERVICE$"; then
     $COMPOSE_CMD -f "$COMPOSE_FILE" run --rm --no-deps "$MIGRATE_SERVICE" python manage.py migrate || {
       echo "[deploy] WARNING: migrations command failed" >&2
@@ -95,15 +106,18 @@ if [[ "$MIGRATE" == "1" ]]; then
   fi
 fi
 
-echo "[deploy] Starting remaining services (detached)..."
-$COMPOSE_CMD -f "$COMPOSE_FILE" up -d --remove-orphans
+echo "[deploy] Updating backend..."
+$COMPOSE_CMD -f "$COMPOSE_FILE" up -d --no-deps --build backend
+
+echo "[deploy] Updating frontend..."
+$COMPOSE_CMD -f "$COMPOSE_FILE" up -d --no-deps --build frontend
 
 if [[ "$PRUNE" == "1" ]]; then
   echo "[deploy] Pruning unused images..."
   docker image prune -f || true
 fi
 
-echo "[deploy] Done. Active containers:"
+echo "[deploy] Deployment finished."
 $COMPOSE_CMD -f "$COMPOSE_FILE" ps
 
 exit 0
