@@ -4,16 +4,35 @@ from corsheaders.defaults import default_methods
 import os
 
 
+def _env_bool(name: str, default: bool) -> bool:
+    return os.environ.get(name, str(default)).strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _env_list(name: str, default: str) -> list[str]:
+    value = os.environ.get(name, default)
+    return [item.strip() for item in value.split(",") if item.strip()]
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-xv)dlm1)0q&d8wsd71u@s476v!1(=e9oee-ylr1if8_3*shu%w'
+DEBUG = _env_bool("DEBUG", False)
+ALLOWED_HOSTS = _env_list(
+    "ALLOWED_HOSTS",
+    "na-mahlzeit.de,www.na-mahlzeit.de,localhost,127.0.0.1",
+)
+
+SECRET_KEY = os.environ.get(
+    "SECRET_KEY",
+    'django-insecure-xv)dlm1)0q&d8wsd71u@s476v!1(=e9oee-ylr1if8_3*shu%w',
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ['*']
-
+SECURE_SSL_REDIRECT = _env_bool("SECURE_SSL_REDIRECT", True)
+SESSION_COOKIE_SECURE = _env_bool("SESSION_COOKIE_SECURE", True)
+CSRF_COOKIE_SECURE = _env_bool("CSRF_COOKIE_SECURE", True)
+CSRF_COOKIE_SAMESITE = os.environ.get("CSRF_COOKIE_SAMESITE", "Lax")
+SESSION_COOKIE_SAMESITE = os.environ.get("SESSION_COOKIE_SAMESITE", "Lax")
 
 # Application definition
 
@@ -158,11 +177,6 @@ USE_I18N = True
 USE_TZ = True
 APPEND_SLASH = False
 
-SECURE_SSL_REDIRECT = not DEBUG    # Redirect all HTTP requests to HTTPS
-SESSION_COOKIE_SECURE = not DEBUG    # Ensure cookies are only sent over HTTPS
-CSRF_COOKIE_SECURE = not DEBUG    # Ensure CSRF cookies are only sent over HTTPS
-
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
@@ -178,33 +192,14 @@ MEDIA_ROOT = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+CORS_ALLOWED_ORIGINS = _env_list(
+    "CORS_ALLOWED_ORIGINS",
+    "http://localhost,http://localhost:5173,https://localhost,https://localhost:5173,https://na-mahlzeit.de,https://www.na-mahlzeit.de",
+)
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost",
-    "http://localhost:5173",
-    "http://127.0.0.1",
-    "https://localhost",
-    "https://localhost:5173",
-    "https://127.0.0.1",
-    "https://foodplaner-demo.robin-stark.com",
-    "https://na-mahlzeit.de",
-    "https://www.na-mahlzeit.de",
-]
+CSRF_TRUSTED_ORIGINS = _env_list(
+    "CSRF_TRUSTED_ORIGINS",
+    "https://na-mahlzeit.de,https://www.na-mahlzeit.de",
+)
 
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost",
-    "http://localhost:5173",
-    "http://127.0.0.1",
-    "https://localhost",
-    "https://localhost:5173",
-    "https://127.0.0.1",
-    "https://foodplaner-demo.robin-stark.com",
-    "https://na-mahlzeit.de",
-    "https://www.na-mahlzeit.de",
-]
-
-SESSION_COOKIE_SAMESITE = 'Lax'
-CSRF_COOKIE_SAMESITE = 'Lax'
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
 CORS_ALLOW_CREDENTIALS = True
