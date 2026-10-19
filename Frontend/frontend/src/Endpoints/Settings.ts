@@ -9,6 +9,8 @@ const instance = axios.create({
 })
 
 export async function fetchCsrfToken() {
-    const response = await instance.get("/get_csrf_token");
+    const response = await instance.get("/get_csrf_token", {
+        withCredentials: true,
+    });
     return response.data.csrfToken;
 }

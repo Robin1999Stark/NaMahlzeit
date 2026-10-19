@@ -83,6 +83,7 @@ export async function fetchUserData(token: string) {
         const path = BASE_URL + '/users/me'
 
         const response = await axios.get(path, {
+            withCredentials: true,
             headers: {
                 Authorization: `Token ${token}`,
                 'X-CSRFToken': await fetchCsrfToken() || '',
